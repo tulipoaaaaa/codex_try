@@ -243,8 +243,12 @@ class ProjectConfig:
         """Save configuration to YAML file"""
         with open(self.config_path, 'w') as f:
             yaml.dump(self.config, f, default_flow_style=False)
-    
+
+    def get_logs_dir(self) -> str:
+        """Return the configured logs directory or default path."""
+        return self.get("directories.logs_dir", os.path.expanduser("~/.cryptofinance/logs"))
+
     @classmethod
     def from_yaml(cls, yaml_path: str, environment: Optional[str] = None) -> 'ProjectConfig':
         """Load config from YAML file with schema validation."""
-        return cls(yaml_path, environment=environment) 
+        return cls(yaml_path, environment=environment)
