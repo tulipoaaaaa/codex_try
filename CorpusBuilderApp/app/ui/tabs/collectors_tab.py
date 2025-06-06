@@ -1,7 +1,19 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, 
-                             QLabel, QProgressBar, QPushButton, QComboBox,
-                             QSpinBox, QLineEdit, QGroupBox, QScrollArea)
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QTabWidget,
+    QLabel,
+    QProgressBar,
+    QPushButton,
+    QComboBox,
+    QSpinBox,
+    QLineEdit,
+    QGroupBox,
+    QScrollArea,
+)
 from PySide6.QtCore import Qt, Slot as pyqtSlot, Signal as pyqtSignal
+from PySide6.QtGui import QFont
 
 from shared_tools.ui_wrappers.collectors.isda_wrapper import ISDAWrapper
 from shared_tools.ui_wrappers.collectors.github_wrapper import GitHubWrapper
@@ -13,6 +25,13 @@ from shared_tools.ui_wrappers.collectors.quantopian_wrapper import QuantopianWra
 from shared_tools.ui_wrappers.collectors.scidb_wrapper import SciDBWrapper
 from shared_tools.ui_wrappers.collectors.web_wrapper import WebWrapper
 from app.helpers.notifier import Notifier
+from app.ui.theme.theme_constants import (
+    DEFAULT_FONT_SIZE,
+    CARD_MARGIN,
+    BUTTON_COLOR_PRIMARY,
+    BUTTON_COLOR_DANGER,
+    BUTTON_COLOR_GRAY,
+)
 
 
 class CollectorsTab(QWidget):
@@ -25,6 +44,7 @@ class CollectorsTab(QWidget):
     def __init__(self, project_config, parent=None):
         super().__init__(parent)
         self.project_config = project_config
+        self.setFont(QFont("", DEFAULT_FONT_SIZE))
         self.collector_wrappers = {}
         self.init_collectors()
         self.setup_ui()
@@ -33,6 +53,8 @@ class CollectorsTab(QWidget):
 
     def setup_ui(self):
         main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(CARD_MARGIN, CARD_MARGIN, CARD_MARGIN, CARD_MARGIN)
+        main_layout.setSpacing(CARD_MARGIN)
         
         # Collector tabs widget
         self.collector_tabs = QTabWidget()
@@ -66,7 +88,9 @@ class CollectorsTab(QWidget):
                 
                 # Add basic controls for testing
                 start_btn = QPushButton(f"Start {label} Collection")
-                stop_btn = QPushButton(f"Stop {label} Collection") 
+                start_btn.setStyleSheet(f"background-color: {BUTTON_COLOR_PRIMARY}; color: white;")
+                stop_btn = QPushButton(f"Stop {label} Collection")
+                stop_btn.setStyleSheet(f"background-color: {BUTTON_COLOR_DANGER}; color: white;")
                 progress_bar = QProgressBar()
                 status_label = QLabel("Ready")
                 
@@ -108,6 +132,7 @@ class CollectorsTab(QWidget):
         # Button for stopping all collectors
         stop_all_btn = QPushButton("Stop All Collectors")
         stop_all_btn.clicked.connect(self.stop_all_collectors)
+        stop_all_btn.setStyleSheet(f"background-color: {BUTTON_COLOR_DANGER}; color: white;")
         status_layout.addWidget(stop_all_btn)
         
         main_layout.addWidget(status_group)

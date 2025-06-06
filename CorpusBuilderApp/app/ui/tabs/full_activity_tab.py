@@ -15,6 +15,17 @@ from PySide6.QtCharts import QChart, QChartView, QPieSeries, QBarSeries, QBarSet
 import logging
 from datetime import datetime, timedelta
 from app.helpers.chart_manager import ChartManager
+from app.ui.theme.theme_constants import (
+    DEFAULT_FONT_SIZE,
+    CARD_MARGIN,
+    CARD_PADDING,
+    BUTTON_COLOR_PRIMARY,
+    BUTTON_COLOR_DANGER,
+    BUTTON_COLOR_GRAY,
+    STATUS_DOT_GREEN,
+    STATUS_DOT_RED,
+    STATUS_DOT_GRAY,
+)
 
 
 class FullActivityTab(QWidget):
@@ -24,6 +35,9 @@ class FullActivityTab(QWidget):
         super().__init__(parent)
         self.config = config
         self.logger = logging.getLogger(self.__class__.__name__)
+
+        # Apply shared UI theme settings
+        self.setFont(QFont("", DEFAULT_FONT_SIZE))
         
         # Initialize chart manager for activity visualizations
         self.chart_manager = ChartManager()
@@ -38,8 +52,8 @@ class FullActivityTab(QWidget):
     def init_ui(self):
         """Initialize the comprehensive activity interface"""
         main_layout = QVBoxLayout(self)
-        main_layout.setContentsMargins(16, 16, 16, 16)
-        main_layout.setSpacing(16)
+        main_layout.setContentsMargins(CARD_MARGIN, CARD_MARGIN, CARD_MARGIN, CARD_MARGIN)
+        main_layout.setSpacing(CARD_MARGIN)
         self.setStyleSheet("background-color: #0f1419;")
         
         # Header with title and controls
@@ -72,6 +86,7 @@ class FullActivityTab(QWidget):
         
         self.refresh_btn = QPushButton("🔄 Refresh")
         self.refresh_btn.clicked.connect(self.load_activity_data)
+        self.refresh_btn.setStyleSheet(f"background-color: {BUTTON_COLOR_PRIMARY}; color: white;")
         header_layout.addWidget(self.refresh_btn)
         
         main_layout.addLayout(header_layout)
@@ -106,7 +121,7 @@ class FullActivityTab(QWidget):
         metrics_layout.addWidget(self.total_tasks_card)
         
         # Success Rate Card  
-        self.success_rate_card = self.create_metric_card("Success Rate", "94.2%", "#50C878")
+        self.success_rate_card = self.create_metric_card("Success Rate", "94.2%", STATUS_DOT_GREEN)
         metrics_layout.addWidget(self.success_rate_card)
         
         # Average Runtime Card
@@ -153,7 +168,7 @@ class FullActivityTab(QWidget):
         status_chart_container.setObjectName("card")
         status_chart_container.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
         status_chart_layout = QVBoxLayout(status_chart_container)
-        status_chart_layout.setContentsMargins(8, 8, 8, 8)
+        status_chart_layout.setContentsMargins(CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2)
         
         self.status_chart = self.chart_manager.create_chart_view("")  # Empty title since header is above
         self.status_chart.setMinimumSize(300, 250)  # Bigger chart
@@ -165,19 +180,19 @@ class FullActivityTab(QWidget):
         
         # Success square and label
         success_square = QLabel("■")
-        success_square.setStyleSheet("color: #50C878; font-size: 14px;")
+        success_square.setStyleSheet(f"color: {STATUS_DOT_GREEN}; font-size: 14px;")
         success_label = QLabel("Success")
         success_label.setStyleSheet("color: #C5C7C7; font-size: 11px; margin-left: 2px;")
         
         # Running square and label
         running_square = QLabel("■")
-        running_square.setStyleSheet("color: #32B8C6; font-size: 14px;")
+        running_square.setStyleSheet(f"color: {BUTTON_COLOR_PRIMARY}; font-size: 14px;")
         running_label = QLabel("Running")
         running_label.setStyleSheet("color: #C5C7C7; font-size: 11px; margin-left: 2px;")
         
         # Error square and label
         error_square = QLabel("■")
-        error_square.setStyleSheet("color: #FF5459; font-size: 14px;")
+        error_square.setStyleSheet(f"color: {STATUS_DOT_RED}; font-size: 14px;")
         error_label = QLabel("Error")
         error_label.setStyleSheet("color: #C5C7C7; font-size: 11px; margin-left: 2px;")
         
@@ -211,7 +226,7 @@ class FullActivityTab(QWidget):
         runtime_chart_container.setObjectName("card")
         runtime_chart_container.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
         runtime_chart_layout = QVBoxLayout(runtime_chart_container)
-        runtime_chart_layout.setContentsMargins(8, 8, 8, 8)
+        runtime_chart_layout.setContentsMargins(CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2)
         
         self.runtime_chart = self.chart_manager.create_chart_view("")  # Empty title since header is above
         self.runtime_chart.setMinimumSize(300, 250)  # Bigger chart
@@ -269,7 +284,7 @@ class FullActivityTab(QWidget):
         trends_chart_container.setObjectName("card")
         trends_chart_container.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
         trends_chart_layout = QVBoxLayout(trends_chart_container)
-        trends_chart_layout.setContentsMargins(8, 8, 8, 8)
+        trends_chart_layout.setContentsMargins(CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2)
         
         self.trends_chart = self.chart_manager.create_chart_view("")  # Empty title since header is above
         self.trends_chart.setMinimumSize(300, 250)  # Bigger chart
@@ -281,13 +296,13 @@ class FullActivityTab(QWidget):
         
         # Success Rate square and label
         success_rate_square = QLabel("■")
-        success_rate_square.setStyleSheet("color: #50C878; font-size: 14px;")
+        success_rate_square.setStyleSheet(f"color: {STATUS_DOT_GREEN}; font-size: 14px;")
         success_rate_label = QLabel("Success Rate")
         success_rate_label.setStyleSheet("color: #C5C7C7; font-size: 11px; margin-left: 2px;")
         
         # Task Volume square and label
         volume_square = QLabel("■")
-        volume_square.setStyleSheet("color: #32B8C6; font-size: 14px;")
+        volume_square.setStyleSheet(f"color: {BUTTON_COLOR_PRIMARY}; font-size: 14px;")
         volume_label = QLabel("Task Volume")
         volume_label.setStyleSheet("color: #C5C7C7; font-size: 11px; margin-left: 2px;")
         
@@ -410,16 +425,19 @@ class FullActivityTab(QWidget):
         self.retry_btn = QPushButton("🔄 Retry")
         self.retry_btn.setEnabled(False)
         self.retry_btn.clicked.connect(self.retry_task)  # Connect retry action
+        self.retry_btn.setStyleSheet(f"background-color: {BUTTON_COLOR_PRIMARY}; color: white;")
         actions_layout.addWidget(self.retry_btn)
         
         self.stop_btn = QPushButton("⏹️ Stop")
         self.stop_btn.setEnabled(False)
         self.stop_btn.clicked.connect(self.stop_task)  # Connect stop action
+        self.stop_btn.setStyleSheet(f"background-color: {BUTTON_COLOR_DANGER}; color: white;")
         actions_layout.addWidget(self.stop_btn)
         
         self.logs_btn = QPushButton("📝 View Logs")
         self.logs_btn.setEnabled(False)
         self.logs_btn.clicked.connect(self.view_task_logs)  # Connect view logs action
+        self.logs_btn.setStyleSheet(f"background-color: {BUTTON_COLOR_GRAY}; color: white;")
         actions_layout.addWidget(self.logs_btn)
         
         details_layout.addLayout(actions_layout)
@@ -490,9 +508,9 @@ class FullActivityTab(QWidget):
         
         series = QPieSeries()
         colors = {
-            'success': '#50C878',
-            'running': '#32B8C6', 
-            'error': '#FF5459',
+            'success': STATUS_DOT_GREEN,
+            'running': BUTTON_COLOR_PRIMARY,
+            'error': STATUS_DOT_RED,
             'warning': '#E68161'
         }
         
@@ -873,12 +891,12 @@ Progress: {activity.get('progress', 0)}%
                 dialog = QDialog(self)
                 dialog.setWindowTitle(f"Task Logs - {activity['action']}")
                 dialog.setMinimumSize(800, 600)
-                dialog.setStyleSheet("""
-                    QDialog {
+                dialog.setStyleSheet(f"""
+                    QDialog {{
                         background-color: #1E1F20;
                         color: #F5F5F5;
-                    }
-                    QTextEdit {
+                    }}
+                    QTextEdit {{
                         background-color: #262828;
                         color: #F5F5F5;
                         border: 1px solid #404242;
@@ -886,24 +904,24 @@ Progress: {activity.get('progress', 0)}%
                         font-family: 'Consolas', 'Monaco', monospace;
                         font-size: 11px;
                         padding: 8px;
-                    }
-                    QPushButton {
-                        background-color: #32B8C6;
+                    }}
+                    QPushButton {{
+                        background-color: {BUTTON_COLOR_PRIMARY};
                         color: white;
                         border: none;
                         padding: 8px 16px;
                         border-radius: 4px;
                         font-weight: 600;
-                    }
-                    QPushButton:hover {
+                    }}
+                    QPushButton:hover {{
                         background-color: #2DA6B2;
-                    }
-                    QLabel {
-                        color: #32B8C6;
+                    }}
+                    QLabel {{
+                        color: {BUTTON_COLOR_PRIMARY};
                         font-weight: 600;
                         font-size: 14px;
                         margin-bottom: 8px;
-                    }
+                    }}
                 """)
                 
                 layout = QVBoxLayout(dialog)
