@@ -26,6 +26,9 @@ from app.ui.theme.theme_constants import (
     STATUS_DOT_RED,
     STATUS_DOT_GRAY,
 )
+from app.ui.widgets.card_wrapper import CardWrapper
+from app.ui.widgets.section_header import SectionHeader
+from app.ui.widgets.status_dot import StatusDot
 
 
 class FullActivityTab(QWidget):
@@ -367,14 +370,9 @@ class FullActivityTab(QWidget):
         layout = QHBoxLayout(container)
         
         # Left: Activity table
-        table_container = QFrame()
-        table_container.setObjectName("card")
-        table_container.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
-        table_layout = QVBoxLayout(table_container)
+        table_container = CardWrapper("📋 Detailed Activity Log")
+        table_layout = table_container.body_layout
         
-        table_header = QLabel("📋 Detailed Activity Log")
-        table_header.setObjectName("card__header")
-        table_layout.addWidget(table_header)
         
         # Activity table with comprehensive columns
         self.activity_table = QTableWidget()
@@ -403,14 +401,8 @@ class FullActivityTab(QWidget):
         layout.addWidget(table_container, 2)  # 2/3 of space
         
         # Right: Task details panel
-        details_container = QFrame()
-        details_container.setObjectName("card")
-        details_container.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
-        details_layout = QVBoxLayout(details_container)
-        
-        details_header = QLabel("🔍 Task Details")
-        details_header.setObjectName("card__header")
-        details_layout.addWidget(details_header)
+        details_container = CardWrapper("🔍 Task Details")
+        details_layout = details_container.body_layout
         
         # Task info display
         self.task_info = QTextEdit()
