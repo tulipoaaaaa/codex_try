@@ -243,6 +243,25 @@ class ProjectConfig:
         """Save configuration to YAML file"""
         with open(self.config_path, 'w') as f:
             yaml.dump(self.config, f, default_flow_style=False)
+
+    # Directory helper methods
+    def get_corpus_root(self) -> Path:
+        return Path(self.get('directories.corpus_root')).expanduser()
+
+    def get_corpus_dir(self) -> Path:
+        return self.get_corpus_root()
+
+    def get_raw_dir(self) -> Path:
+        return Path(self.get('directories.raw_data_dir')).expanduser()
+
+    def get_processed_dir(self) -> Path:
+        return Path(self.get('directories.processed_dir')).expanduser()
+
+    def get_metadata_dir(self) -> Path:
+        return Path(self.get('directories.metadata_dir')).expanduser()
+
+    def get_logs_dir(self) -> Path:
+        return Path(self.get('directories.logs_dir')).expanduser()
     
     @classmethod
     def from_yaml(cls, yaml_path: str, environment: Optional[str] = None) -> 'ProjectConfig':
