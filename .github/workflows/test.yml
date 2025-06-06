@@ -1,0 +1,37 @@
+name: Test
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  pytest:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: 'pip'
+          cache-dependency-path: |
+            CorpusBuilderApp/requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r CorpusBuilderApp/requirements.txt
+      - name: Run tests
+        working-directory: CorpusBuilderApp
+        run: |
+          if python - <<'PY'
+import importlib.util, sys
+sys.exit(0 if importlib.util.find_spec('coverage') else 1)
+PY
+          then
+            coverage run -m pytest -m "not skip"
+            coverage report
+          else
+            pytest -m "not skip"
+          fi
