@@ -1,10 +1,22 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGroupBox, 
-                             QLabel, QPushButton, QComboBox, QDateEdit,
-                             QGridLayout, QSpinBox, QCheckBox, QSlider, QFrame, QGraphicsDropShadowEffect)
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QComboBox,
+    QDateEdit,
+    QGridLayout,
+    QSlider,
+    QFrame,
+    QScrollArea,
+)
 from PySide6.QtCore import Qt, QDate, Slot as pyqtSlot, QMargins
 from PySide6.QtCharts import QChart, QChartView, QPieSeries, QBarSeries, QBarSet, QBarCategoryAxis, QValueAxis, QLineSeries, QSplineSeries
 from PySide6.QtGui import QPainter, QColor, QIcon, QLinearGradient, QPen
 from app.helpers.chart_manager import ChartManager
+from app.ui.widgets.card_wrapper import CardWrapper
+from app.ui.widgets.section_header import SectionHeader
 
 import random
 import datetime
@@ -18,49 +30,32 @@ class AnalyticsTab(QWidget):
         self.setup_ui()
         
     def setup_ui(self):
-        main_layout = QVBoxLayout(self)
+        outer_layout = QVBoxLayout(self)
+        outer_layout.setContentsMargins(0, 0, 0, 0)
+
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        outer_layout.addWidget(scroll)
+
+        container = QWidget()
+        scroll.setWidget(container)
+
+        main_layout = QVBoxLayout(container)
         main_layout.setSpacing(32)
         main_layout.setContentsMargins(32, 32, 32, 32)
         
         # Page header
-        page_header = QVBoxLayout()
-        title = QLabel("Analytics Dashboard")
-        title.setStyleSheet("font-size: 28px; font-weight: 700; color: #f9fafb; letter-spacing: -0.025em; margin-bottom: 8px;")
-        subtitle = QLabel("Comprehensive data insights and performance metrics")
-        subtitle.setStyleSheet("font-size: 16px; color: #9ca3af; font-weight: 400; margin-bottom: 8px;")
-        page_header.addWidget(title)
-        page_header.addWidget(subtitle)
-        main_layout.addLayout(page_header)
+        header = SectionHeader("Analytics")
+        main_layout.addWidget(header)
         
         # Filter section
-        filter_section = QFrame()
-        filter_section.setObjectName("filters-section")
-        filter_section.setStyleSheet("""
-            QFrame#filters-section {
-                background: #1a1f2e;
-                border: 1px solid #2d3748;
-                border-radius: 12px;
-                padding: 24px;
-                margin-bottom: 32px;
-            }
-        """)
-        filter_shadow = QGraphicsDropShadowEffect()
-        filter_shadow.setBlurRadius(18)
-        filter_shadow.setOffset(0, 4)
-        filter_shadow.setColor(QColor(0, 0, 0, 60))
-        filter_section.setGraphicsEffect(filter_shadow)
-        filter_vbox = QVBoxLayout(filter_section)
+        filter_section = CardWrapper(title="Filters")
+        filter_vbox = filter_section.body_layout
         filter_vbox.setSpacing(20)
-        filter_vbox.setContentsMargins(0, 0, 0, 0)
         
         # Filter header with icon
         filter_header = QHBoxLayout()
-        filter_icon = QLabel("\U0001F50D")  # Unicode magnifier
-        filter_icon.setStyleSheet("font-size: 20px; color: #06b6d4; margin-right: 8px;")
-        filter_header.addWidget(filter_icon, 0)
-        filter_title = QLabel("Data Filters")
-        filter_title.setStyleSheet("font-size: 16px; font-weight: 600; color: #f9fafb;")
-        filter_header.addWidget(filter_title, 0)
+        filter_header.addWidget(QLabel("Data Filters"), 0)
         filter_header.addStretch(1)
         filter_vbox.addLayout(filter_header)
         
@@ -70,23 +65,21 @@ class AnalyticsTab(QWidget):
         filter_grid.setVerticalSpacing(0)
         
         def make_label(text):
-            lbl = QLabel(text)
-            lbl.setStyleSheet("font-size: 14px; font-weight: 500; color: #d1d5db; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.025em;")
-            return lbl
+            return QLabel(text)
         
         # From Date
         filter_grid.addWidget(make_label("From Date"), 0, 0)
         self.date_from = QDateEdit()
         self.date_from.setDate(QDate.currentDate().addMonths(-3))
-        self.date_from.setStyleSheet("background: #0f1419; border: 1px solid #374151; border-radius: 8px; padding: 10px 14px; color: #f9fafb; font-size: 14px; min-width: 140px;")
         filter_grid.addWidget(self.date_from, 1, 0)
+        self.date_from.dateChanged.connect(self.update_charts)
         
         # To Date
         filter_grid.addWidget(make_label("To Date"), 0, 1)
         self.date_to = QDateEdit()
         self.date_to.setDate(QDate.currentDate())
-        self.date_to.setStyleSheet("background: #0f1419; border: 1px solid #374151; border-radius: 8px; padding: 10px 14px; color: #f9fafb; font-size: 14px; min-width: 140px;")
         filter_grid.addWidget(self.date_to, 1, 1)
+        self.date_to.dateChanged.connect(self.update_charts)
         
         # Domain
         filter_grid.addWidget(make_label("Domain"), 0, 2)
@@ -98,38 +91,8 @@ class AnalyticsTab(QWidget):
             "Valuation Models", "Regulation & Compliance"
         ]
         self.domain_filter.addItems(domains)
-        self.domain_filter.setStyleSheet("""
-            QComboBox {
-                background: #0f1419;
-                border: 1px solid #374151;
-                border-radius: 8px;
-                padding: 10px 14px;
-                color: #f9fafb;
-                font-size: 14px;
-                min-width: 160px;
-            }
-            QComboBox QAbstractItemView {
-                background: #1a1f2e;
-                border: 1px solid #374151;
-                border-radius: 8px;
-                selection-background-color: #23293a;
-                selection-color: #f9fafb;
-                color: #f9fafb;
-                padding: 4px;
-                outline: none;
-            }
-            QComboBox QAbstractItemView::item:selected {
-                background: #23293a;
-                color: #f9fafb;
-                border-radius: 4px;
-            }
-            QComboBox QAbstractItemView::item:hover {
-                background: #374151;
-                color: #f9fafb;
-                border-radius: 4px;
-            }
-        """)
         filter_grid.addWidget(self.domain_filter, 1, 2)
+        self.domain_filter.currentIndexChanged.connect(self.update_charts)
         
         # Quality Score
         filter_grid.addWidget(make_label("Quality Score"), 0, 3)
@@ -137,56 +100,12 @@ class AnalyticsTab(QWidget):
         self.quality_filter.addItem("All Quality Levels")
         for i in range(0, 101, 10):
             self.quality_filter.addItem(f"{i}+")
-        self.quality_filter.setStyleSheet("""
-            QComboBox {
-                background: #0f1419;
-                border: 1px solid #374151;
-                border-radius: 8px;
-                padding: 10px 14px;
-                color: #f9fafb;
-                font-size: 14px;
-                min-width: 140px;
-            }
-            QComboBox QAbstractItemView {
-                background: #1a1f2e;
-                border: 1px solid #374151;
-                border-radius: 8px;
-                selection-background-color: #23293a;
-                selection-color: #f9fafb;
-                color: #f9fafb;
-                padding: 4px;
-                outline: none;
-            }
-            QComboBox QAbstractItemView::item:selected {
-                background: #23293a;
-                color: #f9fafb;
-                border-radius: 4px;
-            }
-            QComboBox QAbstractItemView::item:hover {
-                background: #374151;
-                color: #f9fafb;
-                border-radius: 4px;
-            }
-        """)
         filter_grid.addWidget(self.quality_filter, 1, 3)
+        self.quality_filter.currentIndexChanged.connect(self.update_charts)
         
         # Apply Filters Button
         self.apply_filters_btn = QPushButton("Apply Filters")
         self.apply_filters_btn.clicked.connect(self.update_charts)
-        self.apply_filters_btn.setStyleSheet("""
-            QPushButton {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #06b6d4, stop:1 #0891b2);
-                border: none;
-                border-radius: 8px;
-                padding: 12px 24px;
-                color: #fff;
-                font-size: 14px;
-                font-weight: 600;
-            }
-            QPushButton:hover {
-                background: qlineargradient(x1:0, y1:0, x2:1, y2:1, stop:0 #0891b2, stop:1 #0e7490);
-            }
-        """)
         filter_grid.addWidget(self.apply_filters_btn, 1, 4)
         
         filter_vbox.addLayout(filter_grid)
@@ -223,10 +142,8 @@ class AnalyticsTab(QWidget):
         charts_container = QWidget()
         charts_container.setLayout(charts_grid)
         main_layout.addWidget(charts_container)
-        
+
         self.update_charts()
-        
-        self.setStyleSheet("background-color: #0f1419;")
         
     def update_theme(self, theme_name):
         """Update the chart manager theme and refresh charts"""
@@ -234,54 +151,12 @@ class AnalyticsTab(QWidget):
         self.update_charts()
     
     def create_chart_card(self, title, subtitle, chart_view):
-        card = QFrame()
-        card.setObjectName("chart-container")
-        card.setStyleSheet("""
-            QFrame#chart-container {
-                background: #1a1f2e;
-                border: 1px solid #2d3748;
-                border-radius: 12px;
-                padding: 24px;
-            }
-            QFrame#chart-container:hover {
-                border-color: #374151;
-            }
-        """)
-        card_shadow = QGraphicsDropShadowEffect()
-        card_shadow.setBlurRadius(18)
-        card_shadow.setOffset(0, 4)
-        card_shadow.setColor(QColor(0, 0, 0, 60))
-        card.setGraphicsEffect(card_shadow)
-        layout = QVBoxLayout(card)
+        card = CardWrapper(title=title)
+        layout = card.body_layout
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(0)
-        # Header
-        header_row = QHBoxLayout()
-        header_row.setSpacing(12)
-        # (No icon)
-        title_group = QVBoxLayout()
-        title_lbl = QLabel(title)
-        title_lbl.setStyleSheet("font-size: 18px; font-weight: 600; color: #f9fafb; margin: 0; letter-spacing: -0.01em;")
-        subtitle_lbl = QLabel(subtitle)
-        subtitle_lbl.setStyleSheet("font-size: 13px; color: #9ca3af; margin-top: 2px; font-weight: 400;")
-        title_group.addWidget(title_lbl)
-        title_group.addWidget(subtitle_lbl)
-        header_row.addLayout(title_group, 1)
-        header_row.addStretch(1)
-        # 3-dot action button
-        action_btn = QPushButton("\u22EE")
-        action_btn.setStyleSheet("background: transparent; border: 1px solid #374151; border-radius: 6px; padding: 6px 8px; color: #9ca3af; font-size: 18px;")
-        action_btn.setCursor(Qt.PointingHandCursor)
-        header_row.addWidget(action_btn, 0)
-        layout.addLayout(header_row)
-        # Bottom border
-        border = QFrame()
-        border.setFrameShape(QFrame.HLine)
-        border.setStyleSheet("border: none; border-bottom: 1px solid #2d3748; margin-bottom: 12px;")
-        layout.addWidget(border)
         # Chart area
         chart_area = QFrame()
-        chart_area.setStyleSheet("background: #0f1419; border-radius: 8px;")
         chart_layout = QVBoxLayout(chart_area)
         chart_layout.setContentsMargins(0, 0, 0, 0)
         chart_layout.addWidget(chart_view)
@@ -391,7 +266,6 @@ class AnalyticsTab(QWidget):
         chart.setTitle("")
         # Center the chart
         chart_view.setAlignment(Qt.AlignCenter)
-        chart_view.setStyleSheet("background: #0f1419; border-radius: 8px;")
     
     def update_quality_metrics_chart(self, domain_filter, min_quality):
         """Update the quality metrics bar chart with multicolored bars"""
@@ -472,7 +346,6 @@ class AnalyticsTab(QWidget):
         chart.setBackgroundPen(QColor("#1a1f2e"))
         chart.setBackgroundRoundness(0)
         chart.setDropShadowEnabled(False)
-        chart_view.setStyleSheet("background: #0f1419; border-radius: 8px;")
         chart.setTitle("")
     
     def update_time_trends_chart(self, from_date, to_date, domain_filter):
@@ -528,7 +401,6 @@ class AnalyticsTab(QWidget):
         chart.setBackgroundPen(QColor("#1a1f2e"))
         chart.setBackgroundRoundness(0)
         chart.setDropShadowEnabled(False)
-        chart_view.setStyleSheet("background: #0f1419; border-radius: 8px;")
         chart.setTitle("")
     
     def update_language_chart(self, domain_filter, min_quality):
@@ -595,5 +467,4 @@ class AnalyticsTab(QWidget):
         chart.setBackgroundPen(QColor("#1a1f2e"))
         chart.setBackgroundRoundness(0)
         chart.setDropShadowEnabled(False)
-        chart_view.setStyleSheet("background: #0f1419; border-radius: 8px;")
         chart.setTitle("")
