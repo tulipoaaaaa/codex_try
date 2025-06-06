@@ -1,5 +1,6 @@
 """Simple dashboard tab showing live metrics and corpus stats."""
 
+
 from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
@@ -9,8 +10,6 @@ from PySide6.QtWidgets import (
     QPushButton,
 )
 from PySide6.QtCore import Qt, Signal
-
-
 class DashboardTab(QWidget):
     """Dashboard displaying high level metrics for the corpus."""
 

@@ -1,16 +1,19 @@
-from __future__ import annotations
-
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
-    QScrollArea,
+    QTabWidget,
     QLabel,
-    QPushButton,
     QProgressBar,
+    QPushButton,
+    QComboBox,
+    QSpinBox,
+    QLineEdit,
     QGroupBox,
+    QScrollArea,
 )
-from PyQt6.QtCore import Qt, pyqtSignal
+from PySide6.QtCore import Qt, Slot as pyqtSlot, Signal as pyqtSignal
+from PySide6.QtGui import QFont
 
 from shared_tools.ui_wrappers.collectors.isda_wrapper import ISDAWrapper
 from shared_tools.ui_wrappers.collectors.github_wrapper import GitHubWrapper
@@ -24,6 +27,13 @@ from shared_tools.ui_wrappers.collectors.web_wrapper import WebWrapper
 
 from app.ui.widgets.collector_card import CollectorCard
 from app.helpers.notifier import Notifier
+from app.ui.theme.theme_constants import (
+    DEFAULT_FONT_SIZE,
+    CARD_MARGIN,
+    BUTTON_COLOR_PRIMARY,
+    BUTTON_COLOR_DANGER,
+    BUTTON_COLOR_GRAY,
+)
 
 
 class CollectorsTab(QWidget):
@@ -36,124 +46,6 @@ class CollectorsTab(QWidget):
     def __init__(self, project_config, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.project_config = project_config
-        self.collector_wrappers: dict[str, object] = {}
-        self.cards: dict[str, CollectorCard] = {}
-        self.init_collectors()
-        self.setup_ui()
-        self.connect_signals()
-
-    # ------------------------------------------------------------------ UI ----
-    def setup_ui(self) -> None:
-        layout = QVBoxLayout(self)
-
-        scroll = QScrollArea()
-        scroll.setWidgetResizable(True)
-        container = QWidget()
-        self.cards_layout = QVBoxLayout(container)
-        self.cards_layout.setSpacing(16)
-        scroll.setWidget(container)
-        layout.addWidget(scroll, 1)
-
-        collectors_info = [
-            (
-                "isda",
-                "ISDA Collector",
-                "Collects derivatives documentation from ISDA sources.",
-                ["Docs", "ISDA"],
-            ),
-            (
-                "github",
-                "GitHub Collector",
-                "Scrapes financial trading repositories and documentation from GitHub organizations",
-                ["Code", "Trading", "API"],
-            ),
-            (
-                "anna",
-                "Anna's Archive Collector",
-                "Searches and downloads textbooks and research materials from Anna's Archive",
-                ["Books", "Archive"],
-            ),
-            (
-                "arxiv",
-                "arXiv Collector",
-                "Downloads quantitative finance papers from arXiv",
-                ["Academic", "PDF"],
-            ),
-            (
-                "fred",
-                "FRED Collector",
-                "Fetches economic data from Federal Reserve Economic Data",
-                ["Economic", "API"],
-            ),
-            (
-                "bitmex",
-                "BitMEX Collector",
-                "Retrieves crypto trading documents from BitMEX",
-                ["Exchange", "Trading"],
-            ),
-            (
-                "quantopian",
-                "Quantopian Collector",
-                "Downloads trading algorithms from Quantopian",
-                ["Algorithms"],
-            ),
-            (
-                "scidb",
-                "SciDB Collector",
-                "Collects research data from SciDB",
-                ["Database"],
-            ),
-            (
-                "web",
-                "Web Collector",
-                "General purpose web scraping",
-                ["Web"],
-            ),
-        ]
-
-        for key, title, desc, tags in collectors_info:
-            wrapper = self.collector_wrappers.get(key)
-            card = CollectorCard(title, desc, tags)
-            self.cards[key] = card
-            self.cards_layout.addWidget(card)
-
-            card.start_requested.connect(lambda _, n=key: self.start_collection(n))
-            card.stop_requested.connect(lambda _, n=key: self.stop_collection(n))
-            card.configure_requested.connect(lambda _, n=key: self.configure_collector(n))
-            card.logs_requested.connect(lambda _, n=key: self.show_logs(n))
-
-        self.cards_layout.addStretch()
-
-        # Status/summary section
-        status_group = QGroupBox("Collection Status")
-        status_layout = QVBoxLayout(status_group)
-
-        self.collection_status_label = QLabel()
-        self.collection_status_label.setObjectName("status-info")
-        status_layout.addWidget(self.collection_status_label)
-
-        self.overall_progress = QProgressBar()
-        self.overall_progress.setRange(0, 100)
-        status_layout.addWidget(self.overall_progress)
-
-        stop_all = QPushButton("Stop All Collectors")
-        stop_all.clicked.connect(self.stop_all_collectors)
-        status_layout.addWidget(stop_all)
-
-        layout.addWidget(status_group)
-
-    # -------------------------------------------------------------- Wrappers ----
-    def init_collectors(self) -> None:
-        self.collector_wrappers["isda"] = ISDAWrapper(self.project_config)
-        self.collector_wrappers["github"] = GitHubWrapper(self.project_config)
-        self.collector_wrappers["anna"] = AnnasArchiveWrapper(self.project_config)
-        self.collector_wrappers["arxiv"] = ArxivWrapper(self.project_config)
-        self.collector_wrappers["fred"] = FREDWrapper(self.project_config)
-        self.collector_wrappers["bitmex"] = BitMEXWrapper(self.project_config)
-        self.collector_wrappers["quantopian"] = QuantopianWrapper(self.project_config)
-        self.collector_wrappers["scidb"] = SciDBWrapper(self.project_config)
-        self.collector_wrappers["web"] = WebWrapper(self.project_config)
-
         for name, wrapper in self.collector_wrappers.items():
             params = self.project_config.get(f"collectors.{name}", {})
             if isinstance(params, dict):
