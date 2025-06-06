@@ -21,6 +21,7 @@ from ui.tabs.configuration_tab import ConfigurationTab
 from ui.tabs.logs_tab import LogsTab
 from ui.tabs.maintenance_tab import MaintenanceTab
 from ui.tabs.full_activity_tab import FullActivityTab
+from ui.dialogs.settings_dialog import SettingsDialog
 
 class CryptoCorpusMainWindow(QMainWindow):
     """Main application window"""
@@ -44,6 +45,10 @@ class CryptoCorpusMainWindow(QMainWindow):
         self.logs_tab = None
         self.maintenance_tab = None
         self.full_activity_tab = None
+
+        # Settings dialog for application preferences
+        self.settings_dialog = SettingsDialog(current_settings=getattr(self.config, 'config', {}), parent=self)
+        self.settings_dialog.settings_saved.connect(self.on_settings_saved)
         
         # Initialize UI
         self.init_ui()
@@ -224,7 +229,10 @@ class CryptoCorpusMainWindow(QMainWindow):
         if getattr(self, "processors_tab", None) and hasattr(self.processors_tab, 'processing_started'):
             self.processors_tab.processing_started.connect(self.on_processing_started)
             self.processors_tab.processing_finished.connect(self.on_processing_finished)
-        
+
+        if getattr(self, "configuration_tab", None) and hasattr(self.configuration_tab, 'configuration_saved'):
+            self.configuration_tab.configuration_saved.connect(lambda _: self.config.save())
+
         # Connect dashboard View All signal to show full activity tab
         if getattr(self, "dashboard_tab", None) and hasattr(self.dashboard_tab, 'view_all_activity_requested'):
             self.dashboard_tab.view_all_activity_requested.connect(self.show_full_activity_tab)
@@ -285,6 +293,15 @@ class CryptoCorpusMainWindow(QMainWindow):
         # Trigger quick processing if available
         if getattr(self, "processors_tab", None) and hasattr(self.processors_tab, 'quick_start'):
             self.processors_tab.quick_start()
+
+    def on_settings_saved(self, settings):
+        """Persist settings from the settings dialog."""
+        for key, value in settings.items():
+            try:
+                self.config.set(key, value)
+            except Exception:
+                pass
+        self.config.save()
     
     def export_corpus(self):
         """Export corpus data"""

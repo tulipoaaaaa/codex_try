@@ -11,8 +11,9 @@ import os
 
 class SettingsDialog(QDialog):
     """Dialog for application settings."""
-    
+
     settings_updated = pyqtSignal(dict)
+    settings_saved = pyqtSignal(dict)
     
     def __init__(self, current_settings=None, parent=None):
         super().__init__(parent)
@@ -300,6 +301,7 @@ class SettingsDialog(QDialog):
         settings = self.get_settings()
         # Save the selected theme to current_settings
         self.current_settings['theme'] = self.theme_selector.currentText()
+        self.settings_saved.emit(settings)
         self.settings_updated.emit(settings)
         super().accept()
     
