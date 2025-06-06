@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, 
                              QLabel, QProgressBar, QPushButton, QComboBox,
                              QSpinBox, QLineEdit, QGroupBox, QScrollArea)
-from PySide6.QtCore import Qt, Slot as pyqtSlot
+from PySide6.QtCore import Qt, Slot as pyqtSlot, Signal as pyqtSignal
 
 from shared_tools.ui_wrappers.collectors.isda_wrapper import ISDAWrapper
 from shared_tools.ui_wrappers.collectors.github_wrapper import GitHubWrapper
@@ -16,6 +16,12 @@ from app.helpers.notifier import Notifier
 
 
 class CollectorsTab(QWidget):
+    """Tab managing all data collectors."""
+
+    collection_started = pyqtSignal(str)
+    collection_finished = pyqtSignal(str, bool)
+    collector_error = pyqtSignal(str, str)
+
     def __init__(self, project_config, parent=None):
         super().__init__(parent)
         self.project_config = project_config
@@ -118,6 +124,18 @@ class CollectorsTab(QWidget):
         self.collector_wrappers['scidb'] = SciDBWrapper(self.project_config)
         self.collector_wrappers['web'] = WebWrapper(self.project_config)
 
+        # Load parameters from ProjectConfig if available
+        for name, wrapper in self.collector_wrappers.items():
+            params = self.project_config.get(f'collectors.{name}', {})
+            if isinstance(params, dict):
+                for key, value in params.items():
+                    method = f'set_{key}'
+                    if hasattr(wrapper, method):
+                        try:
+                            getattr(wrapper, method)(value)
+                        except Exception:
+                            pass
+
     def connect_signals(self):
         """Connect signals with defensive checks."""
         # Connect signals for ISDA collector if they exist
@@ -130,6 +148,8 @@ class CollectorsTab(QWidget):
                 isda_wrapper.status_updated.connect(self.update_status)
             if hasattr(isda_wrapper, 'collection_completed'):
                 isda_wrapper.collection_completed.connect(self.on_isda_collection_completed)
+            if hasattr(isda_wrapper, 'error_occurred'):
+                isda_wrapper.error_occurred.connect(lambda msg, n='isda': self.on_wrapper_error(n, msg))
         
         # Connect signals for GitHub collector if they exist
         github_wrapper = self.collector_wrappers.get('github')
@@ -140,6 +160,8 @@ class CollectorsTab(QWidget):
                 github_wrapper.status_updated.connect(self.update_status)
             if hasattr(github_wrapper, 'collection_completed'):
                 github_wrapper.collection_completed.connect(self.on_github_collection_completed)
+            if hasattr(github_wrapper, 'error_occurred'):
+                github_wrapper.error_occurred.connect(lambda msg, n='github': self.on_wrapper_error(n, msg))
         
         # Add similar defensive connections for other collectors
         for name in ['anna', 'arxiv', 'fred', 'bitmex', 'quantopian', 'scidb', 'web']:
@@ -153,6 +175,8 @@ class CollectorsTab(QWidget):
                     wrapper.collection_completed.connect(
                         lambda results, n=name: self.on_collection_completed(n, results)
                     )
+                if hasattr(wrapper, 'error_occurred'):
+                    wrapper.error_occurred.connect(lambda msg, n=name: self.on_wrapper_error(n, msg))
         
         print("DEBUG: Signal connections set up with defensive checks")
     
@@ -174,6 +198,9 @@ class CollectorsTab(QWidget):
             self.isda_start_btn.setEnabled(True)
         if hasattr(self, 'isda_stop_btn'):
             self.isda_stop_btn.setEnabled(False)
+        self.project_config.set('collectors.isda.running', False)
+        self.project_config.save()
+        self.collection_finished.emit('isda', True)
     
     def on_github_collection_completed(self, results):
         """Handle GitHub collection completion"""
@@ -183,6 +210,9 @@ class CollectorsTab(QWidget):
             self.github_start_btn.setEnabled(True)
         if hasattr(self, 'github_stop_btn'):
             self.github_stop_btn.setEnabled(False)
+        self.project_config.set('collectors.github.running', False)
+        self.project_config.save()
+        self.collection_finished.emit('github', True)
     
     def on_collection_completed(self, collector_name, results):
         """Generic handler for collection completion"""
@@ -192,6 +222,16 @@ class CollectorsTab(QWidget):
             getattr(self, f'{collector_name}_start_btn').setEnabled(True)
         if hasattr(self, f'{collector_name}_stop_btn'):
             getattr(self, f'{collector_name}_stop_btn').setEnabled(False)
+        self.project_config.set(f'collectors.{collector_name}.running', False)
+        self.project_config.save()
+        self.collection_finished.emit(collector_name, True)
+
+    def on_wrapper_error(self, collector_name, message):
+        """Handle errors from a collector wrapper."""
+        self.update_status(f"{collector_name} error: {message}")
+        self.project_config.set(f'collectors.{collector_name}.running', False)
+        self.project_config.save()
+        self.collector_error.emit(collector_name, message)
     
     def start_isda_collection(self):
         """Start ISDA collection"""
@@ -200,6 +240,9 @@ class CollectorsTab(QWidget):
             self.isda_start_btn.setEnabled(False)
         if hasattr(self, 'isda_stop_btn'):
             self.isda_stop_btn.setEnabled(True)
+        self.project_config.set('collectors.isda.running', True)
+        self.project_config.save()
+        self.collection_started.emit('isda')
     
     def stop_isda_collection(self):
         """Stop ISDA collection"""
@@ -208,6 +251,8 @@ class CollectorsTab(QWidget):
             self.isda_start_btn.setEnabled(True)
         if hasattr(self, 'isda_stop_btn'):
             self.isda_stop_btn.setEnabled(False)
+        self.project_config.set('collectors.isda.running', False)
+        self.project_config.save()
     
     def start_github_collection(self):
         """Start GitHub collection"""
@@ -216,6 +261,9 @@ class CollectorsTab(QWidget):
             self.github_start_btn.setEnabled(False)
         if hasattr(self, 'github_stop_btn'):
             self.github_stop_btn.setEnabled(True)
+        self.project_config.set('collectors.github.running', True)
+        self.project_config.save()
+        self.collection_started.emit('github')
     
     def stop_github_collection(self):
         """Stop GitHub collection"""
@@ -224,16 +272,21 @@ class CollectorsTab(QWidget):
             self.github_start_btn.setEnabled(True)
         if hasattr(self, 'github_stop_btn'):
             self.github_stop_btn.setEnabled(False)
+        self.project_config.set('collectors.github.running', False)
+        self.project_config.save()
     
     def stop_all_collectors(self):
         for collector_name, wrapper in self.collector_wrappers.items():
             wrapper.stop()
-        
+            self.project_config.set(f'collectors.{collector_name}.running', False)
+            self.collection_finished.emit(collector_name, False)
+
         # Reset UI elements
         self.isda_start_btn.setEnabled(True)
         self.isda_stop_btn.setEnabled(False)
         self.github_start_btn.setEnabled(True)
         self.github_stop_btn.setEnabled(False)
         # Reset other collector buttons similarly
-        
+
         self.collection_status_label.setText("All collectors stopped")
+        self.project_config.save()
