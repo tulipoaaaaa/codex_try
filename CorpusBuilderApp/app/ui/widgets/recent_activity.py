@@ -3,21 +3,31 @@ Recent Activity Widget for Dashboard
 Shows recent activities in a compact format for the 4-column dashboard layout
 """
 
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
-                             QFrame, QScrollArea, QPushButton)
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QLabel,
+    QFrame,
+    QScrollArea,
+    QPushButton,
+)
 from PySide6.QtCore import Qt, QTimer, Signal as pyqtSignal
 from PySide6.QtGui import QFont, QColor
+from app.ui.widgets.card_wrapper import CardWrapper
+from app.ui.widgets.section_header import SectionHeader
+from app.ui.widgets.status_dot import StatusDot
 from datetime import datetime, timedelta
 import logging
 
-class RecentActivity(QWidget):
+class RecentActivity(CardWrapper):
     """Widget showing recent activities in compact format"""
     
     activity_clicked = pyqtSignal(dict)  # Signal for when activity is clicked
     view_all_requested = pyqtSignal()  # Signal for when View All is clicked
     
     def __init__(self, config, parent=None):
-        super().__init__(parent)
+        super().__init__(title="Recent Activity", parent=parent)
         self.config = config
         self.logger = logging.getLogger(self.__class__.__name__)
         
@@ -33,19 +43,12 @@ class RecentActivity(QWidget):
     
     def init_ui(self):
         """Initialize the user interface"""
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(16)
-        self.setObjectName("card")
-        self.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748; max-width: 400px;")
+        layout = self.body_layout
 
         # Header with consistent styling and better spacing
         header_layout = QVBoxLayout()
         header_layout.setSpacing(8)
-        header = QLabel("Recent Activity")
-        header.setObjectName("dashboard-section-header")
-        header.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-        header.setStyleSheet("color: #06b6d4; font-size: 18px; font-weight: 600; margin-bottom: 8px;")
+        header = SectionHeader("Recent Activity")
         header_layout.addWidget(header)
         view_all_btn = QPushButton("View All")
         view_all_btn.setObjectName("btn--link")
@@ -80,9 +83,7 @@ class RecentActivity(QWidget):
         
         if not activities:
             # Show "no recent activity" message
-            no_activity_label = QLabel("No recent activity")
-            no_activity_label.setObjectName("status--info")
-            no_activity_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            no_activity_label = StatusDot("No recent activity", "info")
             self.activities_layout.addWidget(no_activity_label)
         else:
             # Add each activity
@@ -102,11 +103,10 @@ class RecentActivity(QWidget):
     
     def create_activity_widget(self, activity):
         """Create a compact widget for a single activity"""
-        container = QFrame()
-        container.setStyleSheet("background-color: #0f1419; border-radius: 8px; border: 1px solid #374151; padding: 8px; margin-bottom: 8px;")
+        container = CardWrapper()
         container.setCursor(Qt.CursorShape.PointingHandCursor)
-        
-        layout = QVBoxLayout(container)
+
+        layout = container.body_layout
         layout.setContentsMargins(8, 6, 8, 6)
         layout.setSpacing(3)
         
@@ -119,17 +119,9 @@ class RecentActivity(QWidget):
         
         top_layout.addStretch()
         
-        status_label = QLabel(activity['status'])
-        if activity['status'] == 'success':
-            status_label.setObjectName("status--success")
-        elif activity['status'] == 'running':
-            status_label.setObjectName("status--warning")
-        elif activity['status'] == 'error':
-            status_label.setObjectName("status--error")
-        else:
-            status_label.setObjectName("status--info")
-        
-        top_layout.addWidget(status_label)
+        status = activity['status']
+        status_widget = StatusDot(status, status)
+        top_layout.addWidget(status_widget)
         layout.addLayout(top_layout)
         
         # Action description

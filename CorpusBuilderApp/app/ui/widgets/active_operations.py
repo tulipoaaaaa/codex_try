@@ -3,21 +3,31 @@ Active Operations Widget for Dashboard
 Shows currently running collectors, processors, and other operations
 """
 
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, 
-                             QProgressBar, QFrame, QPushButton, QScrollArea)
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QLabel,
+    QProgressBar,
+    QFrame,
+    QPushButton,
+    QScrollArea,
+)
 from PySide6.QtCore import Qt, QTimer, Signal as pyqtSignal
 from PySide6.QtGui import QFont, QColor
+from app.ui.widgets.card_wrapper import CardWrapper
+from app.ui.widgets.status_dot import StatusDot
 from datetime import datetime, timedelta
 import logging
 
-class ActiveOperations(QWidget):
+class ActiveOperations(CardWrapper):
     """Widget showing active operations and their status"""
     
     def __init__(self, config, parent=None):
-        super().__init__(parent)
+        super().__init__(title="Active Operations", parent=parent)
         self.config = config
         self.logger = logging.getLogger(self.__class__.__name__)
-        
+
         self.init_ui()
         
         # Setup auto-refresh timer
@@ -30,18 +40,7 @@ class ActiveOperations(QWidget):
     
     def init_ui(self):
         """Initialize the user interface"""
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
-        layout.setSpacing(16)
-        self.setObjectName("card")
-        self.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748; max-width: 400px;")
-
-        # Header with consistent styling
-        header = QLabel("Active Operations")
-        header.setObjectName("dashboard-section-header")
-        header.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
-        header.setStyleSheet("color: #06b6d4; font-size: 18px; font-weight: 600; margin-bottom: 8px;")
-        layout.addWidget(header)
+        layout = self.body_layout
 
         # Scroll area for operations list
         scroll_area = QScrollArea()
@@ -71,9 +70,7 @@ class ActiveOperations(QWidget):
         
         if not operations:
             # Show "no active operations" message
-            no_ops_label = QLabel("No active operations")
-            no_ops_label.setObjectName("status--info")
-            no_ops_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            no_ops_label = StatusDot("No active operations", "info")
             self.operations_layout.addWidget(no_ops_label)
         else:
             # Add each operation
@@ -93,11 +90,8 @@ class ActiveOperations(QWidget):
     
     def create_operation_widget(self, operation):
         """Create a widget for a single operation"""
-        container = QFrame()
-        container.setObjectName("card")
-        container.setFrameShape(QFrame.Shape.NoFrame)
-        container.setStyleSheet("background-color: #0f1419; border-radius: 8px; border: 1px solid #374151; margin-bottom: 8px;")
-        layout = QVBoxLayout(container)
+        container = CardWrapper()
+        layout = container.body_layout
         layout.setContentsMargins(12, 8, 12, 8)
         layout.setSpacing(6)
         
@@ -108,17 +102,10 @@ class ActiveOperations(QWidget):
         name_label.setStyleSheet("font-weight: 600; font-size: 15px; color: #00B7EB; background: transparent;")
         header_layout.addWidget(name_label)
         
-        status_label = QLabel(operation['status'])
-        if operation['status'] == 'Running':
-            status_label.setObjectName("status--success")
-        elif operation['status'] == 'Paused':
-            status_label.setObjectName("status--warning")
-        elif operation['status'] == 'Error':
-            status_label.setObjectName("status--error")
-        else:
-            status_label.setObjectName("status--info")
-        
-        header_layout.addWidget(status_label)
+        status = operation['status'].lower()
+        status_widget = StatusDot(operation['status'],
+                                 'success' if status == 'running' else status)
+        header_layout.addWidget(status_widget)
         layout.addLayout(header_layout)
         
         # Progress bar (if applicable)
