@@ -69,12 +69,16 @@ class DashboardTab(QWidget):
         distribution_header = SectionHeader("Domain Distribution")
         corpus_layout.addWidget(distribution_header)
 
+        self.domain_layout = QVBoxLayout()
+        corpus_layout.addLayout(self.domain_layout)
+        self.domain_widgets = {}
         for domain, perc in self.domain_distribution.items():
             row = QHBoxLayout()
             status = StatusDot(f"{domain}: {perc}%", "info")
             row.addWidget(status)
             row.addStretch()
-            corpus_layout.addLayout(row)
+            self.domain_layout.addLayout(row)
+            self.domain_widgets[domain] = status
 
         main_layout.addWidget(corpus_card)
 
@@ -105,6 +109,73 @@ class DashboardTab(QWidget):
 
         return card
 
-    # Placeholder for future metrics update logic
-    def _update_metrics(self) -> None:  # pragma: no cover - stub
-        pass
+    def _update_metrics(self) -> None:  # pragma: no cover - integration pending
+        """Refresh dashboard metrics using live application data."""
+        try:
+            # Determine active collectors from CollectorsTab if available
+            active = 0
+            main_win = self.window()
+            collectors_tab = getattr(main_win, "collectors_tab", None)
+            if collectors_tab and hasattr(collectors_tab, "cards"):
+                for card in collectors_tab.cards.values():
+                    if not card.start_btn.isEnabled():
+                        active += 1
+            else:
+                collectors_cfg = self.config.get("collectors", {})
+                if isinstance(collectors_cfg, dict):
+                    active = sum(
+                        1
+                        for c in collectors_cfg.values()
+                        if isinstance(c, dict) and c.get("running")
+                    )
+            self.active_collectors = active
+            value_label = self.collectors_card.findChild(QLabel, "stat-value")
+            if value_label:
+                value_label.setText(str(active))
+        except Exception:
+            pass
+
+        try:
+            from CryptoFinanceCorpusBuilder.shared_tools.storage.corpus_manager import (
+                CorpusManager,
+            )
+
+            cm = CorpusManager(self.config)
+            stats = cm.get_corpus_stats()
+            self.total_documents = stats.get("total_documents", 0)
+            self.total_docs_label.setText(
+                f"Total Documents: {self.total_documents}"
+            )
+
+            distribution = (
+                stats.get("domain_metrics", {}).get("domain_distribution")
+            )
+            if not distribution:
+                domain_cfg = self.config.get("domains", {})
+                distribution = {
+                    d: cfg.get("allocation", 0) * 100
+                    for d, cfg in domain_cfg.items()
+                    if isinstance(cfg, dict)
+                }
+            else:
+                total = sum(distribution.values()) or 1
+                distribution = {
+                    d: (v / total) * 100 for d, v in distribution.items()
+                }
+
+            self.domain_distribution = distribution
+
+            # Update UI widgets, creating new ones if needed
+            for domain, percent in distribution.items():
+                widget = self.domain_widgets.get(domain)
+                if widget is None:
+                    row = QHBoxLayout()
+                    widget = StatusDot(f"{domain}: {int(percent)}%", "info")
+                    row.addWidget(widget)
+                    row.addStretch()
+                    self.domain_layout.addLayout(row)
+                    self.domain_widgets[domain] = widget
+                else:
+                    widget.setText(f"{domain}: {int(percent)}%")
+        except Exception:
+            pass
