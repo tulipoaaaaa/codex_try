@@ -24,6 +24,8 @@ from shared_tools.ui_wrappers.collectors.bitmex_wrapper import BitMEXWrapper
 from shared_tools.ui_wrappers.collectors.quantopian_wrapper import QuantopianWrapper
 from shared_tools.ui_wrappers.collectors.scidb_wrapper import SciDBWrapper
 from shared_tools.ui_wrappers.collectors.web_wrapper import WebWrapper
+
+from app.ui.widgets.collector_card import CollectorCard
 from app.helpers.notifier import Notifier
 from app.ui.theme.theme_constants import (
     DEFAULT_FONT_SIZE,
@@ -35,283 +37,102 @@ from app.ui.theme.theme_constants import (
 
 
 class CollectorsTab(QWidget):
-    """Tab managing all data collectors."""
+    """Manage all data collectors in a scrollable card view."""
 
     collection_started = pyqtSignal(str)
     collection_finished = pyqtSignal(str, bool)
     collector_error = pyqtSignal(str, str)
 
-    def __init__(self, project_config, parent=None):
+    def __init__(self, project_config, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.project_config = project_config
-        self.setFont(QFont("", DEFAULT_FONT_SIZE))
-        self.collector_wrappers = {}
-        self.init_collectors()
-        self.setup_ui()
-        self.connect_signals()
-        self.sound_enabled = True  # Will be set from user settings
-
-    def setup_ui(self):
-        main_layout = QVBoxLayout(self)
-        main_layout.setContentsMargins(CARD_MARGIN, CARD_MARGIN, CARD_MARGIN, CARD_MARGIN)
-        main_layout.setSpacing(CARD_MARGIN)
-        
-        # Collector tabs widget
-        self.collector_tabs = QTabWidget()
-        
-        # Create tabs for each collector using initialized wrappers
-        for name, label in [
-            ('isda', "ISDA"),
-            ('github', "GitHub"),
-            ('anna', "Anna's Archive"),
-            ('arxiv', "arXiv"),
-            ('fred', "FRED"),
-            ('bitmex', "BitMEX"),
-            ('quantopian', "Quantopian"),
-            ('scidb', "SciDB"),
-            ('web', "Web")
-        ]:
-            print(f"Adding tab: {name}, type: {type(self.collector_wrappers[name])}")
-            
-            # Create a QWidget container for each wrapper
-            tab_widget = QWidget()
-            tab_layout = QVBoxLayout(tab_widget)
-            
-            # Add the wrapper to the container widget
-            wrapper = self.collector_wrappers[name]
-            
-            # If wrapper is not a QWidget, create a placeholder
-            if not isinstance(wrapper, QWidget):
-                placeholder_label = QLabel(f"{label} collector interface not yet implemented")
-                placeholder_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-                tab_layout.addWidget(placeholder_label)
-                
-                # Add basic controls for testing
-                start_btn = QPushButton(f"Start {label} Collection")
-                start_btn.setStyleSheet(f"background-color: {BUTTON_COLOR_PRIMARY}; color: white;")
-                stop_btn = QPushButton(f"Stop {label} Collection")
-                stop_btn.setStyleSheet(f"background-color: {BUTTON_COLOR_DANGER}; color: white;")
-                progress_bar = QProgressBar()
-                status_label = QLabel("Ready")
-                
-                controls_layout = QHBoxLayout()
-                controls_layout.addWidget(start_btn)
-                controls_layout.addWidget(stop_btn)
-                
-                tab_layout.addLayout(controls_layout)
-                tab_layout.addWidget(progress_bar)
-                tab_layout.addWidget(status_label)
-                tab_layout.addStretch()
-                
-                # Store references to UI elements for signal connections
-                setattr(self, f"{name}_start_btn", start_btn)
-                setattr(self, f"{name}_stop_btn", stop_btn)
-                setattr(self, f"{name}_progress_bar", progress_bar)
-                setattr(self, f"{name}_status", status_label)
-            else:
-                tab_layout.addWidget(wrapper)
-            
-            self.collector_tabs.addTab(tab_widget, label)
-        
-        main_layout.addWidget(self.collector_tabs)
-        
-        # Add a status/summary area at the bottom
-        status_group = QGroupBox("Collection Status")
-        status_layout = QVBoxLayout(status_group)
-        
-        self.collection_status_label = QLabel("")
-        self.collection_status_label.setObjectName("status-info")
-        status_layout.addWidget(self.collection_status_label)
-        
-        # Overall progress bar
-        self.overall_progress = QProgressBar()
-        self.overall_progress.setRange(0, 100)
-        self.overall_progress.setValue(0)
-        status_layout.addWidget(self.overall_progress)
-        
-        # Button for stopping all collectors
-        stop_all_btn = QPushButton("Stop All Collectors")
-        stop_all_btn.clicked.connect(self.stop_all_collectors)
-        stop_all_btn.setStyleSheet(f"background-color: {BUTTON_COLOR_DANGER}; color: white;")
-        status_layout.addWidget(stop_all_btn)
-        
-        main_layout.addWidget(status_group)
-
-    def init_collectors(self):
-        # Initialize all collector wrappers
-        self.collector_wrappers['isda'] = ISDAWrapper(self.project_config)
-        self.collector_wrappers['github'] = GitHubWrapper(self.project_config)
-        self.collector_wrappers['anna'] = AnnasArchiveWrapper(self.project_config)
-        self.collector_wrappers['arxiv'] = ArxivWrapper(self.project_config)
-        self.collector_wrappers['fred'] = FREDWrapper(self.project_config)
-        self.collector_wrappers['bitmex'] = BitMEXWrapper(self.project_config)
-        self.collector_wrappers['quantopian'] = QuantopianWrapper(self.project_config)
-        self.collector_wrappers['scidb'] = SciDBWrapper(self.project_config)
-        self.collector_wrappers['web'] = WebWrapper(self.project_config)
-
-        # Load parameters from ProjectConfig if available
         for name, wrapper in self.collector_wrappers.items():
-            params = self.project_config.get(f'collectors.{name}', {})
+            params = self.project_config.get(f"collectors.{name}", {})
             if isinstance(params, dict):
                 for key, value in params.items():
-                    method = f'set_{key}'
+                    method = f"set_{key}"
                     if hasattr(wrapper, method):
                         try:
                             getattr(wrapper, method)(value)
                         except Exception:
                             pass
 
-    def connect_signals(self):
-        """Connect signals with defensive checks."""
-        # Connect signals for ISDA collector if they exist
-        isda_wrapper = self.collector_wrappers.get('isda')
-        if isda_wrapper:
-            # Connect signals only if they exist
-            if hasattr(isda_wrapper, 'progress_updated'):
-                isda_wrapper.progress_updated.connect(self.update_progress)
-            if hasattr(isda_wrapper, 'status_updated'):
-                isda_wrapper.status_updated.connect(self.update_status)
-            if hasattr(isda_wrapper, 'collection_completed'):
-                isda_wrapper.collection_completed.connect(self.on_isda_collection_completed)
-            if hasattr(isda_wrapper, 'error_occurred'):
-                isda_wrapper.error_occurred.connect(lambda msg, n='isda': self.on_wrapper_error(n, msg))
-        
-        # Connect signals for GitHub collector if they exist
-        github_wrapper = self.collector_wrappers.get('github')
-        if github_wrapper:
-            if hasattr(github_wrapper, 'progress_updated'):
-                github_wrapper.progress_updated.connect(self.update_progress)
-            if hasattr(github_wrapper, 'status_updated'):
-                github_wrapper.status_updated.connect(self.update_status)
-            if hasattr(github_wrapper, 'collection_completed'):
-                github_wrapper.collection_completed.connect(self.on_github_collection_completed)
-            if hasattr(github_wrapper, 'error_occurred'):
-                github_wrapper.error_occurred.connect(lambda msg, n='github': self.on_wrapper_error(n, msg))
-        
-        # Add similar defensive connections for other collectors
-        for name in ['anna', 'arxiv', 'fred', 'bitmex', 'quantopian', 'scidb', 'web']:
-            wrapper = self.collector_wrappers.get(name)
-            if wrapper:
-                if hasattr(wrapper, 'progress_updated'):
-                    wrapper.progress_updated.connect(self.update_progress)
-                if hasattr(wrapper, 'status_updated'):
-                    wrapper.status_updated.connect(self.update_status)
-                if hasattr(wrapper, 'collection_completed'):
-                    wrapper.collection_completed.connect(
-                        lambda results, n=name: self.on_collection_completed(n, results)
-                    )
-                if hasattr(wrapper, 'error_occurred'):
-                    wrapper.error_occurred.connect(lambda msg, n=name: self.on_wrapper_error(n, msg))
-        
-        print("DEBUG: Signal connections set up with defensive checks")
-    
-    def update_progress(self, value):
-        """Update overall progress"""
-        if hasattr(self, 'overall_progress'):
-            self.overall_progress.setValue(value)
-    
-    def update_status(self, message):
-        """Update status message"""
-        if hasattr(self, 'collection_status_label'):
-            self.collection_status_label.setText(message)
-    
-    def on_isda_collection_completed(self, results):
-        """Handle ISDA collection completion"""
-        print(f"DEBUG: ISDA collection completed with results: {results}")
-        self.update_status("ISDA collection completed")
-        if hasattr(self, 'isda_start_btn'):
-            self.isda_start_btn.setEnabled(True)
-        if hasattr(self, 'isda_stop_btn'):
-            self.isda_stop_btn.setEnabled(False)
-        self.project_config.set('collectors.isda.running', False)
-        self.project_config.save()
-        self.collection_finished.emit('isda', True)
-    
-    def on_github_collection_completed(self, results):
-        """Handle GitHub collection completion"""
-        print(f"DEBUG: GitHub collection completed with results: {results}")
-        self.update_status("GitHub collection completed")
-        if hasattr(self, 'github_start_btn'):
-            self.github_start_btn.setEnabled(True)
-        if hasattr(self, 'github_stop_btn'):
-            self.github_stop_btn.setEnabled(False)
-        self.project_config.set('collectors.github.running', False)
-        self.project_config.save()
-        self.collection_finished.emit('github', True)
-    
-    def on_collection_completed(self, collector_name, results):
-        """Generic handler for collection completion"""
-        print(f"DEBUG: {collector_name} collection completed with results: {results}")
-        self.update_status(f"{collector_name} collection completed")
-        if hasattr(self, f'{collector_name}_start_btn'):
-            getattr(self, f'{collector_name}_start_btn').setEnabled(True)
-        if hasattr(self, f'{collector_name}_stop_btn'):
-            getattr(self, f'{collector_name}_stop_btn').setEnabled(False)
-        self.project_config.set(f'collectors.{collector_name}.running', False)
-        self.project_config.save()
-        self.collection_finished.emit(collector_name, True)
+    def connect_signals(self) -> None:
+        for name, wrapper in self.collector_wrappers.items():
+            if hasattr(wrapper, "progress_updated"):
+                wrapper.progress_updated.connect(lambda v, n=name: self._handle_progress(n, v))
+            if hasattr(wrapper, "status_updated"):
+                wrapper.status_updated.connect(lambda m, n=name: self._handle_status(n, m))
+            if hasattr(wrapper, "completed"):
+                wrapper.completed.connect(lambda r, n=name: self.on_collection_completed(n, r))
+            if hasattr(wrapper, "error_occurred"):
+                wrapper.error_occurred.connect(lambda m, n=name: self.on_wrapper_error(n, m))
 
-    def on_wrapper_error(self, collector_name, message):
-        """Handle errors from a collector wrapper."""
-        self.update_status(f"{collector_name} error: {message}")
-        self.project_config.set(f'collectors.{collector_name}.running', False)
+    # --------------------------------------------------------------- Slots ----
+    def _handle_progress(self, name: str, value: int) -> None:
+        if name in self.cards:
+            self.cards[name].set_progress(value)
+        self.update_progress(value)
+
+    def _handle_status(self, name: str, message: str) -> None:
+        if name in self.cards:
+            running = "running" in message.lower()
+            self.cards[name].set_running(running)
+        self.update_status(message)
+
+    def start_collection(self, name: str) -> None:
+        wrapper = self.collector_wrappers.get(name)
+        if not wrapper:
+            return
+        wrapper.start()
+        self.cards[name].set_running(True)
+        self.project_config.set(f"collectors.{name}.running", True)
         self.project_config.save()
-        self.collector_error.emit(collector_name, message)
-    
-    def start_isda_collection(self):
-        """Start ISDA collection"""
-        print("DEBUG: ISDA collection start requested")
-        if hasattr(self, 'isda_start_btn'):
-            self.isda_start_btn.setEnabled(False)
-        if hasattr(self, 'isda_stop_btn'):
-            self.isda_stop_btn.setEnabled(True)
-        self.project_config.set('collectors.isda.running', True)
+        self.collection_started.emit(name)
+
+    def stop_collection(self, name: str) -> None:
+        wrapper = self.collector_wrappers.get(name)
+        if not wrapper:
+            return
+        wrapper.stop()
+        self.cards[name].set_running(False)
+        self.project_config.set(f"collectors.{name}.running", False)
         self.project_config.save()
-        self.collection_started.emit('isda')
-    
-    def stop_isda_collection(self):
-        """Stop ISDA collection"""
-        print("DEBUG: ISDA collection stop requested")
-        if hasattr(self, 'isda_start_btn'):
-            self.isda_start_btn.setEnabled(True)
-        if hasattr(self, 'isda_stop_btn'):
-            self.isda_stop_btn.setEnabled(False)
-        self.project_config.set('collectors.isda.running', False)
-        self.project_config.save()
-    
-    def start_github_collection(self):
-        """Start GitHub collection"""
-        print("DEBUG: GitHub collection start requested")
-        if hasattr(self, 'github_start_btn'):
-            self.github_start_btn.setEnabled(False)
-        if hasattr(self, 'github_stop_btn'):
-            self.github_stop_btn.setEnabled(True)
-        self.project_config.set('collectors.github.running', True)
-        self.project_config.save()
-        self.collection_started.emit('github')
-    
-    def stop_github_collection(self):
-        """Stop GitHub collection"""
-        print("DEBUG: GitHub collection stop requested")
-        if hasattr(self, 'github_start_btn'):
-            self.github_start_btn.setEnabled(True)
-        if hasattr(self, 'github_stop_btn'):
-            self.github_stop_btn.setEnabled(False)
-        self.project_config.set('collectors.github.running', False)
-        self.project_config.save()
-    
-    def stop_all_collectors(self):
-        for collector_name, wrapper in self.collector_wrappers.items():
+
+    def configure_collector(self, name: str) -> None:
+        Notifier.notify("Configure", f"Configuration for {name} not implemented")
+
+    def show_logs(self, name: str) -> None:
+        Notifier.notify("Logs", f"Logs for {name} not implemented")
+
+    def stop_all_collectors(self) -> None:
+        for name, wrapper in self.collector_wrappers.items():
             wrapper.stop()
-            self.project_config.set(f'collectors.{collector_name}.running', False)
-            self.collection_finished.emit(collector_name, False)
-
-        # Reset UI elements
-        self.isda_start_btn.setEnabled(True)
-        self.isda_stop_btn.setEnabled(False)
-        self.github_start_btn.setEnabled(True)
-        self.github_stop_btn.setEnabled(False)
-        # Reset other collector buttons similarly
-
+            if name in self.cards:
+                self.cards[name].set_running(False)
+            self.project_config.set(f"collectors.{name}.running", False)
+            self.collection_finished.emit(name, False)
         self.collection_status_label.setText("All collectors stopped")
         self.project_config.save()
+
+    # ------------------------------------------------------------- Handlers ----
+    def update_progress(self, value: int) -> None:
+        self.overall_progress.setValue(value)
+
+    def update_status(self, message: str) -> None:
+        self.collection_status_label.setText(message)
+
+    def on_collection_completed(self, collector_name: str, results: dict) -> None:
+        self.cards[collector_name].set_running(False)
+        self.project_config.set(f"collectors.{collector_name}.running", False)
+        self.project_config.save()
+        self.collection_finished.emit(collector_name, True)
+        self.collection_status_label.setText(f"{collector_name} collection completed")
+
+    def on_wrapper_error(self, collector_name: str, message: str) -> None:
+        self.cards[collector_name].set_running(False)
+        self.project_config.set(f"collectors.{collector_name}.running", False)
+        self.project_config.save()
+        self.collector_error.emit(collector_name, message)
+        self.collection_status_label.setText(f"{collector_name} error: {message}")
+
