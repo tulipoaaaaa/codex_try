@@ -11,8 +11,8 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        # 'PyQt6>=6.6.0',
-        # 'PyQt6-Charts>=6.6.0',
+        # 'PySide6>=6.6.0',
+        # 'PySide6-Charts>=6.6.0',
         "PyYAML>=6.0",
         "python-dotenv>=1.0.0",
         "PyPDF2>=3.0.0",
