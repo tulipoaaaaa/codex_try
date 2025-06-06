@@ -1,9 +1,10 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QSplitter, 
-                             QTreeView, QGroupBox, QTextEdit, QPushButton, 
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QSplitter,
+                             QTreeView, QGroupBox, QTextEdit, QPushButton,
                              QLabel, QLineEdit, QFileDialog, QComboBox,
                              QTableView, QHeaderView, QMenu, QMessageBox,
                              QDialog, QFormLayout, QCheckBox, QDialogButtonBox,
-                             QProgressBar, QInputDialog, QFileSystemModel)
+                             QProgressBar, QInputDialog, QFileSystemModel,
+                             QScrollArea, QFrame)
 from PySide6.QtGui import QAction, QStandardItemModel, QStandardItem, QDragEnterEvent, QDropEvent, QIcon
 from PySide6.QtCore import Qt, QDir, QSortFilterProxyModel, QModelIndex, Slot as pyqtSlot, QPoint, QThread, Signal as pyqtSignal, QMimeData, QTimer, QMutex
 import os
@@ -374,31 +375,59 @@ class CorpusManagerTab(QWidget):
         self.sound_enabled = True  # Will be set from user settings
         
     def setup_ui(self):
-        main_layout = QVBoxLayout(self)
+        outer_layout = QVBoxLayout(self)
+        outer_layout.setContentsMargins(0, 0, 0, 0)
+
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        outer_layout.addWidget(scroll_area)
+
+        container = QWidget()
+        scroll_area.setWidget(container)
+
+        main_layout = QVBoxLayout(container)
+        main_layout.setContentsMargins(16, 16, 16, 16)
+        main_layout.setSpacing(16)
+
         icon_manager = IconManager()
-        
+
+        header_layout = QHBoxLayout()
+        header_layout.setSpacing(8)
+        header_label = QLabel("Corpus Manager")
+        header_label.setObjectName("dashboard-section-header")
+        header_layout.addWidget(header_label)
+        header_layout.addStretch()
+        main_layout.addLayout(header_layout)
+
+        path_layout = QHBoxLayout()
+        path_layout.addWidget(QLabel("Corpus Path:"))
+        self.path_input = QLineEdit()
+        self.path_input.setReadOnly(True)
+        path_layout.addWidget(self.path_input)
+        self.browse_btn = QPushButton("Browse...")
+        self.browse_btn.clicked.connect(self.browse_directory)
+        path_layout.addWidget(self.browse_btn)
+        path_layout.addStretch()
+        self.folder_info_label = QLabel("")
+        self.folder_info_label.setObjectName("status-info")
+        path_layout.addWidget(self.folder_info_label)
+        main_layout.addLayout(path_layout)
+
         # Create a splitter for file browser and metadata panel
         splitter = QSplitter(Qt.Orientation.Horizontal)
         
-        # Left side: File browser
-        file_browser_widget = QWidget()
-        file_browser_layout = QVBoxLayout(file_browser_widget)
-        
-        # Search bar
+        # Search / filter bar
         search_layout = QHBoxLayout()
-        search_layout.addWidget(QLabel("Search:"))
+        search_layout.addWidget(QLabel("Filter:"))
         self.search_input = QLineEdit()
         self.search_input.setPlaceholderText("Search for files...")
         self.search_input.textChanged.connect(self.filter_files)
         search_layout.addWidget(self.search_input)
-        
-        # Domain filter
         search_layout.addWidget(QLabel("Domain:"))
         self.domain_filter = QComboBox()
         self.domain_filter.addItem("All Domains")
-        # Add the 8 domain categories from your project requirements
         domains = [
-            "Crypto Derivatives", 
+            "Crypto Derivatives",
             "High Frequency Trading",
             "Risk Management",
             "Market Microstructure",
@@ -410,20 +439,11 @@ class CorpusManagerTab(QWidget):
         self.domain_filter.addItems(domains)
         self.domain_filter.currentIndexChanged.connect(self.filter_files)
         search_layout.addWidget(self.domain_filter)
-        
-        file_browser_layout.addLayout(search_layout)
-        
-        # File system navigation
-        nav_layout = QHBoxLayout()
-        self.path_input = QLineEdit()
-        self.path_input.setReadOnly(True)
-        nav_layout.addWidget(self.path_input)
-        
-        self.browse_btn = QPushButton("Browse...")
-        self.browse_btn.clicked.connect(self.browse_directory)
-        nav_layout.addWidget(self.browse_btn)
-        
-        file_browser_layout.addLayout(nav_layout)
+        main_layout.addLayout(search_layout)
+
+        # Left side: File browser
+        file_browser_widget = QWidget()
+        file_browser_layout = QVBoxLayout(file_browser_widget)
         
         # File tree view
         self.file_model = QFileSystemModel()
@@ -542,35 +562,36 @@ class CorpusManagerTab(QWidget):
         batch_ops_group = QGroupBox("Batch Operations")
         batch_ops_group.setObjectName("card")
         batch_ops_layout = QVBoxLayout(batch_ops_group)
-        
-        # Operation buttons
-        buttons_layout = QHBoxLayout()
-        
-        self.batch_copy_btn = QPushButton("Copy Files")
-        self.batch_copy_btn.clicked.connect(self.batch_copy_files)
-        buttons_layout.addWidget(self.batch_copy_btn)
-        
-        self.batch_move_btn = QPushButton("Move Files")
-        self.batch_move_btn.clicked.connect(self.batch_move_files)
-        buttons_layout.addWidget(self.batch_move_btn)
-        
+
+        actions_layout = QHBoxLayout()
+        self.batch_copy_btn = QPushButton("Copy")
+        copy_card = self.create_action_card("Copy Files", self.batch_copy_files, self.batch_copy_btn)
+        actions_layout.addWidget(copy_card)
+
+        self.batch_move_btn = QPushButton("Move")
+        move_card = self.create_action_card("Move Files", self.batch_move_files, self.batch_move_btn)
+        actions_layout.addWidget(move_card)
+
+        self.batch_delete_btn = QPushButton("Delete")
+        delete_card = self.create_action_card("Delete Files", self.batch_delete_files, self.batch_delete_btn)
+        actions_layout.addWidget(delete_card)
+
+        batch_ops_layout.addLayout(actions_layout)
+
+        other_buttons_layout = QHBoxLayout()
         self.batch_rename_btn = QPushButton("Rename Files")
         self.batch_rename_btn.clicked.connect(self.batch_rename_files)
-        buttons_layout.addWidget(self.batch_rename_btn)
-        
+        other_buttons_layout.addWidget(self.batch_rename_btn)
+
         self.batch_organize_btn = QPushButton("Organize Files")
         self.batch_organize_btn.clicked.connect(self.batch_organize_files)
-        buttons_layout.addWidget(self.batch_organize_btn)
-        
+        other_buttons_layout.addWidget(self.batch_organize_btn)
+
         self.batch_edit_btn = QPushButton("Edit Metadata")
         self.batch_edit_btn.clicked.connect(self.open_batch_metadata_editor)
-        buttons_layout.addWidget(self.batch_edit_btn)
-        
-        self.batch_delete_btn = QPushButton("Delete Files")
-        self.batch_delete_btn.clicked.connect(self.batch_delete_files)
-        buttons_layout.addWidget(self.batch_delete_btn)
-        
-        batch_ops_layout.addLayout(buttons_layout)
+        other_buttons_layout.addWidget(self.batch_edit_btn)
+
+        batch_ops_layout.addLayout(other_buttons_layout)
         
         # Progress area
         progress_layout = QVBoxLayout()
@@ -584,11 +605,17 @@ class CorpusManagerTab(QWidget):
         progress_layout.addWidget(self.batch_status)
         
         batch_ops_layout.addLayout(progress_layout)
-        
+
         main_layout.addWidget(batch_ops_group)
-        
+
         # Add notification area
         main_layout.addWidget(self.notification_manager)
+
+        self.rebalance_btn = QPushButton("Rebalance Corpus")
+        self.rebalance_btn.setObjectName("primary")
+        self.rebalance_btn.setEnabled(False)
+        self.rebalance_btn.clicked.connect(self.rebalance_corpus)
+        main_layout.addWidget(self.rebalance_btn, alignment=Qt.AlignmentFlag.AlignRight)
         
         # Try to set default directory to the corpus root
         try:
@@ -613,7 +640,10 @@ class CorpusManagerTab(QWidget):
     def set_root_directory(self, path):
         self.file_model.setRootPath(path)
         self.path_input.setText(path)
-        
+
+        self.update_header_info()
+        self.update_rebalance_button()
+
         # Set the root index correctly in the proxy model
         source_index = self.file_model.index(path)
         proxy_index = self.proxy_model.mapFromSource(source_index)
@@ -643,6 +673,8 @@ class CorpusManagerTab(QWidget):
     def refresh_file_view(self):
         current_path = self.path_input.text()
         self.set_root_directory(current_path)
+        self.update_header_info()
+        self.update_rebalance_button()
     
     def create_folder(self):
         current_path = self.path_input.text()
@@ -1083,3 +1115,33 @@ class CorpusManagerTab(QWidget):
             self.refresh_file_view()
         except Exception as e:
             QMessageBox.critical(self, "Batch Organize Error", str(e))
+
+    def update_header_info(self):
+        path = self.path_input.text()
+        if os.path.isdir(path):
+            entries = os.listdir(path)
+            files = sum(os.path.isfile(os.path.join(path, e)) for e in entries)
+            dirs = sum(os.path.isdir(os.path.join(path, e)) for e in entries)
+            self.folder_info_label.setText(f"{dirs} folders, {files} files")
+        else:
+            self.folder_info_label.setText("")
+
+    def update_rebalance_button(self):
+        path = self.path_input.text()
+        ready = os.path.isdir(path) and bool(os.listdir(path))
+        self.rebalance_btn.setEnabled(ready)
+
+    def create_action_card(self, title: str, callback, button: QPushButton) -> QFrame:
+        card = QFrame()
+        card.setObjectName("card")
+        layout = QVBoxLayout(card)
+        header = QLabel(title)
+        header.setObjectName("card__header")
+        layout.addWidget(header)
+        button.setObjectName("primary")
+        button.clicked.connect(callback)
+        layout.addWidget(button)
+        return card
+
+    def rebalance_corpus(self):
+        QMessageBox.information(self, "Rebalance Corpus", "Rebalancing not implemented in UI")
