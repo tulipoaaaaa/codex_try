@@ -3,7 +3,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGroupBox,
                              QTabWidget, QFileDialog, QCheckBox, QFormLayout,
                              QSpinBox, QTableWidget, QTableWidgetItem, QHeaderView,
                              QMessageBox)
-from PySide6.QtCore import Qt, Slot as pyqtSlot, QMimeData
+from PySide6.QtCore import Qt, Slot as pyqtSlot, QMimeData, Signal as pyqtSignal
 from PySide6.QtGui import QDragEnterEvent, QDropEvent
 import os
 import yaml
@@ -13,6 +13,9 @@ from app.helpers.crypto_utils import encrypt_value, decrypt_value
 
 
 class ConfigurationTab(QWidget):
+    """Tab for viewing and editing project configuration."""
+
+    configuration_saved = pyqtSignal(dict)
     def __init__(self, project_config, parent=None):
         super().__init__(parent)
         self.project_config = project_config
@@ -723,6 +726,24 @@ class ConfigurationTab(QWidget):
             # Save to YAML
             with open(self.project_config.config_path, 'w') as f:
                 yaml.dump(config, f, default_flow_style=False)
+
+            # Persist changes in ProjectConfig
+            self.project_config.set('environment.active', self.env_selector.currentText())
+            self.project_config.set('environment.config_path', str(self.project_config.config_path))
+            self.project_config.set('environment.auto_save', self.auto_save.isChecked())
+            self.project_config.set('processing.pdf.enable_ocr', self.enable_ocr.isChecked())
+            self.project_config.set('processing.pdf.enable_formula', self.enable_formula.isChecked())
+            self.project_config.set('processing.pdf.enable_tables', self.enable_tables.isChecked())
+            self.project_config.set('processing.text.enable_language', self.enable_language.isChecked())
+            self.project_config.set('processing.text.min_quality', self.min_quality.value())
+            self.project_config.set('processing.text.enable_deduplication', self.enable_deduplication.isChecked())
+            self.project_config.set('directories.create_missing', self.create_missing.isChecked())
+            self.project_config.set('directories.relative_paths', self.relative_paths.isChecked())
+            self.project_config.set('directories.validate_paths', self.validate_paths.isChecked())
+            self.project_config.save()
+
+            # Emit signal so other components can refresh
+            self.configuration_saved.emit(config)
             
             QMessageBox.information(
                 self, "Configuration Saved",
