@@ -7,6 +7,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QSplitter,
                              QScrollArea, QFrame)
 from PySide6.QtGui import QAction, QStandardItemModel, QStandardItem, QDragEnterEvent, QDropEvent, QIcon
 from PySide6.QtCore import Qt, QDir, QSortFilterProxyModel, QModelIndex, Slot as pyqtSlot, QPoint, QThread, Signal as pyqtSignal, QMimeData, QTimer, QMutex
+from shared_tools.storage.corpus_manager import CorpusManager
 import os
 import json
 import shutil
@@ -369,6 +370,7 @@ class CorpusManagerTab(QWidget):
         super().__init__(parent)
         self.notification_manager = NotificationManager(self)  # Initialize first
         self.project_config = project_config
+        self.corpus_manager = CorpusManager()
         self.setup_ui()
         self.selected_files = []
         self.batch_metadata_editor = None
@@ -906,17 +908,10 @@ class CorpusManagerTab(QWidget):
         
         if confirm == QMessageBox.StandardButton.Yes:
             try:
-                if os.path.isdir(file_path):
-                    import shutil
-                    shutil.rmtree(file_path)
-                else:
-                    os.remove(file_path)
-                    
-                # Also remove metadata if it exists
+                self.corpus_manager.delete_files([file_path])
                 metadata_path = self.get_metadata_path(file_path)
                 if os.path.exists(metadata_path):
                     os.remove(metadata_path)
-                    
                 self.refresh_file_view()
             except Exception as e:
                 QMessageBox.critical(
@@ -956,17 +951,16 @@ class CorpusManagerTab(QWidget):
             return
         confirm = QMessageBox.question(self, "Confirm Delete", f"Delete {len(selected_files)} files?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if confirm == QMessageBox.StandardButton.Yes:
-            for file_path in selected_files:
-                try:
-                    os.remove(file_path)
-                except Exception as e:
-                    self.notification_manager.add_notification(f"delete_{file_path}", "Delete Error", str(e), "error", auto_hide=True)
-                    if self.sound_enabled:
-                        Notifier.notify("Delete Error", str(e), level="error")
-            self.notification_manager.add_notification("batch_delete", "Batch Delete", f"Deleted {len(selected_files)} files.", "success", auto_hide=True)
-            if self.sound_enabled:
-                Notifier.notify("Batch Delete", f"Deleted {len(selected_files)} files.", level="success")
-            self.refresh_file_view()
+            try:
+                self.corpus_manager.delete_files(selected_files)
+                self.notification_manager.add_notification("batch_delete", "Batch Delete", f"Deleted {len(selected_files)} files.", "success", auto_hide=True)
+                if self.sound_enabled:
+                    Notifier.notify("Batch Delete", f"Deleted {len(selected_files)} files.", level="success")
+                self.refresh_file_view()
+            except Exception as e:
+                self.notification_manager.add_notification("batch_delete_error", "Delete Error", str(e), "error", auto_hide=True)
+                if self.sound_enabled:
+                    Notifier.notify("Delete Error", str(e), level="error")
 
     def get_selected_files(self):
         """Return the list of selected files from the file browser."""
@@ -1028,11 +1022,7 @@ class CorpusManagerTab(QWidget):
             target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
             if not target_dir:
                 return
-            for file_path in selected_files:
-                try:
-                    shutil.copy2(file_path, target_dir)
-                except Exception as e:
-                    self.notification_manager.add_notification(f"copy_{file_path}", "Copy Error", str(e), "error", auto_hide=True)
+            self.corpus_manager.copy_files(selected_files, target_dir)
             self.notification_manager.add_notification("batch_copy", "Batch Copy", f"Copied {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
@@ -1047,11 +1037,7 @@ class CorpusManagerTab(QWidget):
             target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
             if not target_dir:
                 return
-            for file_path in selected_files:
-                try:
-                    shutil.move(file_path, target_dir)
-                except Exception as e:
-                    self.notification_manager.add_notification(f"move_{file_path}", "Move Error", str(e), "error", auto_hide=True)
+            self.corpus_manager.move_files(selected_files, target_dir)
             self.notification_manager.add_notification("batch_move", "Batch Move", f"Moved {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
@@ -1066,17 +1052,7 @@ class CorpusManagerTab(QWidget):
         if not ok or not pattern:
             return
         try:
-            for i, file_path in enumerate(selected_files):
-                try:
-                    dir_path = os.path.dirname(file_path)
-                    base, ext = os.path.splitext(os.path.basename(file_path))
-                    new_name = pattern.format(index=i+1, original=base, extension=ext[1:], date=time.strftime("%Y%m%d"))
-                    new_path = os.path.join(dir_path, new_name)
-                    if os.path.exists(new_path):
-                        raise FileExistsError(f"File {new_name} already exists.")
-                    os.rename(file_path, new_path)
-                except Exception as e:
-                    self.notification_manager.add_notification(f"rename_{file_path}", "Rename Error", str(e), "error", auto_hide=True)
+            self.corpus_manager.rename_files(selected_files, pattern)
             self.notification_manager.add_notification("batch_rename", "Batch Rename", f"Renamed {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
@@ -1091,26 +1067,7 @@ class CorpusManagerTab(QWidget):
         if not ok:
             return
         try:
-            for file_path in selected_files:
-                try:
-                    dir_path = os.path.dirname(file_path)
-                    filename = os.path.basename(file_path)
-                    if criteria == 'extension':
-                        _, ext = os.path.splitext(filename)
-                        subdir = ext[1:].upper() if ext else 'NO_EXTENSION'
-                    elif criteria == 'date':
-                        mtime = os.path.getmtime(file_path)
-                        subdir = time.strftime("%Y-%m", time.localtime(mtime))
-                    else:
-                        subdir = 'OTHER'
-                    target_dir = os.path.join(dir_path, subdir)
-                    os.makedirs(target_dir, exist_ok=True)
-                    target_file = os.path.join(target_dir, filename)
-                    if os.path.exists(target_file):
-                        raise FileExistsError(f"File {filename} already exists in {subdir}.")
-                    shutil.move(file_path, target_file)
-                except Exception as e:
-                    self.notification_manager.add_notification(f"organize_{file_path}", "Organize Error", str(e), "error", auto_hide=True)
+            self.corpus_manager.organize_files(selected_files, criteria)
             self.notification_manager.add_notification("batch_organize", "Batch Organize", f"Organized {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
