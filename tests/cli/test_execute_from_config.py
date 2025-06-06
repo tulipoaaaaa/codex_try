@@ -52,8 +52,8 @@ class DummyBalancer:
 @pytest.fixture()
 def sample_config(tmp_path: Path) -> Path:
     data = {
-        "collectors": {"foo": {"enabled": True}},
-        "extractors": {"pdf": {"enabled": True}},
+        "enabled_collectors": ["foo"],
+        "enabled_processors": ["pdf"],
         "processors": {"corpus_balancer": {"enabled": True}},
     }
     path = tmp_path / "config.yaml"
@@ -73,9 +73,41 @@ def test_run_all_sequence(monkeypatch, sample_config):
     assert log == ["collector-foo", "processor-pdf", "balancer"]
 
 
+def test_collect_only(monkeypatch, sample_config):
+    log: List[str] = []
+    monkeypatch.setattr(efc, "create_collector_wrapper", lambda n, c: DummyWrapper(n, log))
+    efc.main(["--config", str(sample_config), "--collect"])
+    assert log == ["foo"]
+
+
+def test_extract_only(monkeypatch, sample_config):
+    log: List[str] = []
+    monkeypatch.setattr(efc, "create_processor_wrapper", lambda n, c: DummyWrapper(n, log))
+    efc.main(["--config", str(sample_config), "--extract"])
+    assert log == ["pdf"]
+
+
+def test_balance_only(monkeypatch, sample_config):
+    log: List[str] = []
+    monkeypatch.setattr(efc, "CorpusBalancerWrapper", lambda c: DummyBalancer(log))
+    efc.main(["--config", str(sample_config), "--balance"])
+    assert log == ["balancer"]
+
+
+def test_preview_only(monkeypatch, sample_config, capsys):
+    monkeypatch.setattr(efc, "create_collector_wrapper", lambda n, c: DummyWrapper(n, []))
+    monkeypatch.setattr(efc, "create_processor_wrapper", lambda n, c: DummyWrapper(n, []))
+    monkeypatch.setattr(efc, "CorpusBalancerWrapper", lambda c: DummyBalancer([]))
+    efc.main(["--config", str(sample_config), "--run-all", "--preview-only"])
+    captured = capsys.readouterr().out
+    assert "collector:foo" in captured
+    assert "processor:pdf" in captured
+    assert "balancer:corpus_balancer" in captured
+
+
 def test_error_when_no_collectors(monkeypatch, tmp_path):
     config_path = tmp_path / "c.yaml"
-    yaml.safe_dump({"collectors": {}}, open(config_path, "w"))
+    yaml.safe_dump({"enabled_collectors": []}, open(config_path, "w"))
 
     with pytest.raises(RuntimeError):
         efc.main(["--config", str(config_path), "--collect"])
