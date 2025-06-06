@@ -244,7 +244,7 @@ class ProjectConfig:
         with open(self.config_path, 'w') as f:
             yaml.dump(self.config, f, default_flow_style=False)
 
-    # Directory helper methods
+ # Directory helper methods
     def get_corpus_root(self) -> Path:
         return Path(self.get('directories.corpus_root')).expanduser()
 
@@ -261,9 +261,17 @@ class ProjectConfig:
         return Path(self.get('directories.metadata_dir')).expanduser()
 
     def get_logs_dir(self) -> Path:
-        return Path(self.get('directories.logs_dir')).expanduser()
-    
+        """
+        Return the configured logs directory as a Path object.
+        Falls back to ~/.cryptofinance/logs if not explicitly set.
+
+        Use `str(...)` or `.as_posix()` if string form is needed (e.g. subprocess).
+        """
+        return Path(
+            self.get("directories.logs_dir", os.path.expanduser("~/.cryptofinance/logs"))
+        ).expanduser()
+
     @classmethod
     def from_yaml(cls, yaml_path: str, environment: Optional[str] = None) -> 'ProjectConfig':
         """Load config from YAML file with schema validation."""
-        return cls(yaml_path, environment=environment) 
+        return cls(yaml_path, environment=environment)
