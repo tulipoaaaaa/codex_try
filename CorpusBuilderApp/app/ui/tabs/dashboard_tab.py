@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGridLayout,
                             QLabel, QProgressBar, QFrame, QSplitter, QPushButton,
                             QScrollArea, QTableWidget, QTableWidgetItem, QHeaderView)
 from PySide6.QtCore import Qt, QTimer, Signal as pyqtSignal, Slot as pyqtSlot, QSize, QThread
-from PySide6.QtGui import QColor, QIcon
+from PySide6.QtGui import QColor, QIcon, QFont
 from PySide6.QtCharts import QChart, QChartView, QPieSeries, QBarSeries, QBarSet, QBarCategoryAxis, QValueAxis
 
 import logging
@@ -23,6 +23,13 @@ from app.ui.widgets.activity_log import ActivityLog
 from app.ui.widgets.domain_distribution import DomainDistribution
 from app.ui.widgets.active_operations import ActiveOperations
 from app.ui.widgets.recent_activity import RecentActivity
+from app.ui.theme.theme_constants import (
+    DEFAULT_FONT_SIZE,
+    CARD_MARGIN,
+    BUTTON_COLOR_PRIMARY,
+    BUTTON_COLOR_DANGER,
+    BUTTON_COLOR_GRAY,
+)
 # from ..widgets.storage_usage import StorageUsageWidget
 
 class DashboardTab(QWidget):
@@ -37,6 +44,7 @@ class DashboardTab(QWidget):
         super().__init__(parent)
         self.config = project_config
         self.logger = logging.getLogger(self.__class__.__name__)
+        self.setFont(QFont("", DEFAULT_FONT_SIZE))
         
         # UI setup
         self.init_ui()
@@ -61,34 +69,38 @@ class DashboardTab(QWidget):
         self.activity_log_widget = ActivityLog(self.config)
 
         main_layout = QVBoxLayout(self)
-        main_layout.setContentsMargins(40, 32, 40, 32)
-        main_layout.setSpacing(32)
+        main_layout.setContentsMargins(CARD_MARGIN * 2, CARD_MARGIN * 2, CARD_MARGIN * 2, CARD_MARGIN * 2)
+        main_layout.setSpacing(CARD_MARGIN * 2)
 
         # Header
         header_label = QLabel("Corpus Overview Dashboard")
         header_label.setObjectName("dashboard-header")
-        header_label.setStyleSheet("font-size: 32px; font-weight: 800; color: #fff; letter-spacing: -0.025em; margin-bottom: 2px;")
+        header_label.setStyleSheet(
+            f"font-size: {DEFAULT_FONT_SIZE * 2 + 4}px; font-weight: 800; color: #fff; letter-spacing: -0.025em; margin-bottom: 2px;"
+        )
         header_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         main_layout.addWidget(header_label)
 
         subtitle_label = QLabel("Real-time monitoring and analytics for your document corpus")
-        subtitle_label.setStyleSheet("font-size: 18px; color: #9ca3af; font-weight: 400; margin-bottom: 12px;")
+        subtitle_label.setStyleSheet(
+            f"font-size: {DEFAULT_FONT_SIZE + 4}px; color: #9ca3af; font-weight: 400; margin-bottom: 12px;"
+        )
         subtitle_label.setAlignment(Qt.AlignmentFlag.AlignLeft | Qt.AlignmentFlag.AlignVCenter)
         main_layout.addWidget(subtitle_label)
 
         # --- True two-column grid layout ---
         grid = QGridLayout()
-        grid.setSpacing(32)
+        grid.setSpacing(CARD_MARGIN * 2)
         grid.setContentsMargins(0, 0, 0, 0)
 
         # Left column (stats bar, chart card)
         left_col = QVBoxLayout()
-        left_col.setSpacing(32)
+        left_col.setSpacing(CARD_MARGIN * 2)
         left_col.setContentsMargins(0, 0, 0, 0)
 
         # Stats bar (horizontal row of stat cards, large and bold)
         stats_bar = QHBoxLayout()
-        stats_bar.setSpacing(24)
+        stats_bar.setSpacing(CARD_PADDING)
         stats_bar.setContentsMargins(0, 0, 0, 0)
         stats = self.corpus_stats_widget.get_dashboard_stats() if hasattr(self.corpus_stats_widget, 'get_dashboard_stats') else [
             {"value": "2,570", "label": "Total Documents", "unit": "", "objectName": "stat-docs"},
@@ -101,7 +113,12 @@ class DashboardTab(QWidget):
             card = QWidget()
             card.setObjectName("stat-card")
             card_layout = QVBoxLayout(card)
-            card_layout.setContentsMargins(32, 28, 32, 28)
+            card_layout.setContentsMargins(
+                CARD_PADDING + CARD_MARGIN // 2,
+                CARD_PADDING + CARD_MARGIN // 4,
+                CARD_PADDING + CARD_MARGIN // 2,
+                CARD_PADDING + CARD_MARGIN // 4,
+            )
             card_layout.setSpacing(6)
             value_label = QLabel(stat["value"])
             value_label.setObjectName("stat-value")
@@ -129,7 +146,7 @@ class DashboardTab(QWidget):
         chart_card.setObjectName("card")
         chart_card.setStyleSheet("background-color: #1a1f2e; border-radius: 16px; border: 1.5px solid #2d3748; padding: 32px 32px 24px 32px;")
         chart_layout = QVBoxLayout(chart_card)
-        chart_layout.setSpacing(24)
+        chart_layout.setSpacing(CARD_PADDING)
         chart_layout.setContentsMargins(0, 0, 0, 0)
         chart_layout.addWidget(self.domain_distribution_widget, 1)
         left_col.addWidget(chart_card, 2)
@@ -138,7 +155,7 @@ class DashboardTab(QWidget):
 
         # Right column (sidebar: operations, activity)
         right_col = QVBoxLayout()
-        right_col.setSpacing(32)
+        right_col.setSpacing(CARD_MARGIN * 2)
         right_col.setContentsMargins(0, 0, 0, 0)
         self.active_operations_widget.setMinimumWidth(420)
         self.active_operations_widget.setMaximumWidth(520)
