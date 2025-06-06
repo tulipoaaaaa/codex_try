@@ -7,7 +7,6 @@ from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QDir
 import tempfile
 import shutil
-from shared_tools.project_config import ProjectConfig
 
 # Add the app directory to the Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'app'))
@@ -32,19 +31,28 @@ def temp_dir():
 @pytest.fixture
 def mock_project_config(temp_dir):
     """Create a mock project configuration for testing."""
-    config = ProjectConfig()
-    config.config['directories']['corpus_root'] = temp_dir
-    config.config['directories']['raw_data'] = os.path.join(temp_dir, 'raw')
-    config.config['directories']['processed_data'] = os.path.join(temp_dir, 'processed')
-    config.config['directories']['metadata'] = os.path.join(temp_dir, 'metadata')
-    config.config['directories']['logs'] = os.path.join(temp_dir, 'logs')
-    
-    # Create directories
-    for dir_name in ['raw_data', 'processed_data', 'metadata', 'logs']:
-        dir_path = config.get_directory(dir_name)
-        os.makedirs(dir_path, exist_ok=True)
-    
-    return config
+    class DummyConfig:
+        def __init__(self, base):
+            self.base = base
+            self.config = {
+                'directories': {
+                    'corpus_root': base,
+                    'raw_data': os.path.join(base, 'raw'),
+                    'processed_data': os.path.join(base, 'processed'),
+                    'metadata': os.path.join(base, 'metadata'),
+                    'logs': os.path.join(base, 'logs'),
+                }
+            }
+
+        def get_directory(self, name):
+            return self.config['directories'][name]
+
+    cfg = DummyConfig(temp_dir)
+
+    for path in cfg.config['directories'].values():
+        os.makedirs(path, exist_ok=True)
+
+    return cfg
 
 @pytest.fixture
 def sample_files(temp_dir):
