@@ -1,0 +1,251 @@
+2025-05-10 01:23:44,769 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:23:51,067 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:23:57,004 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:24:04,224 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:24:10,774 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:24:16,801 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:04,730 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20portfolio%20optimization%20cryptocurrency&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:07,316 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:12,316 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20risk%20management%20blockchain&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:13,419 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:18,420 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20market%20microstructure%20digital%20assets&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:19,222 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:24,223 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20high%20frequency%20trading%20bitcoin&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:25,077 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:30,078 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20decentralized%20finance%20liquidity&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:31,017 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:36,018 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20asset%20allocation%20cryptocurrency&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:36,846 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:41,846 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20regulatory%20compliance%20digital%20assets&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:42,785 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:47,786 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20token%20valuation%20models&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:48,535 - ArxivCollector - INFO - Found 91 papers
+2025-05-10 01:31:53,536 - ArxivCollector - DEBUG - Waiting 7.91s before requesting from arxiv.org
+2025-05-10 01:32:01,458 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.05113v1 to data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 01:48:12,110 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20crypto%20trading&start=0&max_results=2&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:48:13,175 - ArxivCollector - INFO - Found 2 papers
+2025-05-10 01:48:18,176 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20market%20microstructure&start=0&max_results=2&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:48:18,601 - ArxivCollector - INFO - Found 2 papers
+2025-05-10 01:48:23,602 - ArxivCollector - DEBUG - Waiting 8.48s before requesting from arxiv.org
+2025-05-10 01:48:32,091 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2504.01974v1 to data\test_collect\arxiv\arxiv\q-fin\cryptocurrency-time-series-on-the-binary-complexity-entropy-plane-ranking-efficiency-from-the-perspective-of-complex-systems.pdf
+2025-05-10 01:48:32,602 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\arxiv\q-fin\cryptocurrency-time-series-on-the-binary-complexity-entropy-plane-ranking-efficiency-from-the-perspective-of-complex-systems.pdf
+2025-05-10 01:48:32,602 - ArxivCollector - DEBUG - Waiting 5.38s before requesting from arxiv.org
+2025-05-10 01:48:37,988 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2503.08692v1 to data\test_collect\arxiv\arxiv\q-fin\detecting-crypto-pump-and-dump-schemes-a-thresholding-based-approach-to-handling-market-noise.pdf
+2025-05-10 01:48:38,487 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\arxiv\q-fin\detecting-crypto-pump-and-dump-schemes-a-thresholding-based-approach-to-handling-market-noise.pdf
+2025-05-10 01:48:38,487 - ArxivCollector - DEBUG - Waiting 8.32s before requesting from arxiv.org
+2025-05-10 01:48:46,806 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.05113v1 to data\test_collect\arxiv\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 01:48:47,036 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 01:48:47,037 - ArxivCollector - DEBUG - Waiting 9.96s before requesting from arxiv.org
+2025-05-10 01:48:56,999 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.02678v1 to data\test_collect\arxiv\arxiv\q-fin\why-is-the-volatility-of-single-stocks-so-much-rougher-than-that-of-the-sp500.pdf
+2025-05-10 01:48:57,730 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\arxiv\q-fin\why-is-the-volatility-of-single-stocks-so-much-rougher-than-that-of-the-sp500.pdf
+2025-05-10 01:48:57,730 - ArxivCollector - INFO - Downloaded 4 papers
+2025-05-10 01:48:57,730 - ArxivCollector - DEBUG - 
+Paper #1:
+2025-05-10 01:48:57,730 - ArxivCollector - DEBUG -   Title: Cryptocurrency Time Series on the Binary Complexity-Entropy Plane:
+  Ranking Efficiency from the Perspective of Complex Systems
+2025-05-10 01:48:57,730 - ArxivCollector - DEBUG -   Authors: Erveton P. Pinto, Marcelo A. Pires, Rone N. da Silva, Sílvio M. Duarte Queirós
+2025-05-10 01:48:57,731 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 01:48:57,731 - ArxivCollector - DEBUG -   Category: q-fin.ST
+2025-05-10 01:48:57,731 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2504.01974v1
+2025-05-10 01:48:57,731 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\arxiv\q-fin\cryptocurrency-time-series-on-the-binary-complexity-entropy-plane-ranking-efficiency-from-the-perspective-of-complex-systems.pdf
+2025-05-10 01:48:57,731 - ArxivCollector - DEBUG -   File size: 663.01 KB
+2025-05-10 01:48:57,731 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 01:48:57,732 - ArxivCollector - DEBUG - 
+Paper #2:
+2025-05-10 01:48:57,732 - ArxivCollector - DEBUG -   Title: Detecting Crypto Pump-and-Dump Schemes: A Thresholding-Based Approach to
+  Handling Market Noise
+2025-05-10 01:48:57,732 - ArxivCollector - DEBUG -   Authors: Mahya Karbalaii
+2025-05-10 01:48:57,732 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 01:48:57,732 - ArxivCollector - DEBUG -   Category: q-fin.ST
+2025-05-10 01:48:57,732 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2503.08692v1
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\arxiv\q-fin\detecting-crypto-pump-and-dump-schemes-a-thresholding-based-approach-to-handling-market-noise.pdf
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   File size: 635.89 KB
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG - 
+Paper #3:
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   Title: Loss-Versus-Rebalancing under Deterministic and Generalized block-times
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   Authors: Alex Nezlobin, Martin Tassy
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   Category: q-fin.MF
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.05113v1
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   File size: 234.79 KB
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG - 
+Paper #4:
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   Title: Why is the volatility of single stocks so much rougher than that of the
+  S&P500?
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   Authors: Othmane Zarhali, Cecilia Aubrun, Emmanuel Bacry, Jean-Philippe Bouchaud, Jean-François Muzy
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   Category: q-fin.ST
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.02678v1
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\arxiv\q-fin\why-is-the-volatility-of-single-stocks-so-much-rougher-than-that-of-the-sp500.pdf
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   File size: 2385.41 KB
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 01:48:57,734 - ArxivCollector - INFO - Summary: 4 out of 4 papers have valid files
+2025-05-10 08:58:56,025 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20A%20Study%20on%20%CE%B1-Beta&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 08:58:56,867 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 08:59:01,867 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20Unique%20Quantum%20Finance%20Paper&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 08:59:02,192 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 08:59:07,192 - ArxivCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 08:59:07,193 - ArxivCollector - DEBUG - Waiting 7.74s before requesting from arxiv.org
+2025-05-10 08:59:14,936 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.05113v1 to data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 08:59:15,459 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 08:59:15,459 - ArxivCollector - DEBUG - Waiting 9.32s before requesting from arxiv.org
+2025-05-10 08:59:24,791 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2504.21658v1 to data\test_collect\arxiv\math\approximation-and-regularity-results-for-the-heston-model-and-related-processes.pdf
+2025-05-10 08:59:25,636 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\math\approximation-and-regularity-results-for-the-heston-model-and-related-processes.pdf
+2025-05-10 08:59:25,636 - ArxivCollector - INFO - Downloaded 2 papers
+2025-05-10 08:59:25,636 - ArxivCollector - DEBUG - 
+Paper #1:
+2025-05-10 08:59:25,636 - ArxivCollector - DEBUG -   Title: Loss-Versus-Rebalancing under Deterministic and Generalized block-times
+2025-05-10 08:59:25,636 - ArxivCollector - DEBUG -   Authors: Alex Nezlobin, Martin Tassy
+2025-05-10 08:59:25,636 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 08:59:25,636 - ArxivCollector - DEBUG -   Category: q-fin.MF
+2025-05-10 08:59:25,636 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.05113v1
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   File size: 234.79 KB
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG - 
+Paper #2:
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   Title: Approximation and regularity results for the Heston model and related
+  processes
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   Authors: Edoardo Lombardo
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   Category: math.NA
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2504.21658v1
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\math\approximation-and-regularity-results-for-the-heston-model-and-related-processes.pdf
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   File size: 2358.25 KB
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 08:59:25,637 - ArxivCollector - INFO - Summary: 2 out of 2 papers have valid files
+2025-05-10 09:04:36,343 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20A%20Study%20on%20%CE%B1-Beta&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:04:37,026 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:04:42,027 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20Unique%20Quantum%20Finance%20Paper&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:04:42,357 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:04:47,357 - ArxivCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 09:04:47,358 - ArxivCollector - DEBUG - Waiting 6.17s before requesting from arxiv.org
+2025-05-10 09:04:53,528 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.05113v1 to data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 09:04:53,736 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 09:04:53,736 - ArxivCollector - DEBUG - Waiting 6.21s before requesting from arxiv.org
+2025-05-10 09:04:59,946 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2504.21658v1 to data\test_collect\arxiv\math\approximation-and-regularity-results-for-the-heston-model-and-related-processes.pdf
+2025-05-10 09:05:00,104 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\math\approximation-and-regularity-results-for-the-heston-model-and-related-processes.pdf
+2025-05-10 09:05:00,105 - ArxivCollector - INFO - Downloaded 2 papers
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG - 
+Paper #1:
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   Title: Loss-Versus-Rebalancing under Deterministic and Generalized block-times
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   Authors: Alex Nezlobin, Martin Tassy
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   Category: q-fin.MF
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.05113v1
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   File size: 234.79 KB
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG - 
+Paper #2:
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   Title: Approximation and regularity results for the Heston model and related
+  processes
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   Authors: Edoardo Lombardo
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   Category: math.NA
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2504.21658v1
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\math\approximation-and-regularity-results-for-the-heston-model-and-related-processes.pdf
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   File size: 2358.25 KB
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 09:05:00,106 - ArxivCollector - INFO - Summary: 2 out of 2 papers have valid files
+2025-05-10 09:17:29,281 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20A%20Study%20on%20%CE%B1-Beta&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:17:30,040 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:17:35,041 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20Unique%20Quantum%20Finance%20Paper&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:17:35,435 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:17:40,439 - ArxivCollector - INFO - Deduplication: Skipped 2 results already in the existing titles cache.
+2025-05-10 09:17:40,439 - ArxivCollector - INFO - Downloaded 0 papers
+2025-05-10 09:17:40,439 - ArxivCollector - INFO - Summary: 0 out of 0 papers have valid files
+2025-05-10 09:23:14,209 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20A%20Study%20on%20%CE%B1-Beta&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:23:14,879 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:23:19,879 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20Unique%20Quantum%20Finance%20Paper&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:23:20,196 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:23:25,200 - ArxivCollector - INFO - Deduplication: Skipped 2 results already in the existing titles cache.
+2025-05-10 09:23:25,200 - ArxivCollector - INFO - Downloaded 0 papers
+2025-05-10 09:23:25,200 - ArxivCollector - INFO - Summary: 0 out of 0 papers have valid files
+2025-05-10 09:24:46,144 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20A%20Study%20on%20%CE%B1-Beta&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:24:46,709 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:24:51,710 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20Unique%20Quantum%20Finance%20Paper&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:24:52,043 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:24:57,047 - ArxivCollector - INFO - Deduplication: Skipped 2 results already in the existing titles cache.
+2025-05-10 09:24:57,047 - ArxivCollector - INFO - Downloaded 0 papers
+2025-05-10 09:24:57,047 - ArxivCollector - INFO - Summary: 0 out of 0 papers have valid files
+2025-05-27 04:58:28,269 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=cat%3Aq-fin.CP&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-27 04:58:29,062 - ArxivCollector - INFO - Found 1 papers
+2025-05-27 04:58:34,064 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=cat%3Aq-fin.PM&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-27 04:58:34,385 - ArxivCollector - INFO - Found 1 papers
+2025-05-27 04:58:39,387 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=cat%3Aq-fin.RM&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-27 04:58:39,735 - ArxivCollector - INFO - Found 1 papers
+2025-05-27 04:58:44,737 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=cat%3Aq-fin.ST&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-27 04:58:45,047 - ArxivCollector - INFO - Found 1 papers
+2025-05-27 04:58:50,050 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=cat%3Aq-fin.TR&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-27 04:58:50,368 - ArxivCollector - INFO - Found 1 papers
+2025-05-27 04:58:55,370 - ArxivCollector - DEBUG - Waiting 6.93s before requesting from arxiv.org
+2025-05-27 04:59:02,316 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.19243v1 to data\full_corpus\q-fin\comparative-analysis-of-financial-data-differentiation-techniques-using-lstm-neural-network.pdf
+2025-05-27 04:59:03,593 - ArxivCollector - INFO - Successfully downloaded data\full_corpus\q-fin\comparative-analysis-of-financial-data-differentiation-techniques-using-lstm-neural-network.pdf
+2025-05-27 04:59:03,594 - ArxivCollector - DEBUG - Waiting 7.17s before requesting from arxiv.org
+2025-05-27 04:59:10,779 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.19058v1 to data\full_corpus\cs\distributionally-robust-deep-q-learning.pdf
+2025-05-27 04:59:12,162 - ArxivCollector - INFO - Successfully downloaded data\full_corpus\cs\distributionally-robust-deep-q-learning.pdf
+2025-05-27 04:59:12,164 - ArxivCollector - DEBUG - Waiting 7.51s before requesting from arxiv.org
+2025-05-27 04:59:19,672 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.19276v1 to data\full_corpus\q-fin\a-general-theory-of-risk-sharing.pdf
+2025-05-27 04:59:20,164 - ArxivCollector - INFO - Successfully downloaded data\full_corpus\q-fin\a-general-theory-of-risk-sharing.pdf
+2025-05-27 04:59:20,165 - ArxivCollector - DEBUG - Waiting 8.61s before requesting from arxiv.org
+2025-05-27 04:59:28,777 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.19243v1 to data\full_corpus\q-fin\comparative-analysis-of-financial-data-differentiation-techniques-using-lstm-neural-network.pdf
+2025-05-27 04:59:29,041 - ArxivCollector - INFO - Successfully downloaded data\full_corpus\q-fin\comparative-analysis-of-financial-data-differentiation-techniques-using-lstm-neural-network.pdf
+2025-05-27 04:59:29,043 - ArxivCollector - DEBUG - Waiting 5.59s before requesting from arxiv.org
+2025-05-27 04:59:34,634 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.19617v1 to data\full_corpus\q-fin\hybrid-models-for-financial-forecasting-combining-econometric-machine-learning-and-deep-learning-models.pdf
+2025-05-27 04:59:35,931 - ArxivCollector - INFO - Successfully downloaded data\full_corpus\q-fin\hybrid-models-for-financial-forecasting-combining-econometric-machine-learning-and-deep-learning-models.pdf
+2025-05-27 04:59:35,933 - ArxivCollector - INFO - Downloaded 5 papers
+2025-05-27 04:59:35,933 - ArxivCollector - DEBUG - 
+Paper #1:
+2025-05-27 04:59:35,933 - ArxivCollector - DEBUG -   Title: Comparative analysis of financial data differentiation techniques using
+  LSTM neural network
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   Category: q-fin.ST
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.19243v1
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   File: data\full_corpus\q-fin\comparative-analysis-of-financial-data-differentiation-techniques-using-lstm-neural-network.pdf
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   File size: 4254.43 KB
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG - 
+Paper #2:
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   Title: Distributionally Robust Deep Q-Learning
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   Authors: Chung I Lu, Julian Sester, Aijia Zhang
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   Category: cs.LG
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.19058v1
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   File: data\full_corpus\cs\distributionally-robust-deep-q-learning.pdf
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   File size: 1982.50 KB
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG - 
+Paper #3:
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   Title: A General Theory of Risk Sharing
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   Authors: Vasily Melnikov
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   Category: q-fin.RM
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.19276v1
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   File: data\full_corpus\q-fin\a-general-theory-of-risk-sharing.pdf
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   File size: 353.31 KB
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG - 
+Paper #4:
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   Title: Comparative analysis of financial data differentiation techniques using
+  LSTM neural network
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   Category: q-fin.ST
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.19243v1
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   File: data\full_corpus\q-fin\comparative-analysis-of-financial-data-differentiation-techniques-using-lstm-neural-network.pdf
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   File size: 4254.43 KB
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG - 
+Paper #5:
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   Title: Hybrid Models for Financial Forecasting: Combining Econometric, Machine
+  Learning, and Deep Learning Models
+2025-05-27 04:59:35,947 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-27 04:59:35,947 - ArxivCollector - DEBUG -   Category: q-fin.TR
+2025-05-27 04:59:35,947 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.19617v1
+2025-05-27 04:59:35,947 - ArxivCollector - DEBUG -   File: data\full_corpus\q-fin\hybrid-models-for-financial-forecasting-combining-econometric-machine-learning-and-deep-learning-models.pdf
+2025-05-27 04:59:35,947 - ArxivCollector - DEBUG -   File size: 5045.39 KB
+2025-05-27 04:59:35,948 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-27 04:59:35,948 - ArxivCollector - INFO - Summary: 5 out of 5 papers have valid files

@@ -1,0 +1,124 @@
+# Update to CryptoFinanceCorpusBuilder/cli/crypto_corpus_cli.py
+# we will have to Add these imports and commands to your existing CLI
+
+import argparse
+from CryptoFinanceCorpusBuilder.processors.corpus_balancer import (
+    CorpusAnalyzer, CorpusRebalancer, CorpusVisualizer, CorpusBalancerCLI
+)
+
+def add_corpus_balancer_commands(subparsers):
+    """Add corpus balancer commands to existing CLI."""
+    
+    # Analyze command
+    analyze_parser = subparsers.add_parser(
+        'analyze-balance', 
+        help='Analyze corpus balance and generate reports'
+    )
+    analyze_parser.add_argument(
+        '--corpus-dir', 
+        required=True, 
+        help='Path to corpus directory'
+    )
+    analyze_parser.add_argument(
+        '--output-dir', 
+        default='balance_reports',
+        help='Output directory for reports and visualizations'
+    )
+    analyze_parser.add_argument(
+        '--no-report', 
+        action='store_true',
+        help='Skip generating detailed report'
+    )
+    analyze_parser.add_argument(
+        '--no-dashboard', 
+        action='store_true',
+        help='Skip generating interactive dashboard'
+    )
+    analyze_parser.add_argument(
+        '--force-refresh', 
+        action='store_true',
+        help='Force re-analysis even if cached results exist'
+    )
+    analyze_parser.set_defaults(func=handle_analyze_balance)
+    
+    # Rebalance command
+    rebalance_parser = subparsers.add_parser(
+        'rebalance', 
+        help='Create and execute corpus rebalancing plan'
+    )
+    rebalance_parser.add_argument(
+        '--corpus-dir', 
+        required=True, 
+        help='Path to corpus directory'
+    )
+    rebalance_parser.add_argument(
+        '--strategy', 
+        choices=['quality_weighted', 'stratified', 'synthetic'],
+        default='quality_weighted',
+        help='Rebalancing strategy to use'
+    )
+    rebalance_parser.add_argument(
+        '--execute', 
+        action='store_true',
+        help='Execute the plan (default is dry-run only)'
+    )
+    rebalance_parser.add_argument(
+        '--output-dir', 
+        default='balance_reports',
+        help='Output directory for reports'
+    )
+    rebalance_parser.set_defaults(func=handle_rebalance)
+
+def handle_analyze_balance(args):
+    """Handle analyze-balance command."""
+    balancer_cli = CorpusBalancerCLI()
+    return balancer_cli.analyze_command(
+        corpus_dir=args.corpus_dir,
+        output_dir=args.output_dir,
+        generate_report=not args.no_report,
+        create_dashboard=not args.no_dashboard
+    )
+
+def handle_rebalance(args):
+    """Handle rebalance command."""
+    balancer_cli = CorpusBalancerCLI()
+    return balancer_cli.rebalance_command(
+        corpus_dir=args.corpus_dir,
+        strategy=args.strategy,
+        dry_run=not args.execute,
+        output_dir=args.output_dir
+    )
+
+# Update main() function in crypto_corpus_cli.py
+def main():
+    """Main CLI entry point - UPDATE EXISTING FUNCTION"""
+    parser = argparse.ArgumentParser(description='Crypto-Finance Corpus Builder')
+    subparsers = parser.add_subparsers(dest='command', required=True)
+
+    # Existing commands (collect, process, stats, report)
+    # ... existing code ...
+
+    # Add corpus balancer commands
+    add_corpus_balancer_commands(subparsers)
+
+    args = parser.parse_args()
+
+    # Handle existing commands
+    if args.command == 'collect':
+        # ... existing code ...
+        pass
+    elif args.command == 'process':
+        # ... existing code ...
+        pass
+    elif args.command == 'stats':
+        # ... existing code ...
+        pass
+    elif args.command == 'report':
+        # ... existing code ...
+        pass
+    # Handle new corpus balancer commands
+    elif args.command in ['analyze-balance', 'rebalance']:
+        return args.func(args)
+
+if __name__ == '__main__':
+    sys.exit(main())

@@ -1,0 +1,318 @@
+environment: test
+
+environments:
+  test:
+    corpus_dir: "G:/ai_trading_dev/data/test_corpus"
+    cache_dir: "G:/ai_trading_dev/data/test_cache"
+    log_dir: "G:/ai_trading_dev/data/test_logs"
+  production:
+    corpus_dir: "G:/ai_trading_dev/data/corpus"
+    cache_dir: "G:/ai_trading_dev/data/cache"
+    log_dir: "G:/ai_trading_dev/data/logs"
+
+# Directory structure configuration
+directories:
+  raw_data: "raw_data"
+  extracted: "extracted"
+  processed: "processed"
+  reports: "reports"
+  logs: "logs"
+  cache: "cache"
+  temp: "temp"
+
+collectors:
+  scidb:
+    enabled: true
+    max_results_per_term: 2
+    delay_range: [1, 3]
+    output_dir: "{corpus_dir}/raw_data/scidb"
+    domains:
+      - "crypto_derivatives"
+      - "high_frequency_trading"
+    domain_mapping:
+      crypto_derivatives: ["crypto derivatives", "bitcoin futures"]
+      high_frequency_trading: ["high frequency trading", "algorithmic trading"]
+    quality_checks:
+      min_file_size: 10000
+      max_file_size: 10000000
+      allowed_extensions: [".pdf"]
+      min_papers: 2
+      max_retries: 2
+      timeout: 15
+  
+  arxiv:
+    enabled: true
+    max_results: 2
+    categories:
+      - "q-fin.CP"
+      - "q-fin.PM"
+    delay_range: [1, 3]
+    output_dir: "{corpus_dir}/raw_data/arxiv"
+    domains:
+      - "crypto_derivatives"
+      - "high_frequency_trading"
+    domain_mapping:
+      crypto_derivatives: ["crypto derivatives", "bitcoin futures"]
+      high_frequency_trading: ["high frequency trading", "algorithmic trading"]
+    quality_checks:
+      min_file_size: 10000
+      max_file_size: 10000000
+      allowed_extensions: [".pdf"]
+      min_papers: 2
+      max_retries: 2
+      timeout: 15
+  
+  github:
+    enabled: true
+    max_results: 2
+    topics:
+      - "cryptocurrency"
+      - "trading-bot"
+    delay_range: [1, 3]
+    output_dir: "{corpus_dir}/raw_data/github"
+    domains:
+      - "crypto_derivatives"
+      - "high_frequency_trading"
+    domain_mapping:
+      crypto_derivatives: ["crypto-derivatives", "perpetual-swap"]
+      high_frequency_trading: ["high-frequency-trading", "algo-trading"]
+    quality_checks:
+      min_stars: 10
+      min_forks: 5
+      allowed_languages: ["Python", "JavaScript"]
+      min_repos: 2
+      max_retries: 2
+      timeout: 15
+
+  annas_main_library:
+    enabled: true
+    max_results: 2
+    delay_range: [1, 3]
+    output_dir: "{corpus_dir}/raw_data/annas"
+    domains:
+      - "crypto_derivatives"
+      - "high_frequency_trading"
+    domain_mapping:
+      crypto_derivatives: ["crypto derivatives", "bitcoin futures"]
+      high_frequency_trading: ["high frequency trading", "algorithmic trading"]
+    quality_checks:
+      min_file_size: 10000
+      max_file_size: 10000000
+      allowed_extensions: [".pdf"]
+      min_papers: 2
+      max_retries: 2
+      timeout: 15
+
+extractors:
+  pdf:
+    enabled: true
+    min_tokens: 100
+    quality_threshold: 0.7
+    chunk_size: 500
+    overlap: 100
+    input_dir: "{corpus_dir}/raw_data"
+    output_dir: "{corpus_dir}/extracted/pdf"
+    domains:
+      - "crypto_derivatives"
+      - "high_frequency_trading"
+    processing:
+      max_workers: 2
+      batch_size: 5
+      timeout: 150
+
+  nonpdf:
+    enabled: true
+    min_tokens: 50
+    quality_threshold: 0.6
+    chunk_size: 400
+    overlap: 75
+    input_dir: "{corpus_dir}/raw_data"
+    output_dir: "{corpus_dir}/extracted/nonpdf"
+    domains:
+      - "crypto_derivatives"
+      - "high_frequency_trading"
+    processing:
+      max_workers: 2
+      batch_size: 5
+      timeout: 150
+
+processors:
+  quality_control:
+    enabled: true
+    min_token_count: 100
+    language_detection:
+      enabled: true
+      min_confidence: 0.8
+      supported_languages: ["en"]
+    duplicate_detection:
+      enabled: true
+      similarity_threshold: 0.8
+  
+  corpus_balancer:
+    enabled: true
+    min_entropy: 2.0
+    max_gini: 0.7
+    min_samples_per_domain: 5
+    max_samples_per_domain: 100
+  
+  specialized_processors:
+    chart_extractor:
+      enabled: true
+      min_chart_size: [100, 100]
+      max_chart_size: [1000, 1000]
+    
+    formula_extractor:
+      enabled: true
+      min_formula_length: 10
+      max_formula_length: 1000
+
+corpus_manager:
+  metadata:
+    file_location: "data/test_output/metadata.json"
+    backup_dir: "data/test_output/backups"
+    retention_days: 7
+    auto_backup: true
+    backup_interval: 3600
+  
+  statistics:
+    enabled: true
+    update_interval: 300
+    metrics:
+      token_counts: true
+      file_types: true
+      languages: true
+      quality_flags: true
+      date_ranges: true
+      domain_balance: true
+      document_sizes: true
+      authors: true
+      sources: true
+      duplicates: true
+  
+  thresholds:
+    min_tokens: 100
+    min_quality_score: 0.7
+    max_duplicate_ratio: 0.2
+    min_domain_entropy: 2.0
+    max_domain_gini: 0.7
+  
+  reporting:
+    output_dir: "data/test_output/reports"
+    formats:
+      - "json"
+      - "csv"
+      - "html"
+    charts:
+      enabled: true
+      types:
+        - "domain_distribution"
+        - "quality_metrics"
+        - "temporal_trends"
+    schedule: "daily"
+  
+  processing:
+    max_workers: 4
+    batch_size: 10
+    timeout: 300
+    retry_attempts: 3
+    retry_delay: 5
+
+domains:
+  crypto_derivatives:
+    allocation: 0.2
+    min_documents: 100
+    priority: "high"
+    quality_threshold: 0.8
+    target_weight: 0.2
+    search_terms:
+      - "cryptocurrency derivatives"
+      - "bitcoin futures"
+      - "crypto options"
+      - "perpetual swap"
+      - "funding rate"
+      - "basis trading"
+      - "crypto derivatives pricing"
+  
+  high_frequency_trading:
+    allocation: 0.15
+    min_documents: 80
+    priority: "high"
+    quality_threshold: 0.85
+    target_weight: 0.15
+    search_terms:
+      - "high frequency trading cryptocurrency"
+      - "algorithmic crypto trading"
+      - "low latency trading blockchain"
+      - "market making algorithms crypto"
+  
+  portfolio_construction:
+    allocation: 0.1
+    min_documents: 50
+    priority: "medium"
+    quality_threshold: 0.75
+    target_weight: 0.1
+    search_terms:
+      - "crypto portfolio construction"
+      - "bitcoin asset allocation"
+      - "digital asset correlation"
+      - "crypto diversification"
+  
+  decentralized_finance:
+    allocation: 0.12
+    min_documents: 70
+    priority: "medium"
+    quality_threshold: 0.75
+    target_weight: 0.12
+    search_terms:
+      - "defi protocols"
+      - "automated market maker design"
+      - "yield optimization strategies"
+      - "liquidity mining"
+  
+  market_microstructure:
+    allocation: 0.15
+    min_documents: 60
+    priority: "medium"
+    quality_threshold: 0.75
+    target_weight: 0.15
+    search_terms:
+      - "crypto market microstructure"
+      - "order book dynamics"
+      - "liquidity provision blockchain"
+      - "market impact crypto"
+  
+  regulation_compliance:
+    allocation: 0.05
+    min_documents: 30
+    priority: "medium"
+    quality_threshold: 0.9
+    target_weight: 0.05
+    search_terms:
+      - "cryptocurrency regulation"
+      - "crypto compliance framework"
+      - "digital asset taxation"
+      - "crypto KYC AML"
+  
+  valuation_models:
+    allocation: 0.08
+    min_documents: 40
+    priority: "low"
+    quality_threshold: 0.7
+    target_weight: 0.08
+    search_terms:
+      - "token valuation models"
+      - "cryptocurrency fundamental analysis"
+      - "on-chain metrics valuation"
+      - "crypto DCF"
+  
+  risk_management:
+    allocation: 0.15
+    min_documents: 90
+    priority: "high"
+    quality_threshold: 0.8
+    target_weight: 0.15
+    search_terms:
+      - "cryptocurrency risk models"
+      - "crypto portfolio hedging"
+      - "defi risk management"
+      - "crypto VaR" 

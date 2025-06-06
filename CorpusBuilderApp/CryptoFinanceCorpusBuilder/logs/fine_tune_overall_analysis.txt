@@ -1,0 +1,17 @@
+## Overall Fine‑Tune Diagnostic (2025‑04‑19)
+
+Observed recurring deficiencies in fine‑tuned GPT‑3.5 answers:
+
+1. Mathematical formulations frequently missing or incomplete
+2. Theoretical frameworks lack depth and rigor
+3. Practical implementation details often omitted
+4. Empirical evidence and concrete examples insufficient
+5. Comparative analyses lack thoroughness and specificity
+6. Validation methodologies under‑detailed
+7. Length ratio especially poor on technical topics
+8. Even when longer, key conceptual details still absent
+
+=> Action items:
+   • Augment dataset with ~200 Q&A focused on math rigor, examples, empirical studies
+   • Include chain‑of‑thought exemplars and explicit formula derivations
+   • Strengthen system prompt: “Provide mathematical derivations, empirical citations…”

@@ -1,0 +1,139 @@
+Official Documentation for the Binance Spot APIs and S treams
+ 4.3k stars  1.4k forks  277 watching  Branches
+ Tags Activity  Custom properties
+Public repository
+31 Branches 0 T ags Go to file
+ t Go to file Add file
+ Code
+adderall-pr ozac Typo on the sbe_schema_lifecycle. This is to match with the changelog…
+18fbe67  · 2 days ago
+faqs Updated SPO T Glossary and clarified … 3 days ago
+fix/schemas Updated SPO T FIX OE for T estnet Apr … 2 weeks ago
+sbe/schemas Typo on the sbe_schema_lifecycle. Th … 2 days ago
+testnet Fixed some type inconsistencies and … 2 days ago
+.gitignore first commit, add API documents 5 years ago
+CHANGEL OG.md Updated typo on the FIX Connection … last week
+CHANGEL OG_CN.md Updated typo on the FIX Connection … last week
+PROD-TERMS-OF-USE.md Added T erms of Use 2 weeks ago
+PROD-TERMS-OF-USE_CN.md Added T erms of Use 2 weeks ago
+README.md Added FIX Connector to the README … last week
+README_CN.md Added FIX Connector to the README … last week
+enums.md Added links to SPO T glossary. Format … last week
+enums_CN.md Added links to SPO T glossary. Format … last week
+errors.md Updated on error -2039 last week
+errors_CN.md Updated on error -2039 last week
+filters.md Updated Filters for March 2023 2 years ago
+filters_CN.md Added anchor link to filters CN 4 months ago
+fix-api.md Updating the FIX payloads. No functi … last week
+fix-api_CN.md Updating the FIX payloads. No functi … last week
+rest-api.md Fixed some type inconsistencies and … 2 days ago
+Added link to Order Amend F AQ. No … 2 days agobinance  /
+binance-spot -api-docs
+Code Pull requests 1 Actions Security Insights4/17/25, 12:53 AM binance/binance-spot-api-docs: Official Documentation for the Binance Spot APIs and Streams
+https://github.com/binance/binance-spot-api-docs 1/5
+rest-api_CN.md
+sbe-market-data-streams.md SBE Market Data T ypo 3 weeks ago
+sbe-market-data-streams_CN. … Updated SBE Market Data S tream CN … last week
+user-data-stream.md Updated SPO T Glossary and clarified … 3 days ago
+user-data-stream_CN.md Updated SPO T Glossary and clarified … 3 days ago
+web-socket-api.md Fixed some type inconsistencies and … 2 days ago
+web-socket-api_CN.md Fixed some type inconsistencies and … 2 days ago
+web-socket-streams.md Update spelling of W ebSocket for co … last week
+web-socket-streams_CN.md Update spelling of W ebSocket for co … last week
+
+Official Announcements regarding changes, downtime, etc. to the API and S treams will be reported here:
+https://t.me/binance_api_announcements
+Streams, endpoints, parameters, payloads, etc. described in the documents in this repository are considered
+official  and suppor ted.
+The use of any other streams, endpoints, parameters, or payloads, etc. is not suppor ted; use them at y our
+own risk and with no guarant ees.
+Name Description
+enums.md Details on the enums used by REST and W ebSocket API
+errors.md Error codes and messages of Spot API
+filters.md Details on the filters used by Spot API
+rest-api.md Spot REST API ( /api)
+web-socket-api.md Spot W ebSocket API
+fix-api.md FIX API
+web-socket-streams.md Spot Market Data W ebSocket streams
+user-data-stream.md Spot User Data W ebSocket streams
+sbe_schemas Spot Simple Binary Encoding (SBE) schemas
+testnet API docs for features available only on SPO T Testnet
+Margin T rading Details on Margin T rading
+Derivative UM Futures Details on Derivative UM Futures ( /fapi)
+Derivative CM Futures Details on Derivative CM Futures ( /dapi)
+Derivative Options Details on Derivative European Options ( /eapi)Official Documentation for the Binance APIs and
+Streams.README4/17/25, 12:53 AM binance/binance-spot-api-docs: Official Documentation for the Binance Spot APIs and Streams
+https://github.com/binance/binance-spot-api-docs 2/5
+Name Description
+Derivative P ortfolio Margin Details on Derivative P ortfolio Margin ( /papi)
+Wallet Details on W allet endpoints ( /sapi)
+Sub Account Details on Sub-Account requests ( /sapi)
+Simple Earn Details on Simple Earn
+Dual Investment Details on Dual Investment
+Auto Invest Details on Auto Invest
+Staking Details on S taking
+Mining Details on Mining
+Algo T rading Details on Algo T rading
+Copy T rading Details on Copy T rading
+Porfolio Margin Pro Details on P ortfolio Margin Pro
+Fiat Details on Fiat
+C2C Details on C2C
+VIP Loan Details on VIP Loan
+Crypto Loan Details on Crypto Loan
+Pay Details on Binance P ay
+Convert Details on Convert API
+Rebate Details on Spot R ebate
+NFT Details on NFT requests
+Gift Card Details on Gift Card API
+Name Description
+spot_glossary Definition of terms used in the API
+commissions_faq Explaining commission calculations on the API
+trailing-stop-faq Detailed Information on the behavior of T railing S tops on the API
+stp_faq Detailed Information on the behavior of Self T rade Prevention (aka STP) on the API
+market-data-only Information on our market data only API and websocket streams.
+sor_faq Smart Order R outing (SOR)
+order_count_decrement Updates to the Spot Order Count Limit Rules.
+sbe_faq Information on the implementation of Simple Binary Encoding (SBE) on the API
+Please refer to CHANGEL OG for latest changes on our APIs and S treamers.FAQ
+Change log4/17/25, 12:53 AM binance/binance-spot-api-docs: Official Documentation for the Binance Spot APIs and Streams
+https://github.com/binance/binance-spot-api-docs 3/5
+
+Postman Collections
+Postman collections are available, and they are recommended for new users seeking a quick and easy
+start with the API.
+Connectors
+The following are lightweight libraries that work as connectors to the Binance public API, written in
+different languages:
+Python
+Node.js
+Ruby
+DotNET C#
+Java
+Rust
+PHP
+Go
+TypeScript
+FIX Connector - This provides access to the exchange using the FIX protocol.
+Python
+Swagger
+A YAML file with OpenAPI specification for the REST ful API is available, along with a S wagger UI page for
+reference.
+Spot T estnet
+Users can use the SPO T Testnet to practice SPO T trading.
+Currently, this is only available via the API.
+Only endpoints starting with /api/* are supported, /sapi/* is not supported.
+Binance API T elegram Group
+For any questions regarding sudden drop in performance with the API and/or W ebsockets.
+For any general questions about the API not covered in the documentation.
+Binance Developers
+For any questions/help regarding code implementation with API and/or W ebsockets.
+Binance Customer Support
+Releases
+No releases published
+Packages
+No packages publishedUseful R esour ces
+Contact Us4/17/25, 12:53 AM binance/binance-spot-api-docs: Official Documentation for the Binance Spot APIs and Streams
+https://github.com/binance/binance-spot-api-docs 4/5
+Contribut ors18
++ 4 contributors4/17/25, 12:53 AM binance/binance-spot-api-docs: Official Documentation for the Binance Spot APIs and Streams
+https://github.com/binance/binance-spot-api-docs 5/5

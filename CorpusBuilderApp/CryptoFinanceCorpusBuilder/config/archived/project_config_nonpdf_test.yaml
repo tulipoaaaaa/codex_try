@@ -1,0 +1,10 @@
+# Test YAML config for non-PDF processor test
+root_dir: G:/ai_trading_dev/data/test_output/nonpdf_extractor_test
+raw_data_dir: G:/ai_trading_dev/data/test_collect/test_fourfiles
+extracted_dir: G:/ai_trading_dev/data/test_output/nonpdf_extractor_test/extracted
+pdf_extracted_dir: G:/ai_trading_dev/data/test_output/nonpdf_extractor_test/pdf_extracted
+nonpdf_extracted_dir: G:/ai_trading_dev/data/test_output/nonpdf_extractor_test
+logs_dir: G:/ai_trading_dev/data/test_output/nonpdf_extractor_test/logs
+config_dir: G:/ai_trading_dev/data/test_output/nonpdf_extractor_test/config
+balance_reports_dir: G:/ai_trading_dev/data/test_output/nonpdf_extractor_test/balance_reports
+cache_dir: G:/ai_trading_dev/data/test_output/nonpdf_extractor_test/cache 

@@ -1,0 +1,36 @@
+# Formula extraction configuration
+formula_patterns:
+  - pattern: '\$.*?\$'  # Inline math
+    type: 'inline'
+    description: 'Inline mathematical formulas'
+  - pattern: '\\begin\{.*?\}.*?\\end\{.*?\}'  # Display math
+    type: 'display'
+    description: 'Display mathematical formulas'
+  - pattern: '\\\(.*?\\\)'  # Inline math
+    type: 'inline'
+    description: 'Alternative inline math'
+  - pattern: '\\\[.*?\\\]'  # Display math
+    type: 'display'
+    description: 'Alternative display math'
+
+# Formula processing settings
+formula_processing:
+  preserve_context: true  # Keep surrounding text for context
+  extract_equations: true  # Extract standalone equations
+  extract_inequalities: true  # Extract inequalities
+  extract_sets: true  # Extract set notation
+  extract_matrices: true  # Extract matrix notation
+
+# Formula output settings
+formula_output:
+  include_position: true  # Include start/end positions
+  include_type: true  # Include formula type
+  include_context: true  # Include surrounding context
+  include_metadata: true  # Include additional metadata
+
+# Formula validation settings
+formula_validation:
+  min_length: 3  # Minimum formula length
+  max_length: 1000  # Maximum formula length
+  require_balanced: true  # Require balanced delimiters
+  check_syntax: true  # Check basic LaTeX syntax 

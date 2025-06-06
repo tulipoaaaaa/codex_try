@@ -1,0 +1,228 @@
+UI/UX Improvement Strategy
+Modern Dark Theme Implementation
+The current application requires a comprehensive dark theme upgrade to match modern web application aesthetics. Based on current best practices for PySide6 theming, the implementation should utilize PyQtDarkTheme or similar modern theming libraries.
+
+python
+import qdarktheme
+from PySide6.QtWidgets import QApplication
+
+# Apply modern dark theme
+def apply_modern_theme(app: QApplication):
+    # Use PyQtDarkTheme for consistent modern appearance
+    qdarktheme.setup_theme("dark")
+    
+    # Custom QSS for specific components
+    custom_styles = """
+    QMainWindow {
+        background-color: #1e1e1e;
+        color: #ffffff;
+    }
+    
+    QTabWidget::pane {
+        border: 1px solid #404040;
+        background-color: #2d2d2d;
+        border-radius: 8px;
+    }
+    
+    QTabBar::tab {
+        background-color: #404040;
+        color: #ffffff;
+        padding: 8px 16px;
+        margin-right: 2px;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+    
+    QTabBar::tab:selected {
+        background-color: #0078d4;
+        color: #ffffff;
+    }
+    
+    QPushButton {
+        background-color: #0078d4;
+        color: #ffffff;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 6px;
+        font-weight: bold;
+    }
+    
+    QPushButton:hover {
+        background-color: #106ebe;
+    }
+    
+    QPushButton:pressed {
+        background-color: #005a9e;
+    }
+    
+    QTableWidget {
+        background-color: #2d2d2d;
+        alternate-background-color: #3d3d3d;
+        selection-background-color: #0078d4;
+        gridline-color: #404040;
+        border: 1px solid #404040;
+        border-radius: 6px;
+    }
+    
+    QHeaderView::section {
+        background-color: #404040;
+        color: #ffffff;
+        padding: 8px;
+        border: none;
+        font-weight: bold;
+    }
+    """
+    
+    app.setStyleSheet(custom_styles)
+Enhanced Chart Visualization
+The Analytics tab requires significant improvements to chart presentation and interactivity. Modern chart implementations should leverage QCharts with proper styling and responsive design.
+
+python
+from PySide6.QtCharts import QChart, QChartView, QPieSeries, QBarSeries, QBarSet
+from PySide6.QtGui import QPainter, QColor
+from PySide6.QtCore import Qt
+
+class ModernChartView(QChartView):
+    def __init__(self, parent=None):
+        super().__init__(parent)
+        self.setRenderHint(QPainter.Antialiasing)
+        self.setupModernStyling()
+    
+    def setupModernStyling(self):
+        # Apply modern chart styling
+        self.setStyleSheet("""
+            QChartView {
+                background-color: #2d2d2d;
+                border: 1px solid #404040;
+                border-radius: 8px;
+            }
+        """)
+
+class AnalyticsChartManager:
+    def __init__(self):
+        self.color_palette = [
+            QColor("#0078d4"), QColor("#00bcf2"), QColor("#40e0d0"),
+            QColor("#7b68ee"), QColor("#ff6b6b"), QColor("#4ecdc4"),
+            QColor("#45b7d1"), QColor("#96ceb4"), QColor("#feca57")
+        ]
+    
+    def create_document_type_pie_chart(self, document_counts: dict):
+        """Create modern pie chart for document type distribution"""
+        series = QPieSeries()
+        
+        for i, (doc_type, count) in enumerate(document_counts.items()):
+            slice_item = series.append(f"{doc_type} ({count})", count)
+            slice_item.setBrush(self.color_palette[i % len(self.color_palette)])
+            slice_item.setLabelVisible(True)
+        
+        chart = QChart()
+        chart.addSeries(series)
+        chart.setTitle("Document Type Distribution")
+        chart.setTitleFont(QFont("Arial", 14, QFont.Bold))
+        chart.setBackgroundBrush(QColor("#2d2d2d"))
+        chart.setTitleBrush(QColor("#ffffff"))
+        chart.legend().setColor(QColor("#ffffff"))
+        
+        return chart
+    
+    def create_folder_size_bar_chart(self, folder_data: dict):
+        """Create modern bar chart for folder size analysis"""
+        set0 = QBarSet("Document Count")
+        set1 = QBarSet("Total Size (MB)")
+        
+        categories = []
+        for folder, data in folder_data.items():
+            categories.append(folder)
+            set0.append(data['count'])
+            set1.append(data['size_mb'])
+        
+        set0.setColor(self.color_palette[0])
+        set1.setColor(self.color_palette[1])
+        
+        series = QBarSeries()
+        series.append(set0)
+        series.append(set1)
+        
+        chart = QChart()
+        chart.addSeries(series)
+        chart.setTitle("Folder Analysis")
+        chart.setBackgroundBrush(QColor("#2d2d2d"))
+        chart.setTitleBrush(QColor("#ffffff"))
+        
+        return chart
+Responsive Layout Management
+Implementation of proper responsive layouts ensures optimal viewing across different screen sizes and resolutions.
+
+python
+class ResponsiveAnalyticsTab(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setupUI()
+    
+    def setupUI(self):
+        main_layout = QVBoxLayout(self)
+        
+        # Top metrics row
+        metrics_layout = QHBoxLayout()
+        
+        # Create metric cards
+        total_docs_card = self.create_metric_card("Total Documents", "0", "#0078d4")
+        total_size_card = self.create_metric_card("Total Size", "0 MB", "#00bcf2")
+        avg_size_card = self.create_metric_card("Average Size", "0 KB", "#40e0d0")
+        
+        metrics_layout.addWidget(total_docs_card)
+        metrics_layout.addWidget(total_size_card)
+        metrics_layout.addWidget(avg_size_card)
+        
+        main_layout.addLayout(metrics_layout)
+        
+        # Charts section with splitter for responsive design
+        charts_splitter = QSplitter(Qt.Horizontal)
+        
+        # Pie chart container
+        pie_container = QWidget()
+        pie_layout = QVBoxLayout(pie_container)
+        pie_layout.addWidget(QLabel("Document Distribution"))
+        self.pie_chart_view = ModernChartView()
+        pie_layout.addWidget(self.pie_chart_view)
+        
+        # Bar chart container
+        bar_container = QWidget()
+        bar_layout = QVBoxLayout(bar_container)
+        bar_layout.addWidget(QLabel("Folder Analysis"))
+        self.bar_chart_view = ModernChartView()
+        bar_layout.addWidget(self.bar_chart_view)
+        
+        charts_splitter.addWidget(pie_container)
+        charts_splitter.addWidget(bar_container)
+        charts_splitter.setSizes([400, 400])
+        
+        main_layout.addWidget(charts_splitter)
+    
+    def create_metric_card(self, title: str, value: str, color: str):
+        """Create modern metric display cards"""
+        card = QFrame()
+        card.setStyleSheet(f"""
+            QFrame {{
+                background-color: #3d3d3d;
+                border: 2px solid {color};
+                border-radius: 8px;
+                padding: 16px;
+            }}
+            QLabel {{
+                color: #ffffff;
+                font-weight: bold;
+            }}
+        """)
+        
+        layout = QVBoxLayout(card)
+        title_label = QLabel(title)
+        title_label.setFont(QFont("Arial", 10))
+        value_label = QLabel(value)
+        value_label.setFont(QFont("Arial", 16, QFont.Bold))
+        value_label.setStyleSheet(f"color: {color};")
+        
+        layout.addWidget(title_label)
+        layout.addWidget(value_label)
+        
+        return card

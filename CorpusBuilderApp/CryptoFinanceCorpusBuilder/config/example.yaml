@@ -1,0 +1,17 @@
+account_address: "0xYOUR_TESTNET_ADDRESS_HERE"
+
+queue:
+  mid_maxsize: 10000
+
+vault_path: /app/vault.json
+
+risk:
+  max_notional_per_asset: 50    # Max position size $50
+  max_daily_drawdown_pct: 5     # Max loss per day = 5%
+
+strategies:
+  - type: breakout
+    asset: ETH
+    params:
+      threshold_pct: 0.003   # Breakout if price moves 0.3% from recent high
+      window: "15m"          # 15 minute breakout window

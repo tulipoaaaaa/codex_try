@@ -1,0 +1,2814 @@
+{
+  "title": "",
+  "author": "",
+  "subject": "",
+  "creator": "pdftk 1.44 - www.pdftk.com",
+  "producer": "itext-paulo-155 (itextpdf.sf.net-lowagie.com)",
+  "creation_date": "D:20130724210455+02'00'",
+  "modification_date": "D:20130724210455+02'00'",
+  "domain": "crypto_derivatives",
+  "quality_metrics": {
+    "language_confidence": {
+      "language": "en",
+      "language_confidence": 0.9999979117790584,
+      "mixed_language_flag": true,
+      "mixed_languages": [
+        "en"
+      ],
+      "reasons": [
+        "Mixed languages detected: [('en', 0.9864864864864865)]"
+      ],
+      "severity": "warning"
+    },
+    "corruption": {
+      "corruption_flag": false,
+      "corruption_score": 40,
+      "corruption_score_normalized": 40,
+      "corruption_reasons": [
+        "Found corruption markers: , error",
+        "High ratio of replacement characters (possible encoding issue)"
+      ],
+      "severity": "warning"
+    },
+    "machine_translation": {
+      "machine_translated_flag": true,
+      "machine_translation_score": 45,
+      "machine_translation_reasons": [
+        "High n-gram repetition: 'John Wiley &' (5 times)",
+        "High n-gram repetition: 'Wiley & Sons,' (4 times)",
+        "High n-gram repetition: 'as well as' (4 times)",
+        "High n-gram repetition: 'of statistical arbitrage.' (4 times)",
+        "High n-gram repetition: 'the nature of' (4 times)",
+        "High n-gram repetition: 'nature of the' (4 times)",
+        "High n-gram repetition: 'of statistical arbitrage' (4 times)",
+        "High ratio of sentences missing articles: 0.92",
+        "High rare word ratio: 0.75"
+      ],
+      "machine_translation_severity": "critical",
+      "machine_translation_confidence": 0.9
+    },
+    "academic_analysis": {
+      "is_academic_paper": true,
+      "confidence": 0.6,
+      "score": 9,
+      "indicators_found": [
+        "abstract",
+        "introduction",
+        "results",
+        "discussion",
+        "conclusion",
+        "references",
+        "bibliography",
+        "acknowledgments",
+        "appendix"
+      ],
+      "citation_count": 0,
+      "recommended_thresholds": {
+        "min_tokens": 200,
+        "low_quality_tokens": 1000,
+        "reference_density_max": 0.15,
+        "citation_density_max": 0.1,
+        "formula_density_max": 0.2,
+        "table_density_max": 0.15,
+        "min_sections": 3,
+        "bibliography_required": true
+      }
+    },
+    "content_validation": {
+      "passes_academic_standards": true,
+      "issues": [],
+      "adjustments_made": [
+        "Reference density within academic norms"
+      ]
+    },
+    "symbol_richness": {
+      "total_symbols": 63,
+      "unique_symbols": 20,
+      "financial_symbols": 0
+    },
+    "min_tokens": 200,
+    "quality_threshold": 0.8,
+    "table_threshold": 0.6,
+    "formula_threshold": 0.7,
+    "low_quality_tokens": 1000,
+    "reference_density_max": 0.15,
+    "citation_density_max": 0.1,
+    "formula_density_max": 0.2,
+    "table_density_max": 0.15,
+    "min_sections": 3,
+    "bibliography_required": true,
+    "extraction_quality": {
+      "tables_detected": false,
+      "formulas_detected": true,
+      "charts_detected": true,
+      "symbols_detected": true,
+      "token_count": 4815,
+      "quality_flag": "ok",
+      "is_academic_paper": true,
+      "academic_confidence": 0.6
+    }
+  },
+  "is_scientific_paper": true,
+  "content_hash": "6402422e4563a21b19bb25a0f5174d82",
+  "file_size": 179693,
+  "extraction_date": "2025-05-26T14:13:40.605016+00:00",
+  "enhancement_results": {
+    "formulas": {
+      "formulas": [
+        {
+          "formula": "Founded in 1807, John Wiley & Sons is the oldest independent\npublishing company in the United States. With offices in North\nAmerica, Europe, Australia, and Asia. Wiley is globally committed\nto developing and marketing print and clectronic products and\nservices for our customers\u2019 professional and personal knowledge and\nunderstanding,\n\n\u2018The Wiley Finance series contains books writen specifically for\nfinance and investment professionals as well as sophisticated indi-\nvidual investors and their financial advisors. Book topics range from\nportfolio management to e-commerce, risk management, financial\ncengincering, valuation, and financial instrument analysis, as well as\n\u2018much more.\n\nor a list of available tiles, visit our Web site at wow. Wiley\nFinance.com,",
+          "type": "ocr_image",
+          "page": 4,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 761,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": false,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.1,
+            "source": "ocr_image"
+          }
+        },
+        {
+          "formula": "Protace vi\n\nForeword vk\n\nAcknowledgments or]\nCHAPTER 1\n\n\u2018Monte Caro or Bust 1\n\nBeginning 1\n\nWhither? And Allsions 4\ncHnPTER2\n\n\u2018Statistical Arbitrage a\n\nIntroduction \u00b0\n\nNoise Models 10\n\nReverse Bets un\n\nMuleiple Bets u\n\nRule Calibration fea\n\nSpread Margins for Trade Rules 6\n\nPopcorn Process 18\n\neating Pairs 20\n\nRefining Pair Selection 2\n\nEvent Analysis, 2\n\nCorrelation Search in the Twenty-First Century 26\n\nPontolio Configuration and Risk Contol 26\n\nExposure to Marker Facto 2\u00bb\n\nMarket Impact 30\n\nRisk Contol Using Event Coreelatons 31\n\nDynamics and Calibration 2\n\nEvolutionary Operation: Single Parameter Mustration 34\n\nw",
+          "type": "ocr_image",
+          "page": 9,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 624,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": false,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.05,
+            "source": "ocr_image"
+          }
+        },
+        {
+          "formula": "Tice pase tlt storyof ical arirage ish ahistory,\n\ndescribing the first days ofthe strategy\u2019s genesis at Morgan Stanley\nin the 1980s through the performance challenging years of the early\n\u2018wenty-frst century, and an exegesis of how and why it works. The\npresentation is from first principles and largely remains atthe level\nfof a basic analytical framework. Nearly all temptation to compose\n8 technical treatise has been resisted with the goal of contributing a\n\u2018work that will be readily accessible to the larger portion of interested\nreadership. say \u201cnearly all\u201d: Chapter 7 and che appendix to Chapter\n11 probably belong to the eategory of \u201ctemptation not resisted.\u201d\n\u2018Much of what is dane by more sophisticated practitioners is discussed\n\u2018in conceptual terms, with demonstrations restricted to models that\nwill be familiar to most readers. The notion of a pair trade\u2014the\nprogenitor of statistical arbitrage\u2014is employed to this didactic end\nfather more broadly than actual trading utility admits. In adopting\nthis approach, one runs the risk of the work being dismissed as\n4 pairs trading manual; one\u2019s experince, intent, and. aspirations\nfor the text are more extensive, but the inevitably of the former\nis anticipated. In practical trading terms, the simple, unelaborated\npair scheme is no longer very profitable, nonetheless it remains a\nvaluable tool for explication, retaining the capacity to demonstrate\ninsight, modeling, and analysis while not clouding matters through\ncomplexity. After a quarter century inthe marketplace, for profitable\nschemes beyond paper understanding and illustration, one needs to\nAdd some structural complexity and analytical subtlety.\n\n(One elaboration alluded to in the text isthe assembling of a set\nof similar pairs (without getting into much detail on what metrics\nare used to gauge the degree of similarity), often designated as a\ngroup. Modeling such groups ean be done in several ways, with some\npractitioners preferring to anchor a group on a notional archetype,\n\u2018ructuring forecasts in terms of deviation of tradable pairs from the\narchetype; others create a formal implementation of the cohort as\n\ni",
+          "type": "ocr_image",
+          "page": 15,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 2143,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": false,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.05,
+            "source": "ocr_image"
+          }
+        },
+        {
+          "formula": "fa PREFACE\na gestalt or a synthetic instrument. Both of those approaches, and\n\u2018others, can be formally analyzed as a hierarchical model, greatly\nin vogue (and greatly\u201d productive of insight and application) in\n\u2018mainstream statistical thinking for wo decades; add to the standard\nstatie structure the dynamic clement in a time series setting and one is\nvery quickly building an analytical structure of greater sophistication\nthan routinely used as the didactic rool in this book. Nonetheless,\nall such modeling developments rely on the insight and techniques\ndetailed herein,\n\n\u201cThose readers with deeper knowledge of mathematical and sta-\ntistical science will, hopefully, quickly see where the presentation can\nbe taken,\n\n\u2018Maintaining focus on the structurally simple pair scheme invites\nreaders to treat this book as an explicit \u201chow to\u201d manual. From\nthis perspective, one may learn a reasonable history of the what\nand the how and a decent knowledge of why it is possible. Con-\ntemporary successful execution will require from the reader some\nadditional thought and directed exploration as foregoing remarks\nhhave indicated. For that task, the book serves as a map showing\n\u2018major features and indicating where the reader must get out a com\npass and notebook. The old cartographers\u2019 device \u201cHere be dragons\u201d\n\u2018might be usefully remembered when you venture thus.\n\nThe text has, unashamedly, a statisicin\u2019s viewpoint: Models can\nbbe useful. Maintaining a model's utility is one theme of the book.\n\u2018The statistcian\u2019s preoccupation with understanding variation\u2014the\nappreciation of the knowledge that one's models are wrong, though\nuseful, and that the nature of the wrongness is illuminated by the\nstructure of \u201cerrors\u201d (discrepancies between observations and what\n\u20184 model predicts) is another theme of the book. Or, rather, not a\ndistinct theme, but an overeiding, guiding context for the material\n\nThe notion of a pair trade is introduced in Chapter and\nclaborated upon in Chapter 2. Following explication and exemplifi-\n\u2018ation, two simple theoretical models for the underlying phenomenon\nexploited by pairs, reversion, are proposed. These models are used\nthroughout the text to study what is posible, illuminate how the pos-\nsibilities might be exploited, consider what kinds of change would\nhave negative impact on exploitation, and characterize the nature\nfof the impact. Approaches for selecting a universe of instruments\nfor modeling and trading are described. Consideration of change is",
+          "type": "ocr_image",
+          "page": 16,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 2491,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": false,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.2,
+            "source": "ocr_image"
+          }
+        },
+        {
+          "formula": "a PREFACE\nbeing exploited. Knowledge of the theoretical results often reveals\nitself more when assumptions are violated than when things are hunky\nddory and managers with solid understanding and those operating\nintellectually blind generate postive returns in equal measure, (Tony\n(O'Hagan suggested that the basic probability resule is long known,\nbbut [have been unable to trace it. Pethaps the result is too trivial\nto be a named result and exists asa simple consequence, a textbook\nexercise, of basic distribution theory. No matter, the implication\nremains profoundly significant to the statistical arbitrage story.)\n\nChapter 5 critiques a published article (whose authors remain\nanonymous here to protect their embarrassment) to clarify the broad\nConditions under which the phenomenon of reversion occurs. A cen-\ntral role for the normal distribution is dismissed. The twin erroncous\nclaims tha (a) a price series must exhibit a normal marginal distri-\nbution for reversion to occur, and (b) a series exhibiting a normal\n\u2018marginal distribution necessarily exhibits reversion are unceremo-\nniously dispelled. There is reversion anywhere and everywhere, as\nChapter 4 demonstrates.\n\nChapter 6 answers the question, important for quantifying the\nmagnitude of exploitable opportunities in reversion gambits, \u201cHow\n\u2018much volatility i there ina spread?\u201d\n\n(Chapter 7s forthe enthusiast not easily dissuaded by the presence\nof the many hieroglyphs of the probability calculus. Anyone with\n1 good first course in probability theory can follow the arguments,\nland most can manage the detailed derivations, too. The mechanics\nare not enormously complicated. Some of the conceptual distinctions\n\u2018may be challenging at first\u2014read it ewice! The effort will be repaid\nas there is significant practical insight in the examples considered\nfat length. Knowledge of how close theoretical abstractions come\nto reflecting measurable features of actual price series is invaluable\nin assessing modeling possibilities and simulation or trading resus\n\u2018Notwithstanding that remark, its tre that the remainder ofthe book\ndoes not rely on familiarity with the material in Chapter 7. While\n\u2018you may miss some of the subtlety inthe subsequent discussions, you\n\u2018will not lack understanding for omitting attention to this chapter.\n\nChapters 8 through 10 might have been labeled \u201cThe Fall,\u201d as\nthey characterize the problems that beset statistical arbitrage begin-\nning in 2000 and directly caused the catastrophic drop in return\nduring 2002-2004. An important lesson from this history is that\nthere was not a single condition or set of conditions that abruptly",
+          "type": "ocr_image",
+          "page": 18,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 2631,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": false,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.25,
+            "source": "ocr_image"
+          }
+        },
+        {
+          "formula": "Prtce ni\nchanged in 2000 and thereby eliminated forecast performance of\nStatistical arbiteage models. What story that would be! Far more\ndramatic than the prosaic reality, which ie complex mix of multiple\nCauses aul mings. All he familiar one linet, including decimalia-\ntion, competition, and low volatility, had (and have) their moment,\nbhutnone individually, nor the combination, canhave delivered blow\nto financial markets. Fundamentally altering the peice dynamics of\n\u2018markers in ways that drastically diminish the economic potential in\nreversion schemes, mining value across the spectrum feom the very\nhigh frequency hare of inta-day to the venerable tortoise ofa month\n\nChange upon change upon change cataloged in Chapter 9 is at\nthe root ofthe dearth of reten to statistical arbitage in 20022004\n(Performance deterioration in 2000-2002 was evident but limited\nto a subset of practitioners) This unusual episode in recent US.\n\u2018macroeconomic history is over, but the effects linger in the nancial\nsmarkers reflecting emergent properties ofthe collective behavior of,\nnllions of investors; and surely those investors continue 0 embody,\ntno matter how lingering, those changes and the causes thereof\n\n\u201cThe shift of trading from the floor of the New York Stock\nExchange to internal exchanges, in the guise of computer algo-\nrithms designed by lage brokerage houses and investment banks, bas\ncumulatively become a change with glacicr-ike implacable. Slow\nMassive, Ireisble. Crushing. Reforming A frequently remarked\nfacet of the evolving dynamics i the decline of market volaiiy\nWhere has market volatility gone? In large par the algorithms have\ncatenit. Reduce the voice of single participant yellingin a crowed and\nthe babel is unaffected. Quie a signifiant proportion of participants\nand the reduced babe is oddly deafening. Now that computer pro\u201d\ntrams (Chapter 10} \u201cmanage\u201d over 60 perent of US. equity trades\nmong \u201cthemselves\u201d the extexinary rel is akin to administering,\n4 dose of ritalin tothe hyperactive market child. Inthe commentary\nGm lowe volatility two themes stand out: one ia lament over the lack\nke and the deeopen of Exchange Taed Pande ral the forming aw\nat",
+          "type": "ocr_image",
+          "page": 19,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 2179,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": false,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.25,
+            "source": "ocr_image"
+          }
+        },
+        {
+          "formula": "it PREFACE\nof Keynes\u2019 animal spirits, a concern that the entrepreneurial genius\nfof Ameria is subdued even as Asian giants are stirring; the other is\n4 fear that investors have forgotten the risks inherent in investment\ndecisions, chat inadvisable decisions are therefore being made that\nwill have negative consequences in the near future. The inconsistency\nin those two characterizations is stark, but it can he rationalized.\nContrary to the frst notion, the spirit is quite animated\u2014with a\nbillion and a half shares changing ownership daly on the NYSE mart\nlone, what other conclusion should one draw? There is plenty of\nspirit simply its animus is satisied with less overt fuss. Algorithms\ndon't have emotions. So there is plenty of innovative risk taking,\nbut low volatility by historical standards, induced by trading tech\nnologies, has not yet been properly internalized by many market\nparticipants. Viewing contemporary volatility levels in the manner to\n\u2018which historical experience has been accustomed ineluctably leads to\nexcessive risk taking.\n\nChapter 10 is interesting in its own right, notwithstanding any\nrelationship to the evolution of statistical arbitrage opportunities,\nAlgorithms and computer driven trading are changing the financial\n\u2018world in many ways. Electronic exchanges have already been seen\n\u2018off most ofthe world\u2019s peopled erading places\u2014and who among us\nbelieves that the floor of the NYSE will be more than a museum,\nparking lot, or memory ina year or two?\n\nChapter 11 describes the phoenix of statistical arbitrage, rising\n\u2018out of the ashes ofthe fie created and sustained by the technological\ndevelopments in algorithmic trading. New, sustained patterns of\nstock price dynamics are emerging. The story of statistical arbitrage\nthas retumed to a new beginning. Will this fledgling fly?\n\nThe renaissance predicted in Chapter 11, drafted in 2005, is\nalready coming to pass. Since at least early 2006 there has been a\nresurgence of performance from those practitioners who persisted\nthrough the extremely challenging dynamic changes of 2003-2005.\nInterestingly, while there are new systematic patterns in the move.\nments of relative equity prices, some old patterns have aso regained\npotency. Adoption of algorithmic trading is accelerating, with tools\n\u2018now offered by more than 20 vendors. In another technology driven\ndevelopment, beginning with Goldman Sachs in late 2006, at least\n\u2018wo offerings of general hedge fund replication by algorithmic means\nhave been brought to market. This is an exciting as well as exacting\ntime for statistical arbitrageurs,",
+          "type": "ocr_image",
+          "page": 20,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 2587,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": false,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.05,
+            "source": "ocr_image"
+          }
+        },
+        {
+          "formula": "Foreword\n\n[Mie isin rcs, a in mach of human atv, is\n\npowerful and fundamental force, driving systems and markets\nto homeostatic relationships. Starting in the early 1980s, statistical\narbitrage was a formal and successful attempt to model this behavior\nin the pursuit of profit. Understanding the arithmetic of statistical\narbitrage (sometimes abbreviated as stat. arb.) is a cornerstone to\ntunderstanding the development of what has come to be known as\ncomplex financial engineering and risk modeling,\n\n\u201cThe trading strategy referred to as statistical arbitrage is generally\nregarded as an opaque investment diseipline. The view is that itis\nbeing driven by two complementary forces, both deriving from the\ncore nature of the discipline: the vagueness of practitioners and the\nlack of quantitative knowledge on the part of investors, Statistical\narbitrage exploits mathematical models ro generate returns from\nsystematic movements in securities prices. Granted, no investment\n\u2018manager is inclined to divulge the intricate \u201chow-tos\u201d of his business.\nWhile stock pickers can tell a good story without revealing the heart\nof their decision making, that is not the case with model-based\nstrategies developed by \u201cquants.\u201d A description with any meaningful\ndetail a all quickly points to a series of experiments from which an\nalert listener can try to reverse-engincer the strategy. That is why\n{quant practitioners talkin generalities that are only understandable\nby the mathematically trained.\n\nOpacity has also inereased the need for mathematical maturity\n\u2018on the part of investors seeking to assess managers. To comprehend\nwhat a statistical arbiteageur is saying beyond a glib level, one needs\nto understand advanced mathematics beyond the college level. This,\nnaturally, limits the audience, The limitation is perpetuated by the\nlack of reference material from which to lear. Statistical Arbitrage\nsnow fils that void,\n\nStatistical arbitrage has been in existence for approximately 25\nyears. During that time, the general concepts have been widely\n\nsix",
+          "type": "ocr_image",
+          "page": 21,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 2053,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": false,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.35000000000000003,
+            "source": "ocr_image"
+          }
+        },
+        {
+          "formula": "Es ronewono\ndisseminated via the storytelling of early implementers to interested\ninvestment bank analysts and academics. Nevertheless, opacity\nremains because practitioners have steadily increased the sophistica-\ntion of their modeling\u2014and for good commercial reasons remained\n\u2018obscure about their innovations. Inthe wide dissemination of basic\nstat. arb. concepts, the term mean reversion as well as its variant,\nreversion to the mean, looms very large. Reversion to the mean is 2\nsimple conceptsoillastrate: Children of unusually tall parents are typ-\nically shorter than theie parents; children of unuswally short parents\nare typically taller than their parents. Tiss a concept that is easy for\n\u2018most people to grasp. Translating this ida to the motions of security\nprices means that securities prices return to an average value. So fat,\n0 good. But then we hit a problem, Height reversion is an intergen\nrational phenomenon, while price reversion is an entity dynamic.\n\nPrices returning from where? And to what average value? The\naverage height of adults is a familiar concept, even if the precise\n{quantification requires a little work. Even children as young as\nsgrade-school age can give a reasonable estimate ofthe average height\nof the adults they know, and by extension, of the average height\n\u2018of local adule populations. There is no such common grounding of\n\u2018observation or experience to apply to securities prices. They are all\nlover the map. Scaling is arbitrary. They can grow many fold, And\nthey can collapse to zero. People do not grow to the sky and then\nrevert back to some average, but secutity prices ean,\n\n[Even if we suppose that the questions have been reasonably\nanswered, other technicalities immediately pose themselves: How\ndoes one identify when a price is away from the mean and by how\n\u2018much? How long will the return to the mean take?\n\nHere is where the opacity enters the discussion and makes its\npermanent home. The language of mathematical models compounds\nthe unfamiliarity of the notions, generating a sense of disquiet, a fear\nof lick of understanding\n\nIn Statistical Arbitrage, Pole has given his audience a didactictour\nof the basic principles of statistical arbitrage, eliminating opacity at\nthe Statistical Arbitrage 101 level. In the 1980s and early 1990s,\nStat. Arb. 101 was, for the most part, all there was (exceptions such\nas D.E. Shaw and Renaissance aside). Today, more than a decade\nlater, chere isa much more extensive and complex world of statistical\narbitrage.",
+          "type": "ocr_image",
+          "page": 22,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 2512,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": false,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.35000000000000003,
+            "source": "ocr_image"
+          }
+        },
+        {
+          "formula": "Forwors a\n\nThis is not unlike the natural world, which is now populated\nby incredibly complex biological organisms after four billion years\nof evolution. Yet the simplest organisms thrive everywhere and still\n\u2018make up by far the largest part ofthe planets biomass. So si true in\nstatistical arbitrage, where the basics underpin much of contemporary\npractice\n\nStatistical Arbitrage describes the phenomena, the driving forces\njgenerating those phenomena, the patterns of dynamic development\n\u2018of exploitable opportunities, and models for exploitation af the basic\nreversion to the mean in securities prices. It also offers a good deal\ntore, from hints at more sophisticated models to valuable practi-\ncal advice on model building and performance monitoring \u2014advice\napplicable far beyond statistical arbitrage.\n\nChapters 1 and 2 speak to the genesis of statistical arbitrage, the\nvenerable pairs trading schemes of the 1980s, with starting ilastra-\ntion of the enormous extent and productivity of the opportunities.\nThis demonstration sets the scene for theoretical development, pro=\nviding the frst step to critical understanding of practical exploitation\nwith rules for calibrating trade placement. More penetration of opac-\nity follows in Chapter \u00a7 where the relationship between (a) reversion\nin securities prices watched day-by-day and (b) statistical deseriptions\n(distributions) of collections of such daily prices viewed as a glob\ndevoid of the day-by-day context is clearly spelled ou.\n\nChapters 8 and 9 tell ofthe midlife crisis of statistical arbitrage.\n\u201cThe roiling of United States financial markets for many months,\nbeginning with the Enron debacle in 2000 and running through\nthe terrorist attacks of 2001 and what Pole calls \u201can appalling\nlitany\u201d of corporate misconduct, is disected for anticipated impact\nfn statistical arbiteage performance. Adding to chat mixx have been\ntechnical changes in the markets, including decimalization and the\ndecline of independent specialists on the floor of the NYSE. Pole\ndraws a clear picture of why statistical arbitrage performance was\ndisrupted. Very clearly the impression is made that the disruption\nwas not terminal\n\nChapters 10 and 11 speak to the arriving future of statistical\narbitrage. Trading algorithms, at frst destroyers of classical sta. arb.\nare now, Pole argues, progenitors of new, systematically exploitable\n\u2018opportunities. He labels one of the new motions the \u201ccatastrophe\nmove\", a detailed exposition of modeling che dynamics follows a",
+          "type": "ocr_image",
+          "page": 23,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 2507,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": false,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.4,
+            "source": "ocr_image"
+          }
+        },
+        {
+          "formula": "Fd FoRewono\ncatastrophe-theory explication of a possible rationale forthe behav-\nioral pattern, The unmistakable impression is that statistical arbitrage\nis ising once again,\n\nThe tone of Statistical Arbitrage is direct and thorough. Obfus-\ncation is in short supply. Occasionally, the tone is relieved with a bit\nof lightheartedness--the tadpole-naming story in a note to Chapter\n11 isa gem\u2014and throughout, refreshing prose isto be found.\n\nIn describing mathematical models, authors readily produce\n\u2018unmemorable, formulaic wording offering nothing by way of inter-\npretation or explanation beyond what is provided by the algebra\nitself. Statistical Arbitrage is an exception\u2014a break in che cloud of\n\u2018opacity\u2014a mean that Pole has avoided reverting to!\n\nGregory van Kipnis\nApril23, 2007\nNew York City",
+          "type": "ocr_image",
+          "page": 24,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 799,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": false,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.35000000000000003,
+            "source": "ocr_image"
+          }
+        }
+      ],
+      "statistics": {
+        "total_formulas": 11,
+        "text_source": 0,
+        "pdf_source": 0,
+        "ocr_source": 11,
+        "avg_confidence": 0.5,
+        "complexity_distribution": {
+          "simple": 7,
+          "medium": 4,
+          "complex": 0
+        },
+        "formula_types": {
+          "ocr_image": 11
+        }
+      },
+      "extraction_metadata": {
+        "config": {
+          "preserve_context": true,
+          "context_chars": 50,
+          "min_formula_length": 3,
+          "max_formula_length": 1000,
+          "extract_financial_symbols": true,
+          "validate_latex": true
+        },
+        "patterns_used": [
+          "inline_latex",
+          "display_latex",
+          "equation_env",
+          "align_env",
+          "eqnarray_env",
+          "math_env",
+          "displaymath_env",
+          "bracket_inline",
+          "bracket_display",
+          "percentage",
+          "currency",
+          "scientific_notation",
+          "ratios",
+          "fractions",
+          "greek_letters",
+          "probability",
+          "expectation",
+          "variance",
+          "correlation",
+          "volatility",
+          "returns",
+          "derivatives"
+        ]
+      }
+    },
+    "images": [
+      {
+        "id": "vector_0_157",
+        "page": 1,
+        "type": "vector_graphic",
+        "format": "png",
+        "size": [
+          648,
+          289
+        ],
+        "bbox": [
+          109,
+          155,
+          757,
+          444
+        ],
+        "quality_score": 0.5,
+        "ocr_text": "Statistical Arbitrage",
+        "is_chart": true,
+        "chart_type": "unknown",
+        "chart_confidence": 0.5,
+        "contains_financial_content": false,
+        "base64_thumbnail": "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",
+        "metadata": {
+          "source": "vector_graphic",
+          "quality_score": 0.5,
+          "chart_type": "unknown",
+          "chart_confidence": 0.5
+        },
+        "extraction_timestamp": 1748268815.6164374,
+        "is_financial_chart": false,
+        "relevance_score": 0.5
+      },
+      {
+        "id": "vector_2_0",
+        "page": 3,
+        "type": "vector_graphic",
+        "format": "png",
+        "size": [
+          648,
+          289
+        ],
+        "bbox": [
+          109,
+          155,
+          757,
+          444
+        ],
+        "quality_score": 0.5,
+        "ocr_text": "Statistical Arbitrage",
+        "is_chart": true,
+        "chart_type": "unknown",
+        "chart_confidence": 0.5,
+        "contains_financial_content": false,
+        "base64_thumbnail": "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",
+        "metadata": {
+          "source": "vector_graphic",
+          "quality_score": 0.5,
+          "chart_type": "unknown",
+          "chart_confidence": 0.5
+        },
+        "extraction_timestamp": 1748268815.6164403,
+        "is_financial_chart": false,
+        "relevance_score": 0.5
+      },
+      {
+        "id": "vector_4_157",
+        "page": 5,
+        "type": "vector_graphic",
+        "format": "png",
+        "size": [
+          648,
+          289
+        ],
+        "bbox": [
+          109,
+          155,
+          757,
+          444
+        ],
+        "quality_score": 0.5,
+        "ocr_text": "Statistical Arbitrage",
+        "is_chart": true,
+        "chart_type": "unknown",
+        "chart_confidence": 0.5,
+        "contains_financial_content": false,
+        "base64_thumbnail": "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",
+        "metadata": {
+          "source": "vector_graphic",
+          "quality_score": 0.5,
+          "chart_type": "unknown",
+          "chart_confidence": 0.5
+        },
+        "extraction_timestamp": 1748268815.6164412,
+        "is_financial_chart": false,
+        "relevance_score": 0.5
+      }
+    ],
+    "symbols": {
+      "symbols_by_type": {
+        "stock_ticker": [
+          {
+            "symbol": "POLE",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 75,
+              "end": 79
+            },
+            "context": "sights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.\n\n\f\fS",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "POLE",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 965,
+              "end": 969
+            },
+            "context": "sights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.\n\n\fCo",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "J",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 1188,
+              "end": 1189
+            },
+            "context": "ey Bicentennial logo: Richard J. Paci\ufb01co.\n\nNo part of this pu",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "MA",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 1678,
+              "end": 1680
+            },
+            "context": " 222\nRosewood Drive, Danvers, MA 01923, (978) 750-8400, fax (9",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "NJ",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 1904,
+              "end": 1906
+            },
+            "context": "., 111 River Street, Hoboken, NJ 07030,\n(201) 748-6011, fax (2",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "ISBN",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 3472,
+              "end": 3476
+            },
+            "context": "aphical references and index.\nISBN 978-0-470-13844-1 (cloth)\n1. ",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "I",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 3596,
+              "end": 3597
+            },
+            "context": "ation-\n\n-Mathematical models. I. Title.\n\nHG4661.P65 2007\n332.",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "ISBN",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 3640,
+              "end": 3644
+            },
+            "context": "661.P65 2007\n332.64\u20195 \u2014 dc22\n\nISBN 978-0-470-13844-1\n\nPrinted in",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "A",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 4696,
+              "end": 4697
+            },
+            "context": "actal Analysis\n\nWhich Return?\nA Factor Model\n\nFactor Analysis",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "A",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 4814,
+              "end": 4815
+            },
+            "context": "e\nPractical Matters\nDoubling: A Deeper Perspective\nFactor Ana",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "U.S",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 5272,
+              "end": 5275
+            },
+            "context": " of the Result\nApplication to U.S. Bond Futures\n\nCONTENTS\n\n37\n\n",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "FD",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 6516,
+              "end": 6518
+            },
+            "context": "f Regulation Fair Disclosure (FD)\nCorrelation During Loss Epis",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "A",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 6807,
+              "end": 6808
+            },
+            "context": "nsiderations\nTruth in Fiction\nA Litany of Bad Behavior\nA Pers",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "A",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 6832,
+              "end": 6833
+            },
+            "context": "tion\nA Litany of Bad Behavior\nA Perspective on 2003\nRealities",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "T",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 7543,
+              "end": 7544
+            },
+            "context": "211\n211\n\n223\n\n225\n\n\f\fPreface\n\nT hese pages tell the story of ",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "I",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 8115,
+              "end": 8116
+            },
+            "context": "ion of interested\nreadership. I say \u2018\u2018nearly all\u2019\u2019: Chapter 7",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "O",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 15149,
+              "end": 15150
+            },
+            "context": "turns in equal measure. (Tony\nO\u2019Hagan suggested that the basi",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "I",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 15220,
+              "end": 15221
+            },
+            "context": "ity result is long known,\nbut I have been unable to trace it.",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "A",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 15678,
+              "end": 15679
+            },
+            "context": "enomenon of reversion occurs. A cen-\ntral role for the normal",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "U.S",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 18506,
+              "end": 18509
+            },
+            "context": "his unusual episode in recent U.S.\nmacroeconomic history is ove",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "A",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 19084,
+              "end": 19085
+            },
+            "context": "stible. Crushing. Reforming.2 A frequently remarked\nfacet of ",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "U.S",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 19501,
+              "end": 19504
+            },
+            "context": "\u2018\u2018manage\u2019\u2019 over 60 percent of U.S. equity trades\namong \u2018\u2018themse",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "NYSE",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 20136,
+              "end": 20140
+            },
+            "context": "ge Commission regulations and NYSE\nrules.\n\n\fxviii\n\nPREFACE\n\nof K",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "NYSE",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 20705,
+              "end": 20709
+            },
+            "context": "anging ownership daily on the NYSE mart\nalone, what other conclu",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "NYSE",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 21571,
+              "end": 21575
+            },
+            "context": "believes that the \ufb02oor of the NYSE will be more than a museum,\np",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "M",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 22754,
+              "end": 22755
+            },
+            "context": "cal arbitrageurs.\n\n\fForeword\n\nM ean reversion in prices, as i",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "A",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 23982,
+              "end": 23983
+            },
+            "context": "gies developed by \u2018\u2018quants.\u2019\u2019 A description with any meaningf",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "D.E",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 27197,
+              "end": 27200
+            },
+            "context": "there was (exceptions such\nas D.E. Shaw and Renaissance aside).",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "NYSE",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 29361,
+              "end": 29365
+            },
+            "context": "pecialists on the \ufb02oor of the NYSE. Pole\ndraws a clear picture o",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "I",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 30690,
+              "end": 30691
+            },
+            "context": "van Kipnis\n\n\fAcknowledgments\n\nI was introduced to statistical",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "ABC",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 31448,
+              "end": 31451
+            },
+            "context": "h certainty to say whose\nidea ABC was. Credit is rightfully due",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          }
+        ],
+        "crypto_symbol": [
+          {
+            "symbol": "ANDREW",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 68,
+              "end": 74
+            },
+            "context": "ding Insights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "POLE",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 75,
+              "end": 79
+            },
+            "context": "sights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.\n\n\f\fS",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "ANDREW",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 958,
+              "end": 964
+            },
+            "context": "ding Insights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "POLE",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 965,
+              "end": 969
+            },
+            "context": "sights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.\n\n\fCo",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "MA",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 1678,
+              "end": 1680
+            },
+            "context": " 222\nRosewood Drive, Danvers, MA 01923, (978) 750-8400, fax (9",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "NJ",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 1904,
+              "end": 1906
+            },
+            "context": "., 111 River Street, Hoboken, NJ 07030,\n(201) 748-6011, fax (2",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "ISBN",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 3472,
+              "end": 3476
+            },
+            "context": "aphical references and index.\nISBN 978-0-470-13844-1 (cloth)\n1. ",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "ISBN",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 3640,
+              "end": 3644
+            },
+            "context": "661.P65 2007\n332.64\u20195 \u2014 dc22\n\nISBN 978-0-470-13844-1\n\nPrinted in",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CHAPTER",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 3809,
+              "end": 3816
+            },
+            "context": "e\n\nForeword\n\nAcknowledgments\n\nCHAPTER 1\n\nMonte Carlo or Bust\n\nBegin",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CHAPTER",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 3875,
+              "end": 3882
+            },
+            "context": "nning\nWhither? And Allusions\n\nCHAPTER 2\n\nStatistical Arbitrage\n\nInt",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CHAPTER",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 4426,
+              "end": 4433
+            },
+            "context": "6\n29\n30\n31\n32\n34\n\nvii\n\n\fviii\n\nCHAPTER 3\n\nStructural Models\n\nIntrodu",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CHAPTER",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 4900,
+              "end": 4907
+            },
+            "context": "Model for Defactored Returns\n\nCHAPTER 4\n\nLaw of Reversion\n\nIntroduc",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CONTENTS",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 5291,
+              "end": 5299
+            },
+            "context": "ication to U.S. Bond Futures\n\nCONTENTS\n\n37\n\n37\n39\n40\n47\n47\n49\n50\n51\n",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CHAPTER",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 5477,
+              "end": 5484
+            },
+            "context": ": Looking Several Days Ahead\n\nCHAPTER 5\n\nGauss Is Not the God of Re",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CHAPTER",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 5593,
+              "end": 5600
+            },
+            "context": "River Flow\n\nSome Bells Clang\n\nCHAPTER 6\n\nInterstock Volatility\n\nInt",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CHAPTER",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 5765,
+              "end": 5772
+            },
+            "context": " Measuring Spread Volatility\n\nCHAPTER 7\n\nQuantifying Reversion Oppo",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CHAPTER",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 6166,
+              "end": 6173
+            },
+            "context": " Lognormal Case in Example 6\n\nCHAPTER 8\n\nNobel Dif\ufb01culties\n\nIntrodu",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CONTENTS",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 6419,
+              "end": 6427
+            },
+            "context": "39\n\n141\n\n141\n142\n144\n145\n\n\fx\n\nCONTENTS\n\nRedemption Tension\n\nSupercha",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "FD",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 6516,
+              "end": 6518
+            },
+            "context": "f Regulation Fair Disclosure (FD)\nCorrelation During Loss Epis",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CHAPTER",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 6554,
+              "end": 6561
+            },
+            "context": "elation During Loss Episodes\n\nCHAPTER 9\n\nTrinity Troubles\n\nIntroduc",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CHAPTER",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 6892,
+              "end": 6899
+            },
+            "context": "s of Structural Change\nRecap\n\nCHAPTER 10\n\nArise Black Boxes\n\nIntrod",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "CHAPTER",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 7042,
+              "end": 7049
+            },
+            "context": " Black Boxes\nMarket De\ufb02ation\n\nCHAPTER 11\n\nStatistical Arbitrage Ris",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "PREFACE",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 9729,
+              "end": 9736
+            },
+            "context": "of the cohort as\n\nxiii\n\n\fxiv\n\nPREFACE\n\na gestalt or a synthetic ins",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "PREFACE",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 14869,
+              "end": 14876
+            },
+            "context": "ence of opportunities.\n\n\fxvi\n\nPREFACE\n\nbeing exploited. Knowledge o",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "NYSE",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 20136,
+              "end": 20140
+            },
+            "context": "ge Commission regulations and NYSE\nrules.\n\n\fxviii\n\nPREFACE\n\nof K",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "PREFACE",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 20157,
+              "end": 20164
+            },
+            "context": "ions and NYSE\nrules.\n\n\fxviii\n\nPREFACE\n\nof Keynes\u2019 animal spirits, a",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "NYSE",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 20705,
+              "end": 20709
+            },
+            "context": "anging ownership daily on the NYSE mart\nalone, what other conclu",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "NYSE",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 21571,
+              "end": 21575
+            },
+            "context": "believes that the \ufb02oor of the NYSE will be more than a museum,\np",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "FOREWORD",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 24824,
+              "end": 24832
+            },
+            "context": "s have been widely\n\nxix\n\n\fxx\n\nFOREWORD\n\ndisseminated via the storyte",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "NYSE",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 29361,
+              "end": 29365
+            },
+            "context": "pecialists on the \ufb02oor of the NYSE. Pole\ndraws a clear picture o",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "FOREWORD",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 29870,
+              "end": 29878
+            },
+            "context": "he dynamics follows a\n\n\fxxii\n\nFOREWORD\n\ncatastrophe-theory explicati",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "ABC",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 31448,
+              "end": 31451
+            },
+            "context": "h certainty to say whose\nidea ABC was. Credit is rightfully due",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          }
+        ]
+      },
+      "symbols_by_position": [
+        {
+          "symbol": "ANDREW",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 68,
+            "end": 74
+          },
+          "context": "ding Insights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "POLE",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 75,
+            "end": 79
+          },
+          "context": "sights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.\n\n\f\fS",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "POLE",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 75,
+            "end": 79
+          },
+          "context": "sights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.\n\n\f\fS",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "ANDREW",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 958,
+            "end": 964
+          },
+          "context": "ding Insights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "POLE",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 965,
+            "end": 969
+          },
+          "context": "sights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.\n\n\fCo",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "POLE",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 965,
+            "end": 969
+          },
+          "context": "sights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.\n\n\fCo",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "J",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 1188,
+            "end": 1189
+          },
+          "context": "ey Bicentennial logo: Richard J. Paci\ufb01co.\n\nNo part of this pu",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "MA",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 1678,
+            "end": 1680
+          },
+          "context": " 222\nRosewood Drive, Danvers, MA 01923, (978) 750-8400, fax (9",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "MA",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 1678,
+            "end": 1680
+          },
+          "context": " 222\nRosewood Drive, Danvers, MA 01923, (978) 750-8400, fax (9",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "NJ",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 1904,
+            "end": 1906
+          },
+          "context": "., 111 River Street, Hoboken, NJ 07030,\n(201) 748-6011, fax (2",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "NJ",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 1904,
+            "end": 1906
+          },
+          "context": "., 111 River Street, Hoboken, NJ 07030,\n(201) 748-6011, fax (2",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "ISBN",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 3472,
+            "end": 3476
+          },
+          "context": "aphical references and index.\nISBN 978-0-470-13844-1 (cloth)\n1. ",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "ISBN",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 3472,
+            "end": 3476
+          },
+          "context": "aphical references and index.\nISBN 978-0-470-13844-1 (cloth)\n1. ",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "I",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 3596,
+            "end": 3597
+          },
+          "context": "ation-\n\n-Mathematical models. I. Title.\n\nHG4661.P65 2007\n332.",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "ISBN",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 3640,
+            "end": 3644
+          },
+          "context": "661.P65 2007\n332.64\u20195 \u2014 dc22\n\nISBN 978-0-470-13844-1\n\nPrinted in",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "ISBN",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 3640,
+            "end": 3644
+          },
+          "context": "661.P65 2007\n332.64\u20195 \u2014 dc22\n\nISBN 978-0-470-13844-1\n\nPrinted in",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CHAPTER",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 3809,
+            "end": 3816
+          },
+          "context": "e\n\nForeword\n\nAcknowledgments\n\nCHAPTER 1\n\nMonte Carlo or Bust\n\nBegin",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CHAPTER",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 3875,
+            "end": 3882
+          },
+          "context": "nning\nWhither? And Allusions\n\nCHAPTER 2\n\nStatistical Arbitrage\n\nInt",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CHAPTER",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 4426,
+            "end": 4433
+          },
+          "context": "6\n29\n30\n31\n32\n34\n\nvii\n\n\fviii\n\nCHAPTER 3\n\nStructural Models\n\nIntrodu",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "A",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 4696,
+            "end": 4697
+          },
+          "context": "actal Analysis\n\nWhich Return?\nA Factor Model\n\nFactor Analysis",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "A",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 4814,
+            "end": 4815
+          },
+          "context": "e\nPractical Matters\nDoubling: A Deeper Perspective\nFactor Ana",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CHAPTER",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 4900,
+            "end": 4907
+          },
+          "context": "Model for Defactored Returns\n\nCHAPTER 4\n\nLaw of Reversion\n\nIntroduc",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "U.S",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 5272,
+            "end": 5275
+          },
+          "context": " of the Result\nApplication to U.S. Bond Futures\n\nCONTENTS\n\n37\n\n",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CONTENTS",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 5291,
+            "end": 5299
+          },
+          "context": "ication to U.S. Bond Futures\n\nCONTENTS\n\n37\n\n37\n39\n40\n47\n47\n49\n50\n51\n",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CHAPTER",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 5477,
+            "end": 5484
+          },
+          "context": ": Looking Several Days Ahead\n\nCHAPTER 5\n\nGauss Is Not the God of Re",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CHAPTER",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 5593,
+            "end": 5600
+          },
+          "context": "River Flow\n\nSome Bells Clang\n\nCHAPTER 6\n\nInterstock Volatility\n\nInt",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CHAPTER",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 5765,
+            "end": 5772
+          },
+          "context": " Measuring Spread Volatility\n\nCHAPTER 7\n\nQuantifying Reversion Oppo",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CHAPTER",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 6166,
+            "end": 6173
+          },
+          "context": " Lognormal Case in Example 6\n\nCHAPTER 8\n\nNobel Dif\ufb01culties\n\nIntrodu",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CONTENTS",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 6419,
+            "end": 6427
+          },
+          "context": "39\n\n141\n\n141\n142\n144\n145\n\n\fx\n\nCONTENTS\n\nRedemption Tension\n\nSupercha",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "FD",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 6516,
+            "end": 6518
+          },
+          "context": "f Regulation Fair Disclosure (FD)\nCorrelation During Loss Epis",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "FD",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 6516,
+            "end": 6518
+          },
+          "context": "f Regulation Fair Disclosure (FD)\nCorrelation During Loss Epis",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CHAPTER",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 6554,
+            "end": 6561
+          },
+          "context": "elation During Loss Episodes\n\nCHAPTER 9\n\nTrinity Troubles\n\nIntroduc",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "A",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 6807,
+            "end": 6808
+          },
+          "context": "nsiderations\nTruth in Fiction\nA Litany of Bad Behavior\nA Pers",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "A",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 6832,
+            "end": 6833
+          },
+          "context": "tion\nA Litany of Bad Behavior\nA Perspective on 2003\nRealities",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CHAPTER",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 6892,
+            "end": 6899
+          },
+          "context": "s of Structural Change\nRecap\n\nCHAPTER 10\n\nArise Black Boxes\n\nIntrod",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "CHAPTER",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 7042,
+            "end": 7049
+          },
+          "context": " Black Boxes\nMarket De\ufb02ation\n\nCHAPTER 11\n\nStatistical Arbitrage Ris",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "T",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 7543,
+            "end": 7544
+          },
+          "context": "211\n211\n\n223\n\n225\n\n\f\fPreface\n\nT hese pages tell the story of ",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "I",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 8115,
+            "end": 8116
+          },
+          "context": "ion of interested\nreadership. I say \u2018\u2018nearly all\u2019\u2019: Chapter 7",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "PREFACE",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 9729,
+            "end": 9736
+          },
+          "context": "of the cohort as\n\nxiii\n\n\fxiv\n\nPREFACE\n\na gestalt or a synthetic ins",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "PREFACE",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 14869,
+            "end": 14876
+          },
+          "context": "ence of opportunities.\n\n\fxvi\n\nPREFACE\n\nbeing exploited. Knowledge o",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "O",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 15149,
+            "end": 15150
+          },
+          "context": "turns in equal measure. (Tony\nO\u2019Hagan suggested that the basi",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "I",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 15220,
+            "end": 15221
+          },
+          "context": "ity result is long known,\nbut I have been unable to trace it.",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "A",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 15678,
+            "end": 15679
+          },
+          "context": "enomenon of reversion occurs. A cen-\ntral role for the normal",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "U.S",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 18506,
+            "end": 18509
+          },
+          "context": "his unusual episode in recent U.S.\nmacroeconomic history is ove",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "A",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 19084,
+            "end": 19085
+          },
+          "context": "stible. Crushing. Reforming.2 A frequently remarked\nfacet of ",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "U.S",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 19501,
+            "end": 19504
+          },
+          "context": "\u2018\u2018manage\u2019\u2019 over 60 percent of U.S. equity trades\namong \u2018\u2018themse",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "NYSE",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 20136,
+            "end": 20140
+          },
+          "context": "ge Commission regulations and NYSE\nrules.\n\n\fxviii\n\nPREFACE\n\nof K",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "NYSE",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 20136,
+            "end": 20140
+          },
+          "context": "ge Commission regulations and NYSE\nrules.\n\n\fxviii\n\nPREFACE\n\nof K",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "PREFACE",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 20157,
+            "end": 20164
+          },
+          "context": "ions and NYSE\nrules.\n\n\fxviii\n\nPREFACE\n\nof Keynes\u2019 animal spirits, a",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "NYSE",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 20705,
+            "end": 20709
+          },
+          "context": "anging ownership daily on the NYSE mart\nalone, what other conclu",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "NYSE",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 20705,
+            "end": 20709
+          },
+          "context": "anging ownership daily on the NYSE mart\nalone, what other conclu",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "NYSE",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 21571,
+            "end": 21575
+          },
+          "context": "believes that the \ufb02oor of the NYSE will be more than a museum,\np",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "NYSE",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 21571,
+            "end": 21575
+          },
+          "context": "believes that the \ufb02oor of the NYSE will be more than a museum,\np",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "M",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 22754,
+            "end": 22755
+          },
+          "context": "cal arbitrageurs.\n\n\fForeword\n\nM ean reversion in prices, as i",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "A",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 23982,
+            "end": 23983
+          },
+          "context": "gies developed by \u2018\u2018quants.\u2019\u2019 A description with any meaningf",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "FOREWORD",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 24824,
+            "end": 24832
+          },
+          "context": "s have been widely\n\nxix\n\n\fxx\n\nFOREWORD\n\ndisseminated via the storyte",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "D.E",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 27197,
+            "end": 27200
+          },
+          "context": "there was (exceptions such\nas D.E. Shaw and Renaissance aside).",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "NYSE",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 29361,
+            "end": 29365
+          },
+          "context": "pecialists on the \ufb02oor of the NYSE. Pole\ndraws a clear picture o",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "NYSE",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 29361,
+            "end": 29365
+          },
+          "context": "pecialists on the \ufb02oor of the NYSE. Pole\ndraws a clear picture o",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "FOREWORD",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 29870,
+            "end": 29878
+          },
+          "context": "he dynamics follows a\n\n\fxxii\n\nFOREWORD\n\ncatastrophe-theory explicati",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "I",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 30690,
+            "end": 30691
+          },
+          "context": "van Kipnis\n\n\fAcknowledgments\n\nI was introduced to statistical",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "ABC",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 31448,
+            "end": 31451
+          },
+          "context": "h certainty to say whose\nidea ABC was. Credit is rightfully due",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "ABC",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 31448,
+            "end": 31451
+          },
+          "context": "h certainty to say whose\nidea ABC was. Credit is rightfully due",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        }
+      ],
+      "statistics": {
+        "total_symbols": 63,
+        "unique_symbols": 20,
+        "type_counts": {
+          "stock_ticker": 31,
+          "crypto_symbol": 32
+        },
+        "avg_confidence": 0.6492063492063492,
+        "most_common_symbols": [
+          [
+            "CHAPTER",
+            11
+          ],
+          [
+            "NYSE",
+            8
+          ],
+          [
+            "A",
+            7
+          ],
+          [
+            "POLE",
+            4
+          ],
+          [
+            "ISBN",
+            4
+          ],
+          [
+            "I",
+            4
+          ],
+          [
+            "U.S",
+            3
+          ],
+          [
+            "PREFACE",
+            3
+          ],
+          [
+            "MA",
+            2
+          ],
+          [
+            "NJ",
+            2
+          ]
+        ],
+        "symbol_density": 0.063
+      },
+      "preservation_map": {
+        "__SYMBOL_0__": "ANDREW",
+        "__SYMBOL_1__": "POLE",
+        "__SYMBOL_2__": "POLE",
+        "__SYMBOL_3__": "ANDREW",
+        "__SYMBOL_4__": "POLE",
+        "__SYMBOL_5__": "POLE",
+        "__SYMBOL_6__": "J",
+        "__SYMBOL_7__": "MA",
+        "__SYMBOL_8__": "MA",
+        "__SYMBOL_9__": "NJ",
+        "__SYMBOL_10__": "NJ",
+        "__SYMBOL_11__": "ISBN",
+        "__SYMBOL_12__": "ISBN",
+        "__SYMBOL_13__": "I",
+        "__SYMBOL_14__": "ISBN",
+        "__SYMBOL_15__": "ISBN",
+        "__SYMBOL_16__": "CHAPTER",
+        "__SYMBOL_17__": "CHAPTER",
+        "__SYMBOL_18__": "CHAPTER",
+        "__SYMBOL_19__": "A",
+        "__SYMBOL_20__": "A",
+        "__SYMBOL_21__": "CHAPTER",
+        "__SYMBOL_22__": "U.S",
+        "__SYMBOL_23__": "CONTENTS",
+        "__SYMBOL_24__": "CHAPTER",
+        "__SYMBOL_25__": "CHAPTER",
+        "__SYMBOL_26__": "CHAPTER",
+        "__SYMBOL_27__": "CHAPTER",
+        "__SYMBOL_28__": "CONTENTS",
+        "__SYMBOL_29__": "FD",
+        "__SYMBOL_30__": "FD",
+        "__SYMBOL_31__": "CHAPTER",
+        "__SYMBOL_32__": "A",
+        "__SYMBOL_33__": "A",
+        "__SYMBOL_34__": "CHAPTER",
+        "__SYMBOL_35__": "CHAPTER",
+        "__SYMBOL_36__": "T",
+        "__SYMBOL_37__": "I",
+        "__SYMBOL_38__": "PREFACE",
+        "__SYMBOL_39__": "PREFACE",
+        "__SYMBOL_40__": "O",
+        "__SYMBOL_41__": "I",
+        "__SYMBOL_42__": "A",
+        "__SYMBOL_43__": "U.S",
+        "__SYMBOL_44__": "A",
+        "__SYMBOL_45__": "U.S",
+        "__SYMBOL_46__": "NYSE",
+        "__SYMBOL_47__": "NYSE",
+        "__SYMBOL_48__": "PREFACE",
+        "__SYMBOL_49__": "NYSE",
+        "__SYMBOL_50__": "NYSE",
+        "__SYMBOL_51__": "NYSE",
+        "__SYMBOL_52__": "NYSE",
+        "__SYMBOL_53__": "M",
+        "__SYMBOL_54__": "A",
+        "__SYMBOL_55__": "FOREWORD",
+        "__SYMBOL_56__": "D.E",
+        "__SYMBOL_57__": "NYSE",
+        "__SYMBOL_58__": "NYSE",
+        "__SYMBOL_59__": "FOREWORD",
+        "__SYMBOL_60__": "I",
+        "__SYMBOL_61__": "ABC",
+        "__SYMBOL_62__": "ABC"
+      }
+    },
+    "symbol_glossary": {
+      "POLE": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: POLE",
+        "occurrences": 4,
+        "contexts": [
+          "sights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.\n\n\f\fS",
+          "sights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.\n\n\fCo",
+          "sights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.\n\n\f\fS",
+          "sights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.\n\n\fCo"
+        ],
+        "confidence": 0.7
+      },
+      "J": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: J",
+        "occurrences": 1,
+        "contexts": [
+          "ey Bicentennial logo: Richard J. Paci\ufb01co.\n\nNo part of this pu"
+        ],
+        "confidence": 0.7
+      },
+      "MA": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: MA",
+        "occurrences": 2,
+        "contexts": [
+          " 222\nRosewood Drive, Danvers, MA 01923, (978) 750-8400, fax (9",
+          " 222\nRosewood Drive, Danvers, MA 01923, (978) 750-8400, fax (9"
+        ],
+        "confidence": 0.7
+      },
+      "NJ": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: NJ",
+        "occurrences": 2,
+        "contexts": [
+          "., 111 River Street, Hoboken, NJ 07030,\n(201) 748-6011, fax (2",
+          "., 111 River Street, Hoboken, NJ 07030,\n(201) 748-6011, fax (2"
+        ],
+        "confidence": 0.7
+      },
+      "ISBN": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: ISBN",
+        "occurrences": 4,
+        "contexts": [
+          "aphical references and index.\nISBN 978-0-470-13844-1 (cloth)\n1. ",
+          "661.P65 2007\n332.64\u20195 \u2014 dc22\n\nISBN 978-0-470-13844-1\n\nPrinted in",
+          "aphical references and index.\nISBN 978-0-470-13844-1 (cloth)\n1. ",
+          "661.P65 2007\n332.64\u20195 \u2014 dc22\n\nISBN 978-0-470-13844-1\n\nPrinted in"
+        ],
+        "confidence": 0.7
+      },
+      "I": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: I",
+        "occurrences": 4,
+        "contexts": [
+          "ation-\n\n-Mathematical models. I. Title.\n\nHG4661.P65 2007\n332.",
+          "ion of interested\nreadership. I say \u2018\u2018nearly all\u2019\u2019: Chapter 7",
+          "ity result is long known,\nbut I have been unable to trace it.",
+          "van Kipnis\n\n\fAcknowledgments\n\nI was introduced to statistical"
+        ],
+        "confidence": 0.7
+      },
+      "A": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: A",
+        "occurrences": 7,
+        "contexts": [
+          "actal Analysis\n\nWhich Return?\nA Factor Model\n\nFactor Analysis",
+          "e\nPractical Matters\nDoubling: A Deeper Perspective\nFactor Ana",
+          "nsiderations\nTruth in Fiction\nA Litany of Bad Behavior\nA Pers",
+          "tion\nA Litany of Bad Behavior\nA Perspective on 2003\nRealities",
+          "enomenon of reversion occurs. A cen-\ntral role for the normal",
+          "stible. Crushing. Reforming.2 A frequently remarked\nfacet of ",
+          "gies developed by \u2018\u2018quants.\u2019\u2019 A description with any meaningf"
+        ],
+        "confidence": 0.7
+      },
+      "U.S": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: U.S",
+        "occurrences": 3,
+        "contexts": [
+          " of the Result\nApplication to U.S. Bond Futures\n\nCONTENTS\n\n37\n\n",
+          "his unusual episode in recent U.S.\nmacroeconomic history is ove",
+          "\u2018\u2018manage\u2019\u2019 over 60 percent of U.S. equity trades\namong \u2018\u2018themse"
+        ],
+        "confidence": 0.7
+      },
+      "FD": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: FD",
+        "occurrences": 2,
+        "contexts": [
+          "f Regulation Fair Disclosure (FD)\nCorrelation During Loss Epis",
+          "f Regulation Fair Disclosure (FD)\nCorrelation During Loss Epis"
+        ],
+        "confidence": 0.7
+      },
+      "T": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: T",
+        "occurrences": 1,
+        "contexts": [
+          "211\n211\n\n223\n\n225\n\n\f\fPreface\n\nT hese pages tell the story of "
+        ],
+        "confidence": 0.7
+      },
+      "O": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: O",
+        "occurrences": 1,
+        "contexts": [
+          "turns in equal measure. (Tony\nO\u2019Hagan suggested that the basi"
+        ],
+        "confidence": 0.7
+      },
+      "NYSE": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: NYSE",
+        "occurrences": 8,
+        "contexts": [
+          "ge Commission regulations and NYSE\nrules.\n\n\fxviii\n\nPREFACE\n\nof K",
+          "anging ownership daily on the NYSE mart\nalone, what other conclu",
+          "believes that the \ufb02oor of the NYSE will be more than a museum,\np",
+          "pecialists on the \ufb02oor of the NYSE. Pole\ndraws a clear picture o",
+          "ge Commission regulations and NYSE\nrules.\n\n\fxviii\n\nPREFACE\n\nof K",
+          "anging ownership daily on the NYSE mart\nalone, what other conclu",
+          "believes that the \ufb02oor of the NYSE will be more than a museum,\np",
+          "pecialists on the \ufb02oor of the NYSE. Pole\ndraws a clear picture o"
+        ],
+        "confidence": 0.7
+      },
+      "M": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: M",
+        "occurrences": 1,
+        "contexts": [
+          "cal arbitrageurs.\n\n\fForeword\n\nM ean reversion in prices, as i"
+        ],
+        "confidence": 0.7
+      },
+      "D.E": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: D.E",
+        "occurrences": 1,
+        "contexts": [
+          "there was (exceptions such\nas D.E. Shaw and Renaissance aside)."
+        ],
+        "confidence": 0.7
+      },
+      "ABC": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: ABC",
+        "occurrences": 2,
+        "contexts": [
+          "h certainty to say whose\nidea ABC was. Credit is rightfully due",
+          "h certainty to say whose\nidea ABC was. Credit is rightfully due"
+        ],
+        "confidence": 0.7
+      },
+      "ANDREW": {
+        "type": "potential_crypto_symbol",
+        "definition": "Symbol: ANDREW",
+        "occurrences": 2,
+        "contexts": [
+          "ding Insights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc.",
+          "ding Insights\nand Techniques\n\nANDREW POLE\n\nJohn Wiley & Sons, Inc."
+        ],
+        "confidence": 0.6
+      },
+      "CHAPTER": {
+        "type": "potential_crypto_symbol",
+        "definition": "Symbol: CHAPTER",
+        "occurrences": 11,
+        "contexts": [
+          "e\n\nForeword\n\nAcknowledgments\n\nCHAPTER 1\n\nMonte Carlo or Bust\n\nBegin",
+          "nning\nWhither? And Allusions\n\nCHAPTER 2\n\nStatistical Arbitrage\n\nInt",
+          "6\n29\n30\n31\n32\n34\n\nvii\n\n\fviii\n\nCHAPTER 3\n\nStructural Models\n\nIntrodu",
+          "Model for Defactored Returns\n\nCHAPTER 4\n\nLaw of Reversion\n\nIntroduc",
+          ": Looking Several Days Ahead\n\nCHAPTER 5\n\nGauss Is Not the God of Re",
+          "River Flow\n\nSome Bells Clang\n\nCHAPTER 6\n\nInterstock Volatility\n\nInt",
+          " Measuring Spread Volatility\n\nCHAPTER 7\n\nQuantifying Reversion Oppo",
+          " Lognormal Case in Example 6\n\nCHAPTER 8\n\nNobel Dif\ufb01culties\n\nIntrodu",
+          "elation During Loss Episodes\n\nCHAPTER 9\n\nTrinity Troubles\n\nIntroduc",
+          "s of Structural Change\nRecap\n\nCHAPTER 10\n\nArise Black Boxes\n\nIntrod",
+          " Black Boxes\nMarket De\ufb02ation\n\nCHAPTER 11\n\nStatistical Arbitrage Ris"
+        ],
+        "confidence": 0.6
+      },
+      "CONTENTS": {
+        "type": "potential_crypto_symbol",
+        "definition": "Symbol: CONTENTS",
+        "occurrences": 2,
+        "contexts": [
+          "ication to U.S. Bond Futures\n\nCONTENTS\n\n37\n\n37\n39\n40\n47\n47\n49\n50\n51\n",
+          "39\n\n141\n\n141\n142\n144\n145\n\n\fx\n\nCONTENTS\n\nRedemption Tension\n\nSupercha"
+        ],
+        "confidence": 0.6
+      },
+      "PREFACE": {
+        "type": "potential_crypto_symbol",
+        "definition": "Symbol: PREFACE",
+        "occurrences": 3,
+        "contexts": [
+          "of the cohort as\n\nxiii\n\n\fxiv\n\nPREFACE\n\na gestalt or a synthetic ins",
+          "ence of opportunities.\n\n\fxvi\n\nPREFACE\n\nbeing exploited. Knowledge o",
+          "ions and NYSE\nrules.\n\n\fxviii\n\nPREFACE\n\nof Keynes\u2019 animal spirits, a"
+        ],
+        "confidence": 0.6
+      },
+      "FOREWORD": {
+        "type": "potential_crypto_symbol",
+        "definition": "Symbol: FOREWORD",
+        "occurrences": 2,
+        "contexts": [
+          "s have been widely\n\nxix\n\n\fxx\n\nFOREWORD\n\ndisseminated via the storyte",
+          "he dynamics follows a\n\n\fxxii\n\nFOREWORD\n\ncatastrophe-theory explicati"
+        ],
+        "confidence": 0.6
+      }
+    },
+    "academic_analysis": {
+      "is_academic_paper": true,
+      "confidence": 0.6,
+      "score": 9,
+      "indicators_found": [
+        "abstract",
+        "introduction",
+        "results",
+        "discussion",
+        "conclusion",
+        "references",
+        "bibliography",
+        "acknowledgments",
+        "appendix"
+      ],
+      "citation_count": 0,
+      "recommended_thresholds": {
+        "min_tokens": 200,
+        "low_quality_tokens": 1000,
+        "reference_density_max": 0.15,
+        "citation_density_max": 0.1,
+        "formula_density_max": 0.2,
+        "table_density_max": 0.15,
+        "min_sections": 3,
+        "bibliography_required": true
+      }
+    }
+  },
+  "tables": [],
+  "formulas": [
+    {
+      "formula": "Founded in 1807, John Wiley & Sons is the oldest independent\npublishing company in the United States. With offices in North\nAmerica, Europe, Australia, and Asia. Wiley is globally committed\nto developing and marketing print and clectronic products and\nservices for our customers\u2019 professional and personal knowledge and\nunderstanding,\n\n\u2018The Wiley Finance series contains books writen specifically for\nfinance and investment professionals as well as sophisticated indi-\nvidual investors and their financial advisors. Book topics range from\nportfolio management to e-commerce, risk management, financial\ncengincering, valuation, and financial instrument analysis, as well as\n\u2018much more.\n\nor a list of available tiles, visit our Web site at wow. Wiley\nFinance.com,",
+      "type": "ocr_image",
+      "page": 4,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 761,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": false,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.1,
+        "source": "ocr_image"
+      }
+    },
+    {
+      "formula": "Protace vi\n\nForeword vk\n\nAcknowledgments or]\nCHAPTER 1\n\n\u2018Monte Caro or Bust 1\n\nBeginning 1\n\nWhither? And Allsions 4\ncHnPTER2\n\n\u2018Statistical Arbitrage a\n\nIntroduction \u00b0\n\nNoise Models 10\n\nReverse Bets un\n\nMuleiple Bets u\n\nRule Calibration fea\n\nSpread Margins for Trade Rules 6\n\nPopcorn Process 18\n\neating Pairs 20\n\nRefining Pair Selection 2\n\nEvent Analysis, 2\n\nCorrelation Search in the Twenty-First Century 26\n\nPontolio Configuration and Risk Contol 26\n\nExposure to Marker Facto 2\u00bb\n\nMarket Impact 30\n\nRisk Contol Using Event Coreelatons 31\n\nDynamics and Calibration 2\n\nEvolutionary Operation: Single Parameter Mustration 34\n\nw",
+      "type": "ocr_image",
+      "page": 9,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 624,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": false,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.05,
+        "source": "ocr_image"
+      }
+    },
+    {
+      "formula": "Tice pase tlt storyof ical arirage ish ahistory,\n\ndescribing the first days ofthe strategy\u2019s genesis at Morgan Stanley\nin the 1980s through the performance challenging years of the early\n\u2018wenty-frst century, and an exegesis of how and why it works. The\npresentation is from first principles and largely remains atthe level\nfof a basic analytical framework. Nearly all temptation to compose\n8 technical treatise has been resisted with the goal of contributing a\n\u2018work that will be readily accessible to the larger portion of interested\nreadership. say \u201cnearly all\u201d: Chapter 7 and che appendix to Chapter\n11 probably belong to the eategory of \u201ctemptation not resisted.\u201d\n\u2018Much of what is dane by more sophisticated practitioners is discussed\n\u2018in conceptual terms, with demonstrations restricted to models that\nwill be familiar to most readers. The notion of a pair trade\u2014the\nprogenitor of statistical arbitrage\u2014is employed to this didactic end\nfather more broadly than actual trading utility admits. In adopting\nthis approach, one runs the risk of the work being dismissed as\n4 pairs trading manual; one\u2019s experince, intent, and. aspirations\nfor the text are more extensive, but the inevitably of the former\nis anticipated. In practical trading terms, the simple, unelaborated\npair scheme is no longer very profitable, nonetheless it remains a\nvaluable tool for explication, retaining the capacity to demonstrate\ninsight, modeling, and analysis while not clouding matters through\ncomplexity. After a quarter century inthe marketplace, for profitable\nschemes beyond paper understanding and illustration, one needs to\nAdd some structural complexity and analytical subtlety.\n\n(One elaboration alluded to in the text isthe assembling of a set\nof similar pairs (without getting into much detail on what metrics\nare used to gauge the degree of similarity), often designated as a\ngroup. Modeling such groups ean be done in several ways, with some\npractitioners preferring to anchor a group on a notional archetype,\n\u2018ructuring forecasts in terms of deviation of tradable pairs from the\narchetype; others create a formal implementation of the cohort as\n\ni",
+      "type": "ocr_image",
+      "page": 15,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 2143,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": false,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.05,
+        "source": "ocr_image"
+      }
+    },
+    {
+      "formula": "fa PREFACE\na gestalt or a synthetic instrument. Both of those approaches, and\n\u2018others, can be formally analyzed as a hierarchical model, greatly\nin vogue (and greatly\u201d productive of insight and application) in\n\u2018mainstream statistical thinking for wo decades; add to the standard\nstatie structure the dynamic clement in a time series setting and one is\nvery quickly building an analytical structure of greater sophistication\nthan routinely used as the didactic rool in this book. Nonetheless,\nall such modeling developments rely on the insight and techniques\ndetailed herein,\n\n\u201cThose readers with deeper knowledge of mathematical and sta-\ntistical science will, hopefully, quickly see where the presentation can\nbe taken,\n\n\u2018Maintaining focus on the structurally simple pair scheme invites\nreaders to treat this book as an explicit \u201chow to\u201d manual. From\nthis perspective, one may learn a reasonable history of the what\nand the how and a decent knowledge of why it is possible. Con-\ntemporary successful execution will require from the reader some\nadditional thought and directed exploration as foregoing remarks\nhhave indicated. For that task, the book serves as a map showing\n\u2018major features and indicating where the reader must get out a com\npass and notebook. The old cartographers\u2019 device \u201cHere be dragons\u201d\n\u2018might be usefully remembered when you venture thus.\n\nThe text has, unashamedly, a statisicin\u2019s viewpoint: Models can\nbbe useful. Maintaining a model's utility is one theme of the book.\n\u2018The statistcian\u2019s preoccupation with understanding variation\u2014the\nappreciation of the knowledge that one's models are wrong, though\nuseful, and that the nature of the wrongness is illuminated by the\nstructure of \u201cerrors\u201d (discrepancies between observations and what\n\u20184 model predicts) is another theme of the book. Or, rather, not a\ndistinct theme, but an overeiding, guiding context for the material\n\nThe notion of a pair trade is introduced in Chapter and\nclaborated upon in Chapter 2. Following explication and exemplifi-\n\u2018ation, two simple theoretical models for the underlying phenomenon\nexploited by pairs, reversion, are proposed. These models are used\nthroughout the text to study what is posible, illuminate how the pos-\nsibilities might be exploited, consider what kinds of change would\nhave negative impact on exploitation, and characterize the nature\nfof the impact. Approaches for selecting a universe of instruments\nfor modeling and trading are described. Consideration of change is",
+      "type": "ocr_image",
+      "page": 16,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 2491,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": false,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.2,
+        "source": "ocr_image"
+      }
+    },
+    {
+      "formula": "a PREFACE\nbeing exploited. Knowledge of the theoretical results often reveals\nitself more when assumptions are violated than when things are hunky\nddory and managers with solid understanding and those operating\nintellectually blind generate postive returns in equal measure, (Tony\n(O'Hagan suggested that the basic probability resule is long known,\nbbut [have been unable to trace it. Pethaps the result is too trivial\nto be a named result and exists asa simple consequence, a textbook\nexercise, of basic distribution theory. No matter, the implication\nremains profoundly significant to the statistical arbitrage story.)\n\nChapter 5 critiques a published article (whose authors remain\nanonymous here to protect their embarrassment) to clarify the broad\nConditions under which the phenomenon of reversion occurs. A cen-\ntral role for the normal distribution is dismissed. The twin erroncous\nclaims tha (a) a price series must exhibit a normal marginal distri-\nbution for reversion to occur, and (b) a series exhibiting a normal\n\u2018marginal distribution necessarily exhibits reversion are unceremo-\nniously dispelled. There is reversion anywhere and everywhere, as\nChapter 4 demonstrates.\n\nChapter 6 answers the question, important for quantifying the\nmagnitude of exploitable opportunities in reversion gambits, \u201cHow\n\u2018much volatility i there ina spread?\u201d\n\n(Chapter 7s forthe enthusiast not easily dissuaded by the presence\nof the many hieroglyphs of the probability calculus. Anyone with\n1 good first course in probability theory can follow the arguments,\nland most can manage the detailed derivations, too. The mechanics\nare not enormously complicated. Some of the conceptual distinctions\n\u2018may be challenging at first\u2014read it ewice! The effort will be repaid\nas there is significant practical insight in the examples considered\nfat length. Knowledge of how close theoretical abstractions come\nto reflecting measurable features of actual price series is invaluable\nin assessing modeling possibilities and simulation or trading resus\n\u2018Notwithstanding that remark, its tre that the remainder ofthe book\ndoes not rely on familiarity with the material in Chapter 7. While\n\u2018you may miss some of the subtlety inthe subsequent discussions, you\n\u2018will not lack understanding for omitting attention to this chapter.\n\nChapters 8 through 10 might have been labeled \u201cThe Fall,\u201d as\nthey characterize the problems that beset statistical arbitrage begin-\nning in 2000 and directly caused the catastrophic drop in return\nduring 2002-2004. An important lesson from this history is that\nthere was not a single condition or set of conditions that abruptly",
+      "type": "ocr_image",
+      "page": 18,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 2631,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": false,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.25,
+        "source": "ocr_image"
+      }
+    },
+    {
+      "formula": "Prtce ni\nchanged in 2000 and thereby eliminated forecast performance of\nStatistical arbiteage models. What story that would be! Far more\ndramatic than the prosaic reality, which ie complex mix of multiple\nCauses aul mings. All he familiar one linet, including decimalia-\ntion, competition, and low volatility, had (and have) their moment,\nbhutnone individually, nor the combination, canhave delivered blow\nto financial markets. Fundamentally altering the peice dynamics of\n\u2018markers in ways that drastically diminish the economic potential in\nreversion schemes, mining value across the spectrum feom the very\nhigh frequency hare of inta-day to the venerable tortoise ofa month\n\nChange upon change upon change cataloged in Chapter 9 is at\nthe root ofthe dearth of reten to statistical arbitage in 20022004\n(Performance deterioration in 2000-2002 was evident but limited\nto a subset of practitioners) This unusual episode in recent US.\n\u2018macroeconomic history is over, but the effects linger in the nancial\nsmarkers reflecting emergent properties ofthe collective behavior of,\nnllions of investors; and surely those investors continue 0 embody,\ntno matter how lingering, those changes and the causes thereof\n\n\u201cThe shift of trading from the floor of the New York Stock\nExchange to internal exchanges, in the guise of computer algo-\nrithms designed by lage brokerage houses and investment banks, bas\ncumulatively become a change with glacicr-ike implacable. Slow\nMassive, Ireisble. Crushing. Reforming A frequently remarked\nfacet of the evolving dynamics i the decline of market volaiiy\nWhere has market volatility gone? In large par the algorithms have\ncatenit. Reduce the voice of single participant yellingin a crowed and\nthe babel is unaffected. Quie a signifiant proportion of participants\nand the reduced babe is oddly deafening. Now that computer pro\u201d\ntrams (Chapter 10} \u201cmanage\u201d over 60 perent of US. equity trades\nmong \u201cthemselves\u201d the extexinary rel is akin to administering,\n4 dose of ritalin tothe hyperactive market child. Inthe commentary\nGm lowe volatility two themes stand out: one ia lament over the lack\nke and the deeopen of Exchange Taed Pande ral the forming aw\nat",
+      "type": "ocr_image",
+      "page": 19,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 2179,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": false,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.25,
+        "source": "ocr_image"
+      }
+    },
+    {
+      "formula": "it PREFACE\nof Keynes\u2019 animal spirits, a concern that the entrepreneurial genius\nfof Ameria is subdued even as Asian giants are stirring; the other is\n4 fear that investors have forgotten the risks inherent in investment\ndecisions, chat inadvisable decisions are therefore being made that\nwill have negative consequences in the near future. The inconsistency\nin those two characterizations is stark, but it can he rationalized.\nContrary to the frst notion, the spirit is quite animated\u2014with a\nbillion and a half shares changing ownership daly on the NYSE mart\nlone, what other conclusion should one draw? There is plenty of\nspirit simply its animus is satisied with less overt fuss. Algorithms\ndon't have emotions. So there is plenty of innovative risk taking,\nbut low volatility by historical standards, induced by trading tech\nnologies, has not yet been properly internalized by many market\nparticipants. Viewing contemporary volatility levels in the manner to\n\u2018which historical experience has been accustomed ineluctably leads to\nexcessive risk taking.\n\nChapter 10 is interesting in its own right, notwithstanding any\nrelationship to the evolution of statistical arbitrage opportunities,\nAlgorithms and computer driven trading are changing the financial\n\u2018world in many ways. Electronic exchanges have already been seen\n\u2018off most ofthe world\u2019s peopled erading places\u2014and who among us\nbelieves that the floor of the NYSE will be more than a museum,\nparking lot, or memory ina year or two?\n\nChapter 11 describes the phoenix of statistical arbitrage, rising\n\u2018out of the ashes ofthe fie created and sustained by the technological\ndevelopments in algorithmic trading. New, sustained patterns of\nstock price dynamics are emerging. The story of statistical arbitrage\nthas retumed to a new beginning. Will this fledgling fly?\n\nThe renaissance predicted in Chapter 11, drafted in 2005, is\nalready coming to pass. Since at least early 2006 there has been a\nresurgence of performance from those practitioners who persisted\nthrough the extremely challenging dynamic changes of 2003-2005.\nInterestingly, while there are new systematic patterns in the move.\nments of relative equity prices, some old patterns have aso regained\npotency. Adoption of algorithmic trading is accelerating, with tools\n\u2018now offered by more than 20 vendors. In another technology driven\ndevelopment, beginning with Goldman Sachs in late 2006, at least\n\u2018wo offerings of general hedge fund replication by algorithmic means\nhave been brought to market. This is an exciting as well as exacting\ntime for statistical arbitrageurs,",
+      "type": "ocr_image",
+      "page": 20,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 2587,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": false,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.05,
+        "source": "ocr_image"
+      }
+    },
+    {
+      "formula": "Foreword\n\n[Mie isin rcs, a in mach of human atv, is\n\npowerful and fundamental force, driving systems and markets\nto homeostatic relationships. Starting in the early 1980s, statistical\narbitrage was a formal and successful attempt to model this behavior\nin the pursuit of profit. Understanding the arithmetic of statistical\narbitrage (sometimes abbreviated as stat. arb.) is a cornerstone to\ntunderstanding the development of what has come to be known as\ncomplex financial engineering and risk modeling,\n\n\u201cThe trading strategy referred to as statistical arbitrage is generally\nregarded as an opaque investment diseipline. The view is that itis\nbeing driven by two complementary forces, both deriving from the\ncore nature of the discipline: the vagueness of practitioners and the\nlack of quantitative knowledge on the part of investors, Statistical\narbitrage exploits mathematical models ro generate returns from\nsystematic movements in securities prices. Granted, no investment\n\u2018manager is inclined to divulge the intricate \u201chow-tos\u201d of his business.\nWhile stock pickers can tell a good story without revealing the heart\nof their decision making, that is not the case with model-based\nstrategies developed by \u201cquants.\u201d A description with any meaningful\ndetail a all quickly points to a series of experiments from which an\nalert listener can try to reverse-engincer the strategy. That is why\n{quant practitioners talkin generalities that are only understandable\nby the mathematically trained.\n\nOpacity has also inereased the need for mathematical maturity\n\u2018on the part of investors seeking to assess managers. To comprehend\nwhat a statistical arbiteageur is saying beyond a glib level, one needs\nto understand advanced mathematics beyond the college level. This,\nnaturally, limits the audience, The limitation is perpetuated by the\nlack of reference material from which to lear. Statistical Arbitrage\nsnow fils that void,\n\nStatistical arbitrage has been in existence for approximately 25\nyears. During that time, the general concepts have been widely\n\nsix",
+      "type": "ocr_image",
+      "page": 21,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 2053,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": false,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.35000000000000003,
+        "source": "ocr_image"
+      }
+    },
+    {
+      "formula": "Es ronewono\ndisseminated via the storytelling of early implementers to interested\ninvestment bank analysts and academics. Nevertheless, opacity\nremains because practitioners have steadily increased the sophistica-\ntion of their modeling\u2014and for good commercial reasons remained\n\u2018obscure about their innovations. Inthe wide dissemination of basic\nstat. arb. concepts, the term mean reversion as well as its variant,\nreversion to the mean, looms very large. Reversion to the mean is 2\nsimple conceptsoillastrate: Children of unusually tall parents are typ-\nically shorter than theie parents; children of unuswally short parents\nare typically taller than their parents. Tiss a concept that is easy for\n\u2018most people to grasp. Translating this ida to the motions of security\nprices means that securities prices return to an average value. So fat,\n0 good. But then we hit a problem, Height reversion is an intergen\nrational phenomenon, while price reversion is an entity dynamic.\n\nPrices returning from where? And to what average value? The\naverage height of adults is a familiar concept, even if the precise\n{quantification requires a little work. Even children as young as\nsgrade-school age can give a reasonable estimate ofthe average height\nof the adults they know, and by extension, of the average height\n\u2018of local adule populations. There is no such common grounding of\n\u2018observation or experience to apply to securities prices. They are all\nlover the map. Scaling is arbitrary. They can grow many fold, And\nthey can collapse to zero. People do not grow to the sky and then\nrevert back to some average, but secutity prices ean,\n\n[Even if we suppose that the questions have been reasonably\nanswered, other technicalities immediately pose themselves: How\ndoes one identify when a price is away from the mean and by how\n\u2018much? How long will the return to the mean take?\n\nHere is where the opacity enters the discussion and makes its\npermanent home. The language of mathematical models compounds\nthe unfamiliarity of the notions, generating a sense of disquiet, a fear\nof lick of understanding\n\nIn Statistical Arbitrage, Pole has given his audience a didactictour\nof the basic principles of statistical arbitrage, eliminating opacity at\nthe Statistical Arbitrage 101 level. In the 1980s and early 1990s,\nStat. Arb. 101 was, for the most part, all there was (exceptions such\nas D.E. Shaw and Renaissance aside). Today, more than a decade\nlater, chere isa much more extensive and complex world of statistical\narbitrage.",
+      "type": "ocr_image",
+      "page": 22,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 2512,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": false,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.35000000000000003,
+        "source": "ocr_image"
+      }
+    },
+    {
+      "formula": "Forwors a\n\nThis is not unlike the natural world, which is now populated\nby incredibly complex biological organisms after four billion years\nof evolution. Yet the simplest organisms thrive everywhere and still\n\u2018make up by far the largest part ofthe planets biomass. So si true in\nstatistical arbitrage, where the basics underpin much of contemporary\npractice\n\nStatistical Arbitrage describes the phenomena, the driving forces\njgenerating those phenomena, the patterns of dynamic development\n\u2018of exploitable opportunities, and models for exploitation af the basic\nreversion to the mean in securities prices. It also offers a good deal\ntore, from hints at more sophisticated models to valuable practi-\ncal advice on model building and performance monitoring \u2014advice\napplicable far beyond statistical arbitrage.\n\nChapters 1 and 2 speak to the genesis of statistical arbitrage, the\nvenerable pairs trading schemes of the 1980s, with starting ilastra-\ntion of the enormous extent and productivity of the opportunities.\nThis demonstration sets the scene for theoretical development, pro=\nviding the frst step to critical understanding of practical exploitation\nwith rules for calibrating trade placement. More penetration of opac-\nity follows in Chapter \u00a7 where the relationship between (a) reversion\nin securities prices watched day-by-day and (b) statistical deseriptions\n(distributions) of collections of such daily prices viewed as a glob\ndevoid of the day-by-day context is clearly spelled ou.\n\nChapters 8 and 9 tell ofthe midlife crisis of statistical arbitrage.\n\u201cThe roiling of United States financial markets for many months,\nbeginning with the Enron debacle in 2000 and running through\nthe terrorist attacks of 2001 and what Pole calls \u201can appalling\nlitany\u201d of corporate misconduct, is disected for anticipated impact\nfn statistical arbiteage performance. Adding to chat mixx have been\ntechnical changes in the markets, including decimalization and the\ndecline of independent specialists on the floor of the NYSE. Pole\ndraws a clear picture of why statistical arbitrage performance was\ndisrupted. Very clearly the impression is made that the disruption\nwas not terminal\n\nChapters 10 and 11 speak to the arriving future of statistical\narbitrage. Trading algorithms, at frst destroyers of classical sta. arb.\nare now, Pole argues, progenitors of new, systematically exploitable\n\u2018opportunities. He labels one of the new motions the \u201ccatastrophe\nmove\", a detailed exposition of modeling che dynamics follows a",
+      "type": "ocr_image",
+      "page": 23,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 2507,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": false,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.4,
+        "source": "ocr_image"
+      }
+    },
+    {
+      "formula": "Fd FoRewono\ncatastrophe-theory explication of a possible rationale forthe behav-\nioral pattern, The unmistakable impression is that statistical arbitrage\nis ising once again,\n\nThe tone of Statistical Arbitrage is direct and thorough. Obfus-\ncation is in short supply. Occasionally, the tone is relieved with a bit\nof lightheartedness--the tadpole-naming story in a note to Chapter\n11 isa gem\u2014and throughout, refreshing prose isto be found.\n\nIn describing mathematical models, authors readily produce\n\u2018unmemorable, formulaic wording offering nothing by way of inter-\npretation or explanation beyond what is provided by the algebra\nitself. Statistical Arbitrage is an exception\u2014a break in che cloud of\n\u2018opacity\u2014a mean that Pole has avoided reverting to!\n\nGregory van Kipnis\nApril23, 2007\nNew York City",
+      "type": "ocr_image",
+      "page": 24,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 799,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": false,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.35000000000000003,
+        "source": "ocr_image"
+      }
+    }
+  ],
+  "file_type": "unknown",
+  "quality_flag": "ok",
+  "token_count": 4815,
+  "language": "en"
+}

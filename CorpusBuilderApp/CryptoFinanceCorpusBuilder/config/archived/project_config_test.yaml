@@ -1,0 +1,8 @@
+corpus_dir: G:/ai_trading_dev/data/test_output/corpus_test
+raw_data_dir: G:/ai_trading_dev/data/test_output/corpus_test/raw_data
+pdf_extracted_dir: G:/ai_trading_dev/data/test_output/corpus_test/pdf_extracted
+nonpdf_extracted_dir: G:/ai_trading_dev/data/test_output/corpus_test/nonpdf_extracted
+logs_dir: G:/ai_trading_dev/data/test_output/corpus_test/logs
+config_dir: G:/ai_trading_dev/data/test_output/corpus_test/config
+balance_reports_dir: G:/ai_trading_dev/data/test_output/corpus_test/balance_reports
+cache_dir: E:/ai_trading_dev/data/test_output/corpus_test/cache 

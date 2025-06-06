@@ -1,0 +1,963 @@
+Statistical
+Arbitrage
+
+Algorithmic Trading Insights
+and Techniques
+
+ANDREW POLE
+
+John Wiley & Sons, Inc.
+
+Statistical
+Arbitrage
+
+Founded in 1807, John Wiley & Sons is the oldest independent
+publishing company in the United States. With ofﬁces in North
+America, Europe, Australia, and Asia. Wiley is globally committed
+to developing and marketing print and electronic products and
+services for our customers’ professional and personal knowledge and
+understanding.
+
+The Wiley Finance series contains books written speciﬁcally for
+ﬁnance and investment professionals as well as sophisticated indi-
+vidual investors and their ﬁnancial advisors. Book topics range from
+portfolio management to e-commerce, risk management, ﬁnancial
+engineering, valuation, and ﬁnancial instrument analysis, as well as
+much more.
+
+For a list of available titles, visit our Web site at www.Wiley
+
+Finance.com.
+
+Statistical
+Arbitrage
+
+Algorithmic Trading Insights
+and Techniques
+
+ANDREW POLE
+
+John Wiley & Sons, Inc.
+
+Copyright c(cid:1) 2007 by Andrew Pole. All rights reserved.
+
+Published by John Wiley & Sons, Inc., Hoboken, New Jersey.
+Published simultaneously in Canada.
+
+Wiley Bicentennial logo: Richard J. Paciﬁco.
+
+No part of this publication may be reproduced, stored in a retrieval system, or transmitted in
+any form or by any means, electronic, mechanical, photocopying, recording, scanning, or
+otherwise, except as permitted under Section 107 or 108 of the 1976 United States Copyright
+Act, without either the prior written permission of the Publisher, or authorization through
+payment of the appropriate per-copy fee to the Copyright Clearance Center, Inc., 222
+Rosewood Drive, Danvers, MA 01923, (978) 750-8400, fax (978) 750-4470, or on the Web
+at www.copyright.com. Requests to the Publisher for permission should be addressed to the
+Permissions Department, John Wiley & Sons, Inc., 111 River Street, Hoboken, NJ 07030,
+(201) 748-6011, fax (201) 748-6008, or online at http://www.wiley.com/go/permission.
+
+Limit of Liability/Disclaimer of Warranty: While the publisher and author have used their
+best efforts in preparing this book, they make no representations or warranties with respect to
+the accuracy or completeness of the contents of this book and speciﬁcally disclaim any implied
+warranties of merchantability or ﬁtness for a particular purpose. No warranty may be created
+or extended by sales representatives or written sales materials. The advice and strategies
+contained herein may not be suitable for your situation. You should consult with a
+professional where appropriate. Neither the publisher nor author shall be liable for any loss of
+proﬁt or any other commercial damages, including but not limited to special, incidental,
+consequential, or other damages.
+
+For general information on our other products and services or for technical support, please
+contact our Customer Care Department within the United States at (800) 762-2974, outside
+the United States at (317) 572-3993 or fax (317) 572-4002.
+
+Wiley also publishes its books in a variety of electronic formats. Some content that appears in
+print may not be available in electronic books. For more information about Wiley products,
+visit our Web site at www.wiley.com.
+
+Library of Congress Cataloging-in-Publication Data:
+
+Pole, Andrew, 1961–
+
+Statistical arbitrage : algorithmic trading insights and techniques /
+
+Andrew Pole.
+
+p. cm. — (Wiley ﬁnance series)
+
+Includes bibliographical references and index.
+ISBN 978-0-470-13844-1 (cloth)
+1. Pairs trading. 2. Arbitrage---Mathematical models. 3. Speculation-
+
+-Mathematical models. I. Title.
+
+HG4661.P65 2007
+332.64’5 — dc22
+
+ISBN 978-0-470-13844-1
+
+Printed in the United States of America
+
+10 9 8 7 6 5 4 3 2 1
+
+2007026257
+
+To Eliza and Marina
+
+Contents
+
+Preface
+
+Foreword
+
+Acknowledgments
+
+CHAPTER 1
+
+Monte Carlo or Bust
+
+Beginning
+Whither? And Allusions
+
+CHAPTER 2
+
+Statistical Arbitrage
+
+Introduction
+Noise Models
+
+Reverse Bets
+Multiple Bets
+Rule Calibration
+Spread Margins for Trade Rules
+
+Popcorn Process
+Identifying Pairs
+
+Reﬁning Pair Selection
+Event Analysis
+Correlation Search in the Twenty-First Century
+
+Portfolio Conﬁguration and Risk Control
+Exposure to Market Factors
+Market Impact
+Risk Control Using Event Correlations
+
+Dynamics and Calibration
+
+Evolutionary Operation: Single Parameter Illustration
+
+xiii
+
+xix
+
+xxiii
+
+1
+
+1
+4
+
+9
+
+9
+10
+11
+11
+12
+16
+18
+20
+21
+22
+26
+26
+29
+30
+31
+32
+34
+
+vii
+
+viii
+
+CHAPTER 3
+
+Structural Models
+
+Introduction
+Formal Forecast Functions
+Exponentially Weighted Moving Average
+Classical Time Series Models
+
+Autoregression and Cointegration
+Dynamic Linear Model
+Volatility Modeling
+Pattern Finding Techniques
+Fractal Analysis
+
+Which Return?
+A Factor Model
+
+Factor Analysis
+Defactored Returns
+Prediction Model
+
+Stochastic Resonance
+Practical Matters
+Doubling: A Deeper Perspective
+Factor Analysis Primer
+
+Prediction Model for Defactored Returns
+
+CHAPTER 4
+
+Law of Reversion
+
+Introduction
+Model and Result
+
+The 75 percent Rule
+Proof of the 75 percent Rule
+Analytic Proof of the 75 percent Rule
+Discrete Counter
+Generalizations
+Inhomogeneous Variances
+Volatility Bursts
+Numerical Illustration
+
+First-Order Serial Correlation
+
+Analytic Proof
+Examples
+
+Nonconstant Distributions
+Applicability of the Result
+Application to U.S. Bond Futures
+
+CONTENTS
+
+37
+
+37
+39
+40
+47
+47
+49
+50
+51
+52
+52
+53
+54
+55
+57
+58
+59
+61
+63
+65
+
+67
+
+67
+68
+68
+69
+71
+73
+73
+74
+75
+76
+77
+79
+82
+82
+84
+85
+
+Contents
+
+Summary
+Appendix 4.1: Looking Several Days Ahead
+
+CHAPTER 5
+
+Gauss Is Not the God of Reversion
+
+Introduction
+Camels and Dromedaries
+Dry River Flow
+
+Some Bells Clang
+
+CHAPTER 6
+
+Interstock Volatility
+
+Introduction
+Theoretical Explanation
+
+Theory versus Practice
+Finish the Theory
+Finish the Examples
+Primer on Measuring Spread Volatility
+
+CHAPTER 7
+
+Quantifying Reversion Opportunities
+
+Introduction
+Reversion in a Stationary Random Process
+
+Frequency of Reversionary Moves
+Amount of Reversion
+Movements from Quantiles Other Than
+
+the Median
+
+Nonstationary Processes: Inhomogeneous Variance
+
+Sequentially Structured Variances
+Sequentially Unstructured Variances
+
+Serial Correlation
+Appendix 7.1: Details of the Lognormal Case in Example 6
+
+CHAPTER 8
+
+Nobel Difﬁculties
+
+Introduction
+Event Risk
+
+Will Narrowing Spreads Guarantee Proﬁts?
+
+Rise of a New Risk Factor
+
+ix
+
+87
+87
+
+91
+
+91
+92
+95
+98
+
+99
+
+99
+103
+105
+105
+106
+108
+
+113
+
+113
+114
+117
+118
+
+135
+136
+136
+137
+138
+139
+
+141
+
+141
+142
+144
+145
+
+x
+
+CONTENTS
+
+Redemption Tension
+
+Supercharged Destruction
+
+The Story of Regulation Fair Disclosure (FD)
+Correlation During Loss Episodes
+
+CHAPTER 9
+
+Trinity Troubles
+
+Introduction
+Decimalization
+
+European Experience
+Advocating the Devil
+
+Stat. Arb. Arbed Away
+Competition
+Institutional Investors
+Volatility Is the Key
+
+Interest Rates and Volatility
+
+Temporal Considerations
+Truth in Fiction
+A Litany of Bad Behavior
+A Perspective on 2003
+Realities of Structural Change
+Recap
+
+CHAPTER 10
+
+Arise Black Boxes
+
+Introduction
+Modeling Expected Transaction Volume and Market Impact
+Dynamic Updating
+More Black Boxes
+Market Deﬂation
+
+CHAPTER 11
+
+Statistical Arbitrage Rising
+
+Catastrophe Process
+Catastrophic Forecasts
+Trend Change Identiﬁcation
+
+Using the Cuscore to Identify a Catastrophe
+Is It Over?
+
+Catastrophe Theoretic Interpretation
+Implications for Risk Management
+
+148
+150
+150
+151
+
+155
+
+155
+156
+157
+158
+159
+160
+163
+163
+165
+166
+174
+174
+178
+179
+180
+
+183
+
+183
+185
+188
+189
+189
+
+191
+
+194
+198
+200
+202
+204
+205
+209
+
+Contents
+
+Sign Off
+Appendix 11.1: Understanding the Cuscore
+
+Bibliography
+
+Index
+
+xi
+
+211
+211
+
+223
+
+225
+
+Preface
+
+T hese pages tell the story of statistical arbitrage. It is both a history,
+
+describing the ﬁrst days of the strategy’s genesis at Morgan Stanley
+in the 1980s through the performance challenging years of the early
+twenty-ﬁrst century, and an exegesis of how and why it works. The
+presentation is from ﬁrst principles and largely remains at the level
+of a basic analytical framework. Nearly all temptation to compose
+a technical treatise has been resisted with the goal of contributing a
+work that will be readily accessible to the larger portion of interested
+readership. I say ‘‘nearly all’’: Chapter 7 and the appendix to Chapter
+11 probably belong to the category of ‘‘temptation not resisted.’’
+Much of what is done by more sophisticated practitioners is discussed
+in conceptual terms, with demonstrations restricted to models that
+will be familiar to most readers. The notion of a pair trade—the
+progenitor of statistical arbitrage—is employed to this didactic end
+rather more broadly than actual trading utility admits. In adopting
+this approach, one runs the risk of the work being dismissed as
+a pairs trading manual; one’s experience, intent, and aspirations
+for the text are more extensive, but the inevitability of the former
+is anticipated. In practical trading terms, the simple, unelaborated
+pair scheme is no longer very proﬁtable, nonetheless it remains a
+valuable tool for explication, retaining the capacity to demonstrate
+insight, modeling, and analysis while not clouding matters through
+complexity. After a quarter century in the marketplace, for proﬁtable
+schemes beyond paper understanding and illustration, one needs to
+add some structural complexity and analytical subtlety.
+
+One elaboration alluded to in the text is the assembling of a set
+of similar pairs (without getting into much detail on what metrics
+are used to gauge the degree of similarity), often designated as a
+group. Modeling such groups can be done in several ways, with some
+practitioners preferring to anchor a group on a notional archetype,
+structuring forecasts in terms of deviation of tradable pairs from the
+archetype; others create a formal implementation of the cohort as
+
+xiii
+
+xiv
+
+PREFACE
+
+a gestalt or a synthetic instrument. Both of those approaches, and
+others, can be formally analyzed as a hierarchical model, greatly
+in vogue (and greatly productive of insight and application) in
+mainstream statistical thinking for two decades; add to the standard
+static structure the dynamic element in a time series setting and one is
+very quickly building an analytical structure of greater sophistication
+than routinely used as the didactic tool in this book. Nonetheless,
+all such modeling developments rely on the insight and techniques
+detailed herein.
+
+Those readers with deeper knowledge of mathematical and sta-
+tistical science will, hopefully, quickly see where the presentation can
+be taken.
+
+Maintaining focus on the structurally simple pair scheme invites
+readers to treat this book as an explicit ‘‘how to’’ manual. From
+this perspective, one may learn a reasonable history of the what
+and the how and a decent knowledge of why it is possible. Con-
+temporary successful execution will require from the reader some
+additional thought and directed exploration as foregoing remarks
+have indicated. For that task, the book serves as a map showing
+major features and indicating where the reader must get out a com-
+pass and notebook. The old cartographers’ device ‘‘Here be dragons’’
+might be usefully remembered when you venture thus.
+
+The text has, unashamedly, a statistician’s viewpoint: Models can
+be useful. Maintaining a model’s utility is one theme of the book.
+The statistician’s preoccupation with understanding variation—the
+appreciation of the knowledge that one’s models are wrong, though
+useful, and that the nature of the wrongness is illuminated by the
+structure of ‘‘errors’’ (discrepancies between observations and what
+a model predicts) is another theme of the book. Or, rather, not a
+distinct theme, but an overriding, guiding context for the material.
+
+The notion of a pair trade is introduced in Chapter 1 and
+elaborated upon in Chapter 2. Following explication and exempliﬁ-
+cation, two simple theoretical models for the underlying phenomenon
+exploited by pairs, reversion, are proposed. These models are used
+throughout the text to study what is possible, illuminate how the pos-
+sibilities might be exploited, consider what kinds of change would
+have negative impact on exploitation, and characterize the nature
+of the impact. Approaches for selecting a universe of instruments
+for modeling and trading are described. Consideration of change is
+
+Preface
+
+xv
+
+introduced from this ﬁrst toe dipping into analysis, because temporal
+dynamics underpin the entirety of the project. Without the dynamic
+there is no arbitrage.
+
+In Chapter 3 we increase the depth and breadth of the analysis,
+expanding the modeling scope from simple observational rules1 for
+pairs to formal statistical models for more general portfolios. Several
+popular models for time series are described but detailed focus is on
+weighted moving averages at one extreme of complexity and factor
+analysis at another, these extremes serving to carry the message as
+clearly as we can make it. Pair spreads are referred to throughout
+the text serving, as already noted, as the simplest practical illustrator
+of the notions discussed. Where necessary to make our urgencies
+sensible, direct mention is made of other aspects of the arbitrageur’s
+concern, including portfolio optimization and factor exposures. For
+incursions into multivariate territory are
+the most part though,
+avoided. Volatility modeling (and the fascinating idea of stochastic
+resonance) are treated separately here and in Chapter 6; elsewhere
+discussion is subsumed in that of the mean forecast process.
+
+Chapter 4 presents a probability theorem that illuminates the
+prevalence of price moves amenable to exploitation by the simple
+rules ﬁrst applied in the late 1980s. The insight of this result guides
+evaluation of exploitation strategies. Are results borne of brilliance
+on the part of a modeler or would a high school graduate perform
+similarly because the result is driven by structural dynamics, long
+in the public domain, revealed by careful observation alone? Many
+a claim of a ‘‘high’’ proportion of winning bets by a statistical
+arbitrageur has more to do with the latter than any sophistication
+of basic spread modeling or (importantly) risk management. When
+markets are disrupted and the conditions underlying the theoretical
+result are grossly violated, comparative practitioner performance
+reveals much about basic understanding of the nature of the process
+
+1There is no pejorative intent in the use of the term: The rules were effective. Statistical
+content was limited to measurement of range of variation; no distributional study,
+model formulation, estimation, error analysis, or forecasting was undertaken prior
+to milking the observational insight. Those activities came soon enough—after the
+proﬁts were piling up. With the expanded statistical study, adding trading experience
+to historical data, came insight into subtleties of the stock price motions exploited
+and the market forces driving repetitious occurrence of opportunities.
+
+xvi
+
+PREFACE
+
+being exploited. Knowledge of the theoretical results often reveals
+itself more when assumptions are violated than when things are hunky
+dory and managers with solid understanding and those operating
+intellectually blind generate positive returns in equal measure. (Tony
+O’Hagan suggested that the basic probability result is long known,
+but I have been unable to trace it. Perhaps the result is too trivial
+to be a named result and exists as a simple consequence, a textbook
+exercise, of basic distribution theory. No matter, the implication
+remains profoundly signiﬁcant to the statistical arbitrage story.)
+
+Chapter 5 critiques a published article (whose authors remain
+anonymous here to protect their embarrassment) to clarify the broad
+conditions under which the phenomenon of reversion occurs. A cen-
+tral role for the normal distribution is dismissed. The twin erroneous
+claims that (a) a price series must exhibit a normal marginal distri-
+bution for reversion to occur, and (b) a series exhibiting a normal
+marginal distribution necessarily exhibits reversion are unceremo-
+niously dispelled. There is reversion anywhere and everywhere, as
+Chapter 4 demonstrates.
+
+Chapter 6 answers the question, important for quantifying the
+magnitude of exploitable opportunities in reversion gambits, ‘‘How
+much volatility is there in a spread?’’
+
+Chapter 7 is for the enthusiast not easily dissuaded by the presence
+of the many hieroglyphs of the probability calculus. Anyone with
+a good ﬁrst course in probability theory can follow the arguments,
+and most can manage the detailed derivations, too. The mechanics
+are not enormously complicated. Some of the conceptual distinctions
+may be challenging at ﬁrst—read it twice! The effort will be repaid
+as there is signiﬁcant practical insight in the examples considered
+at length. Knowledge of how close theoretical abstractions come
+to reﬂecting measurable features of actual price series is invaluable
+in assessing modeling possibilities and simulation or trading results.
+Notwithstanding that remark, it is true that the remainder of the book
+does not rely on familiarity with the material in Chapter 7. While
+you may miss some of the subtlety in the subsequent discussions, you
+will not lack understanding for omitting attention to this chapter.
+
+Chapters 8 through 10 might have been labeled ‘‘The Fall,’’ as
+they characterize the problems that beset statistical arbitrage begin-
+ning in 2000 and directly caused the catastrophic drop in return
+during 2002–2004. An important lesson from this history is that
+there was not a single condition or set of conditions that abruptly
+
+Preface
+
+xvii
+
+changed in 2000 and thereby eliminated forecast performance of
+statistical arbitrage models. What a story that would be! Far more
+dramatic than the prosaic reality, which is a complex mix of multiple
+causes and timings. All the familiar one liners, including decimaliza-
+tion, competition, and low volatility, had (and have) their moment,
+but none individually, nor the combination, can have delivered a blow
+to ﬁnancial markets. Fundamentally altering the price dynamics of
+markets in ways that drastically diminish the economic potential in
+reversion schemes, mining value across the spectrum from the very
+high frequency hare of intra-day to the venerable tortoise of a month
+or more, requires a more profound explanation.
+
+Change upon change upon change cataloged in Chapter 9 is at
+the root of the dearth of return to statistical arbitrage in 2002–2004.
+(Performance deterioration in 2000–2002 was evident but limited
+to a subset of practitioners.) This unusual episode in recent U.S.
+macroeconomic history is over, but the effects linger in the ﬁnancial
+markets reﬂecting emergent properties of the collective behavior of
+millions of investors; and surely those investors continue to embody,
+no matter how lingering, those changes and the causes thereof.
+
+The shift of trading from the ﬂoor of the New York Stock
+Exchange to internal exchanges, in the guise of computer algo-
+rithms designed by large brokerage houses and investment banks, has
+cumulatively become a change with glacier-like implacability. Slow.
+Massive. Irresistible. Crushing. Reforming.2 A frequently remarked
+facet of the evolving dynamics is the decline of market volatility.
+Where has market volatility gone? In large part the algorithms have
+eaten it. Reduce the voice of a single participant yelling in a crowd and
+the babel is unaffected. Quite a signiﬁcant proportion of participants
+and the reduced babel is oddly deafening. Now that computer pro-
+grams (Chapter 10) ‘‘manage’’ over 60 percent of U.S. equity trades
+among ‘‘themselves’’ the extraodinary result is akin to administering
+a dose of ritalin to the hyperactive market child. In the commentary
+on low volatility two themes stand out: one is a lament over the lack
+
+2One major structural consequence, fed also by technical advance in the credit mar-
+kets and the development of Exchange Traded Funds, is literally the forming anew
+of patterns of price behavior detemined by the interaction of computer algorithms
+as agents for share dealings. In addition to this re-forming, reform is simultaneously
+underway with changes to Securities Exchange Commission regulations and NYSE
+rules.
+
+xviii
+
+PREFACE
+
+of Keynes’ animal spirits, a concern that the entrepreneurial genius
+of America is subdued even as Asian giants are stirring; the other is
+a fear that investors have forgotten the risks inherent in investment
+decisions, that inadvisable decisions are therefore being made that
+will have negative consequences in the near future. The inconsistency
+in those two characterizations is stark, but it can be rationalized.
+Contrary to the ﬁrst notion, the spirit is quite animated—with a
+billion and a half shares changing ownership daily on the NYSE mart
+alone, what other conclusion should one draw? There is plenty of
+spirit: simply its animus is satisﬁed with less overt fuss. Algorithms
+don’t have emotions. So there is plenty of innovative risk taking,
+but low volatility by historical standards, induced by trading tech-
+nologies, has not yet been properly internalized by many market
+participants. Viewing contemporary volatility levels in the manner to
+which historical experience has been accustomed ineluctably leads to
+excessive risk taking.
+
+Chapter 10 is interesting in its own right, notwithstanding any
+relationship to the evolution of statistical arbitrage opportunities.
+Algorithms and computer driven trading are changing the ﬁnancial
+world in many ways. Electronic exchanges have already been seen
+off most of the world’s peopled trading places—and who among us
+believes that the ﬂoor of the NYSE will be more than a museum,
+parking lot, or memory in a year or two?
+
+Chapter 11 describes the phoenix of statistical arbitrage, rising
+out of the ashes of the ﬁre created and sustained by the technological
+developments in algorithmic trading. New, sustained patterns of
+stock price dynamics are emerging. The story of statistical arbitrage
+has returned to a new beginning. Will this ﬂedgling ﬂy?
+
+The renaissance predicted in Chapter 11, drafted in 2005, is
+already coming to pass. Since at least early 2006 there has been a
+resurgence of performance from those practitioners who persisted
+through the extremely challenging dynamic changes of 2003–2005.
+Interestingly, while there are new systematic patterns in the move-
+ments of relative equity prices, some old patterns have also regained
+potency. Adoption of algorithmic trading is accelerating, with tools
+now offered by more than 20 vendors. In another technology driven
+development, beginning with Goldman Sachs in late 2006, at least
+two offerings of general hedge fund replication by algorithmic means
+have been brought to market. This is an exciting as well as exacting
+time for statistical arbitrageurs.
+
+Foreword
+
+M ean reversion in prices, as in much of human activity, is a
+
+powerful and fundamental force, driving systems and markets
+to homeostatic relationships. Starting in the early 1980s, statistical
+arbitrage was a formal and successful attempt to model this behavior
+in the pursuit of proﬁt. Understanding the arithmetic of statistical
+arbitrage (sometimes abbreviated as stat. arb.) is a cornerstone to
+understanding the development of what has come to be known as
+complex ﬁnancial engineering and risk modeling.
+
+The trading strategy referred to as statistical arbitrage is generally
+regarded as an opaque investment discipline. The view is that it is
+being driven by two complementary forces, both deriving from the
+core nature of the discipline: the vagueness of practitioners and the
+lack of quantitative knowledge on the part of investors. Statistical
+arbitrage exploits mathematical models to generate returns from
+systematic movements in securities prices. Granted, no investment
+manager is inclined to divulge the intricate ‘‘how-tos’’ of his business.
+While stock pickers can tell a good story without revealing the heart
+of their decision making, that is not the case with model-based
+strategies developed by ‘‘quants.’’ A description with any meaningful
+detail at all quickly points to a series of experiments from which an
+alert listener can try to reverse-engineer the strategy. That is why
+quant practitioners talk in generalities that are only understandable
+by the mathematically trained.
+
+Opacity has also increased the need for mathematical maturity
+on the part of investors seeking to assess managers. To comprehend
+what a statistical arbitrageur is saying beyond a glib level, one needs
+to understand advanced mathematics beyond the college level. This,
+naturally, limits the audience. The limitation is perpetuated by the
+lack of reference material from which to learn. Statistical Arbitrage
+now ﬁlls that void.
+
+Statistical arbitrage has been in existence for approximately 25
+years. During that time, the general concepts have been widely
+
+xix
+
+xx
+
+FOREWORD
+
+disseminated via the storytelling of early implementers to interested
+investment bank analysts and academics. Nevertheless, opacity
+remains because practitioners have steadily increased the sophistica-
+tion of their modeling—and for good commercial reasons remained
+obscure about their innovations. In the wide dissemination of basic
+stat. arb. concepts, the term mean reversion as well as its variant,
+reversion to the mean, looms very large. Reversion to the mean is a
+simple concept to illustrate: Children of unusually tall parents are typ-
+ically shorter than their parents; children of unusually short parents
+are typically taller than their parents. This is a concept that is easy for
+most people to grasp. Translating this idea to the motions of security
+prices means that securities prices return to an average value. So far,
+so good. But then we hit a problem. Height reversion is an intergen-
+erational phenomenon, while price reversion is an entity dynamic.
+
+Prices returning from where? And to what average value? The
+average height of adults is a familiar concept, even if the precise
+quantiﬁcation requires a little work. Even children as young as
+grade-school age can give a reasonable estimate of the average height
+of the adults they know, and by extension, of the average height
+of local adult populations. There is no such common grounding of
+observation or experience to apply to securities prices. They are all
+over the map. Scaling is arbitrary. They can grow many fold. And
+they can collapse to zero. People do not grow to the sky and then
+revert back to some average, but security prices can.
+
+Even if we suppose that the questions have been reasonably
+answered, other technicalities immediately pose themselves: How
+does one identify when a price is away from the mean and by how
+much? How long will the return to the mean take?
+
+Here is where the opacity enters the discussion and makes its
+permanent home. The language of mathematical models compounds
+the unfamiliarity of the notions, generating a sense of disquiet, a fear
+of lack of understanding.
+
+In Statistical Arbitrage, Pole has given his audience a didactic tour
+of the basic principles of statistical arbitrage, eliminating opacity at
+the Statistical Arbitrage 101 level. In the 1980s and early 1990s,
+Stat. Arb. 101 was, for the most part, all there was (exceptions such
+as D.E. Shaw and Renaissance aside). Today, more than a decade
+later, there is a much more extensive and complex world of statistical
+arbitrage.
+
+Foreword
+
+xxi
+
+This is not unlike the natural world, which is now populated
+by incredibly complex biological organisms after four billion years
+of evolution. Yet the simplest organisms thrive everywhere and still
+make up by far the largest part of the planet’s biomass. So is it true in
+statistical arbitrage, where the basics underpin much of contemporary
+practice.
+
+Statistical Arbitrage describes the phenomena, the driving forces
+generating those phenomena, the patterns of dynamic development
+of exploitable opportunities, and models for exploitation of the basic
+reversion to the mean in securities prices. It also offers a good deal
+more, from hints at more sophisticated models to valuable practi-
+cal advice on model building and performance monitoring—advice
+applicable far beyond statistical arbitrage.
+
+Chapters 1 and 2 speak to the genesis of statistical arbitrage, the
+venerable pairs trading schemes of the 1980s, with startling illustra-
+tion of the enormous extent and productivity of the opportunities.
+This demonstration sets the scene for theoretical development, pro-
+viding the ﬁrst step to critical understanding of practical exploitation
+with rules for calibrating trade placement. More penetration of opac-
+ity follows in Chapter 5 where the relationship between (a) reversion
+in securities prices watched day-by-day and (b) statistical descriptions
+(distributions) of collections of such daily prices viewed as a glob
+devoid of the day-by-day context, is clearly spelled out.
+
+Chapters 8 and 9 tell of the midlife crisis of statistical arbitrage.
+The roiling of United States ﬁnancial markets for many months,
+beginning with the Enron debacle in 2000 and running through
+the terrorist attacks of 2001 and what Pole calls ‘‘an appalling
+litany’’ of corporate misconduct, is dissected for anticipated impact
+on statistical arbitrage performance. Adding to that mix have been
+technical changes in the markets, including decimalization and the
+decline of independent specialists on the ﬂoor of the NYSE. Pole
+draws a clear picture of why statistical arbitrage performance was
+disrupted. Very clearly the impression is made that the disruption
+was not terminal.
+
+Chapters 10 and 11 speak to the arriving future of statistical
+arbitrage. Trading algorithms, at ﬁrst destroyers of classical stat. arb.
+are now, Pole argues, progenitors of new, systematically exploitable
+opportunities. He labels one of the new motions the ‘‘catastrophe
+move’’; a detailed exposition of modeling the dynamics follows a
+
+xxii
+
+FOREWORD
+
+catastrophe-theory explication of a possible rationale for the behav-
+ioral pattern. The unmistakable impression is that statistical arbitrage
+is rising once again.
+
+The tone of Statistical Arbitrage is direct and thorough. Obfus-
+cation is in short supply. Occasionally, the tone is relieved with a bit
+of lightheartedness—the tadpole-naming story in a note to Chapter
+11 is a gem—and throughout, refreshing prose is to be found.
+
+In describing mathematical models, authors readily produce
+unmemorable, formulaic wording offering nothing by way of inter-
+pretation or explanation beyond what is provided by the algebra
+itself. Statistical Arbitrage is an exception—a break in the cloud of
+opacity—a mean that Pole has avoided reverting to!
+
+April 23, 2007
+New York City
+
+Gregory van Kipnis
+
+Acknowledgments
+
+I was introduced to statistical arbitrage by Gregg van Kipnis. In
+
+many ways, the contents of this volume are directly the result of our
+collaboration and it is a pleasure to acknowledge the intellectual debt.
+Our conversations often strayed far beyond statistical arbitrage to
+macroeconomics and general science and very often to politics, none
+of which is reproduced here in recognizable form. Those discussions
+were not always motivated by statistical arbitrage considerations,
+though occasionally we would hit on a useful metaphor from an
+unrelated topic that subsequently proved fruitful in thinking about
+statistical arbitrage. It is not in the nature of things that individual
+such recollections can now be pointed to with certainty to say whose
+idea ABC was. Credit is rightfully due to van Kipnis; the rendition in
+these pages is entirely my responsibility.
+
+The editorial and production staff at Wiley, in particular Bill
+Falloon, Emilie Herman, Laura Walsh, and Stacey Fischkelta though
+we never physically met, have been helpful and courteous throughout
+the project.
+
+xxiii
+
+

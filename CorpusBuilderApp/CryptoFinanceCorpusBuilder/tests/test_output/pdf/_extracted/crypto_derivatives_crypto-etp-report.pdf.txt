@@ -1,0 +1,863 @@
+1
+2024 Crypto 
+ETP Report
+Primer
+December 2024
+
+2
+1. Executive Summary
+This report takes a closer look at the transformative year in cryptocurrency Exchange Traded 
+Products (ETPs), highlighted by unprecedented growth and structural shifts. Following the historic 
+approval of U.S. spot Bitcoin Exchange Traded Funds (ETFs) in January 2024, global crypto ETP 
+assets under management (AUM) surged to $134.5 billion by November 2024, representing a 950% 
+increase year-over-year.
+Key developments include BlackRock’s iShares Bitcoin Trust ETF (IBIT) becoming the fastest 
+ETF to reach $10 billion in AUM, achieving this milestone in just 51 days. The U.S. market’s entry 
+dramatically shifted the global landscape, reducing EMEA’s traditional dominance from over 50% 
+to 12.8% of global ETP AUM.
+Trading volumes have shown similar growth, reaching $87.5 billion by November 2024, an 817% 
+increase from the previous year. This surge in activity reflects accelerated integration with the 
+traditional financial system and improved market accessibility through regulated investment 
+vehicles.
+Finally, the report investigates the structural evolution of crypto ETPs, their role in bridging 
+traditional and crypto ecosystems, and key considerations for investors. It also examines regional 
+dynamics, product innovations, and the global regulatory landscape shaping the future of crypto 
+products.
+Table of Contents
+1. Executive Summary
+2
+2. Introduction
+3
+3. Market Overview
+8
+4. Regulatory Landscape
+15
+5. Technological Developments
+18
+6. Future Outlook
+20
+7. Conclusion
+22
+8. Disclaimer
+22
+
+3
+2. Introduction
+ As we conclude an exceptionally eventful year in crypto, we think it’s a good time to reflect on the 
+crypto ETP landscape and its unprecedented growth. With digital assets increasingly integrating 
+into mainstream finance, crypto ETPs have become a crucial bridge between traditional 
+investment solutions and the expanding cryptocurrency ecosystem.
+As a global multi-asset market maker in both traditional finance (TradFi) and crypto assets, we 
+strive to enhance market efficiency. In the crypto space particularly, we provide vital liquidity 
+that drives a positive feedback loop of improved price discovery, enhanced user experience, and 
+increased capital inflow. This influx of capital fuels innovation and experimentation, attracting 
+more users and further investment. The past year’s developments have been highly consequential 
+for the industry, opening floodgates for capital and bridging TradFi and crypto.
+Looking ahead, we expect this trend to accelerate. The continued evolution of crypto ETPs is 
+likely to further blur the lines between traditional and crypto market, potentially leading to more 
+sophisticated products and increased institutional participation. As regulatory frameworks mature 
+and market infrastructure improves, we also expect to see a new wave of innovation in crypto-
+based financial products that achieve mass adoption. This evolution will allow us to bring the 
+best of both worlds to facilitate the co-evolution of these ecosystems, and to reshape the global 
+financial landscape in the coming years.
+After eight months of range-bound price action, with the global crypto market capitalization 
+fluctuating between $2 trillion and $2.9 trillion, the crypto market, led by Bitcoin (BTC), finally 
+broke out of this range following President-elect Donald Trump’s re-election in the U.S. Year-over-
+year, the market capitalization of all cryptocurrencies has reached $3.18 trillion, a 140% increase, 
+exceeding the 2021 all-time high, according to data from Coingecko.
+As of the drafting date, year-to-date, BTC has increased 130% and Solana (SOL) has climbed 124%. 
+Ethereum (ETH), however, has underperformed other majors, up 43%.
+Several major themes have dominated the crypto landscape this year: President-elect Trump’s 
+victory in the U.S. elections and the potential impact this will have on global crypto adoption and 
+policy, the growing intersection of crypto and artificial intelligence, the ongoing institutional 
+adoption driving market maturity, and the proliferation of meme coins. This report explores how 
+2024 has, in many ways, become the year of the crypto ETP.
+Prior to the summer of 2023, news and headline interest in crypto ETPs were relatively limited. 
+Market interest was highly correlated with the slew of listings that appeared during 2021 market 
+cycle. However, this pales in comparison to what has occurred since BlackRock filed for a spot 
+Bitcoin ETF in June 2023. Since then, crypto ETPs, especially spot ETFs listed and traded on U.S. 
+venues, have taken center stage in the market.
+
+4
+Timeline leading up to the launch of U.S. 
+Bitcoin spot ETFs:	
+
+May 2023:
+21Shares and ARK Investments file for a
+spot Bitcoin ETF.	
+
+October 2023:
+The SEC decides not to appeal the
+court’s ruling in the Grayscale case and is
+required to reexamine the application.	
+
+June 2023:
+BlackRock, the world’s largest asset
+manager, files for a spot Bitcoin ETF,
+reigniting interest in the possibility of
+such products being approved in the U.S.	
+
+January 9 2024:
+The SEC’s X account is compromised,
+falsely announcing the approval of
+Bitcoin ETFs.	
+
+July 2023:
+A federal judge in New York rules in
+favor of Ripple in its case against the
+Securities and Exchange Commission
+(SEC), determining that Ripple Labs did
+not violate the law by selling its tokens
+on exchanges.	
+
+January 10 2024:
+The SEC officially approves 11 spot Bitcoin
+ETF applications.	
+
+August 2023:
+A U.S. federal appeals court in
+Washington D.C. rules in favor of
+Grayscale, stating that the SEC did
+not adequately justify its rejection of
+Grayscale’s spot ETF proposal. The court
+requires the regulator to reexamine the
+application.
+What are ETPs?
+To better understand the significance 
+of crypto ETPs and their impact on the 
+financial landscape, it’s essential to first 
+grasp the fundamentals of ETPs and their 
+key characteristics.
+ETPs are financial instruments that track 
+underlying assets or indices and trade on 
+stock exchanges like stocks. They include 
+ETFs, Exchange-Traded Notes (ETNs), and 
+Exchange-Traded Commodities (ETCs), 
+offering investors exposure to various asset 
+classes and strategies in a single, tradable 
+vehicle. 
+What are the differences between ETFs, 
+ETNs, and ETCs?
+ETFs, ETNs, and ETCs are all types of ETPs 
+with different structures and risk profiles. 
+ETFs invest in a basket of securities, offering 
+direct ownership and transparency. ETNs 
+and ETCs can be secured or unsecured debt 
+securities promising returns based on an 
+index’s performance. ETCs are designed for 
+commodity investments, often physically 
+backed. In the case of both ETNs and ETCs, 
+issuer risk a is key consideration.
+
+5
+What are the structural components of ETPs and how do they work together?
+ETPs function through key structural components that work together to provide regulated 
+exposure to various asset classes, including cryptocurrencies. The main components are:
+1.	
+Underlying assets/index: What the ETP tracks (e.g., stocks, bonds, cryptocurrencies) and
+forms the basis for calculating the product’s net asset value (NAV)
+2.	
+Issuer: Develops, issues, and manages the ETP
+3.	
+Authorized Participants (APs): A financial institution which is authorized to create and
+redeem shares
+4.	
+Custodian: Securely stores and manages the underlying cryptocurrency assets, if the ETP is
+backed by in-kind assets
+5.	
+Creation/redemption mechanism: Allows authorized participants to provide liquidity,
+maintain price alignment with the product’s NAV, and enables tracking with the
+underlying index
+6.	
+Secondary market: Where investors trade ETP shares, and market makers provide liquidity
+These components interact to allow investors easy access to underlying assets without direct 
+ownership. APs create or redeem shares based on demand, helping align ETP prices with their 
+NAV and providing accurate market exposure.
+What are crypto ETPs?
+Having briefly explored the key characteristics of ETPs, we now turn our attention to the crypto 
+variant. These innovative financial instruments have emerged as a bridge between traditional 
+finance and the cryptocurrency ecosystem, offering investors a familiar and regulated way to gain 
+exposure to digital assets.
+Building upon the previous sections, crypto ETPs are therefore financial instruments that track the 
+performance of one or more cryptocurrencies and trade on traditional stock exchanges, allowing 
+investors to gain exposure to digital assets without directly owning or managing them. These 
+products can take the form of ETFs, ETNs, or ETCs, depending on their structure and regulatory 
+environment, and they provide a regulated, accessible, and generally cost-efficient way for both 
+retail and institutional investors to participate in the cryptocurrency market through their existing 
+brokerage accounts and relationships.
+While crypto ETFs have become the most popular vehicle, ETCs and ETNs were among the earliest 
+accessible ways for investors to gain exposure to cryptocurrency price movements on traditional 
+exchanges. Today, approximately 65 crypto ETCs with $10.7 billion in AUM and 32 crypto ETNs with 
+$4.5 billion in AUM are actively traded on various exchanges. While these figures are relatively 
+small compared to the global crypto ETP AUM of over $100 billion, they highlight the foundational 
+role these early products played in bridging traditional markets and cryptocurrencies.
+
+6
+What makes crypto ETPs different?
+Unlike conventional ETPs that track established asset 
+classes, cryptocurrency ETPs are based on underlying 
+assets which are known for their high volatility and 24/7 
+trading. This necessitates specialized custody solutions 
+and creates distinct challenges in pricing and liquidity 
+management. The regulatory environment for crypto 
+ETPs is also still evolving, varying across jurisdictions and 
+often requiring new product structures to comply with 
+existing frameworks while providing crypto exposure.
+Furthermore, crypto ETPs introduce novel risk factors 
+such as smart contract risk and network outages. 
+However, they also offer unique opportunities, including 
+the potential for additional returns through methods like 
+staking or lending of the underlying crypto assets.
+Ultimately, crypto ETPs play a crucial role in providing 
+regulated market access for traditional investors, 
+allowing them to gain exposure without directly 
+handling wallets or engaging with crypto exchanges. 
+This bridge between traditional finance and the crypto 
+ecosystem makes crypto ETPs a distinct and evolving 
+category within the broader ETP landscape.
+How have ETPs evolved to include crypto-based products?
+The evolution of ETPs to include crypto-based products has been a gradual process, marked 
+by significant milestones and regulatory developments. This expansion reflects the growing 
+acceptance of cryptocurrencies as an innovative asset class and the increasing demand from both 
+retail and institutional investors for regulated exposures.
+Over the past decade, ETPs have significantly expanded to include crypto-based offerings, evolving 
+from traditional asset classes to encompass all manners of alternative investments, including 
+cryptocurrencies. This evolution began with the launch of the first crypto ETP, the CoinShares XBT 
+Bitcoin Tracker One in Sweden in 2015, and has since grown to include a diverse range of products 
+tracking various tokens and indices, with over 730 active listings globally by the end of October 
+2024, reflecting the increasing mainstream acceptance and regulatory adaptation to digital assets 
+in the financial markets.
+
+7
+Factor
+Best Practices
+Issuer Expertise
+Assessment of the issuer’s knowledge and experience in crypto and asset 
+management
+Cost of Ownership
+Direct fees, bid-ask spreads, and tracking error
+Transparency
+Daily asset disclosures and independent audits
+Asset Protection
+Custodianship relationship and asset segregation practices
+Custodian Model
+Single or multi-custodial, regulatory status, insurance
+Type of Exposure
+Understanding if the ETP provides exposure to single or multiple 
+cryptocurrencies
+Product Structure
+Direct physical holdings or synthetic replication
+Liquidity
+Trading volume and market depth
+Regulatory Oversight
+Applicable regulatory frameworks and adherence to compliance
+Potential Returns
+Additional earnings mechanisms like staking
+Unique Risks
+Outlier factors like volatility
+How do crypto ETPs address some of the challenges associated with direct cryptocurrency 
+investment or exposure?
+Crypto ETPs have emerged as an innovative solution for investors seeking exposure to 
+cryptocurrencies. They provide several key advantages, including enhanced liquidity, seamless 
+trading, and the benefit of regulatory oversight. Investors can trade these products during 
+regular market hours through their existing brokerage accounts, benefiting from the established 
+infrastructure of stock exchanges. This structure also facilitates portfolio diversification, with 
+some ETPs offering exposure to multiple cryptocurrencies or specific themes within the crypto 
+ecosystem.
+Furthermore, crypto ETPs are subject to regulatory standards and compliance requirements, 
+which may enhance investor protection and transparency. In major markets like the U.S. and 
+EU, these products must adhere to strict regulations, including regular disclosures and robust 
+risk management and governance protocols. Many jurisdictions also require institutional-grade 
+custody, asset segregation, and regular audits. This regulated framework makes crypto ETPs a 
+consideration for a wide range of investors, including those who may face restrictions on directly 
+holding cryptocurrencies. As the crypto ETP market continues to evolve, it represents an important 
+development in the integration of digital assets into traditional financial systems.
+What are the key considerations for investors when evaluating crypto ETPs (e.g., expense ratios, 
+tracking error, liquidity)?
+When evaluating crypto ETPs, investors should consider several key factors:
+
+8
+3. Market Overview
+ 
+Turning our attention towards the market, 2024 has been a year of unprecedented growth 
+and transformation, with ETPs emerging as a key driver of institutional adoption and market 
+accessibility. This section provides a comprehensive overview of the current state of the crypto ETP 
+market, highlighting key trends, as well as regional and product dynamics.
+As we delve into the data, we’ll explore how the introduction of spot Bitcoin ETFs in the U.S. has 
+reshaped the global landscape, shifting the balance of power in terms of AUM and trading volume 
+across regions. We’ll also examine the distribution of assets across different underlying asset types.
+Assets Under Management
+Global AUM totaled approximately $134.5 billion in November 2024, up 950% from a year ago. Much 
+of this surge has been driven by the introduction of spot ETFs in the U.S. after the SEC’s approval 
+on January 10, 2024, a milestone that followed years of anticipation. Prior to this landmark event, 
+the U.S. market featured alternative structures such as synthetic BTC ETFs, closed-end funds, and 
+trust vehicles like Grayscale. These earlier products laid the groundwork for the rapid adoption and 
+scaling of spot ETFs, also underscoring the maturity and resilience of the crypto ETP ecosystem. 
+It’s worth mentioning that this was a development that was years in the making, with synthetic 
+BTC ETFs, closed-end funds, trust structures like Grayscale, these have already existed in the U.S. 
+market for some time.
+ 
+To put the early days of the launch into perspective, BlackRock’s iShares Bitcoin Trust ETF (IBIT) 
+became the fastest ETF to reach $10 billion in AUM, achieving this milestone in just 51 days. In 
+contrast, the SPDR Gold Shares ETF (GLD) took 818 days to reach the same benchmark. It should 
+be noted that the global money supply (M2) was significantly lower when GLD was launched. 
+Nevertheless, the launch certainly exceeded expectations and demonstrates the popularity, 
+efficiency, and investor preference of ETFs. 
+
+9
+Before the launch of U.S. spot ETFs, though, the EMEA region dominated the crypto ETP market, 
+accounting for 70–100% of AUM in the pre-COVID era and 50–60% between 2021 and 2023. APAC 
+and South America-based products maintained a relatively minor share of global AUM throughout 
+the nine years since the first crypto ETP’s introduction in 2015.
+However, the landscape changed dramatically with the launch of U.S. spot ETFs. The regional 
+share of global AUM shifted drastically, with EMEA’s portion plummeting to 12.8% and continuing a 
+steady decline. To illustrate this shift:
+	
+
+The global crypto ETP AUM in December 2023 was around $15.2 billion
+	
+
+By the end of January 2024, after just three weeks of U.S. spot ETF trading, global AUM 
+jumped 178% month-over-month to $42.3 billion
+	
+
+By the end of Q1 2024, global AUM had skyrocketed to $82.9 billion, a staggering 445% 
+increase from the start of 2024
+Volume
+Global volume as of October 2024 reached $57.2 billion, posting a remarkable 790% increase year-
+over-year. This volume growth mirrors, and perhaps even surpasses, the dramatic narrative of AUM 
+growth and market share shifts.
+
+10
+The crypto ETP market’s evolution is striking when viewed across distinct eras. In the pre-2021 
+period, monthly ETP volumes averaged a relatively modest $472 million. In comparison, spot crypto 
+markets were already turning over $645 billion in December 2020. ETP volume eventually surged 
+to an average of $6.8 billion between 2021 and 2023. Year-to-date, however, monthly crypto ETP 
+volumes have skyrocketed to an average of $72 billion, which is more than tenfold the monthly 
+average throughout the entire 2021-2023 boom-bust cycle.
+ 
+The regional distribution of volumes has undergone a seismic shift. Initially, EMEA dominated, but 
+its lead had already dwindled to 30-40% at the 2021 bull market’s peak.
+The launch of U.S. spot Bitcoin ETFs triggered a dramatic realignment. Now, the U.S. commands 
+an overwhelming 95.2% of global volume. EMEA’s share has plummeted to 4.1%, while APAC and 
+South America trail with 1.0% and 0.3% respectively.
+ 
+Underlying
+Next, let’s examine how ETPs with various underlying assets fared across AUM and volume. Here, 
+we will focus on products across five categories: Bitcoin (BTC), Ether (ETH), Solana (SOL), Baskets, 
+and Single Names (excluding BTC, ETH, and SOL).
+In terms of AUM, BTC clearly dominates, representing over $82 billion in total assets, or 84.4% of 
+global AUM. ETH follows with 10.5%, accounting for just over $10 billion. SOL makes up 1.2% with $1.1 
+billion, while Baskets comprise 3.1% at $2.9 billion. Single-name products (excluding BTC, ETH, and 
+SOL) account for the remaining 1.8%, or $1.7B of AUM.
+
+11
+ 
+Examining the historical share of AUM across different underlying assets over the past 7 years 
+reveals greater diversity, despite Bitcoin typically maintaining the majority of AUM.
+We also note a strong negative correlation (r=-0.61) between Bitcoin’s share of AUM and the ETH/
+BTC ratio. Interestingly, since 2021, there have been two key divergences between BTC’s AUM 
+dominance and ETH/BTC, where BTC’s AUM dominance suggested further strength or weakness 
+for the ETH/BTC ratio. The first divergence occurred in May 2021, and the second in January 2024.
+ 
+While several explanations are possible, one plausible explanation is that as crypto becomes more 
+integrated into the traditional financial system and price discovery incorporates more institutional 
+players, traditional markets are increasingly driving markets for the largest crypto assets.
+Examining the share of global volume reveals an even more striking narrative. ETP market 
+volumes signaled a sharp shift towards BTC dominance in September 2021, with the ETH/BTC ratio 
+subsequently adjusting to reflect this clear shift.
+
+12
+ 
+Given the emergence and popularity of SOL in the current market cycle, it’s worth diving a bit 
+deeper to see how AUM and volumes evolved.
+One interesting observation is that during the 2021 cycle peak, SOL ETP AUM reached its high of 
+$239 million, representing 11% of Single Name ETPs (excluding BTC, ETH, and SOL). At that time, 
+SOL was trading above $250. Fast forward to today, with SOL trading at around $250 again and 
+SOL AUM has surged to $1.16B, a 485% increase, and now commands over 40% of Single Name 
+AUM (excluding BTC, ETH, and SOL). This growth is particularly noteworthy given the absence of a 
+spot SOL ETF approved for trading in the U.S.
+ 
+ 
+
+13
+ 
+In terms of SOL’s share of Single Name volume, we observe that SOL already accounts for 44% of 
+Single Name volume, even reaching as high as 60% in October 2023. This trend mirrors what we 
+saw with BTC’s ETP volume dominance preceding a correction in the ETH/BTC ratio. Similarly, here 
+we notice that the spike in Solana volume dominance preceded both the Q4 2023 and Q1 2024 rise 
+in SOL price.
+As we delve deeper into the landscape of crypto ETPs, it’s crucial to examine how the AUM of BTC, 
+ETH, and SOL ETPs compared to their respective market capitalizations. This can provide some 
+insight into the relative penetration of these cryptocurrencies in the ETP market and helps gauge 
+institutional interest and adoption.
+By comparing the AUM to market cap ratios, we can better understand the extent to which these 
+digital assets are being accessed through regulated investment vehicles versus direct holdings or 
+other means of exposure.
+
+14
+ 
+As shown in the graph, January 2024 marked a crucial inflection point for BTC, while July 2024 was 
+significant for ETH, coinciding with the approval of their respective spot ETFs for U.S. trading. BTC’s 
+AUM/MC currently stands at 3.7% after spending most of this year remaining in a range between 
+2.5-3.5%.
+Interestingly, before the SEC’s approval, ETH ETP dominance consistently surpassed both 
+BTC’s and SOL’s. Currently, ETH ETPs holds 3.1% of the total ETH market cap, a figure that could 
+potentially re-rate higher if historical ratios mean-revert and ETH is able to catch one or more 
+narrative tailwinds.
+SOL ETP dominance currently sits at a modest 1.4% relative to its market capitalization. However, 
+this is expected to change dramatically once SOL spot ETFs are approved for U.S. trading. Until 
+then, Europe may serve as a model for potential developments. According to data on European 
+crypto ETFs from 21Shares, as of October 2024, physical Solana ETP AUM has already surpassed 
+physical Ethereum ETP AUM, reaching $1.4 billion compared to Ethereum’s slightly over $1.0 billion. 
+Assuming current prices and SOL AUM/MC converges to that of BTC and ETH’s, then we could 
+expect SOL dominance to tack on another 2-2.5% of market cap, or an additional $2.4-3.0 billion in 
+net new assets.
+One lingering question is how much of crypto’s market cap will be absorbed by ETPs. While we 
+don’t have a definitive answer, comparing it to gold suggests we are already in uncharted territory.
+The U.S. Geological Survey reports that 244,000 metric tons of gold have been discovered to 
+date. This includes 187,000 metric tons historically produced and 57,000 metric tons in current 
+underground reserves.
+As of November 2024, gold ETF AUM totaled $130 billion. With a gold price of $58.4 million per ton, 
+the total value of all existing gold is approximately $10.9 trillion. Consequently, gold ETFs represent 
+only 1.2% of the value of all above-ground gold. From this perspective, Bitcoin ETPs’ share of their 
+total underlying mined market cap is already triple that of gold and likely headed higher.
+
+15
+4. Regulatory Landscape
+ 
+Throughout 2024, the global regulatory landscape for crypto ETPs showed a two-speed 
+development. While some jurisdictions embraced crypto ETPs and related innovations, others 
+maintained a more cautious approach. Overall, the positive reception outweighed the hesitancy, 
+enabling the seismic market changes discussed earlier. These developments have significantly 
+enhanced the accessibility and inclusion of crypto investments, particularly in major financial 
+markets.
+4.1.1. United States
+The U.S. crypto market witnessed a watershed moment on January 10, 2024, when the SEC 
+approved the first spot Bitcoin ETFs. This landmark decision, following years of rejections, signalled 
+a pivotal shift in crypto adoption within traditional finance. The SEC simultaneously approved 
+11 spot Bitcoin ETFs, including offerings from established issuers like BlackRock, Fidelity, and 
+Grayscale. This move enabled direct investment in Bitcoin through regulated, exchange-traded 
+vehicles, addressing long-standing concerns about market manipulation and custody. Despite 
+the approval, SEC Chair Gary Gensler maintained a cautious stance, emphasizing that the SEC’s 
+decision did not constitute an endorsement of Bitcoin itself.
+The impact of this regulatory shift was immediate and profound. The launch day saw 
+unprecedented trading volumes, with nearly $4.6 billion traded across all products. Moreover, 
+this approval set the stage for further innovations in the crypto ETP space, culminating in the 
+subsequent approval of Ethereum ETFs in the summer of 2024. This series of developments 
+marked a new era in the integration of cryptocurrencies into mainstream financial markets.
+Given a second Trump presidency and Republican-controlled Congress, we may be on the verge of 
+a paradigm shift in the U.S. regulatory environment the likes of which we have never seen before. 
+Trump has expressed a desire to make America “the crypto capital of the planet” suggesting a 
+more favourable regulatory environment for digital assets. This stance, combined with current SEC 
+Chair Gary Gensler’s decision to step-down from the Commission effective on January 20, 2025, 
+indicates a potential pivot away from the current “regulation by enforcement” approach.
+Furthermore, a Republican Congress is seen as more likely to pass a comprehensive regulatory 
+framework for cryptocurrencies, which the industry has been advocating for and was supported 
+by Vice President-elect JD Vance. This could potentially include clearer guidelines for crypto 
+
+16
+businesses, reduced regulatory uncertainty, and possibly clearer stances on securities classification. 
+However, it’s important to note that while this scenario suggests a more crypto-friendly regulatory 
+landscape, the specifics of any new policies or legislation would still need to be developed and 
+implemented, and the full impact on the crypto industry would likely unfold over time.
+4.1.2. Europe
+The European Union made significant strides in crypto regulation with the Markets in Crypto-
+Assets regulation (MiCAR), formally approved in April 2023 and fully-applicable by the end of 2024, 
+notwithstanding potential delays in enforcement by regulators. MiCAR provides a comprehensive 
+framework for crypto-assets, including provisions for market participants that are part of the 
+crypto product value-chain like custodians, and tasked the European Securities and Markets 
+Authority with developing technical standards and guidelines for implementation.
+This regulation is meant to introduce a unified approach across the EU, replacing the previous 
+patchwork of national regulations. We expect the impact on ETPs to be positive with increased 
+regulatory clarity encouraging more traditional financial institutions, banks, and investment firms 
+to enter the crypto ETP market, facilitating cross-border offerings within the EU, and enhancing 
+investor protection measures and boosting overall confidence in crypto ETPs.
+In a related development, ESMA issued a call for evidence in May 2024 on the review of the 
+UCITS eligible assets directive. This initiative specifically addressed the potential harmonization 
+of crypto asset exposure within the UCITS framework, aiming to assess whether and how crypto 
+assets could be integrated into the UCITS structure, often regarded as the gold standard for retail 
+investment funds in Europe. This review could potentially pave the way for more mainstream 
+adoption of crypto assets in regulated investment products, making crypto products available to 
+the $13 trillion UCITS AUM. The consultation solicited responses from leading crypto issuers and 
+institutions such as 21Shares, BlackRock, Coinbase, and CoinShares.
+4.1.3. United Kingdom
+The UK took a cautious stance on crypto ETPs in 2024. While maintaining its ban on crypto 
+derivatives for retail investors, the Financial Conduct Authority (FCA) allowed crypto ETNs for 
+professional investors only. This balanced approach aimed to foster innovation while protecting 
+retail investors.
+The FCA’s decision enabled increased institutional participation in the UK crypto ETP market and 
+positioned London competitively among European financial centers. This move reflected the UK’s 
+efforts to stay relevant in the digital asset landscape while prioritizing investor protection through 
+sufficient controls and proper disclosures.
+4.1.4. Hong Kong & China
+In April 2024, Hong Kong’s Securities and Futures Commission (SFC) approved spot Bitcoin and 
+Ether ETFs, marking a first in Asia. Three Chinese issuers launched six ETFs on April 30, 2024, 
+allowing retail investors exposure to Bitcoin and Ether prices without direct ownership. These ETFs 
+feature an ‘in-kind’ subscription mechanism for direct crypto transactions.
+This move aligns with Hong Kong’s strategy to become a global virtual asset hub. By November 
+2024, Hong Kong’s virtual asset spot ETFs reached HKD $3.3 billion ($430 million) in AUM. However, 
+mainland Chinese investors can’t access these ETFs due to China’s crypto restrictions. Despite 
+this limitation, the ETFs strengthen Hong Kong’s position in the global crypto market and offer 
+regulated access to digital assets.
+4.1.5. United Arab Emirates
+Dubai and the broader United Arab Emirates (UAE) have emerged as significant players in the 
+crypto ETP landscape, with their proactive approach to digital asset regulation and ambition to 
+become a global crypto hub. In 2022, the Dubai Financial Services Authority (DFSA) took a major 
+
+17
+step by approving the listing and trading of a 21Shares’ spot Bitcoin ETP on Nasdaq Dubai, marking 
+a first for the region.
+This move followed the establishment of the Virtual Assets Regulatory Authority (VARA) in Dubai, 
+which has been critical in creating a comprehensive framework for crypto assets. The UAE’s 
+crypto-friendly stance has attracted major players in the industry, with exchanges like Binance and 
+Kraken obtaining licenses to operate in the country.
+Additionally, in August 2024, the Abu Dhabi Global Market (ADGM) introduced a regulatory 
+framework for blockchain-based ETFs, paving the way for the launch of spot crypto ETFs in the 
+UAE capital. This framework allows for the creation, listing, and trading of ETFs based on single 
+cryptocurrencies and baskets of digital assets.
+These developments have positioned the UAE as a key player in the global crypto ETP market, 
+offering a regulated environment for both institutional and retail investors to gain exposure to 
+digital assets. The country’s approach is likely to influence regulatory trends in the broader Middle 
+East region and potentially attract more international crypto businesses and investors.
+4.1.6. Japan
+Japan has made significant strides towards integrating crypto ETPs into its financial ecosystem. 
+In July 2024, SBI Holdings and Franklin Templeton announced a partnership to establish a 
+digital asset management company, positioning themselves to launch Bitcoin ETFs in Japan. 
+Nevertheless, it remains unclear when the Financial Services Agency (FSA) will approve crypto 
+ETFs and create further alignment in the country’s regulatory framework for cryptocurrency 
+products.
+This move is part of Japan’s broader strategy to attract high-net-worth clients and diversify 
+its alternative asset investment products. Overall, these developments demonstrate Japan’s 
+commitment to embracing digital assets within its financial markets, potentially setting a 
+precedent for other Asian countries to follow.
+4.1.7. Transformative Year
+Overall, 2024 has been a transformative year for crypto ETPs globally, with significant regulatory 
+developments across major financial markets. The U.S. led the charge with the approval of spot 
+Bitcoin and Ethereum ETFs, marking a pivotal shift in crypto adoption within traditional finance. 
+Europe’s MiCAR provided a comprehensive framework, enhancing regulatory clarity and investor 
+protection. The UK maintained a cautious approach, allowing crypto ETNs for professional 
+investors while protecting retail investors. Hong Kong emerged as a pioneer in Asia by approving 
+spot Bitcoin and Ether ETFs, strengthening its position as a virtual asset hub. Japan’s progress 
+towards integrating crypto ETPs signals a growing acceptance of digital assets in established 
+financial markets.
+These regulatory advancements collectively represent a global trend towards greater acceptance 
+and accessibility of crypto investments, setting the stage for continued growth and innovation in 
+the crypto ETP landscape.
+
+18
+5. Technological Developments
+ 
+The emergence of crypto ETPs has brought about innovative approaches to transparency and 
+trust-building, leveraging the unique properties of blockchain technology. One of the most 
+significant innovations in this space is the integration of on-chain data and Proof of Reserves (PoR) 
+systems, which provide unprecedented levels of transparency and verification for investors.
+Proof of Reserves has become a critical feature for many crypto ETP issuers, allowing them to 
+demonstrate in real-time that they hold sufficient assets to back their products. This system 
+typically employs blockchain technology to publicly verify a crypto company’s on-chain assets, 
+using secure data structures like Merkle trees to aggregate total customer balances without 
+exposing private information. For instance, in February 2024, 21Shares announced the integration 
+of Chainlink Proof of Reserve for their Core Bitcoin ETF (ARKB) and in July for their Core Ethereum 
+ETF (CETH), enabling clear visibility into the underlying BTC and ETH reserves. This move not only 
+enhances transparency but also provides investors with increased assurances that the ETP is fully 
+backed by the underlying cryptocurrency.
+ Source: Arkham Intelligence. A graphical representation of token flows between Coinbase and BlackRock addresses on the Bitcoin blockchain.
+The use of on-chain data extends beyond simple asset verification. It enables automated near 
+real-time on-chain tracking and programmatic utility. Investors can build automated logic 
+based on updates to an ETP’s underlying collateralization, as reflected by on-chain holdings. A 
+clear example of this is how market participants can freely access on-chain data platforms like 
+Arkham Intelligence to track an issuer’s stock and flow of the underlying collateral for the ETF. 
+In the screenshot above, we can see the daily inflows of BTC from a single Coinbase address to 
+BlackRock’s network of addresses.
+This level of transparency was previously impossible with traditional financial products. Moreover, 
+the decentralized nature of these systems eliminates central points of failure in delivering this 
+on-chain data, always ensuring reliable updates regarding an ETP’s collateralization. As the crypto 
+ETP market continues to mature, these innovations in transparency and verification are likely to 
+become industry standards, potentially influencing broader financial markets beyond the crypto 
+space.
+Finally, while not a technological development in and of itself, Grayscale’s launch of spin-off ETFs 
+for its BTC and ETH trusts in 2024 marked an unprecedented move in the ETP space. The creation 
+of the Grayscale Bitcoin Mini Trust and Grayscale Ethereum Mini Trust as lower-cost alternatives to 
+their flagship products, the Grayscale Bitcoin Trust (GBTC) and Grayscale Ethereum Trust (ETHE), 
+represented a novel approach to product diversification in the crypto ETP space.
+
+19
+This strategy allowed Grayscale to offer investors a choice between products “on different parts 
+of the spectrum,” as noted by Grayscale managing director John Hoffman. The spin-offs were 
+structured using a 90-10% sharing formula, where existing shareholders of GBTC and ETHE 
+received proportional shares in the new, lower-fee ETFs.
+This approach was unique in that it allowed Grayscale to maintain its established, higher-fee 
+products while simultaneously introducing more competitive offerings to attract a broader range 
+of investors. The spin-offs also demonstrated an innovative way to seed new ETFs, as the initial 
+assets for BTC and ETH came from distributing 10% of the underlying assets from GBTC and 
+ETHE, respectively. This move not only set a new precedent for product evolution in the crypto 
+ETP market but also highlighted the growing sophistication and maturity of the sector, as asset 
+managers began to employ strategies more commonly seen in traditional finance to cater to 
+diverse investor needs.
+
+20
+6. Future Outlook
+ 
+As we look towards the future of the crypto ETP landscape, several key trends and factors are 
+poised to shape its evolution. The rapid growth and increasing sophistication of this market 
+segment have set the stage for further developments across multiple fronts.
+From product innovation and regulatory shifts to technological advancements and changing 
+market dynamics, the crypto ETP sector is entering a new phase of maturity and integration with 
+traditional finance. In this section, we’ll explore the various aspects that are likely to define the 
+future of crypto ETPs, touching on the opportunities and challenges that possibly lie ahead for 
+investors, issuers, and regulators alike.
+	
+ Product Innovation and Expansion
+The crypto ETP market is rapidly evolving, with 
+issuers constantly introducing new products 
+to meet diverse investor needs. For instance, 
+in October 2024, 21Shares launched the Future 
+of Crypto Index ETP (FUTR) on Euronext Paris 
+and Amsterdam, offering exposure to 6 key 
+crypto megathemes. This trend of thematic and 
+sector-specific crypto ETPs is likely to continue, 
+providing investors with more targeted 
+exposure to different segments of the crypto 
+ecosystem.
+Additionally, as regulators become more 
+comfortable with crypto assets and adoption 
+increases, particularly in the U.S., we may 
+see the approval of ETPs based on emerging 
+cryptocurrencies beyond Bitcoin and Ethereum, 
+such as Solana and Wormhole, or even 
+memecoins like Doge, Pepe, or Popcat, further 
+expanding the investment landscape.
+	
+ Regulatory Developments
+The regulatory landscape for crypto ETPs 
+continues to evolve globally, with significant 
+implications for market growth and investor 
+protection. The approval of spot Bitcoin ETFs 
+in the U.S. in January 2024 was a watershed 
+moment, followed by Ethereum ETF approvals 
+later in the year.
+Looking ahead, the re-election of Donald 
+Trump in the 2024 U.S. presidential race, the 
+Republican congressional landslide victory, and 
+the rise of the crypto lobby portend a more 
+crypto-friendly and constructive regulatory and 
+business environment. The implementation 
+of MiCAR in the EU is also set to provide a 
+comprehensive framework for crypto assets, 
+potentially influencing global standards.
+	
+ Institutional Adoption and Market 
+Integration
+Q2 2024 13F filings revealed that advisors 
+increased their market share of institutional 
+AUM in Bitcoin ETFs from 27% in Q1 to 36% 
+in Q2. Major banks like Morgan Stanley and 
+Goldman Sachs have also expanded their 
+Bitcoin ETF holdings on behalf of clients, each 
+disclosing positions exceeding $100 million.
+Furthermore, the entry of state pension funds, 
+such as the State of Michigan Retirement 
+System, into crypto ETPs signals growing 
+mainstream acceptance. As more institutional 
+investors allocate to crypto ETPs, we can expect 
+increased liquidity, potentially lower volatility, 
+and greater integration of crypto assets into 
+traditional portfolio management strategies.
+	
+ Technological Advancements
+Technological innovations are enhancing the 
+transparency, security, and functionality of 
+crypto ETPs. For instance, in July 2024, 21Shares 
+announced the integration of Chainlink Proof 
+of Reserve for their Core Ethereum ETF (CETH), 
+enabling real-time verification of the underlying 
+ETH reserves. This trend towards on-chain 
+verification is likely to continue, potentially 
+becoming an industry standard. Additionally, 
+advancements in custody solutions, such as 
+multi-party computation (MPC) technology, 
+are improving the security of crypto assets 
+held by ETP issuers. Looking forward, we may 
+see the integration of Decentralized Finance 
+(DeFi) principles into ETP structures, such 
+as yield-generating ETPs that participate in 
+staking or lending protocols, offering new value 
+propositions to investors.
+	
+ Market Structure and Dynamics
+The crypto ETP market is experiencing rapid 
+changes in its competitive landscape and 
+operational dynamics. The launch of spot 
+Bitcoin ETFs in the U.S. has shifted the global 
+balance of AUM and trading volumes, with the 
+U.S. commanding 96.7% of global volume by 
+October 2024. 
+Furthermore, the conversion of Grayscale’s 
+trusts to ETFs and the launch of their “mini” 
+versions demonstrate the evolving product 
+
+21
+strategies in response to market demand. As 
+the market matures, we may see evolving fee 
+structures and potentially the emergence of 
+actively managed crypto ETPs, reshaping the 
+competitive landscape.
+	
+ Macroeconomic Factors
+As cryptocurrencies have emerged from the 
+developer forums and began integrating into 
+the global financial system, macroeconomic 
+factors have had a significant impact on the 
+underlying assets and will continue to influence 
+the crypto ETP market.
+For instance, the anticipation of a more 
+accommodative interest rate environment in 
+2025 could drive increased risk appetite and 
+potentially boost demand for crypto ETPs. The 
+impact of geopolitical events, such as regulatory 
+crackdowns in certain countries or the adoption 
+of crypto-friendly policies in others, can also 
+significantly affect global crypto ETP flows.
+Moreover, the potential launch of Central Bank 
+Digital Currencies (CBDCs) in major economies 
+could have far-reaching implications for the 
+crypto ecosystem and, by extension, crypto 
+ETPs. As these global factors evolve, they will 
+continue to shape investor sentiment and 
+capital flows in the crypto ETP market.
+	
+ Investor Education and Accessibility
+As crypto ETPs become more mainstream, 
+there’s an increasing focus on investor 
+education and improving accessibility. For 
+example, major asset managers like BlackRock 
+and Fidelity have launched extensive 
+educational initiatives alongside their crypto 
+ETP offerings, helping investors understand the 
+unique characteristics and risks of crypto assets.
+Looking ahead, we may see the development 
+of more user-friendly interfaces for crypto ETP 
+trading, integration with robo-advisors, and 
+simplified product structures aimed at mass-
+market adoption. The challenge of bridging the 
+knowledge gap between traditional finance 
+and the crypto world will remain crucial for the 
+continued growth and adoption of crypto ETPs.
+	
+ Geopolitical Influences
+Geopolitical factors are playing an increasingly 
+important role in shaping the global crypto 
+ETP landscape. For instance, Hong Kong’s 
+approval of spot Bitcoin and Ethereum ETFs 
+in April 2024 positioned it as a leader in Asia’s 
+crypto financial market, potentially influencing 
+other countries in the region. The ongoing 
+regulatory divergence between different 
+jurisdictions, such as the more crypto-friendly 
+approach in countries like Switzerland, Dubai, 
+and UAE, compared to stricter regulations in 
+China, creates a complex global landscape for 
+crypto ETP issuers and investors. As the world’s 
+largest financial market, the U.S. holds outsized 
+influence, and the stance taken by the Trump 
+administration will have ripple effects on other 
+jurisdictions. This is especially true given the 
+substantial investments crypto lobbies have 
+made in his re-election campaign, highlighting 
+the pivotal role of U.S. policy in defining the 
+global crypto landscape.
+Future geopolitical shifts, such as changes 
+in government attitudes towards crypto in 
+major economies or the use of crypto assets 
+to circumvent international sanctions, could 
+significantly impact the global distribution and 
+adoption of crypto ETPs.
+	
+ Market Maturity and Liquidity
+As the crypto ETP market matures, we’re seeing 
+significant improvements in liquidity and price 
+discovery mechanisms. By October 2024, global 
+crypto ETP trading volumes reached $57.2 
+billion, a 790% increase year-over-year. This 
+increased liquidity is narrowing spreads and 
+reducing trading costs for investors.
+Adding to this market maturation, the launch 
+of options on crypto spot ETFs in the U.S. 
+represents another significant milestone. This 
+development will introduce new hedging and 
+trading strategies for institutional investors, 
+potentially increasing market depth and 
+sophistication. The introduction of options could 
+also enhance price discovery mechanisms and 
+provide additional tools for risk management 
+in the crypto ETP ecosystem. As these options 
+become available, we can expect further 
+improvements in liquidity, more sophisticated 
+market-making activities, and potentially the 
+development of a robust derivatives market 
+based on crypto ETPs. This evolution signifies 
+the growing integration of crypto assets 
+into traditional financial structures and the 
+increasing maturity of the crypto ETP market.
+Finally, with the new Trump administration and 
+generally pro-crypto stance in Congress, we 
+might see more traditional banks entering the 
+space in an environment where the SEC’s Staff 
+Accounting Bulletin 121, which had previously 
+discouraged banks from offering crypto custody 
+services, may be revisited or repealed. This 
+potential shift could lead to a more integrated 
+and accessible crypto financial ecosystem, 
+further expanding access of crypto ETPs to a 
+broader investor base.
+
+22
+7. Conclusion
+ 
+The 2024 crypto ETP landscape has witnessed unprecedented evolution, marked by significant 
+regulatory breakthroughs, technological advancements, and institutional adoption. The approval 
+of spot Bitcoin and Ethereum ETFs in the U.S. represented a pivotal moment, catalyzing a surge 
+in global AUM and trading volumes. This milestone, coupled with innovative product launches 
+and improved market infrastructure, has fundamentally transformed the accessibility and 
+sophistication of crypto products.
+The market’s maturation is evident in several key developments: the integration of advanced 
+transparency tools like on-chain verification systems, the emergence of diverse product offerings 
+including thematic ETPs, and the growing participation of traditional financial institutions. 
+Looking ahead, the crypto ETP sector appears primed for further growth. The convergence of 
+regulatory tailwinds and increasing institutional acceptance portends a future where crypto 
+ETPs become an increasingly mainstream component of investment portfolios. However, this 
+growth will likely be accompanied by new challenges, including the need for enhanced market 
+infrastructure and improved investor education.
+As the market continues to evolve, the success of crypto ETPs will depend on the industry’s ability 
+to maintain high standards of transparency, security, and compliance while innovating to meet 
+evolving investor demands. In 2024, we saw the foundation being laid and the stage has been set 
+for a more mature, accessible, and sophisticated crypto ETP ecosystem in the years ahead.
+8. Disclaimer
+ 
+The information (“Information”) has been prepared by Flow Traders B.V. and its affiliates (“Flow Traders”) for informational 
+and educational purposes only. This document is addressed exclusively to professional and institutional investors (i.e. 
+eligible counterparties) residing in eligible jurisdictions. Flow Traders is a principal trading firm, and this Information 
+does not constitute investment, financial, legal, tax, or regulatory advice. It should not be used as a basis for making any 
+investment or transaction decision and is not intended to be, nor should it be construed as, independent research, an 
+offer, a solicitation, or a general invitation to engage in any investment activities.  It was not prepared in compliance with 
+applicable regulations designed to promote the independence of financial analysis and is not subject to any prohibition 
+on trading following the distribution of research. Flow Traders assumes no responsibility for any investment decisions that 
+may be taken by any other person based on this Information.
+The Information addresses general market activity, industry trends, and broad-based economic, market, regulatory or 
+political conditions. It is not tailored to any specific financial situation or investment objectives, nor does it consider any 
+internal policies, regulatory restrictions, or suitability requirements of individual investors. Any recipient should perform 
+their own independent analysis and obtain appropriate advice to assess the information’s relevance and suitability for 
+their circumstances.
+This document is confidential and intended solely for the recipient to whom it was distributed. Redistribution, disclosure, 
+or use of its contents without Flow Traders’ prior written consent is strictly prohibited unless required by applicable law. 
+Flow Traders disclaims any liability for the accuracy, adequacy, timeliness, or completeness of the information, which is 
+provided “as is” and may be subject to change. Flow Traders undertakes no duty to update, amend, or supplement this 
+Information.  Past performance should not be taken as indicative of future results, and investing in digital assets may not 
+be suitable for all investors, particularly those lacking significant experience or risk tolerance.
+The digital assets industry entails significant risks, including volatility, liquidity constraints, incomplete information, 
+and evolving regulatory environments. The products referenced may not be available to all investors and should not be 
+construed as an offer or solicitation in any jurisdiction where prohibited by law. Failure to comply with any applicable 
+restrictions may constitute a violation of securities laws in those jurisdictions.
+All rights reserved. Redistribution or reproduction of any part of this content requires prior written permission from Flow 
+Traders.
+

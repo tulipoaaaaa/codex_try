@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Corpus Overview Dashboard - Optimized Layout</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0f1419;
+            color: #e5e7eb;
+            line-height: 1.6;
+        }
+
+        .dashboard-container {
+            padding: 24px;
+            max-width: 1800px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .dashboard-header {
+            margin-bottom: 24px;
+        }
+
+        .dashboard-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+
+        .dashboard-subtitle {
+            font-size: 16px;
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        /* Top Stats Bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #1a1f2e;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.2s ease;
+        }
+
+        .stat-card:hover {
+            border-color: #374151;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .stat-value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 13px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        .stat-unit {
+            font-size: 18px;
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
+        /* Main Content Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        /* Chart Section */
+        .chart-section {
+            background: #1a1f2e;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid #2d3748;
+        }
+
+        .section-title-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .section-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            color: #06b6d4;
+        }
+
+        .section-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f9fafb;
+            letter-spacing: -0.01em;
+        }
+
+        .chart-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chart-type-selector {
+            display: flex;
+            background: #0f1419;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .chart-type-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 12px;
+            color: #9ca3af;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .chart-type-btn.active {
+            background: #06b6d4;
+            color: #ffffff;
+        }
+
+        .chart-action-btn {
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 6px;
+            padding: 6px 10px;
+            color: #d1d5db;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .chart-action-btn:hover {
+            background: #4b5563;
+            border-color: #6b7280;
+        }
+
+        .chart-container {
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #0f1419;
+            border-radius: 8px;
+            border: 1px solid #374151;
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .pie-chart {
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #06b6d4 0deg 162deg,
+                #10b981 162deg 227deg,
+                #f59e0b 227deg 290deg,
+                #ef4444 290deg 335deg,
+                #8b5cf6 335deg 347deg,
+                #ec4899 347deg 356deg,
+                #6b7280 356deg 360deg
+            );
+            position: relative;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+
+        .pie-chart::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100px;
+            height: 100px;
+            background: #0f1419;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            border: 2px solid #2d3748;
+        }
+
+        .chart-summary {
+            display: flex;
+            justify-content: space-around;
+            background: #0f1419;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid #374151;
+        }
+
+        .summary-item {
+            text-align: center;
+        }
+
+        .summary-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+            margin-bottom: 2px;
+        }
+
+        .summary-label {
+            font-size: 11px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Operations Sidebar */
+        .operations-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .operations-card {
+            background: #1a1f2e;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .operations-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .operation-item {
+            background: #0f1419;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .operation-item:hover {
+            border-color: #4b5563;
+        }
+
+        .operation-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 8px;
+        }
+
+        .operation-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #f9fafb;
+            margin-bottom: 2px;
+        }
+
+        .operation-description {
+            font-size: 11px;
+            color: #9ca3af;
+            line-height: 1.4;
+        }
+
+        .operation-status {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .status-running {
+            background: rgba(6, 182, 212, 0.1);
+            color: #06b6d4;
+            border: 1px solid rgba(6, 182, 212, 0.2);
+        }
+
+        .status-paused {
+            background: rgba(245, 158, 11, 0.1);
+            color: #f59e0b;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .operation-progress {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 4px;
+            background: #374151;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #0891b2);
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+
+        .progress-text {
+            font-size: 10px;
+            color: #9ca3af;
+            font-weight: 500;
+            min-width: 30px;
+            text-align: right;
+        }
+
+        /* Full Width Domain Table */
+        .domain-table-section {
+            background: #1a1f2e;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .table-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .table-controls {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .search-input {
+            background: #0f1419;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #f9fafb;
+            font-size: 13px;
+            width: 200px;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+            box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.1);
+        }
+
+        .filter-btn {
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #d1d5db;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn:hover {
+            background: #4b5563;
+        }
+
+        .domain-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #0f1419;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #374151;
+        }
+
+        .domain-table th {
+            background: #1a1f2e;
+            padding: 12px 16px;
+            text-align: left;
+            font-size: 12px;
+            font-weight: 600;
+            color: #d1d5db;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid #374151;
+        }
+
+        .domain-table th:last-child {
+            text-align: right;
+        }
+
+        .domain-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #2d3748;
+            font-size: 14px;
+        }
+
+        .domain-table tbody tr:hover {
+            background: #1a1f2e;
+        }
+
+        .domain-name {
+            color: #f9fafb;
+            font-weight: 500;
+        }
+
+        .domain-count {
+            color: #06b6d4;
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .domain-percentage {
+            color: #9ca3af;
+            text-align: right;
+        }
+
+        .domain-size {
+            color: #d1d5db;
+            text-align: right;
+        }
+
+        .domain-status {
+            text-align: center;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-active { background: #10b981; }
+        .status-processing { background: #06b6d4; }
+        .status-idle { background: #6b7280; }
+
+        /* Activity Feed */
+        .activity-section {
+            background: #1a1f2e;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .activity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        .activity-item {
+            background: #0f1419;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .activity-item:hover {
+            border-color: #4b5563;
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: between;
+            align-items: flex-start;
+            margin-bottom: 6px;
+        }
+
+        .activity-time {
+            font-size: 11px;
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .activity-title {
+            font-size: 13px;
+            color: #f9fafb;
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .activity-description {
+            font-size: 12px;
+            color: #9ca3af;
+            line-height: 1.3;
+        }
+
+        .activity-status {
+            font-size: 10px;
+            padding: 2px 6px;
+            border-radius: 8px;
+            font-weight: 500;
+            margin-top: 6px;
+            display: inline-block;
+        }
+
+        .status-success {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .status-running-small {
+            background: rgba(6, 182, 212, 0.1);
+            color: #06b6d4;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1400px) {
+            .main-grid {
+                grid-template-columns: 1fr 350px;
+            }
+        }
+
+        @media (max-width: 1200px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-bar {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-container {
+                padding: 16px;
+            }
+            
+            .stats-bar {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .table-controls {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .search-input {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Dashboard Header -->
+        <div class="dashboard-header">
+            <h1 class="dashboard-title">Corpus Overview Dashboard</h1>
+            <p class="dashboard-subtitle">Real-time monitoring and analytics for your document corpus</p>
+        </div>
+
+        <!-- Top Stats Bar -->
+        <div class="stats-bar">
+            <div class="stat-card">
+                <span class="stat-value">2,570</span>
+                <span class="stat-label">Total Documents</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">0.08 <span class="stat-unit">GB</span></span>
+                <span class="stat-label">Total Size</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">678</span>
+                <span class="stat-label">Active Domains</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">2.5%</span>
+                <span class="stat-label">Storage Usage</span>
+            </div>
+            <div class="stat-card">
+                <span class="stat-value">3</span>
+                <span class="stat-label">Running Operations</span>
+            </div>
+        </div>
+
+        <!-- Main Content Grid -->
+        <div class="main-grid">
+            <!-- Chart Section -->
+            <div class="chart-section">
+                <div class="section-header">
+                    <div class="section-title-group">
+                        <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+                        </svg>
+                        <span class="section-title">Domain Distribution Overview</span>
+                    </div>
+                    <div class="chart-controls">
+                        <div class="chart-type-selector">
+                            <button class="chart-type-btn active">Pie</button>
+                            <button class="chart-type-btn">Bar</button>
+                        </div>
+                        <button class="chart-action-btn">
+                            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                            </svg>
+                            Refresh
+                        </button>
+                        <button class="chart-action-btn">
+                            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
+                            </svg>
+                            Balance
+                        </button>
+                    </div>
+                </div>
+
+                <div class="chart-container">
+                    <div class="pie-chart"></div>
+                </div>
+
+                <div class="chart-summary">
+                    <div class="summary-item">
+                        <div class="summary-value">45%</div>
+                        <div class="summary-label">Top Domain</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">678</div>
+                        <div class="summary-label">Total Domains</div>
+                    </div>
+                    <div class="summary-item">
+                        <div class="summary-value">89%</div>
+                        <div class="summary-label">Completion</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Operations Sidebar -->
+            <div class="operations-sidebar">
+                <div class="operations-card">
+                    <div class="section-header">
+                        <div class="section-title-group">
+                            <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                            </svg>
+                            <span class="section-title">Active Operations</span>
+                        </div>
+                    </div>
+
+                    <div class="operations-list">
+                        <div class="operation-item">
+                            <div class="operation-header">
+                                <div>
+                                    <div class="operation-name">GitHub Collector</div>
+                                    <div class="operation-description">Processing 45/67 repositories</div>
+                                </div>
+                                <div class="operation-status status-running">Running</div>
+                            </div>
+                            <div class="operation-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 67%;"></div>
+                                </div>
+                                <span class="progress-text">67%</span>
+                            </div>
+                        </div>
+
+                        <div class="operation-item">
+                            <div class="operation-header">
+                                <div>
+                                    <div class="operation-name">arXiv Processor</div>
+                                    <div class="operation-description">Extracting from 234/263 PDFs</div>
+                                </div>
+                                <div class="operation-status status-running">Running</div>
+                            </div>
+                            <div class="operation-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 89%;"></div>
+                                </div>
+                                <span class="progress-text">89%</span>
+                            </div>
+                        </div>
+
+                        <div class="operation-item">
+                            <div class="operation-header">
+                                <div>
+                                    <div class="operation-name">Domain Rebalancer</div>
+                                    <div class="operation-description">Waiting for confirmation</div>
+                                </div>
+                                <div class="operation-status status-paused">Paused</div>
+                            </div>
+                            <div class="operation-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 45%;"></div>
+                                </div>
+                                <span class="progress-text">45%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Full Width Domain Distribution Table -->
+        <div class="domain-table-section">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2V7m0 0V5a2 2 0 012-2h6l2 2h6a2 2 0 012 2v2M7 13h10M7 17h4"/>
+                    </svg>
+                    <span class="section-title">Complete Domain Distribution</span>
+                </div>
+                <div class="table-controls">
+                    <input type="text" class="search-input" placeholder="Search domains...">
+                    <button class="filter-btn">Filter</button>
+                    <button class="filter-btn">Export</button>
+                </div>
+            </div>
+
+            <table class="domain-table">
+                <thead>
+                    <tr>
+                        <th>Domain Name</th>
+                        <th>Documents</th>
+                        <th>Percentage</th>
+                        <th>Size</th>
+                        <th>Status</th>
+                        <th>Last Updated</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="domain-name">Crypto Derivatives</td>
+                        <td class="domain-count">520</td>
+                        <td class="domain-percentage">45.2%</td>
+                        <td class="domain-size">12.3 MB</td>
+                        <td class="domain-status"><span class="status-dot status-active"></span></td>
+                        <td class="domain-percentage">2 min ago</td>
+                    </tr>
+                    <tr>
+                        <td class="domain-name">High Frequency Trading</td>
+                        <td class="domain-count">180</td>
+                        <td class="domain-percentage">18.1%</td>
+                        <td class="domain-size">8.7 MB</td>
+                        <td class="domain-status"><span class="status-dot status-processing"></span></td>
+                        <td class="domain-percentage">5 min ago</td>
+                    </tr>
+                    <tr>
+                        <td class="domain-name">Risk Management</td>
+                        <td class="domain-count">176</td>
+                        <td class="domain-percentage">17.6%</td>
+                        <td class="domain-size">6.4 MB</td>
+                        <td class="domain-status"><span class="status-dot status-active"></span></td>
+                        <td class="domain-percentage">8 min ago</td>
+                    </tr>
+                    <tr>
+                        <td class="domain-name">Market Microstructure</td>
+                        <td class="domain-count">105</td>
+                        <td class="domain-percentage">12.3%</td>
+                        <td class="domain-size">4.2 MB</td>
+                        <td class="domain-status"><span class="status-dot status-active"></span></td>
+                        <td class="domain-percentage">12 min ago</td>
+                    </tr>
+                    <tr>
+                        <td class="domain-name">DeFi</td>
+                        <td class="domain-count">67</td>
+                        <td class="domain-percentage">6.8%</td>
+                        <td class="domain-size">3.1 MB</td>
+                        <td class="domain-status"><span class="status-dot status-processing"></span></td>
+                        <td class="domain-percentage">15 min ago</td>
+                    </tr>
+                    <tr>
+                        <td class="domain-name">Portfolio Construction</td>
+                        <td class="domain-count">45</td>
+                        <td class="domain-percentage">4.2%</td>
+                        <td class="domain-size">2.8 MB</td>
+                        <td class="domain-status"><span class="status-dot status-active"></span></td>
+                        <td class="domain-percentage">18 min ago</td>
+                    </tr>
+                    <tr>
+                        <td class="domain-name">Valuation Models</td>
+                        <td class="domain-count">38</td>
+                        <td class="domain-percentage">3.6%</td>
+                        <td class="domain-size">2.1 MB</td>
+                        <td class="domain-status"><span class="status-dot status-idle"></span></td>
+                        <td class="domain-percentage">22 min ago</td>
+                    </tr>
+                    <tr>
+                        <td class="domain-name">Regulation & Compliance</td>
+                        <td class="domain-count">32</td>
+                        <td class="domain-percentage">3.1%</td>
+                        <td class="domain-size">1.9 MB</td>
+                        <td class="domain-status"><span class="status-dot status-active"></span></td>
+                        <td class="domain-percentage">25 min ago</td>
+                    </tr>
+                    <tr>
+                        <td class="domain-name">Algorithmic Trading</td>
+                        <td class="domain-count">28</td>
+                        <td class="domain-percentage">2.8%</td>
+                        <td class="domain-size">1.7 MB</td>
+                        <td class="domain-status"><span class="status-dot status-processing"></span></td>
+                        <td class="domain-percentage">28 min ago</td>
+                    </tr>
+                    <tr>
+                        <td class="domain-name">ESG & Sustainable Finance</td>
+                        <td class="domain-count">24</td>
+                        <td class="domain-percentage">2.4%</td>
+                        <td class="domain-size">1.5 MB</td>
+                        <td class="domain-status"><span class="status-dot status-active"></span></td>
+                        <td class="domain-percentage">32 min ago</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Recent Activity Grid -->
+        <div class="activity-section">
+            <div class="section-header">
+                <div class="section-title-group">
+                    <svg class="section-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <span class="section-title">Recent Activity</span>
+                </div>
+                <button class="chart-action-btn">View All</button>
+            </div>
+
+            <div class="activity-grid">
+                <div class="activity-item">
+                    <div class="activity-time">16:53</div>
+                    <div class="activity-title">GitHub collection started</div>
+                    <div class="activity-description">Processing repositories from financial trading orgs</div>
+                    <div class="activity-status status-running-small">RUNNING</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">16:53</div>
+                    <div class="activity-title">arXiv processing completed</div>
+                    <div class="activity-description">263 PDF papers processed successfully</div>
+                    <div class="activity-status status-success">SUCCESS</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">16:46</div>
+                    <div class="activity-title">Domain rebalancing completed</div>
+                    <div class="activity-description">8 domains rebalanced according to target distribution</div>
+                    <div class="activity-status status-success">SUCCESS</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">15:48</div>
+                    <div class="activity-title">ISDA collection completed</div>
+                    <div class="activity-description">12 new regulatory documents collected</div>
+                    <div class="activity-status status-success">SUCCESS</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">15:25</div>
+                    <div class="activity-title">Quality analysis completed</div>
+                    <div class="activity-description">2,234 documents analyzed for content quality</div>
+                    <div class="activity-status status-success">SUCCESS</div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-time">15:14</div>
+                    <div class="activity-title">Corpus backup created</div>
+                    <div class="activity-description">41.5 GB successfully backed up to cloud storage</div>
+                    <div class="activity-status status-success">SUCCESS</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

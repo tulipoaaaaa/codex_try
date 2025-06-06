@@ -1,0 +1,112 @@
+{
+  "arxiv": {
+    "source_type": "api",
+    "search_terms": [
+      "cryptocurrency trading",
+      "bitcoin price prediction",
+      "blockchain trading",
+      "crypto market microstructure",
+      "high frequency trading cryptocurrency",
+      "quantitative finance crypto"
+    ],
+    "max_results": 200
+  },
+  "github": {
+    "source_type": "repository",
+    "topics": [
+      "cryptocurrency-trading",
+      "crypto-trading-bot",
+      "algorithmic-trading",
+      "high-frequency-trading"
+    ],
+    "max_repos": 20
+  },
+  "quantopian": {
+    "source_type": "repository",
+    "url": "https://github.com/quantopian/research_public",
+    "domain": "high_frequency_trading"
+  },
+  "fred": {
+    "source_type": "api",
+    "search_terms": [
+      "volatility",
+      "liquidity",
+      "market depth",
+      "trading volume",
+      "risk"
+    ],
+    "max_results": 50
+  },
+  "bitmex_research": {
+    "source_type": "web",
+    "base_url": "https://blog.bitmex.com/research",
+    "max_pages": 10,
+    "file_types": [".pdf", ".html"],
+    "domain": "crypto_derivatives"
+  },
+  "isda": {
+    "source_type": "web",
+    "base_url": "https://www.isda.org/category/documentation",
+    "max_pages": 5,
+    "file_types": [".pdf"],
+    "domain": "derivatives"
+  },
+  "bis": {
+    "source_type": "web",
+    "base_url": "https://www.bis.org/list/research",
+    "max_pages": 5,
+    "file_types": [".pdf"],
+    "domain": "risk_management"
+  },
+  "nber": {
+    "source_type": "web",
+    "base_url": "https://www.nber.org/papers",
+    "search_terms": ["high frequency trading", "cryptocurrency", "blockchain"],
+    "max_pages": 3,
+    "file_types": [".pdf"],
+    "domain": "high_frequency_trading"
+  },
+  "ssrn": {
+    "source_type": "web",
+    "base_url": "https://papers.ssrn.com",
+    "search_terms": ["cryptocurrency", "high frequency trading", "market microstructure"],
+    "max_pages": 5,
+    "file_types": [".pdf"],
+    "domain": "market_microstructure"
+  },
+  "foss_trading": {
+    "source_type": "web",
+    "base_url": "https://fosstrading.com",
+    "max_pages": 10,
+    "file_types": [".pdf", ".R", ".md"],
+    "domain": "market_microstructure"
+  },
+  "cme_group": {
+    "source_type": "web",
+    "base_url": "https://www.cmegroup.com/education",
+    "max_pages": 5,
+    "file_types": [".pdf"],
+    "domain": "market_microstructure"
+  },
+  "dragonfly": {
+    "source_type": "web",
+    "base_url": "https://medium.com/dragonfly-research",
+    "max_pages": 10,
+    "file_types": [".html", ".pdf"],
+    "domain": "market_microstructure"
+  },
+  "deribit_insights": {
+    "source_type": "web",
+    "base_url": "https://insights.deribit.com",
+    "max_pages": 10,
+    "file_types": [".html", ".pdf"],
+    "domain": "crypto_derivatives"
+  },
+  "crypto_research_report": {
+    "source_type": "web",
+    "base_url": "https://cryptoresearch.report",
+    "max_pages": 5,
+    "file_types": [".pdf", ".html"],
+    "domain": "macroeconomics"
+  }
+}

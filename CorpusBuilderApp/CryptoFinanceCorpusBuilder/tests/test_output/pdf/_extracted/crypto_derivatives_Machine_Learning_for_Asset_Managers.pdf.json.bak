@@ -1,0 +1,783 @@
+{
+  "title": "Machine Learning for Asset Managers",
+  "author": "",
+  "subject": "Quantitative Finance, 2020. doi: 10.1080/14697688.2020.1817534",
+  "creator": "LaTeX with hyperref package + hypdvips",
+  "producer": "iText 4.2.0 by 1T3XT",
+  "creation_date": "D:20200924225923+05'30'",
+  "modification_date": "D:20200928104550-07'00'",
+  "domain": "crypto_derivatives",
+  "quality_metrics": {
+    "language_confidence": {
+      "language": "en",
+      "language_confidence": 0.9999965021377712,
+      "mixed_language_flag": true,
+      "mixed_languages": [
+        "en"
+      ],
+      "reasons": [
+        "Mixed languages detected: [('en', 0.9204545454545454)]"
+      ],
+      "severity": "warning"
+    },
+    "corruption": {
+      "corruption_flag": false,
+      "corruption_score": 40,
+      "corruption_score_normalized": 40,
+      "corruption_reasons": [
+        "Found corruption markers: ",
+        "High ratio of replacement characters (possible encoding issue)"
+      ],
+      "severity": "warning"
+    },
+    "machine_translation": {
+      "machine_translated_flag": true,
+      "machine_translation_score": 40,
+      "machine_translation_reasons": [
+        "High n-gram repetition: 'Learning for Asset' (4 times)",
+        "High n-gram repetition: 'of machine learning' (4 times)",
+        "High n-gram repetition: 'in asset management.' (4 times)",
+        "High ratio of sentences missing articles: 0.80",
+        "High rare word ratio: 0.72"
+      ],
+      "machine_translation_severity": "critical",
+      "machine_translation_confidence": 0.9
+    },
+    "academic_analysis": {
+      "is_academic_paper": true,
+      "confidence": 0.3333333333333333,
+      "score": 5,
+      "indicators_found": [
+        "introduction",
+        "methods",
+        "results",
+        "discussion",
+        "bibliography"
+      ],
+      "citation_count": 3,
+      "recommended_thresholds": {
+        "min_tokens": 200,
+        "low_quality_tokens": 1000,
+        "reference_density_max": 0.15,
+        "citation_density_max": 0.1,
+        "formula_density_max": 0.2,
+        "table_density_max": 0.15,
+        "min_sections": 3,
+        "bibliography_required": true
+      }
+    },
+    "content_validation": {
+      "passes_academic_standards": true,
+      "issues": [],
+      "adjustments_made": [
+        "Reference density within academic norms"
+      ]
+    },
+    "symbol_richness": {
+      "total_symbols": 12,
+      "unique_symbols": 5,
+      "financial_symbols": 0
+    },
+    "min_tokens": 200,
+    "quality_threshold": 0.8,
+    "table_threshold": 0.6,
+    "formula_threshold": 0.7,
+    "low_quality_tokens": 1000,
+    "reference_density_max": 0.15,
+    "citation_density_max": 0.1,
+    "formula_density_max": 0.2,
+    "table_density_max": 0.15,
+    "min_sections": 3,
+    "bibliography_required": true,
+    "extraction_quality": {
+      "tables_detected": false,
+      "formulas_detected": true,
+      "charts_detected": true,
+      "symbols_detected": true,
+      "token_count": 871,
+      "quality_flag": "ok",
+      "is_academic_paper": true,
+      "academic_confidence": 0.3333333333333333
+    }
+  },
+  "is_scientific_paper": true,
+  "content_hash": "967c07f370047cf3acbaccdb2826191e",
+  "file_size": 617990,
+  "extraction_date": "2025-05-26T14:11:33.295899+00:00",
+  "enhancement_results": {
+    "formulas": {
+      "formulas": [
+        {
+          "formula": "1080/14697688",
+          "type": "fractions",
+          "position": {
+            "start": 482,
+            "end": 495
+          },
+          "context": "for Asset Managers, Quantitative\nFinance, DOI: 10.1080/14697688.2020.1817534\nTo link to this article:  https://do",
+          "confidence": 0.5,
+          "metadata": {
+            "length": 13,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": true,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.05,
+            "source": "fractions"
+          }
+        },
+        {
+          "formula": "Sas Routledge\n= Rewer,\nwv Quantitative Finance\n= 1S nt (Onin our homepage: hp tansonlin omfg\nMachine Learning for Asset Managers\nby Marcos M. Lopez de Prado, Cambridge University Press (2020). ISBN\n9781108792899. Paperback.\nKris Boudt\n‘To ite this article: Kris Boudt (2020): Machine Learning for Asset Managers, Quantitative\nFinance, DOI: 10.1080/14697688.2020.1817534\nTo link to this article: https/dol org/10.1080/14657688.2020.1817534\nER) Puttin nin: 28S 2020\nCF susie your article wo this journal\nLt arte views: 9\nBBW view reinedarices\n® view crossmare data?\nfull Terms & Condtons of access and use canbe fund at\nhuaps/twintandtonineconvaction journalinformatin2jouralCode=rqut20",
+          "type": "ocr_image",
+          "page": 1,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 684,
+            "has_greek_letters": false,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": true,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.4,
+            "source": "ocr_image"
+          }
+        },
+        {
+          "formula": "2 ook review\nfoe reaching insights that at he dacovery of financial The blograpy at he end ofthe ook x agra place to\nthei. star if you a ooking for impo siete atc in he\n\n“The tile of hs bok sells is abot by siming only el\nat sant managers. Lrcommend reading this book aso 10 hn Chapter and the caves of stitial tenga r=\nfinancial data cients and graduate stadt i enpical send. Chapter 6 presets the ae af inportance math 5\nface The wl ene inporaeeoavingathey ean alba wo ning pvaies when seeing the leant\ndinger of packing, an how equations walt no cade features. Caper # shows how one can comet for mulple\nand how he coded to sl, sting when evaluating a seategy Tiss pce ince Wwhen\n\n“The sce ofthe book isa follows. The book sats a esetcher presents an overt backtens the outcome of\nwih an equation fe eduction about the le of machine single Wal the simulated performance isa This hen\nIeaming in ast management Th we of tachi leaming leads a falaedacoveres.\ntechies goes beyond accurate predictions. They aweful The bok in the ipa mrt oencurage the ear\n‘sure of inpation wo dscover th theories that expan oe ctetve. Kt decies carslscletion ips to\nthe cause-effect mechansis of the good prediction perfr- gu machin eating fo dacover ae this afl or ast\nImiceacieed. As noted by the aur, wit a eae tanger. I doc ot provide mage fomula ope\ntheory that explains your ee tees tht you ave not tent an ivest sey. The covery of theory a\nanedge tal tut fr thease manager secking to develop 4 propntry\n\nBesides the notin, the ae seven chips th lp invests suey Thats nthe word of Marcos Lope\nthe ede achieve an deinen of paral knowlge rao you cao! ke someone e's ake an ext 1\ntou machine leamingehniges in ase management retain yousl?”\n\nChapter 2s a tciclinoduton to apes ype of es Bout\nfeuding Chapter 3 Bs Ie nuodaces the reader to diferent a\ntypeof duce mesure a ew elo nde “epee np Boat\nStn th concept of lsc and unsupervised leaming soos iO O00 1000-512\nproaches in Chapter 4 Chaps 3 and focus on the pe —\ndlson problem, Chap 5 esrb the proes of Sania\nlabeling in which te moder neds to dfn the lah Ke Rod i professor of func and econometric at Ghent\n\\atsformation ofthe price data fo tsk market presicon. (iver, Ve Universite Bra! and Vije Universitet\nChapter 6 then ascusss diferent approaches fo selectins Anata Heian inset at DasCanp and count\nthe fears. Chapter 7 Tose ca porfalio opinion. gr Senomeis",
+          "type": "ocr_image",
+          "page": 3,
+          "confidence": 0.5,
+          "source": "ocr_image",
+          "metadata": {
+            "length": 2400,
+            "has_greek_letters": true,
+            "has_superscript": false,
+            "has_subscript": false,
+            "has_fractions": false,
+            "has_integrals": false,
+            "has_summations": false,
+            "complexity_score": 0.30000000000000004,
+            "source": "ocr_image"
+          }
+        }
+      ],
+      "statistics": {
+        "total_formulas": 3,
+        "text_source": 1,
+        "pdf_source": 1,
+        "ocr_source": 2,
+        "avg_confidence": 0.5,
+        "complexity_distribution": {
+          "simple": 1,
+          "medium": 2,
+          "complex": 0
+        },
+        "formula_types": {
+          "fractions": 1,
+          "ocr_image": 2
+        }
+      },
+      "extraction_metadata": {
+        "config": {
+          "preserve_context": true,
+          "context_chars": 50,
+          "min_formula_length": 3,
+          "max_formula_length": 1000,
+          "extract_financial_symbols": true,
+          "validate_latex": true
+        },
+        "patterns_used": [
+          "inline_latex",
+          "display_latex",
+          "equation_env",
+          "align_env",
+          "eqnarray_env",
+          "math_env",
+          "displaymath_env",
+          "bracket_inline",
+          "bracket_display",
+          "percentage",
+          "currency",
+          "scientific_notation",
+          "ratios",
+          "fractions",
+          "greek_letters",
+          "probability",
+          "expectation",
+          "variance",
+          "correlation",
+          "volatility",
+          "returns",
+          "derivatives"
+        ]
+      }
+    },
+    "images": [
+      {
+        "id": "vector_1_2225",
+        "page": 2,
+        "type": "vector_graphic",
+        "format": "png",
+        "size": [
+          483,
+          726
+        ],
+        "bbox": [
+          360,
+          340,
+          843,
+          1066
+        ],
+        "quality_score": 0.5,
+        "ocr_text": "Cambridge — Elements Quantitative . Finaface * _ Machine e Learning fore — Asset Manager New —_—",
+        "is_chart": true,
+        "chart_type": "unknown",
+        "chart_confidence": 0.5,
+        "contains_financial_content": false,
+        "base64_thumbnail": "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esHWeFyjleVc5ssLLr04NA2ZHTqw1sSoQU61S5tujo5ejFxXEoppm7VLxd2yQ2eejQxIwIHc3BVxIM6hipKKWS5DMW7QN+GQAalr0YKuSBK4z5kJcfAeY9rbnwWCOlaTUX3B2viRU+de9ZpXfuXLX0Gm62++6a7Pf/Xv/eO/P56unTxx9lOf+NKP/ui70PSxbz309Y/98Xt/+sdycWH+2H/+zevuePnWsUOPffvhr3/6y8WoWlub7exd/JIrL7jy0stffu1sd9+bCjaat/zkD4YYd8+e+6N/9xs3/fA7bp3W9XScVX/lp//pdW++89rbXr5+cPOPfvVD99/zyF/85z89lcBNPHXvA1//jY/e+td/goS8ir/8r/7tHW994xU33jDb23vw7vte+cbX9V33pU984sGvfGlUVctl5x4yeUFHx84sDYJ5HMQvsCp4OWGIjEKOCIxOq+4zMNXUdrP92e5umzrNybSouzGDcKzieFQ70iL3O4tljXBkFN/+ljedPHFyf3//1ttvK2AvufHap5985n/86odGo+ZFV1/yrT/5+h9/8JOv/P63Hr/i0nu/du81t1z/4ptf8tBX73nkW/ff84W7q9G6F986uvXcQ0+dee7M237qB7afP/vMvY8fufTCs6d2v/WZL5946Ds3vO629WMHpoe39rd3futn/+WhY0defsetT/7pN7/8qc+lvtz0mlvveN2tx9bW7/uPvyGLfro2vf41t73o5TeeuO+hS664/Na3vK6ZjC6+7JKP/uovHTp84NCRw5/4nQ/ee/e3O8J56nr0JGAiHCINFl3gZOcd7MidwQcqjIjqpoohMLPEwHXNdY0hOAytnV5Kzq6mJZWcEWA0CuNxmIzr8Wg8mUJdn2rbq66+6uorLr/qxVdfeeUVV11zpUX+yb/2M1LJT/2dP//4o9/53/7RL9781te89UffE0bNcnc/be//1r/5tUe/+kAtUvq83F6oQ1Ebr4+7WXv/Z75x7atfdt+n7lruzuumedW733DLO16zvTvLqcSmSSnf8/mvzre3253darr21r/x4zdccUXa3ducTC89dAjNMC3neztmJa41/WJRrP38733wyXu+PVlbe+iur++ePvGpj33og7/0S9//537ipbe/8tTuYr/AQn1huRA5UnEjKwGB3Py8oAEYIZAP0kdGrGOomIWIhEgIqxjGI4ky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",
+        "metadata": {
+          "source": "vector_graphic",
+          "quality_score": 0.5,
+          "chart_type": "unknown",
+          "chart_confidence": 0.5
+        },
+        "extraction_timestamp": 1748268691.8716724,
+        "is_financial_chart": false,
+        "relevance_score": 0.5
+      }
+    ],
+    "symbols": {
+      "symbols_by_type": {
+        "stock_ticker": [
+          {
+            "symbol": "ISSN",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 152,
+              "end": 156
+            },
+            "context": "e=rquf20\nQuantitative Finance\nISSN: (Print) (Online) Journal hom",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "M",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 278,
+              "end": 279
+            },
+            "context": " for Asset Managers\nby Marcos M. López de Prado, Cambridge Un",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "ISBN",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 332,
+              "end": 336
+            },
+            "context": "idge University Press (2020). ISBN\n9781108792899. Paperback.\nKri",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "DOI",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 474,
+              "end": 477
+            },
+            "context": "nagers, Quantitative\nFinance, DOI: 10.1080/14697688.2020.181753",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "M",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 877,
+              "end": 878
+            },
+            "context": "for Asset Managers, by Marcos M.\nLópez de Prado, Cambridge Un",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "ISBN",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 931,
+              "end": 935
+            },
+            "context": "idge University Press (2020). ISBN\n9781108792899. Paperback.\nStu",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "I",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 2623,
+              "end": 2624
+            },
+            "context": "iming only\nat asset managers. I recommend reading this book a",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "I",
+            "type": "potential_stock_ticker",
+            "pattern": "stock_ticker",
+            "position": {
+              "start": 3662,
+              "end": 3663
+            },
+            "context": "hes to covariance estimation. I recommend\nreading Chapter 3 ﬁ",
+            "confidence": 0.7,
+            "metadata": {
+              "needs_validation": true
+            }
+          }
+        ],
+        "crypto_symbol": [
+          {
+            "symbol": "ISSN",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 152,
+              "end": 156
+            },
+            "context": "e=rquf20\nQuantitative Finance\nISSN: (Print) (Online) Journal hom",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "ISBN",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 332,
+              "end": 336
+            },
+            "context": "idge University Press (2020). ISBN\n9781108792899. Paperback.\nKri",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "DOI",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 474,
+              "end": 477
+            },
+            "context": "nagers, Quantitative\nFinance, DOI: 10.1080/14697688.2020.181753",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          },
+          {
+            "symbol": "ISBN",
+            "type": "potential_crypto_symbol",
+            "pattern": "crypto_symbol",
+            "position": {
+              "start": 931,
+              "end": 935
+            },
+            "context": "idge University Press (2020). ISBN\n9781108792899. Paperback.\nStu",
+            "confidence": 0.6,
+            "metadata": {
+              "needs_validation": true
+            }
+          }
+        ]
+      },
+      "symbols_by_position": [
+        {
+          "symbol": "ISSN",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 152,
+            "end": 156
+          },
+          "context": "e=rquf20\nQuantitative Finance\nISSN: (Print) (Online) Journal hom",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "ISSN",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 152,
+            "end": 156
+          },
+          "context": "e=rquf20\nQuantitative Finance\nISSN: (Print) (Online) Journal hom",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "M",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 278,
+            "end": 279
+          },
+          "context": " for Asset Managers\nby Marcos M. López de Prado, Cambridge Un",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "ISBN",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 332,
+            "end": 336
+          },
+          "context": "idge University Press (2020). ISBN\n9781108792899. Paperback.\nKri",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "ISBN",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 332,
+            "end": 336
+          },
+          "context": "idge University Press (2020). ISBN\n9781108792899. Paperback.\nKri",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "DOI",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 474,
+            "end": 477
+          },
+          "context": "nagers, Quantitative\nFinance, DOI: 10.1080/14697688.2020.181753",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "DOI",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 474,
+            "end": 477
+          },
+          "context": "nagers, Quantitative\nFinance, DOI: 10.1080/14697688.2020.181753",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "M",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 877,
+            "end": 878
+          },
+          "context": "for Asset Managers, by Marcos M.\nLópez de Prado, Cambridge Un",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "ISBN",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 931,
+            "end": 935
+          },
+          "context": "idge University Press (2020). ISBN\n9781108792899. Paperback.\nStu",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "ISBN",
+          "type": "potential_crypto_symbol",
+          "pattern": "crypto_symbol",
+          "position": {
+            "start": 931,
+            "end": 935
+          },
+          "context": "idge University Press (2020). ISBN\n9781108792899. Paperback.\nStu",
+          "confidence": 0.6,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "I",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 2623,
+            "end": 2624
+          },
+          "context": "iming only\nat asset managers. I recommend reading this book a",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        },
+        {
+          "symbol": "I",
+          "type": "potential_stock_ticker",
+          "pattern": "stock_ticker",
+          "position": {
+            "start": 3662,
+            "end": 3663
+          },
+          "context": "hes to covariance estimation. I recommend\nreading Chapter 3 ﬁ",
+          "confidence": 0.7,
+          "metadata": {
+            "needs_validation": true
+          }
+        }
+      ],
+      "statistics": {
+        "total_symbols": 12,
+        "unique_symbols": 5,
+        "type_counts": {
+          "stock_ticker": 8,
+          "crypto_symbol": 4
+        },
+        "avg_confidence": 0.6666666666666666,
+        "most_common_symbols": [
+          [
+            "ISBN",
+            4
+          ],
+          [
+            "ISSN",
+            2
+          ],
+          [
+            "M",
+            2
+          ],
+          [
+            "DOI",
+            2
+          ],
+          [
+            "I",
+            2
+          ]
+        ],
+        "symbol_density": 0.012
+      },
+      "preservation_map": {
+        "__SYMBOL_0__": "ISSN",
+        "__SYMBOL_1__": "ISSN",
+        "__SYMBOL_2__": "M",
+        "__SYMBOL_3__": "ISBN",
+        "__SYMBOL_4__": "ISBN",
+        "__SYMBOL_5__": "DOI",
+        "__SYMBOL_6__": "DOI",
+        "__SYMBOL_7__": "M",
+        "__SYMBOL_8__": "ISBN",
+        "__SYMBOL_9__": "ISBN",
+        "__SYMBOL_10__": "I",
+        "__SYMBOL_11__": "I"
+      }
+    },
+    "symbol_glossary": {
+      "ISSN": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: ISSN",
+        "occurrences": 2,
+        "contexts": [
+          "e=rquf20\nQuantitative Finance\nISSN: (Print) (Online) Journal hom",
+          "e=rquf20\nQuantitative Finance\nISSN: (Print) (Online) Journal hom"
+        ],
+        "confidence": 0.7
+      },
+      "M": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: M",
+        "occurrences": 2,
+        "contexts": [
+          " for Asset Managers\nby Marcos M. López de Prado, Cambridge Un",
+          "for Asset Managers, by Marcos M.\nLópez de Prado, Cambridge Un"
+        ],
+        "confidence": 0.7
+      },
+      "ISBN": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: ISBN",
+        "occurrences": 4,
+        "contexts": [
+          "idge University Press (2020). ISBN\n9781108792899. Paperback.\nKri",
+          "idge University Press (2020). ISBN\n9781108792899. Paperback.\nStu",
+          "idge University Press (2020). ISBN\n9781108792899. Paperback.\nKri",
+          "idge University Press (2020). ISBN\n9781108792899. Paperback.\nStu"
+        ],
+        "confidence": 0.7
+      },
+      "DOI": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: DOI",
+        "occurrences": 2,
+        "contexts": [
+          "nagers, Quantitative\nFinance, DOI: 10.1080/14697688.2020.181753",
+          "nagers, Quantitative\nFinance, DOI: 10.1080/14697688.2020.181753"
+        ],
+        "confidence": 0.7
+      },
+      "I": {
+        "type": "potential_stock_ticker",
+        "definition": "Symbol: I",
+        "occurrences": 2,
+        "contexts": [
+          "iming only\nat asset managers. I recommend reading this book a",
+          "hes to covariance estimation. I recommend\nreading Chapter 3 ﬁ"
+        ],
+        "confidence": 0.7
+      }
+    },
+    "academic_analysis": {
+      "is_academic_paper": true,
+      "confidence": 0.3333333333333333,
+      "score": 5,
+      "indicators_found": [
+        "introduction",
+        "methods",
+        "results",
+        "discussion",
+        "bibliography"
+      ],
+      "citation_count": 3,
+      "recommended_thresholds": {
+        "min_tokens": 200,
+        "low_quality_tokens": 1000,
+        "reference_density_max": 0.15,
+        "citation_density_max": 0.1,
+        "formula_density_max": 0.2,
+        "table_density_max": 0.15,
+        "min_sections": 3,
+        "bibliography_required": true
+      }
+    }
+  },
+  "tables": [],
+  "formulas": [
+    {
+      "formula": "1080/14697688",
+      "type": "fractions",
+      "position": {
+        "start": 482,
+        "end": 495
+      },
+      "context": "for Asset Managers, Quantitative\nFinance, DOI: 10.1080/14697688.2020.1817534\nTo link to this article:  https://do",
+      "confidence": 0.5,
+      "metadata": {
+        "length": 13,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": true,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.05,
+        "source": "fractions"
+      }
+    },
+    {
+      "formula": "Sas Routledge\n= Rewer,\nwv Quantitative Finance\n= 1S nt (Onin our homepage: hp tansonlin omfg\nMachine Learning for Asset Managers\nby Marcos M. Lopez de Prado, Cambridge University Press (2020). ISBN\n9781108792899. Paperback.\nKris Boudt\n‘To ite this article: Kris Boudt (2020): Machine Learning for Asset Managers, Quantitative\nFinance, DOI: 10.1080/14697688.2020.1817534\nTo link to this article: https/dol org/10.1080/14657688.2020.1817534\nER) Puttin nin: 28S 2020\nCF susie your article wo this journal\nLt arte views: 9\nBBW view reinedarices\n® view crossmare data?\nfull Terms & Condtons of access and use canbe fund at\nhuaps/twintandtonineconvaction journalinformatin2jouralCode=rqut20",
+      "type": "ocr_image",
+      "page": 1,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 684,
+        "has_greek_letters": false,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": true,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.4,
+        "source": "ocr_image"
+      }
+    },
+    {
+      "formula": "2 ook review\nfoe reaching insights that at he dacovery of financial The blograpy at he end ofthe ook x agra place to\nthei. star if you a ooking for impo siete atc in he\n\n“The tile of hs bok sells is abot by siming only el\nat sant managers. Lrcommend reading this book aso 10 hn Chapter and the caves of stitial tenga r=\nfinancial data cients and graduate stadt i enpical send. Chapter 6 presets the ae af inportance math 5\nface The wl ene inporaeeoavingathey ean alba wo ning pvaies when seeing the leant\ndinger of packing, an how equations walt no cade features. Caper # shows how one can comet for mulple\nand how he coded to sl, sting when evaluating a seategy Tiss pce ince Wwhen\n\n“The sce ofthe book isa follows. The book sats a esetcher presents an overt backtens the outcome of\nwih an equation fe eduction about the le of machine single Wal the simulated performance isa This hen\nIeaming in ast management Th we of tachi leaming leads a falaedacoveres.\ntechies goes beyond accurate predictions. They aweful The bok in the ipa mrt oencurage the ear\n‘sure of inpation wo dscover th theories that expan oe ctetve. Kt decies carslscletion ips to\nthe cause-effect mechansis of the good prediction perfr- gu machin eating fo dacover ae this afl or ast\nImiceacieed. As noted by the aur, wit a eae tanger. I doc ot provide mage fomula ope\ntheory that explains your ee tees tht you ave not tent an ivest sey. The covery of theory a\nanedge tal tut fr thease manager secking to develop 4 propntry\n\nBesides the notin, the ae seven chips th lp invests suey Thats nthe word of Marcos Lope\nthe ede achieve an deinen of paral knowlge rao you cao! ke someone e's ake an ext 1\ntou machine leamingehniges in ase management retain yousl?”\n\nChapter 2s a tciclinoduton to apes ype of es Bout\nfeuding Chapter 3 Bs Ie nuodaces the reader to diferent a\ntypeof duce mesure a ew elo nde “epee np Boat\nStn th concept of lsc and unsupervised leaming soos iO O00 1000-512\nproaches in Chapter 4 Chaps 3 and focus on the pe —\ndlson problem, Chap 5 esrb the proes of Sania\nlabeling in which te moder neds to dfn the lah Ke Rod i professor of func and econometric at Ghent\n\\atsformation ofthe price data fo tsk market presicon. (iver, Ve Universite Bra! and Vije Universitet\nChapter 6 then ascusss diferent approaches fo selectins Anata Heian inset at DasCanp and count\nthe fears. Chapter 7 Tose ca porfalio opinion. gr Senomeis",
+      "type": "ocr_image",
+      "page": 3,
+      "confidence": 0.5,
+      "source": "ocr_image",
+      "metadata": {
+        "length": 2400,
+        "has_greek_letters": true,
+        "has_superscript": false,
+        "has_subscript": false,
+        "has_fractions": false,
+        "has_integrals": false,
+        "has_summations": false,
+        "complexity_score": 0.30000000000000004,
+        "source": "ocr_image"
+      }
+    }
+  ]
+}

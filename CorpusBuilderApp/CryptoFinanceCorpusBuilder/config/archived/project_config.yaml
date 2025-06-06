@@ -1,0 +1,8 @@
+corpus_dir: G:/ai_trading_dev/data/full_corpus
+raw_data_dir: G:/ai_trading_dev/data/full_corpus/raw_data
+pdf_extracted_dir: G:/ai_trading_dev/data/full_corpus/pdf_extracted
+nonpdf_extracted_dir: G:/ai_trading_dev/data/full_corpus/nonpdf_extracted
+logs_dir: G:/ai_trading_dev/data/full_corpus/logs
+config_dir: G:/ai_trading_dev/data/full_corpus/config
+balance_reports_dir: G:/ai_trading_dev/data/full_corpus/balance_reports
+cache_dir: E:/ai_trading_dev/data/full_corpus/cache 

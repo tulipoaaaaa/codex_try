@@ -1,0 +1,3 @@
+"""
+CryptoFinanceCorpusBuilder application package.
+""" 

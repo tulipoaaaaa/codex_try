@@ -1,0 +1,162 @@
+2025-05-09 13:22:40,529 INFO: Deduplicator initialized
+2025-05-09 13:22:40,573 INFO: Loaded existing deduplication index with 442 entries
+2025-05-09 13:22:40,574 ERROR: Error importing required modules for content similarity: No module named 'datasketch'
+2025-05-09 13:22:40,574 INFO: Found 8 duplicate groups
+2025-05-09 13:22:40,577 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf'
+2025-05-09 13:22:40,580 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf'
+2025-05-09 13:22:40,581 ERROR: Error deleting data\corpus_1\market_microstructure\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf'
+2025-05-09 13:22:40,582 ERROR: Error deleting data\corpus_1\crypto_derivatives\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\crypto_derivatives\\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf'
+2025-05-09 13:22:40,582 ERROR: Error deleting data\corpus_1\valuation_models\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\valuation_models\\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf'
+2025-05-09 13:22:40,583 ERROR: Error deleting data\corpus_1\market_microstructure\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf'
+2025-05-09 13:22:40,583 ERROR: Error deleting data\corpus_1\risk_management\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\risk_management\\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf'
+2025-05-09 13:22:40,584 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf'
+2025-05-09 13:22:40,629 INFO: Token loss report saved to data/corpus_1/deduplication_token_loss.json
+2025-05-09 13:22:40,631 INFO: Deduplication report saved to data/corpus_1/deduplication_report.json
+2025-05-09 13:24:32,211 INFO: Deduplicator initialized
+2025-05-09 13:24:32,259 INFO: Loaded existing deduplication index with 442 entries
+2025-05-09 13:24:32,260 ERROR: Error importing required modules for content similarity: No module named 'datasketch'
+2025-05-09 13:24:32,260 INFO: Found 8 duplicate groups
+2025-05-09 13:24:32,262 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf'
+2025-05-09 13:24:32,262 ERROR: Error deleting data\corpus_1\valuation_models\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\valuation_models\\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf'
+2025-05-09 13:24:32,263 ERROR: Error deleting data\corpus_1\market_microstructure\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf'
+2025-05-09 13:24:32,263 ERROR: Error deleting data\corpus_1\crypto_derivatives\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\crypto_derivatives\\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf'
+2025-05-09 13:24:32,264 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf'
+2025-05-09 13:24:32,264 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf'
+2025-05-09 13:24:32,265 ERROR: Error deleting data\corpus_1\market_microstructure\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf'
+2025-05-09 13:24:32,265 ERROR: Error deleting data\corpus_1\risk_management\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\risk_management\\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf'
+2025-05-09 13:24:32,309 INFO: Token loss report saved to data/corpus_1/deduplication_token_loss.json
+2025-05-09 13:24:32,311 INFO: Deduplication report saved to data/corpus_1/deduplication_report.json
+2025-05-09 13:43:14,888 INFO: Deduplicator initialized
+2025-05-09 13:43:14,933 INFO: Loaded existing deduplication index with 442 entries
+2025-05-09 13:43:14,937 ERROR: Error importing required modules for content similarity: No module named 'datasketch'
+2025-05-09 13:43:14,937 INFO: Found 8 duplicate groups
+2025-05-09 13:43:14,939 ERROR: Error deleting data\corpus_1\market_microstructure\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf'
+2025-05-09 13:43:14,940 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf'
+2025-05-09 13:43:14,940 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf'
+2025-05-09 13:43:14,941 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf'
+2025-05-09 13:43:14,941 ERROR: Error deleting data\corpus_1\crypto_derivatives\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\crypto_derivatives\\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf'
+2025-05-09 13:43:14,941 ERROR: Error deleting data\corpus_1\valuation_models\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\valuation_models\\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf'
+2025-05-09 13:43:14,942 ERROR: Error deleting data\corpus_1\risk_management\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\risk_management\\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf'
+2025-05-09 13:43:14,942 ERROR: Error deleting data\corpus_1\market_microstructure\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf'
+2025-05-09 13:43:14,992 INFO: Deduplication report saved to deduplication_summary.json
+2025-05-09 13:53:20,449 INFO: Deduplicator initialized
+2025-05-09 13:53:20,497 INFO: Loaded existing deduplication index with 442 entries
+2025-05-09 13:54:04,183 INFO: Initialized corpus manager at data\corpus_1
+2025-05-09 13:54:04,184 WARNING: No documents found in corpus metadata
+2025-05-09 13:54:04,184 INFO: Found 8 duplicate groups
+2025-05-09 13:54:04,186 ERROR: Error deleting data\corpus_1\market_microstructure\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf'
+2025-05-09 13:54:04,187 ERROR: Error deleting data\corpus_1\risk_management\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\risk_management\\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf'
+2025-05-09 13:54:04,187 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf'
+2025-05-09 13:54:04,188 ERROR: Error deleting data\corpus_1\crypto_derivatives\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\crypto_derivatives\\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf'
+2025-05-09 13:54:04,189 ERROR: Error deleting data\corpus_1\market_microstructure\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf'
+2025-05-09 13:54:04,189 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf'
+2025-05-09 13:54:04,190 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf'
+2025-05-09 13:54:04,190 ERROR: Error deleting data\corpus_1\valuation_models\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\valuation_models\\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf'
+2025-05-09 13:54:04,248 INFO: Deduplication report saved to deduplication_summary.json
+2025-05-09 14:02:19,950 INFO: Deduplicator initialized
+2025-05-09 14:02:20,000 INFO: Loaded existing deduplication index with 442 entries
+2025-05-09 14:02:27,043 INFO: Initialized corpus manager at data\corpus_1
+2025-05-09 14:02:27,045 WARNING: No documents found in corpus metadata
+2025-05-09 14:02:27,045 INFO: Found 8 duplicate groups
+2025-05-09 14:02:27,050 ERROR: Error deleting data\corpus_1\market_microstructure\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf'
+2025-05-09 14:02:27,051 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf'
+2025-05-09 14:02:27,052 ERROR: Error deleting data\corpus_1\valuation_models\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\valuation_models\\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf'
+2025-05-09 14:02:27,052 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf'
+2025-05-09 14:02:27,053 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf'
+2025-05-09 14:02:27,054 ERROR: Error deleting data\corpus_1\crypto_derivatives\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\crypto_derivatives\\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf'
+2025-05-09 14:02:27,055 ERROR: Error deleting data\corpus_1\market_microstructure\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf'
+2025-05-09 14:02:27,055 ERROR: Error deleting data\corpus_1\risk_management\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\risk_management\\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf'
+2025-05-09 14:02:27,110 INFO: Deduplication report saved to deduplication_summary.json
+2025-05-09 14:05:02,178 INFO: Deduplicator initialized
+2025-05-09 14:05:02,225 INFO: Loaded existing deduplication index with 442 entries
+2025-05-09 14:05:09,316 INFO: Initialized corpus manager at data\corpus_1
+2025-05-09 14:05:09,318 WARNING: No documents found in corpus metadata
+2025-05-09 14:05:09,318 INFO: Found 8 duplicate groups
+2025-05-09 14:05:09,321 ERROR: Error deleting data\corpus_1\market_microstructure\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf'
+2025-05-09 14:05:09,321 ERROR: Error deleting data\corpus_1\valuation_models\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\valuation_models\\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf'
+2025-05-09 14:05:09,321 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf'
+2025-05-09 14:05:09,322 ERROR: Error deleting data\corpus_1\market_microstructure\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf'
+2025-05-09 14:05:09,323 ERROR: Error deleting data\corpus_1\crypto_derivatives\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\crypto_derivatives\\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf'
+2025-05-09 14:05:09,323 ERROR: Error deleting data\corpus_1\risk_management\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\risk_management\\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf'
+2025-05-09 14:05:09,323 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf'
+2025-05-09 14:05:09,324 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf'
+2025-05-09 14:05:09,366 INFO: Deduplication report saved to deduplication_summary.json
+2025-05-09 14:06:47,701 INFO: Deduplicator initialized
+2025-05-09 14:06:47,743 INFO: Loaded existing deduplication index with 442 entries
+2025-05-09 14:06:54,811 INFO: Initialized corpus manager at data\corpus_1
+2025-05-09 14:08:08,286 INFO: Found 13 content similarity duplicate groups (MinHashLSH)
+2025-05-09 14:08:08,295 INFO: Found 21 duplicate groups
+2025-05-09 14:08:08,304 INFO: Deleted duplicate: data\corpus_1\crypto_derivatives\crypto_derivatives_Reinforcement_Learning_An_Introduction_by__Richard_S_Sutton_Andrew_G_Barto.pdf
+2025-05-09 14:08:08,307 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Flow_Toxicity_and_Liquidity_in_a_High_Frequency_World_by_Easley_Lopez_de_Prado_OHara_2012.pdf'
+2025-05-09 14:08:08,309 INFO: Deleted duplicate: data\corpus_1\high_frequency_trading\crypto_derivatives_Thomas_N_Bulkowski-Encyclopedia_Of_Chart_Patterns.pdf
+2025-05-09 14:08:08,310 INFO: Deleted duplicate: data\corpus_1\crypto_derivatives\crypto_derivatives_hyperliquid_API_1.pdf
+2025-05-09 14:08:08,310 ERROR: Error deleting data\corpus_1\risk_management\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\risk_management\\crypto_derivatives_Interpretable_Machine_Learning_by_Christoph_Molnar.pdf'
+2025-05-09 14:08:08,311 INFO: Deleted duplicate: data\corpus_1\crypto_derivatives\crypto_derivatives_Advances_in_Financial_Machine_Learning_by_López_de_Prado_2018.pdf
+2025-05-09 14:08:08,312 ERROR: Error deleting data\corpus_1\valuation_models\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\valuation_models\\crypto_derivatives_Attention_is_All_You_Need_Vaswani_et_al_2017.pdf'
+2025-05-09 14:08:08,312 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Empirical_Market_Microstructure-_The_Institutions_Economics_and_Econometrics_of_Securities_Trading_Joel_Hasbrouck_2007.pdf'
+2025-05-09 14:08:08,313 ERROR: Error deleting data\corpus_1\market_microstructure\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\crypto_derivatives_Order_Flow_and_the_Formation_of_Prices_by_Cont_Kukanov_Stoikov_2014.pdf'
+2025-05-09 14:08:08,314 INFO: Deleted duplicate: data\corpus_1\decentralized_finance\decentralized_finance_Stochastic_Calculus_for_Finance_II_-_Continuous-Time_Models_by_Steven_E_Shreve_2004.pdf
+2025-05-09 14:08:08,314 ERROR: Error deleting data\corpus_1\market_microstructure\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\decentralized_finance_High-Frequency_Data_in_Finance_Aït-Sahalia__Jacod_2014.pdf'
+2025-05-09 14:08:08,315 ERROR: Error deleting data\corpus_1\crypto_derivatives\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\crypto_derivatives\\crypto_derivatives_Deep_learning_for_Time_series_predication_and_decision_making_over_time.pdf'
+2025-05-09 14:08:08,315 ERROR: Error deleting data\corpus_1\market_microstructure\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf: [WinError 2] The system cannot find the file specified: 'data\\corpus_1\\market_microstructure\\market_microstructure_Trading-Exchanges-Market-Microstructure-Practitioners.pdf'
+2025-05-09 14:08:08,361 INFO: Deduplication report saved to deduplication_summary.json
+2025-05-09 14:20:01,503 INFO: Deduplicator initialized
+2025-05-09 14:20:01,546 INFO: Building deduplication index...
+2025-05-09 14:20:01,563 INFO: Scanning 1818 files for duplicates
+2025-05-09 14:20:01,564 INFO: Processed 0/1818 files
+2025-05-09 14:20:01,773 INFO: Processed 100/1818 files
+2025-05-09 14:20:02,244 INFO: Processed 200/1818 files
+2025-05-09 14:20:02,837 INFO: Processed 300/1818 files
+2025-05-09 14:20:03,204 INFO: Processed 400/1818 files
+2025-05-09 14:20:03,590 INFO: Processed 500/1818 files
+2025-05-09 14:20:03,719 INFO: Processed 600/1818 files
+2025-05-09 14:20:03,722 INFO: Processed 700/1818 files
+2025-05-09 14:20:03,725 INFO: Processed 800/1818 files
+2025-05-09 14:20:03,728 INFO: Processed 900/1818 files
+2025-05-09 14:20:03,730 INFO: Processed 1000/1818 files
+2025-05-09 14:20:03,798 INFO: Processed 1100/1818 files
+2025-05-09 14:20:03,974 INFO: Processed 1200/1818 files
+2025-05-09 14:20:04,525 INFO: Processed 1300/1818 files
+2025-05-09 14:20:04,855 INFO: Processed 1400/1818 files
+2025-05-09 14:20:04,859 INFO: Processed 1500/1818 files
+2025-05-09 14:20:04,862 INFO: Processed 1600/1818 files
+2025-05-09 14:20:05,073 INFO: Processed 1700/1818 files
+2025-05-09 14:20:05,223 INFO: Processed 1800/1818 files
+2025-05-09 14:20:05,230 INFO: Saved deduplication index with 438 file hashes and 5 titles
+2025-05-09 14:20:12,292 ERROR: Error importing required modules for content similarity: No module named 'CryptoFinanceCorpusBuilder'
+2025-05-09 14:20:12,293 INFO: No duplicates found
+2025-05-09 14:22:11,935 INFO: Deduplicator initialized
+2025-05-09 14:22:11,983 INFO: Loaded existing deduplication index with 438 entries
+2025-05-09 14:22:19,037 ERROR: Error importing required modules for content similarity: No module named 'processors'
+2025-05-09 14:22:19,038 INFO: No duplicates found
+2025-05-09 14:22:58,141 INFO: Deduplicator initialized
+2025-05-09 14:22:58,185 INFO: Loaded existing deduplication index with 438 entries
+2025-05-09 14:23:05,280 ERROR: Error importing required modules for content similarity: No module named 'processors'
+2025-05-09 14:23:05,281 INFO: No duplicates found
+2025-05-09 14:26:44,205 INFO: Deduplicator initialized
+2025-05-09 14:26:44,254 INFO: Loaded existing deduplication index with 438 entries
+2025-05-09 14:26:51,230 INFO: Initialized corpus manager at data\corpus_1
+2025-05-09 14:28:01,954 INFO: Found 0 content similarity duplicate groups (MinHashLSH)
+2025-05-09 14:28:01,962 INFO: No duplicates found
+2025-05-10 17:34:13,260 INFO: Deduplicator initialized
+2025-05-10 17:34:13,262 INFO: Building deduplication index...
+2025-05-10 17:34:13,265 INFO: Scanning 620 files for duplicates
+2025-05-10 17:34:13,266 INFO: Processed 0/620 files
+2025-05-10 17:34:13,289 INFO: Processed 100/620 files
+2025-05-10 17:34:13,309 INFO: Processed 200/620 files
+2025-05-10 17:34:13,327 INFO: Processed 300/620 files
+2025-05-10 17:34:13,345 INFO: Processed 400/620 files
+2025-05-10 17:34:13,363 INFO: Processed 500/620 files
+2025-05-10 17:34:13,380 INFO: Processed 600/620 files
+2025-05-10 17:34:13,391 INFO: Saved deduplication index with 308 file hashes and 324 titles
+2025-05-10 17:34:21,647 INFO: Initialized corpus manager at data\test_collect\chunking_tests
+2025-05-10 17:34:40,702 ERROR: Error processing crypto_derivatives_Mastering_Bitcoin_antonopoulos: [Errno 2] No such file or directory: 'data\\corpus_1\\crypto_derivatives_extracted\\crypto_derivatives_Mastering_Bitcoin_antonopoulos.txt'
+2025-05-10 17:34:54,891 ERROR: Error processing crypto_derivatives_Binance_Report_AI-Crypto-Exploring-Use-Cases-and-Possibilities-: [Errno 2] No such file or directory: 'data\\corpus_1\\crypto_derivatives_extracted\\crypto_derivatives_Binance_Report_AI-Crypto-Exploring-Use-Cases-and-Possibilities-.txt'
+2025-05-10 17:34:54,978 ERROR: Error processing crypto_derivatives_Binance_Report_a-new-era-for-bitcoin: [Errno 2] No such file or directory: 'data\\corpus_1\\crypto_derivatives_extracted\\crypto_derivatives_Binance_Report_a-new-era-for-bitcoin.txt'
+2025-05-10 17:34:56,536 ERROR: Error processing crypto_derivatives_Binance_Report_financialization-of-nfts: [Errno 2] No such file or directory: 'data\\corpus_1\\crypto_derivatives_extracted\\crypto_derivatives_Binance_Report_financialization-of-nfts.txt'
+2025-05-10 17:36:18,477 ERROR: Error processing crypto_derivatives_Binance_Report_institutional-custody-in-crypto--: [Errno 2] No such file or directory: 'data\\corpus_1\\crypto_derivatives_extracted\\crypto_derivatives_Binance_Report_institutional-custody-in-crypto--.txt'
+2025-05-10 17:36:20,872 ERROR: Error processing crypto_derivatives_Binance_Report_the-zkevm-world-an-overview-of-zksync: [Errno 2] No such file or directory: 'data\\corpus_1\\crypto_derivatives_extracted\\crypto_derivatives_Binance_Report_the-zkevm-world-an-overview-of-zksync.txt'
+2025-05-10 17:40:42,245 INFO: Deduplicator initialized
+2025-05-10 17:40:42,247 INFO: Loaded existing deduplication index with 308 entries
+2025-05-10 17:40:50,338 INFO: Initialized corpus manager at data\test_collect\chunking_tests
+2025-05-10 17:40:53,186 INFO: Found 72 content similarity duplicate groups (MinHashLSH)

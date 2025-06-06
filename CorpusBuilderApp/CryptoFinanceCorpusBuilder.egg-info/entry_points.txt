@@ -1,0 +1,2 @@
+[console_scripts]
+corpus-builder = app.main:main

@@ -1,0 +1,175 @@
+2025-05-28 11:41:58,283 - __main__ - INFO - Found 5 PDF files to process
+2025-05-28 12:08:30,567 - __main__ - INFO - Found 5 PDF files to process
+2025-05-28 12:10:28,247 - __main__ - INFO - Progress: 1/5 files processed (0 successful)
+2025-05-28 12:10:28,731 - __main__ - INFO - Progress: 2/5 files processed (0 successful)
+2025-05-28 12:10:38,450 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\test_outputs\annas_main_library\Anna_s Archive_6fb931305364947ae28f6bc64494e8db.pdf
+2025-05-28 12:10:48,951 - __main__ - INFO - Progress: 3/5 files processed (1 successful)
+2025-05-28 12:13:33,626 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\test_outputs\annas_main_library\Anna_s Archive_a151bf5ad180b4e2e043818d0a1271d5.pdf
+2025-05-28 12:14:34,723 - __main__ - INFO - Progress: 4/5 files processed (2 successful)
+2025-05-28 12:15:27,013 - __main__ - INFO - Progress: 5/5 files processed (3 successful)
+2025-05-28 12:15:29,111 - __main__ - INFO - Processing complete. 3/5 files processed successfully
+2025-05-28 12:25:33,226 - __main__ - INFO - Found 5 PDF files to process
+2025-05-28 12:27:30,420 - __mp_main__ - ERROR - OCR fallback failed: No module named 'pdf2image'
+2025-05-28 12:27:30,423 - __main__ - INFO - Progress: 1/5 files processed (0 successful)
+2025-05-28 12:27:30,755 - __mp_main__ - ERROR - OCR fallback failed: No module named 'pdf2image'
+2025-05-28 12:27:30,757 - __main__ - INFO - Progress: 2/5 files processed (0 successful)
+2025-05-28 12:27:40,483 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\test_outputs\annas_main_library\Anna_s Archive_6fb931305364947ae28f6bc64494e8db.pdf
+2025-05-28 12:27:50,716 - __main__ - INFO - Progress: 3/5 files processed (1 successful)
+2025-05-28 12:47:14,585 - __main__ - INFO - Found 5 PDF files to process
+2025-05-28 12:49:13,936 - __main__ - INFO - Progress: 1/5 files processed (0 successful)
+2025-05-28 12:49:14,398 - __main__ - INFO - Progress: 2/5 files processed (0 successful)
+2025-05-28 12:49:24,029 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\test_outputs\annas_main_library\Anna_s Archive_6fb931305364947ae28f6bc64494e8db.pdf
+2025-05-28 12:49:34,515 - __main__ - INFO - Progress: 3/5 files processed (1 successful)
+2025-05-31 23:00:08,360 - __main__ - INFO - Found 41 PDF files to process
+2025-05-31 23:00:17,304 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\high_frequency_trading\detecting-crypto-pump-and-dump-schemes-a-thresholding-based-approach-to-handling-market-noise.pdf
+2025-05-31 23:00:18,390 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\high_frequency_trading\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-31 23:00:20,180 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\high_frequency_trading\cryptocurrency-time-series-on-the-binary-complexity-entropy-plane-ranking-efficiency-from-the-perspective-of-complex-systems.pdf
+2025-05-31 23:00:24,197 - __main__ - INFO - Progress: 1/41 files processed (1 successful)
+2025-05-31 23:00:26,119 - __main__ - INFO - Progress: 2/41 files processed (2 successful)
+2025-05-31 23:00:26,137 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\crypto_derivatives\crypto_derivatives_A_Model_of_the_Optimal_Selection_of_Crypto_Assets.pdf
+2025-05-31 23:00:27,539 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\crypto_derivatives\crypto_derivatives_A_LASSO_Type_Factor_Model_in_Cryptocurrency.pdf
+2025-05-31 23:00:28,825 - __main__ - INFO - Progress: 3/41 files processed (3 successful)
+2025-05-31 23:00:29,540 - __main__ - INFO - Progress: 4/41 files processed (4 successful)
+2025-05-31 23:00:37,384 - __main__ - INFO - Progress: 5/41 files processed (5 successful)
+2025-05-31 23:00:38,244 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\high_frequency_trading\why-is-the-volatility-of-single-stocks-so-much-rougher-than-that-of-the-sp500.pdf
+2025-05-31 23:00:40,402 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\crypto_derivatives\crypto_derivatives_A_Multimodal_Model_with_Twitter_Finbert_Embeddings_for_Extreme_Price_Movement_Prediction_of_Bitcoin.pdf
+2025-05-31 23:00:42,273 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\crypto_derivatives\crypto_derivatives_Adaptive_Risk_Allocation_in_Crypto_Markets-_Evaluating_Volatility-Scaled_Portfolios.pdf
+2025-05-31 23:00:44,023 - __main__ - INFO - Progress: 6/41 files processed (6 successful)
+2025-05-31 23:00:45,354 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\crypto_derivatives\crypto_derivatives_A_Random_Forest-Based_Model_for_Crypto_Asset_Forecasts_in_Futures_Markets_with_Out-of-Sample_Prediction.pdf
+2025-05-31 23:00:46,526 - __main__ - INFO - Progress: 7/41 files processed (7 successful)
+2025-05-31 23:00:47,825 - __main__ - INFO - Progress: 8/41 files processed (8 successful)
+2025-05-31 23:00:49,941 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\crypto_derivatives\crypto_derivatives_A_Survey_of_Graph_Neural_Networks_in_Real_world-_Imbalance_Noise_Privacy_and_OOD_Challenges.pdf
+2025-05-31 23:00:51,116 - __main__ - INFO - Progress: 9/41 files processed (9 successful)
+2025-05-31 23:00:58,152 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\crypto_derivatives\crypto_derivatives_An_Economic_Model_of_the_L1-L2_Interaction.pdf
+2025-05-31 23:01:00,247 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\crypto_derivatives\crypto_derivatives_A_Review_of_Cryptoasset_Market_Structure_and_Regulation_in_the_United_States.pdf
+2025-05-31 23:01:02,046 - __main__ - INFO - Progress: 10/41 files processed (10 successful)
+2025-05-31 23:01:02,742 - __main__ - INFO - Progress: 11/41 files processed (11 successful)
+2025-05-31 23:01:02,956 - __main__ - INFO - Progress: 12/41 files processed (12 successful)
+2025-05-31 23:01:05,228 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\crypto_derivatives\crypto_derivatives_Alternative_Data.pdf
+2025-05-31 23:01:07,430 - __main__ - INFO - Progress: 13/41 files processed (13 successful)
+2025-05-31 23:01:13,117 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\crypto_derivatives\crypto_derivatives_An_Adoption_Model_of_Cryptocurrencies.pdf
+2025-05-31 23:01:20,260 - __main__ - INFO - Progress: 14/41 files processed (14 successful)
+2025-05-31 23:01:21,353 - __main__ - INFO - Progress: 15/41 files processed (15 successful)
+2025-05-31 23:01:22,587 - __main__ - INFO - Progress: 16/41 files processed (16 successful)
+2025-05-31 23:01:24,776 - __main__ - INFO - Progress: 17/41 files processed (17 successful)
+2025-05-31 23:01:24,782 - __main__ - INFO - Progress: 18/41 files processed (18 successful)
+2025-05-31 23:01:32,337 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\market_microstructure\crypto_derivatives_Advances_in_design_of_decentralized_exchanges_DEX-s_I.pdf
+2025-05-31 23:01:33,293 - __main__ - INFO - Progress: 19/41 files processed (19 successful)
+2025-05-31 23:01:34,358 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\decentraliced_finance\decentralized_finance_A_Macro_Finance_Model_for_Proof-of-Stake_Ethereum.pdf
+2025-05-31 23:01:37,311 - __main__ - INFO - Progress: 20/41 files processed (20 successful)
+2025-05-31 23:01:39,649 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\market_microstructure\crypto_derivatives_dark_trading_price_discovery.pdf
+2025-05-31 23:01:41,477 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\decentraliced_finance\decentralized_finance_Agents_Behavior_and_Interest_Rate_Model_Optimization_in_DeFi_Lending.pdf
+2025-05-31 23:01:41,532 - __main__ - INFO - Progress: 21/41 files processed (21 successful)
+2025-05-31 23:01:43,760 - __main__ - INFO - Progress: 22/41 files processed (22 successful)
+2025-05-31 23:01:49,429 - __main__ - INFO - Progress: 23/41 files processed (23 successful)
+2025-05-31 23:01:56,601 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\market_microstructure\crypto_derivatives_Liquidity_and_Volatility_Nexus_in_Cryptocurrency_Markets.pdf
+2025-05-31 23:01:56,917 - __main__ - INFO - Progress: 24/41 files processed (24 successful)
+2025-05-31 23:01:58,447 - __main__ - INFO - Progress: 25/41 files processed (25 successful)
+2025-05-31 23:01:59,127 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\market_microstructure\crypto_derivatives_limit_orders.pdf
+2025-05-31 23:02:06,008 - __main__ - INFO - Progress: 26/41 files processed (26 successful)
+2025-05-31 23:02:07,350 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\market_microstructure\crypto_derivatives_Liquidity_Jump_Liquidity_Diffusion_and_Crypto_Wash_Trading.pdf
+2025-05-31 23:02:07,583 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\market_microstructure\crypto_derivatives_order_flow_and_price_formation.pdf
+2025-05-31 23:02:11,331 - __main__ - INFO - Progress: 27/41 files processed (27 successful)
+2025-05-31 23:02:15,680 - __main__ - INFO - Progress: 28/41 files processed (28 successful)
+2025-05-31 23:02:18,332 - __main__ - INFO - Progress: 29/41 files processed (29 successful)
+2025-05-31 23:02:24,029 - __main__ - INFO - Progress: 30/41 files processed (30 successful)
+2025-05-31 23:02:32,129 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\portfolio_construction\crypto_derivatives_Binance_Report_Exploring_The_Diversification_Benefits_With_Bitcoin.pdf
+2025-05-31 23:02:46,669 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\market_microstructure\crypto_derivatives_Forecasting.pdf
+2025-05-31 23:02:57,445 - __main__ - INFO - Progress: 31/41 files processed (31 successful)
+2025-05-31 23:03:03,543 - __main__ - INFO - Progress: 32/41 files processed (32 successful)
+2025-05-31 23:03:19,832 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\risk_management\crypto_derivatives_Heterogeneous_Tail_Generalized_Common_Factor_Modeling.pdf
+2025-05-31 23:03:27,894 - __main__ - INFO - Progress: 33/41 files processed (33 successful)
+2025-05-31 23:03:34,065 - __main__ - INFO - Progress: 34/41 files processed (34 successful)
+2025-05-31 23:03:47,832 - __main__ - INFO - Progress: 35/41 files processed (35 successful)
+2025-05-31 23:03:49,025 - __main__ - INFO - Progress: 36/41 files processed (36 successful)
+2025-05-31 23:04:04,990 - __main__ - INFO - Progress: 37/41 files processed (37 successful)
+2025-05-31 23:05:12,880 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\decentraliced_finance\decentralized_finance_Behavioral_Finance_and_Wealth_Management_by_Michael_M_Pompian.pdf
+2025-05-31 23:05:47,024 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\risk_management\crypto_derivatives_Interpretable_Machine_Learning_2ed_by_Christoph_Molnar_2022.pdf
+2025-05-31 23:06:21,652 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\market_microstructure\crypto_derivatives_mastering-ethereum.pdf
+2025-05-31 23:08:03,055 - __main__ - INFO - Progress: 38/41 files processed (38 successful)
+2025-05-31 23:09:13,616 - __main__ - INFO - Progress: 39/41 files processed (39 successful)
+2025-05-31 23:12:21,486 - __main__ - INFO - Progress: 40/41 files processed (40 successful)
+2025-05-31 23:20:03,199 - __mp_main__ - INFO - Detected academic paper: data/test_collect/full_pipeline_short\risk_management\crypto_derivatives_Dynamic_Hedging-_Managing_Vanilla_and_Exotic_Options_by_Nassim_Nicholas_Taleb.pdf
+2025-05-31 23:26:22,475 - __main__ - INFO - Progress: 41/41 files processed (41 successful)
+2025-05-31 23:26:35,490 - __main__ - INFO - Processing complete. 41/41 files processed successfully
+2025-05-31 23:46:25,851 - __main__ - INFO - Processing single file: G:\\ai_trading_dev\\test_outputs\\annas_main_library\YOUR_FILE_NAME.pdf
+2025-05-31 23:46:25,852 - __main__ - ERROR - File not found: G:\\ai_trading_dev\\test_outputs\\annas_main_library\YOUR_FILE_NAME.pdf
+2025-05-31 23:47:57,384 - __main__ - INFO - Processing single file: G:\ai_trading_dev\test_outputs\annas_main_library\crypto_derivatives_Dynamic_Hedging-_Managing_Vanilla_and_Exotic_Options_by_Nassim_Nicholas_Taleb.pdf
+2025-05-31 23:47:57,386 - __main__ - ERROR - File not found: G:\ai_trading_dev\test_outputs\annas_main_library\crypto_derivatives_Dynamic_Hedging-_Managing_Vanilla_and_Exotic_Options_by_Nassim_Nicholas_Taleb.pdf
+2025-05-31 23:49:55,262 - __main__ - INFO - Processing single file: G:\ai_trading_dev\test_outputs\annas_main_library\Anna_s Archive_a151bf5ad180b4e2e043818d0a1271d5.pdf
+2025-05-31 23:52:58,884 - __main__ - INFO - Detected academic paper: G:\ai_trading_dev\test_outputs\annas_main_library\Anna_s Archive_a151bf5ad180b4e2e043818d0a1271d5.pdf
+2025-06-01 00:01:34,830 - __main__ - INFO - Found 18 PDF files to process
+2025-06-01 00:01:43,612 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\normal_english.pdf_5.pdf
+2025-06-01 00:01:48,482 - __main__ - INFO - Progress: 1/18 files processed (1 successful)
+2025-06-01 00:02:57,810 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\normal_english.pdf_4.pdf
+2025-06-01 00:03:58,833 - __main__ - INFO - Progress: 2/18 files processed (2 successful)
+2025-06-01 00:03:59,380 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\normal_english_2.pdf
+2025-06-01 00:03:59,726 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\low_content_4.pdf
+2025-06-01 00:04:10,051 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\normal_english.pdf
+2025-06-01 00:04:10,056 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\low_content_3.pdf
+2025-06-01 00:04:41,189 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\high_quality_non_english.pdf
+2025-06-01 00:06:13,253 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\low_content_5.pdf
+2025-06-01 00:06:30,825 - __main__ - INFO - Progress: 3/18 files processed (3 successful)
+2025-06-01 00:06:31,755 - __main__ - INFO - Progress: 4/18 files processed (4 successful)
+2025-06-01 00:06:42,983 - __main__ - INFO - Progress: 5/18 files processed (5 successful)
+2025-06-01 00:06:48,082 - __main__ - INFO - Progress: 6/18 files processed (6 successful)
+2025-06-01 00:06:54,391 - __main__ - INFO - Progress: 7/18 files processed (7 successful)
+2025-06-01 00:07:06,838 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\machine_translated.pdf
+2025-06-01 00:07:51,719 - __main__ - INFO - Progress: 8/18 files processed (8 successful)
+2025-06-01 00:07:54,120 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\corrupt_2.pdf
+2025-06-01 00:08:13,082 - __main__ - INFO - Progress: 9/18 files processed (9 successful)
+2025-06-01 00:08:47,441 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\low_content_6.pdf
+2025-06-01 00:09:02,957 - __main__ - INFO - Progress: 10/18 files processed (10 successful)
+2025-06-01 00:10:45,036 - __main__ - INFO - Progress: 11/18 files processed (11 successful)
+2025-06-01 00:10:57,653 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\low_content_2.pdf
+2025-06-01 00:11:10,004 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\corrupt_3.pdf
+2025-06-01 00:12:16,109 - __main__ - INFO - Progress: 12/18 files processed (12 successful)
+2025-06-01 00:13:37,825 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\corrupt.pdf
+2025-06-01 00:13:51,731 - __main__ - INFO - Progress: 13/18 files processed (13 successful)
+2025-06-01 00:14:36,031 - __main__ - INFO - Progress: 14/18 files processed (14 successful)
+2025-06-01 00:19:47,802 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\normal_english_3.pdf
+2025-06-01 00:22:29,081 - __main__ - INFO - Progress: 15/18 files processed (15 successful)
+2025-06-01 00:25:50,886 - __main__ - INFO - Progress: 16/18 files processed (16 successful)
+2025-06-01 00:28:27,472 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\low_content.pdf
+2025-06-01 00:37:59,191 - __main__ - INFO - Progress: 17/18 files processed (17 successful)
+2025-06-01 00:42:19,893 - __mp_main__ - INFO - Detected academic paper: G:\ai_trading_dev\CryptoFinanceCorpusBuilder\tests\pdf_extraction\low_content_7.pdf
+2025-06-01 01:04:47,354 - __main__ - INFO - Progress: 18/18 files processed (17 successful)
+2025-06-01 01:05:11,124 - __main__ - INFO - Processing complete. 17/18 files processed successfully
+2025-06-01 18:50:33,450 - __main__ - ERROR - No PDF files found in G:\ai_trading_dev\data\test_output\pdf_extractor_test\raw_data
+2025-06-01 18:50:34,285 - __main__ - INFO - Found 6 PDF files to process
+2025-06-01 18:50:35,458 - __main__ - INFO - Progress: 1/6 files processed (0 successful)
+2025-06-01 18:50:35,458 - __main__ - INFO - Progress: 2/6 files processed (0 successful)
+2025-06-01 18:50:35,497 - __main__ - INFO - Progress: 3/6 files processed (0 successful)
+2025-06-01 18:50:35,498 - __main__ - INFO - Progress: 4/6 files processed (0 successful)
+2025-06-01 18:50:38,903 - __main__ - INFO - Progress: 5/6 files processed (0 successful)
+2025-06-01 18:51:01,922 - __main__ - INFO - Progress: 6/6 files processed (0 successful)
+2025-06-01 18:51:02,308 - __main__ - INFO - Processing complete. 0/6 files processed successfully
+2025-06-01 18:56:48,096 - __main__ - ERROR - No PDF files found in G:\ai_trading_dev\data\test_output\pdf_extractor_test\raw_data
+2025-06-01 18:56:48,942 - __main__ - INFO - Found 6 PDF files to process
+2025-06-01 18:56:53,213 - __mp_main__ - WARNING - Metadata extraction failed: 'str' object has no attribute 'get'
+2025-06-01 18:56:53,230 - __main__ - INFO - Progress: 1/6 files processed (1 successful)
+2025-06-01 18:56:53,240 - __mp_main__ - WARNING - Metadata extraction failed: 'str' object has no attribute 'get'
+2025-06-01 18:56:53,246 - __main__ - INFO - Progress: 2/6 files processed (2 successful)
+2025-06-01 18:56:53,311 - __mp_main__ - WARNING - Metadata extraction failed: 'str' object has no attribute 'get'
+2025-06-01 18:56:53,317 - __mp_main__ - WARNING - Metadata extraction failed: 'str' object has no attribute 'get'
+2025-06-01 18:56:53,322 - __main__ - INFO - Progress: 3/6 files processed (3 successful)
+2025-06-01 18:56:53,326 - __main__ - INFO - Progress: 4/6 files processed (4 successful)
+2025-06-01 18:56:53,528 - __mp_main__ - WARNING - Metadata extraction failed: 'str' object has no attribute 'get'
+2025-06-01 18:56:53,535 - __main__ - INFO - Progress: 5/6 files processed (5 successful)
+2025-06-01 18:57:16,792 - __mp_main__ - WARNING - Metadata extraction failed: 'str' object has no attribute 'get'
+2025-06-01 18:57:16,826 - __main__ - INFO - Progress: 6/6 files processed (6 successful)
+2025-06-01 18:57:17,786 - __main__ - INFO - Processing complete. 6/6 files processed successfully
+2025-06-01 19:08:41,212 - __main__ - INFO - Found 6 PDF files to process
+2025-06-01 19:08:45,255 - __mp_main__ - WARNING - Metadata extraction failed: 'str' object has no attribute 'get'
+2025-06-01 19:08:45,263 - __main__ - INFO - Progress: 1/6 files processed (1 successful)
+2025-06-01 19:08:45,311 - __mp_main__ - WARNING - Metadata extraction failed: 'str' object has no attribute 'get'
+2025-06-01 19:08:45,318 - __main__ - INFO - Progress: 2/6 files processed (2 successful)
+2025-06-01 19:08:45,342 - __mp_main__ - WARNING - Metadata extraction failed: 'str' object has no attribute 'get'
+2025-06-01 19:08:45,350 - __main__ - INFO - Progress: 3/6 files processed (3 successful)
+2025-06-01 19:08:45,468 - __mp_main__ - WARNING - Metadata extraction failed: 'str' object has no attribute 'get'
+2025-06-01 19:08:45,477 - __main__ - INFO - Progress: 4/6 files processed (4 successful)
+2025-06-01 19:08:45,612 - __mp_main__ - WARNING - Metadata extraction failed: 'str' object has no attribute 'get'
+2025-06-01 19:08:45,620 - __main__ - INFO - Progress: 5/6 files processed (5 successful)
+2025-06-01 19:09:08,730 - __mp_main__ - WARNING - Metadata extraction failed: 'str' object has no attribute 'get'
+2025-06-01 19:09:08,767 - __main__ - INFO - Progress: 6/6 files processed (6 successful)
+2025-06-01 19:09:09,700 - __main__ - INFO - Processing complete. 6/6 files processed successfully

@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collectors Management - Professional Redesign</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #0f1419;
+            color: #e5e7eb;
+            line-height: 1.6;
+        }
+
+        .collectors-container {
+            padding: 24px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header Section */
+        .page-header {
+            margin-bottom: 32px;
+        }
+
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 8px;
+            letter-spacing: -0.025em;
+        }
+
+        .page-subtitle {
+            font-size: 16px;
+            color: #9ca3af;
+            font-weight: 400;
+        }
+
+        /* Control Bar */
+        .control-bar {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            background: #1a1f2e;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .control-btn {
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 8px;
+            padding: 10px 16px;
+            color: #d1d5db;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        .control-btn:hover {
+            background: #4b5563;
+            border-color: #6b7280;
+        }
+
+        .control-btn.primary {
+            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            border-color: #06b6d4;
+            color: #ffffff;
+        }
+
+        .control-btn.primary:hover {
+            background: linear-gradient(135deg, #0891b2, #0e7490);
+        }
+
+        .control-btn.danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-color: #ef4444;
+            color: #ffffff;
+        }
+
+        .control-btn.danger:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+        }
+
+        .status-summary {
+            display: flex;
+            gap: 24px;
+            margin-left: auto;
+        }
+
+        .status-item {
+            text-align: center;
+        }
+
+        .status-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #06b6d4;
+            display: block;
+        }
+
+        .status-label {
+            font-size: 12px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Collectors Grid */
+        .collectors-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 20px;
+        }
+
+        .collector-card {
+            background: #1a1f2e;
+            border: 1px solid #2d3748;
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .collector-card:hover {
+            border-color: #374151;
+            box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        .collector-card.running {
+            border-color: #06b6d4;
+            box-shadow: 0 4px 6px -1px rgba(6, 182, 212, 0.1);
+        }
+
+        .collector-card.stopped {
+            border-color: #6b7280;
+        }
+
+        .collector-card.error {
+            border-color: #ef4444;
+            box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.1);
+        }
+
+        .collector-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .collector-info {
+            flex: 1;
+        }
+
+        .collector-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #f9fafb;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .collector-icon {
+            width: 20px;
+            height: 20px;
+            color: #06b6d4;
+        }
+
+        .collector-description {
+            font-size: 13px;
+            color: #9ca3af;
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .collector-tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .collector-tag {
+            background: #374151;
+            color: #d1d5db;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .collector-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-running { background: #10b981; }
+        .status-stopped { background: #6b7280; }
+        .status-error { background: #ef4444; }
+        .status-configuring { background: #f59e0b; }
+
+        .collector-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+            margin: 16px 0;
+            padding: 16px;
+            background: #0f1419;
+            border-radius: 8px;
+            border: 1px solid #374151;
+        }
+
+        .metric-item {
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 16px;
+            font-weight: 700;
+            color: #06b6d4;
+            display: block;
+        }
+
+        .metric-label {
+            font-size: 11px;
+            color: #9ca3af;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .collector-progress {
+            margin: 16px 0;
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .progress-label {
+            font-size: 12px;
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
+        .progress-percentage {
+            font-size: 12px;
+            color: #06b6d4;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #374151;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #06b6d4, #0891b2);
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .collector-controls {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+
+        .collector-btn {
+            flex: 1;
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #d1d5db;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            font-weight: 500;
+        }
+
+        .collector-btn:hover {
+            background: #4b5563;
+            border-color: #6b7280;
+        }
+
+        .collector-btn.start {
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-color: #10b981;
+            color: #ffffff;
+        }
+
+        .collector-btn.start:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+        }
+
+        .collector-btn.stop {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            border-color: #ef4444;
+            color: #ffffff;
+        }
+
+        .collector-btn.stop:hover {
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+        }
+
+        .collector-btn.configure {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border-color: #f59e0b;
+            color: #ffffff;
+        }
+
+        .collector-btn.configure:hover {
+            background: linear-gradient(135deg, #d97706, #b45309);
+        }
+
+        .collector-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .collector-btn:disabled:hover {
+            background: #374151;
+            border-color: #4b5563;
+        }
+
+        .collector-logs {
+            margin-top: 16px;
+            background: #0f1419;
+            border: 1px solid #374151;
+            border-radius: 6px;
+            padding: 12px;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+
+        .log-entry {
+            font-size: 11px;
+            color: #9ca3af;
+            margin-bottom: 4px;
+            font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+        }
+
+        .log-entry.error {
+            color: #fca5a5;
+        }
+
+        .log-entry.success {
+            color: #86efac;
+        }
+
+        .log-entry.info {
+            color: #7dd3fc;
+        }
+
+        .log-timestamp {
+            color: #6b7280;
+            margin-right: 8px;
+        }
+
+        /* Configuration Panel */
+        .config-panel {
+            display: none;
+            background: #0f1419;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+        }
+
+        .config-panel.active {
+            display: block;
+        }
+
+        .config-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .config-label {
+            font-size: 12px;
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
+        .config-input {
+            background: #1a1f2e;
+            border: 1px solid #374151;
+            border-radius: 4px;
+            padding: 6px 10px;
+            color: #f9fafb;
+            font-size: 12px;
+            width: 120px;
+        }
+
+        .config-input:focus {
+            outline: none;
+            border-color: #06b6d4;
+        }
+
+        .config-actions {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid #374151;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .collectors-grid {
+                grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            .collectors-container {
+                padding: 16px;
+            }
+            
+            .collectors-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .control-bar {
+                flex-direction: column;
+                gap: 16px;
+                align-items: stretch;
+            }
+            
+            .status-summary {
+                margin-left: 0;
+                justify-content: center;
+            }
+        }
+
+        /* Loading States */
+        .loading-shimmer {
+            background: linear-gradient(90deg, #374151 0%, #4b5563 50%, #374151 100%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Pulse Animation for Running Status */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div class="collectors-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">Data Collectors Management</h1>
+            <p class="page-subtitle">Configure, monitor and control all data collection sources</p>
+        </div>
+
+        <!-- Control Bar -->
+        <div class="control-bar">
+            <div class="control-group">
+                <button class="control-btn primary">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h1m4 0h1m-6 4h.01M19 10a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    Start All Active
+                </button>
+                <button class="control-btn danger">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9l6 6"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 9l-6 6"/>
+                    </svg>
+                    Stop All Collectors
+                </button>
+                <button class="control-btn">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Refresh Status
+                </button>
+                <button class="control-btn">
+                    <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"/>
+                    </svg>
+                    Global Settings
+                </button>
+            </div>
+            
+            <div class="status-summary">
+                <div class="status-item">
+                    <span class="status-value">3</span>
+                    <span class="status-label">Running</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-value">6</span>
+                    <span class="status-label">Stopped</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-value">1</span>
+                    <span class="status-label">Error</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collectors Grid -->
+        <div class="collectors-grid">
+            <!-- ISDA Collector -->
+            <div class="collector-card running">
+                <div class="collector-header">
+                    <div class="collector-info">
+                        <h3 class="collector-name">
+                            <svg class="collector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                            ISDA Collector
+                        </h3>
+                        <p class="collector-description">Collects standardized derivative documentation and regulatory templates from ISDA repositories</p>
+                        <div class="collector-tags">
+                            <span class="collector-tag">Derivatives</span>
+                            <span class="collector-tag">Regulatory</span>
+                            <span class="collector-tag">PDF</span>
+                        </div>
+                    </div>
+                    <div class="collector-status">
+                        <span class="status-indicator status-running pulse"></span>
+                        <span>Running</span>
+                    </div>
+                </div>
+
+                <div class="collector-metrics">
+                    <div class="metric-item">
+                        <span class="metric-value">247</span>
+                        <span class="metric-label">Documents</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">12.3 MB</span>
+                        <span class="metric-label">Size</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">2 hrs</span>
+                        <span class="metric-label">Runtime</span>
+                    </div>
+                </div>
+
+                <div class="collector-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">Collection Progress</span>
+                        <span class="progress-percentage">67%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 67%;"></div>
+                    </div>
+                </div>
+
+                <div class="collector-controls">
+                    <button class="collector-btn stop">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                            <rect x="6" y="6" width="12" height="12" rx="2"/>
+                        </svg>
+                        Stop
+                    </button>
+                    <button class="collector-btn configure">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Configure
+                    </button>
+                    <button class="collector-btn">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Logs
+                    </button>
+                </div>
+
+                <div class="collector-logs">
+                    <div class="log-entry success">
+                        <span class="log-timestamp">16:45:23</span>
+                        Successfully processed 247 documents
+                    </div>
+                    <div class="log-entry info">
+                        <span class="log-timestamp">16:44:15</span>
+                        Fetching from ISDA document repository...
+                    </div>
+                    <div class="log-entry info">
+                        <span class="log-timestamp">16:42:08</span>
+                        Collection job started
+                    </div>
+                </div>
+            </div>
+
+            <!-- GitHub Collector -->
+            <div class="collector-card stopped">
+                <div class="collector-header">
+                    <div class="collector-info">
+                        <h3 class="collector-name">
+                            <svg class="collector-icon" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                            </svg>
+                            GitHub Collector
+                        </h3>
+                        <p class="collector-description">Scrapes financial trading repositories and documentation from GitHub organizations</p>
+                        <div class="collector-tags">
+                            <span class="collector-tag">Code</span>
+                            <span class="collector-tag">Trading</span>
+                            <span class="collector-tag">API</span>
+                        </div>
+                    </div>
+                    <div class="collector-status">
+                        <span class="status-indicator status-stopped"></span>
+                        <span>Stopped</span>
+                    </div>
+                </div>
+
+                <div class="collector-metrics">
+                    <div class="metric-item">
+                        <span class="metric-value">1,432</span>
+                        <span class="metric-label">Documents</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">89.7 MB</span>
+                        <span class="metric-label">Size</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">Idle</span>
+                        <span class="metric-label">Status</span>
+                    </div>
+                </div>
+
+                <div class="collector-controls">
+                    <button class="collector-btn start">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        Start
+                    </button>
+                    <button class="collector-btn configure">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Configure
+                    </button>
+                    <button class="collector-btn">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- arXiv Collector -->
+            <div class="collector-card running">
+                <div class="collector-header">
+                    <div class="collector-info">
+                        <h3 class="collector-name">
+                            <svg class="collector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                            arXiv Collector
+                        </h3>
+                        <p class="collector-description">Downloads financial mathematics and quantitative finance papers from arXiv repository</p>
+                        <div class="collector-tags">
+                            <span class="collector-tag">Academic</span>
+                            <span class="collector-tag">Mathematics</span>
+                            <span class="collector-tag">PDF</span>
+                        </div>
+                    </div>
+                    <div class="collector-status">
+                        <span class="status-indicator status-running pulse"></span>
+                        <span>Running</span>
+                    </div>
+                </div>
+
+                <div class="collector-metrics">
+                    <div class="metric-item">
+                        <span class="metric-value">3,891</span>
+                        <span class="metric-label">Documents</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">156.4 MB</span>
+                        <span class="metric-label">Size</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">45 min</span>
+                        <span class="metric-label">Runtime</span>
+                    </div>
+                </div>
+
+                <div class="collector-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">Processing Papers</span>
+                        <span class="progress-percentage">89%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 89%;"></div>
+                    </div>
+                </div>
+
+                <div class="collector-controls">
+                    <button class="collector-btn stop">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                            <rect x="6" y="6" width="12" height="12" rx="2"/>
+                        </svg>
+                        Stop
+                    </button>
+                    <button class="collector-btn configure">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Configure
+                    </button>
+                    <button class="collector-btn">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- FRED Collector -->
+            <div class="collector-card stopped">
+                <div class="collector-header">
+                    <div class="collector-info">
+                        <h3 class="collector-name">
+                            <svg class="collector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+                            </svg>
+                            FRED Collector
+                        </h3>
+                        <p class="collector-description">Fetches economic data and research papers from Federal Reserve Economic Data</p>
+                        <div class="collector-tags">
+                            <span class="collector-tag">Economic Data</span>
+                            <span class="collector-tag">Government</span>
+                            <span class="collector-tag">API</span>
+                        </div>
+                    </div>
+                    <div class="collector-status">
+                        <span class="status-indicator status-stopped"></span>
+                        <span>Stopped</span>
+                    </div>
+                </div>
+
+                <div class="collector-metrics">
+                    <div class="metric-item">
+                        <span class="metric-value">892</span>
+                        <span class="metric-label">Documents</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">23.1 MB</span>
+                        <span class="metric-label">Size</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">Idle</span>
+                        <span class="metric-label">Status</span>
+                    </div>
+                </div>
+
+                <div class="collector-controls">
+                    <button class="collector-btn start">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        Start
+                    </button>
+                    <button class="collector-btn configure">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.5 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Configure
+                    </button>
+                    <button class="collector-btn">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- BitMEX Collector -->
+            <div class="collector-card error">
+                <div class="collector-header">
+                    <div class="collector-info">
+                        <h3 class="collector-name">
+                            <svg class="collector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"/>
+                            </svg>
+                            BitMEX Collector
+                        </h3>
+                        <p class="collector-description">Collects trading documentation and API specs from BitMEX cryptocurrency exchange</p>
+                        <div class="collector-tags">
+                            <span class="collector-tag">Crypto</span>
+                            <span class="collector-tag">Trading</span>
+                            <span class="collector-tag">API</span>
+                        </div>
+                    </div>
+                    <div class="collector-status">
+                        <span class="status-indicator status-error"></span>
+                        <span>Error</span>
+                    </div>
+                </div>
+
+                <div class="collector-metrics">
+                    <div class="metric-item">
+                        <span class="metric-value">156</span>
+                        <span class="metric-label">Documents</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">4.2 MB</span>
+                        <span class="metric-label">Size</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">Failed</span>
+                        <span class="metric-label">Status</span>
+                    </div>
+                </div>
+
+                <div class="collector-controls">
+                    <button class="collector-btn start">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        Retry
+                    </button>
+                    <button class="collector-btn configure">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.5 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Configure
+                    </button>
+                    <button class="collector-btn">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Logs
+                    </button>
+                </div>
+
+                <div class="collector-logs">
+                    <div class="log-entry error">
+                        <span class="log-timestamp">14:32:15</span>
+                        API rate limit exceeded: 429 Too Many Requests
+                    </div>
+                    <div class="log-entry error">
+                        <span class="log-timestamp">14:31:58</span>
+                        Connection timeout after 30s
+                    </div>
+                    <div class="log-entry info">
+                        <span class="log-timestamp">14:30:12</span>
+                        Attempting to reconnect...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quantopian Collector -->
+            <div class="collector-card stopped">
+                <div class="collector-header">
+                    <div class="collector-info">
+                        <h3 class="collector-name">
+                            <svg class="collector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                            </svg>
+                            Quantopian Collector
+                        </h3>
+                        <p class="collector-description">Archives algorithmic trading strategies and research from Quantopian community</p>
+                        <div class="collector-tags">
+                            <span class="collector-tag">Algorithms</span>
+                            <span class="collector-tag">Community</span>
+                            <span class="collector-tag">Python</span>
+                        </div>
+                    </div>
+                    <div class="collector-status">
+                        <span class="status-indicator status-stopped"></span>
+                        <span>Stopped</span>
+                    </div>
+                </div>
+
+                <div class="collector-metrics">
+                    <div class="metric-item">
+                        <span class="metric-value">2,156</span>
+                        <span class="metric-label">Documents</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">67.8 MB</span>
+                        <span class="metric-label">Size</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">Idle</span>
+                        <span class="metric-label">Status</span>
+                    </div>
+                </div>
+
+                <div class="collector-controls">
+                    <button class="collector-btn start">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        Start
+                    </button>
+                    <button class="collector-btn configure">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.5 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Configure
+                    </button>
+                    <button class="collector-btn">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- SSRN Collector -->
+            <div class="collector-card running">
+                <div class="collector-header">
+                    <div class="collector-info">
+                        <h3 class="collector-name">
+                            <svg class="collector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+                            </svg>
+                            SSRN Collector
+                        </h3>
+                        <p class="collector-description">Downloads financial research papers from Social Science Research Network</p>
+                        <div class="collector-tags">
+                            <span class="collector-tag">Academic</span>
+                            <span class="collector-tag">Research</span>
+                            <span class="collector-tag">Finance</span>
+                        </div>
+                    </div>
+                    <div class="collector-status">
+                        <span class="status-indicator status-running pulse"></span>
+                        <span>Running</span>
+                    </div>
+                </div>
+
+                <div class="collector-metrics">
+                    <div class="metric-item">
+                        <span class="metric-value">1,789</span>
+                        <span class="metric-label">Documents</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">98.3 MB</span>
+                        <span class="metric-label">Size</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">1.2 hrs</span>
+                        <span class="metric-label">Runtime</span>
+                    </div>
+                </div>
+
+                <div class="collector-progress">
+                    <div class="progress-header">
+                        <span class="progress-label">Downloading Papers</span>
+                        <span class="progress-percentage">23%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 23%;"></div>
+                    </div>
+                </div>
+
+                <div class="collector-controls">
+                    <button class="collector-btn stop">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                            <rect x="6" y="6" width="12" height="12" rx="2"/>
+                        </svg>
+                        Stop
+                    </button>
+                    <button class="collector-btn configure">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.5 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Configure
+                    </button>
+                    <button class="collector-btn">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Web Collector -->
+            <div class="collector-card stopped">
+                <div class="collector-header">
+                    <div class="collector-info">
+                        <h3 class="collector-name">
+                            <svg class="collector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+                            </svg>
+                            Web Collector
+                        </h3>
+                        <p class="collector-description">Scrapes financial content from specified websites and regulatory portals</p>
+                        <div class="collector-tags">
+                            <span class="collector-tag">Web</span>
+                            <span class="collector-tag">Regulatory</span>
+                            <span class="collector-tag">Custom</span>
+                        </div>
+                    </div>
+                    <div class="collector-status">
+                        <span class="status-indicator status-stopped"></span>
+                        <span>Stopped</span>
+                    </div>
+                </div>
+
+                <div class="collector-metrics">
+                    <div class="metric-item">
+                        <span class="metric-value">534</span>
+                        <span class="metric-label">Documents</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">18.9 MB</span>
+                        <span class="metric-label">Size</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">Idle</span>
+                        <span class="metric-label">Status</span>
+                    </div>
+                </div>
+
+                <div class="collector-controls">
+                    <button class="collector-btn start">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        Start
+                    </button>
+                    <button class="collector-btn configure">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.5 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Configure
+                    </button>
+                    <button class="collector-btn">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Logs
+                    </button>
+                </div>
+            </div>
+
+            <!-- Anna's Archive Collector -->
+            <div class="collector-card stopped">
+                <div class="collector-header">
+                    <div class="collector-info">
+                        <h3 class="collector-name">
+                            <svg class="collector-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M20 10v11"/>
+                            </svg>
+                            Anna's Archive Collector
+                        </h3>
+                        <p class="collector-description">Searches and downloads financial textbooks and research materials from Anna's Archive</p>
+                        <div class="collector-tags">
+                            <span class="collector-tag">Books</span>
+                            <span class="collector-tag">Archive</span>
+                            <span class="collector-tag">Academic</span>
+                        </div>
+                    </div>
+                    <div class="collector-status">
+                        <span class="status-indicator status-stopped"></span>
+                        <span>Stopped</span>
+                    </div>
+                </div>
+
+                <div class="collector-metrics">
+                    <div class="metric-item">
+                        <span class="metric-value">89</span>
+                        <span class="metric-label">Documents</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">234.7 MB</span>
+                        <span class="metric-label">Size</span>
+                    </div>
+                    <div class="metric-item">
+                        <span class="metric-value">Idle</span>
+                        <span class="metric-label">Status</span>
+                    </div>
+                </div>
+
+                <div class="collector-controls">
+                    <button class="collector-btn start">
+                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M8 5v14l11-7z"/>
+                        </svg>
+                        Start
+                    </button>
+                    <button class="collector-btn configure">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.5 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        Configure
+                    </button>
+                    <button class="collector-btn">
+                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                        </svg>
+                        Logs
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simple demo interactions
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle collector button clicks
+            document.querySelectorAll('.collector-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const card = this.closest('.collector-card');
+                    const action = this.textContent.trim();
+                    
+                    if (action === 'Start' || action === 'Retry') {
+                        card.className = 'collector-card running';
+                        this.textContent = 'Stop';
+                        this.className = 'collector-btn stop';
+                    } else if (action === 'Stop') {
+                        card.className = 'collector-card stopped';
+                        this.textContent = 'Start';
+                        this.className = 'collector-btn start';
+                    }
+                });
+            });
+
+            // Handle global controls
+            document.querySelector('.control-btn.primary').addEventListener('click', function() {
+                document.querySelectorAll('.collector-card.stopped').forEach(card => {
+                    card.className = 'collector-card running';
+                });
+            });
+
+            document.querySelector('.control-btn.danger').addEventListener('click', function() {
+                document.querySelectorAll('.collector-card.running').forEach(card => {
+                    card.className = 'collector-card stopped';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

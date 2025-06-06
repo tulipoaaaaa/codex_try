@@ -1,0 +1,12 @@
+2025-05-08 19:50:14,348 - TestBitMEXCollector - WARNING - ⚠️ Created test collector that ignores robots.txt ⚠️
+2025-05-08 19:50:14,349 - TestBitMEXCollector - WARNING - ⚠️ FOR TESTING PURPOSES ONLY - DO NOT USE IN PRODUCTION ⚠️
+2025-05-08 19:50:14,350 - TestBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-08 19:50:14,352 - TestBitMEXCollector - INFO - Fetching page 1: https://blog.bitmex.com/research/
+2025-05-08 19:50:20,496 - TestBitMEXCollector - INFO - No more posts found on page 1
+2025-05-08 19:50:20,504 - TestBitMEXCollector - INFO - Saved metadata for 0 posts to /workspace/data/test_corpus/bitmex/bitmex_research_posts.json
+2025-05-08 19:53:16,485 - TestBitMEXCollector - WARNING - ⚠️ Created test collector that ignores robots.txt ⚠️
+2025-05-08 19:53:16,487 - TestBitMEXCollector - WARNING - ⚠️ FOR TESTING PURPOSES ONLY - DO NOT USE IN PRODUCTION ⚠️
+2025-05-08 19:53:16,489 - TestBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-08 19:53:16,490 - TestBitMEXCollector - INFO - Fetching page 1: https://blog.bitmex.com/research/
+2025-05-08 19:53:23,172 - TestBitMEXCollector - INFO - No more posts found on page 1
+2025-05-08 19:53:23,179 - TestBitMEXCollector - INFO - Saved metadata for 0 posts to /workspace/data/test_corpus/bitmex/bitmex_research_posts.json

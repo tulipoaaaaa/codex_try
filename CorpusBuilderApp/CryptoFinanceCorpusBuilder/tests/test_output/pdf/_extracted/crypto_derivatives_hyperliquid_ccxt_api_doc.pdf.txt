@@ -1,0 +1,3122 @@
+hyperliquid
+Kind: global class
+Extends: Exchange
+fetchCurrencies
+fetchMarkets
+fetchSwapMarkets
+calculatePricePrecision
+fetchSpotMarkets
+fetchBalance
+fetchOrderBook
+fetchTickers
+fetchFundingRates
+fetchOHLCV
+fetchTrades
+createOrder
+createOrders
+createOrdersRequest
+cancelOrder
+cancelOrders
+cancelOrdersForSymbols
+cancelAllOrdersAfter
+editOrder
+editOrders
+createVault
+fetchFundingRateHistory
+fetchOpenOrders
+fetchClosedOrders
+fetchCanceledOrders
+fetchCanceledAndClosedOrders
+fetchOrders
+fetchOrder
+fetchMyTrades
+fetchPosition
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+1/56
+
+fetchPositions
+setMarginMode
+setLeverage
+addMargin
+reduceMargin
+transfer
+withdraw
+fetchTradingFee
+fetchLedger
+fetchDeposits
+fetchWithdrawals
+fetchOpenInterests
+fetchOpenInterest
+fetchFundingHistory
+createOrdersWs
+createOrderWs
+editOrderWs
+watchOrderBook
+unWatchOrderBook
+watchTicker
+watchTickers
+unWatchTickers
+watchMyTrades
+unWatchTrades
+watchOHLCV
+unWatchOHLCV
+watchOrders
+fetchCurrencies
+fetches all available currencies on an
+exchange
+Kind: instance method of hyperliquid
+Returns: object  - an associative dictionary of
+currencies
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+2/56
+
+
+
+endpoint/perpetuals#retrieve-perpetuals-
+metadata
+Param
+Type
+Required
+Descriptio
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+endpoint
+fetchMarkets
+retrieves data on all markets for hyperliquid
+Kind: instance method of hyperliquid
+Returns: Array<object>  - an array of objects
+representing market data
+See
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint/perpetuals#retrieve-perpetuals-
+asset-contexts-includes-mark-price-current-
+funding-open-interest-etc
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint/spot#retrieve-spot-asset-contexts
+Param
+Type
+Required
+Descriptio
+params
+object
+No
+extra
+parameter
+specific to
+
+
+hyperliquid
+ 
+params
+.fetchCurrencies ([
+])
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+3/56
+
+
+
+
+
+Param
+Type
+Required
+Descriptio
+the
+exchange
+API
+d
+i
+fetchSwapMarkets
+retrieves data on all swap markets for
+hyperliquid
+Kind: instance method of hyperliquid
+Returns: Array<object>  - an array of objects
+representing market data
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint/perpetuals#retrieve-perpetuals-asset-
+contexts-includes-mark-price-current-funding-
+open-interest-etc
+Param
+Type
+Required
+Descriptio
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+endpoint
+hyperliquid
+ 
+params
+.fetchMarkets ([
+])
+javascript
+
+
+hyperliquid
+ 
+params
+.fetchSwapMarkets ([
+]
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+4/56
+
+
+
+calculatePricePrecision
+Helper function to calculate the Hyperliquid
+DECIMAL_PLACES price precision
+Kind: instance method of hyperliquid
+Returns: int  - The calculated price precision
+Param
+Type
+Description
+price
+float
+the price to use
+in the
+calculation
+amountPrecision
+int
+the
+amountPrecisio
+to use in the
+calculation
+maxDecimals
+int
+the
+maxDecimals t
+use in the
+calculation
+fetchSpotMarkets
+retrieves data on all spot markets for
+hyperliquid
+Kind: instance method of hyperliquid
+Returns: Array<object>  - an array of objects
+representing market data
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint/spot#retrieve-spot-asset-contexts
+
+
+hyperliquid
+ p
+.calculatePricePrecision (
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+5/56
+
+
+
+Param
+Type
+Required
+Descriptio
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+endpoint
+fetchBalance
+query for balance and get the amount of funds
+available for trading or funds locked in orders
+Kind: instance method of hyperliquid
+Returns: object  - a balance structure
+See
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint/spot#retrieve-a-users-token-
+balances
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint/perpetuals#retrieve-users-
+perpetuals-account-summary
+Param
+Type
+Required
+De
+params
+object
+No
+extra 
+specifi
+excha
+endpo
+params.user
+string
+No
+user a
+defau
+
+
+hyperliquid
+ 
+params
+.fetchSpotMarkets ([
+]
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+6/56
+
+
+
+Param
+Type
+Required
+De
+this.w
+if not 
+params.type
+string
+No
+walle
+['spot
+d f
+fetchOrderBook
+fetches information on open orders with bid
+(buy) and ask (sell) prices, volumes and other
+data
+Kind: instance method of hyperliquid
+Returns: object  - A dictionary of order book
+structures indexed by market symbols
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-endpoint#l2-
+book-snapshot
+Param
+Type
+Required
+Descriptio
+symbol
+string
+Yes
+unified
+symbol of
+the market
+to fetch
+the order
+book for
+limit
+int
+No
+the
+maximum
+amount of
+order book
+entries to
+return
+params
+object
+No
+extra
+parameter
+hyperliquid
+ 
+params
+.fetchBalance ([
+])
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+7/56
+
+
+
+Param
+Type
+Required
+Descriptio
+specific to
+the
+exchange
+API
+d
+i
+fetchTickers
+fetches price tickers for multiple markets,
+statistical information calculated over the past
+24 hours for each market
+Kind: instance method of hyperliquid
+Returns: object  - a dictionary of ticker
+structures
+See
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint/perpetuals#retrieve-perpetuals-
+asset-contexts-includes-mark-price-current-
+funding-open-interest-etc
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint/spot#retrieve-spot-asset-contexts
+Param
+Type
+Required
+symbols
+Array<string>
+No
+
+
+hyperliquid
+ symbol
+ l
+.fetchOrderBook (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+8/56
+
+
+
+Param
+Type
+Required
+params
+object
+No
+params.type
+string
+No
+fetchFundingRates
+retrieves data on all swap markets for
+hyperliquid
+Kind: instance method of hyperliquid
+Returns: Array<object>  - an array of objects
+representing market data
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint/perpetuals#retrieve-perpetuals-asset-
+contexts-includes-mark-price-current-funding-
+open-interest-etc
+Param
+Type
+Required
+De
+symbols
+Array<string>
+No
+lis
+un
+
+
+hyperliquid
+ 
+symbols  pa
+.fetchTickers ([
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+9/56
+
+
+
+Param
+Type
+Required
+De
+m
+sy
+params
+object
+No
+ex
+pa
+sp
+th
+ex
+AP
+fetchOHLCV
+fetches historical candlestick data containing
+the open, high, low, and close price, and the
+volume of a market
+Kind: instance method of hyperliquid
+Returns: Array<Array<int>>  - A list of candles
+ordered as timestamp, open, high, low, close,
+volume
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-endpoint#candle-
+snapshot
+Param
+Type
+Required
+Descr
+symbol
+string
+Yes
+unifie
+symb
+the m
+to fet
+OHLC
+data 
+timeframe
+string
+Yes
+the le
+of tim
+each
+
+
+hyperliquid
+ 
+symbol
+.fetchFundingRates ([
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+10/56
+
+
+
+Param
+Type
+Required
+Descr
+candl
+repre
+suppo
+'1m', '
+'1h', '1
+since
+int
+No
+times
+in ms
+the e
+candl
+fetch
+limit
+int
+No
+the
+maxi
+amou
+candl
+fetch
+params
+object
+No
+extra
+param
+speci
+the
+excha
+API
+endp
+params.until
+int
+No
+times
+in ms
+the la
+candl
+f
+h
+fetchTrades
+get the list of most recent trades for a
+particular symbol
+Kind: instance method of hyperliquid
+Returns: Array<Trade>  - a list of trade
+
+
+hyperliquid
+ symbol  timefra
+.fetchOHLCV (
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+11/56
+
+structures
+See
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint#retrieve-a-users-fills
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint#retrieve-a-users-fills-by-time
+Param
+Type
+Required
+De
+symbol
+string
+Yes
+un
+ma
+sy
+since
+int
+No
+th
+tim
+to 
+tra
+limit
+int
+No
+th
+ma
+nu
+tra
+str
+to 
+params
+object
+No
+ex
+pa
+sp
+th
+ex
+AP
+en
+params.until
+int
+No
+tim
+in 
+th
+tra
+params.address
+string
+No
+wa
+ad
+th
+tra
+params.user
+string
+No
+wa
+ad
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+12/56
+
+
+
+Param
+Type
+Required
+De
+th
+createOrder
+create a trade order
+Kind: instance method of hyperliquid
+Returns: object  - an order structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#place-an-order
+Param
+Type
+Required
+symbol
+string
+Yes
+type
+string
+Yes
+side
+string
+Yes
+amount
+float
+Yes
+price
+float
+No
+params
+object
+No
+params.timeInForce
+string
+No
+params.postOnly
+bool
+No
+params.reduceOnly
+bool
+No
+
+
+hyperliquid
+ symbol
+ since
+.fetchTrades (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+13/56
+
+
+
+Param
+Type
+Required
+params.triggerPrice
+float
+No
+params.clientOrderId
+string
+No
+params.slippage
+string
+No
+params.vaultAddress
+string
+No
+createOrders
+create a list of trade orders
+Kind: instance method of hyperliquid
+Returns: object  - an order structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#place-an-order
+Param
+Type
+Required
+Descriptio
+orders
+Array
+Yes
+list of
+orders to
+create, eac
+object
+should
+contain th
+parameter
+required b
+createOrde
+namely
+symbol,
+type, side,
+amount,
+
+
+hyperliquid
+ symbol  type  
+.createOrder (
+,
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+14/56
+
+
+
+Param
+Type
+Required
+Descriptio
+price and
+params
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+d
+i
+createOrdersRequest
+create a list of trade orders
+Kind: instance method of hyperliquid
+Returns: object  - an order structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#place-an-order
+Param
+Type
+Description
+orders
+Array
+list of orders to create,
+each object should
+contain the
+parameters required
+by createOrder, namely
+symbol, type, side,
+amount, price and
+params
+
+
+hyperliquid
+ orders
+ par
+.createOrders (
+[,
+javascript
+
+
+hyperliquid
+ order
+.createOrdersRequest (
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+15/56
+
+
+
+cancelOrder
+cancels an open order
+Kind: instance method of hyperliquid
+Returns: object  - An order structure
+See
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#cancel-order-s
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#cancel-order-s-by-cloid
+Param
+Type
+Required
+id
+string
+Yes
+symbol
+string
+Yes
+params
+object
+No
+params.clientOrderId
+string
+No
+params.vaultAddress
+string
+No
+cancelOrders
+cancel multiple orders
+Kind: instance method of hyperliquid
+Returns: object  - an list of order structures
+
+
+hyperliquid
+ id  symbol
+ 
+.cancelOrder (
+,
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+16/56
+
+
+
+See
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#cancel-order-s
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#cancel-order-s-by-cloid
+Param
+Type
+Re
+ids
+Array<string>
+Ye
+symbol
+string
+N
+params
+object
+N
+params.clientOrderId
+string ,
+Array<string>
+N
+params.vaultAddress
+string
+N
+cancelOrdersForSymbols
+cancel multiple orders for multiple symbols
+Kind: instance method of hyperliquid
+Returns: object  - an list of order structures
+See
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#cancel-order-s
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+
+
+hyperliquid
+ ids
+ symbol
+.cancelOrders (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+17/56
+
+
+
+endpoint#cancel-order-s-by-cloid
+Param
+Type
+orders
+Array<CancellationRe
+params
+object
+params.vaultAddress
+string
+cancelAllOrdersAfter
+dead man's switch, cancel all orders after the
+given timeout
+Kind: instance method of hyperliquid
+Returns: object  - the api result
+
+
+hyperliquid
+ ord
+.cancelOrdersForSymbols (
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+18/56
+
+
+
+Param
+Type
+Required
+timeout
+number
+Yes
+params
+object
+No
+params.vaultAddress
+string
+No
+editOrder
+edit a trade order
+Kind: instance method of hyperliquid
+Returns: object  - an order structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#modify-multiple-orders
+Param
+Type
+Required
+id
+string
+Yes
+symbol
+string
+Yes
+type
+string
+Yes
+side
+string
+Yes
+
+
+hyperliquid
+ timeo
+.cancelAllOrdersAfter (
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+19/56
+
+
+
+Param
+Type
+Required
+amount
+float
+Yes
+price
+float
+No
+params
+object
+No
+params.timeInForce
+string
+No
+params.postOnly
+bool
+No
+params.reduceOnly
+bool
+No
+params.triggerPrice
+float
+No
+params.clientOrderId
+string
+No
+params.vaultAddress
+string
+No
+editOrders
+edit a list of trade orders
+Kind: instance method of hyperliquid
+Returns: object  - an order structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#modify-multiple-orders
+
+
+hyperliquid
+ id  symbol  type
+.editOrder (
+,
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+20/56
+
+
+
+Param
+Type
+Required
+Descriptio
+orders
+Array
+Yes
+list of
+orders to
+create, eac
+object
+should
+contain th
+parameter
+required b
+createOrde
+namely
+symbol,
+type, side,
+amount,
+price and
+params
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+endpoint
+createVault
+creates a value
+Kind: instance method of hyperliquid
+Returns: object  - the api result
+Param
+Type
+Required
+Descri
+name
+string
+Yes
+The na
+of the
+vault
+
+
+hyperliquid
+ orders
+ param
+.editOrders (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+21/56
+
+
+
+Param
+Type
+Required
+Descri
+description
+string
+Yes
+The
+descrip
+of the
+vault
+initialUsd
+number
+Yes
+The
+initialU
+of the
+vault
+params
+object
+No
+extra
+param
+specifi
+the
+exchan
+API
+d
+fetchFundingRateHistory
+fetches historical funding rate prices
+Kind: instance method of hyperliquid
+Returns: Array<object>  - a list of funding rate
+structures
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint/perpetuals#retrieve-historical-
+funding-rates
+Param
+Type
+Required
+Descr
+symbol
+string
+Yes
+unifie
+symb
+the m
+to fet
+the
+
+
+hyperliquid
+ name  descript
+.createVault (
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+22/56
+
+
+
+Param
+Type
+Required
+Descr
+fundi
+rate h
+for
+since
+int
+No
+times
+in ms
+the e
+fundi
+rate t
+fetch
+limit
+int
+No
+the
+maxi
+amou
+fundi
+rate
+struct
+to fet
+params
+object
+No
+extra
+param
+speci
+the
+excha
+API
+endp
+params.until
+int
+No
+times
+in ms
+the la
+fundi
+fetchOpenOrders
+fetch all unfilled currently open orders
+Kind: instance method of hyperliquid
+Returns: Array<Order>  - a list of order
+
+
+hyperliquid
+ sy
+.fetchFundingRateHistory (
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+23/56
+
+
+
+structures
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint#retrieve-a-users-open-orders
+Param
+Type
+Required
+symbol
+string
+Yes
+un
+sy
+since
+int
+No
+th
+ms
+or
+limit
+int
+No
+th
+nu
+or
+ret
+params
+object
+No
+ex
+sp
+ex
+en
+params.user
+string
+No
+us
+de
+th
+no
+params.method
+string
+No
+'op
+'fr
+de
+'fr
+fetchClosedOrders
+fetch all unfilled currently closed orders
+
+
+hyperliquid
+ symbol
+ 
+.fetchOpenOrders (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+24/56
+
+
+
+Kind: instance method of hyperliquid
+Returns: Array<Order>  - a list of order
+structures
+Param
+Type
+Required
+De
+symbol
+string
+Yes
+unifie
+symbo
+since
+int
+No
+the ea
+in ms 
+open 
+limit
+int
+No
+the m
+numb
+orders
+to ret
+params
+object
+No
+extra 
+specifi
+excha
+endpo
+params.user
+string
+No
+user a
+defau
+this.w
+if not 
+fetchCanceledOrders
+fetch all canceled orders
+Kind: instance method of hyperliquid
+Returns: Array<Order>  - a list of order
+structures
+
+
+hyperliquid
+ symbol
+.fetchClosedOrders (
+[
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+25/56
+
+
+
+Param
+Type
+Required
+De
+symbol
+string
+Yes
+unifie
+symbo
+since
+int
+No
+the ea
+in ms 
+open 
+limit
+int
+No
+the m
+numb
+orders
+to ret
+params
+object
+No
+extra 
+specifi
+excha
+endpo
+params.user
+string
+No
+user a
+defau
+this.w
+if not 
+fetchCanceledAndClosedOrders
+fetch all closed and canceled orders
+Kind: instance method of hyperliquid
+Returns: Array<Order>  - a list of order
+structures
+Param
+Type
+Required
+De
+symbol
+string
+Yes
+unifie
+symbo
+since
+int
+No
+the ea
+in ms 
+open 
+
+
+hyperliquid
+ symbo
+.fetchCanceledOrders (
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+26/56
+
+
+
+Param
+Type
+Required
+De
+limit
+int
+No
+the m
+numb
+orders
+to ret
+params
+object
+No
+extra 
+specifi
+excha
+endpo
+params.user
+string
+No
+user a
+defau
+this.w
+if
+fetchOrders
+fetch all orders
+Kind: instance method of hyperliquid
+Returns: Array<Order>  - a list of order
+structures
+Param
+Type
+Required
+De
+symbol
+string
+Yes
+unifie
+symbo
+since
+int
+No
+the ea
+in ms 
+open 
+limit
+int
+No
+the m
+numb
+orders
+to ret
+params
+object
+No
+extra 
+specifi
+
+
+hyperliquid.fetchCanceledAndClosedOrde
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+27/56
+
+
+
+
+
+Param
+Type
+Required
+De
+excha
+endpo
+params.user
+string
+No
+user a
+defau
+this.w
+if
+fetchOrder
+fetches information on an order made by the
+user
+Kind: instance method of hyperliquid
+Returns: object  - An order structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-endpoint#query-
+order-status-by-oid-or-cloid
+Param
+Type
+Required
+De
+id
+string
+Yes
+order 
+symbol
+string
+Yes
+unifie
+the m
+order 
+in
+params
+object
+No
+extra 
+specifi
+excha
+endpo
+params.user
+string
+No
+user a
+defau
+this.w
+if not 
+
+
+hyperliquid
+ symbol
+ since
+.fetchOrders (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+28/56
+
+fetchMyTrades
+fetch all trades made by the user
+Kind: instance method of hyperliquid
+Returns: Array<Trade>  - a list of trade
+structures
+See
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint#retrieve-a-users-fills
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint#retrieve-a-users-fills-by-time
+Param
+Type
+Required
+Descr
+symbol
+string
+Yes
+unifie
+mark
+symb
+since
+int
+No
+the e
+time 
+to fet
+trade
+limit
+int
+No
+the
+maxi
+numb
+trade
+struct
+to ret
+params
+object
+No
+extra
+param
+speci
+the
+excha
+
+
+hyperliquid
+ id  symbol
+ p
+.fetchOrder (
+,
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+29/56
+
+
+
+
+
+Param
+Type
+Required
+Descr
+API
+endp
+params.until
+int
+No
+times
+in ms
+the la
+d
+fetchPosition
+fetch data on an open position
+Kind: instance method of hyperliquid
+Returns: object  - a position structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint/perpetuals#retrieve-users-perpetuals-
+account-summary
+Param
+Type
+Required
+De
+symbol
+string
+Yes
+unifie
+symbo
+marke
+positi
+params
+object
+No
+extra 
+specifi
+excha
+endpo
+params.user
+string
+No
+user a
+defau
+this.w
+if not 
+
+
+hyperliquid
+ symbol
+ si
+.fetchMyTrades (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+30/56
+
+
+
+fetchPositions
+fetch all open positions
+Kind: instance method of hyperliquid
+Returns: Array<object>  - a list of position
+structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/info-
+endpoint/perpetuals#retrieve-users-perpetuals-
+account-summary
+Param
+Type
+Required
+symbols
+Array<string>
+No
+params
+object
+No
+params.user
+string
+No
+setMarginMode
+set margin mode (symbol)
+
+
+hyperliquid
+ symbol
+ pa
+.fetchPosition (
+[,
+javascript
+
+
+hyperliquid
+ 
+symbols  
+.fetchPositions ([
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+31/56
+
+
+
+Kind: instance method of hyperliquid
+Returns: object  - response from the
+exchange
+Param
+Type
+Required
+D
+marginMode
+string
+Yes
+m
+m
+b
+[i
+c
+symbol
+string
+Yes
+u
+m
+sy
+th
+th
+p
+h
+d
+u
+params
+object
+No
+e
+p
+sp
+th
+e
+A
+e
+params.leverage
+string
+No
+th
+le
+re
+se
+tr
+m
+(s
+setLeverage
+
+
+hyperliquid
+ marginMode  
+.setMarginMode (
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+32/56
+
+
+
+set the level of leverage for a market
+Kind: instance method of hyperliquid
+Returns: object  - response from the
+exchange
+Param
+Type
+Required
+leverage
+float
+Yes
+symbol
+string
+Yes
+params
+object
+No
+params.marginMode
+string
+No
+addMargin
+add margin
+Kind: instance method of hyperliquid
+Returns: object  - a margin structure
+
+
+hyperliquid
+ leverage  sym
+.setLeverage (
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+33/56
+
+
+
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#update-isolated-margin
+Param
+Type
+Required
+Descriptio
+symbol
+string
+Yes
+unified
+market
+symbol
+amount
+float
+Yes
+amount of
+margin to
+add
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+endpoint
+reduceMargin
+remove margin from a position
+Kind: instance method of hyperliquid
+Returns: object  - a margin structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#update-isolated-margin
+Param
+Type
+Required
+Descriptio
+symbol
+string
+Yes
+unified
+market
+symbol
+
+
+hyperliquid
+ symbol  amount
+.addMargin (
+,
+[
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+34/56
+
+
+
+Param
+Type
+Required
+Descriptio
+amount
+float
+Yes
+the
+amount of
+margin to
+remove
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+d
+i
+transfer
+transfer currency internally between wallets on
+the same account
+Kind: instance method of hyperliquid
+Returns: object  - a transfer structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#l1-usdc-transfer
+Param
+Type
+Required
+code
+string
+Yes
+amount
+float
+Yes
+fromAccount
+string
+Yes
+
+
+hyperliquid
+ symbol  amou
+.reduceMargin (
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+35/56
+
+
+
+Param
+Type
+Required
+toAccount
+string
+Yes
+params
+object
+No
+params.vaultAddress
+string
+No
+withdraw
+make a withdrawal (only support USDC)
+Kind: instance method of hyperliquid
+Returns: object  - a transaction structure
+See
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#initiate-a-withdrawal-request
+https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#deposit-or-withdraw-from-a-vault
+
+
+hyperliquid
+ code  amount  fro
+.transfer (
+,
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+36/56
+
+
+
+Param
+Type
+Required
+code
+string
+Yes
+amount
+float
+Yes
+address
+string
+Yes
+tag
+string
+Yes
+params
+object
+No
+params.vaultAddress
+string
+No
+fetchTradingFee
+fetch the trading fees for a market
+Kind: instance method of hyperliquid
+Returns: object  - a fee structure
+
+
+hyperliquid
+ code  amount  add
+.withdraw (
+,
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+37/56
+
+
+
+Param
+Type
+Required
+De
+symbol
+string
+Yes
+unifie
+symbo
+params
+object
+No
+extra 
+specifi
+excha
+endpo
+params.user
+string
+No
+user a
+defau
+this.w
+if not 
+fetchLedger
+fetch the history of changes, actions done by
+the user or operations that altered the balance
+of the user
+Kind: instance method of hyperliquid
+Returns: object  - a ledger structure
+Param
+Type
+Required
+Descr
+code
+string
+No
+unifie
+curre
+code
+since
+int
+No
+times
+in ms
+the e
+ledge
+entry
+limit
+int
+No
+max
+numb
+ledge
+
+
+hyperliquid
+ symbol
+ 
+.fetchTradingFee (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+38/56
+
+
+
+Param
+Type
+Required
+Descr
+entrie
+return
+params
+object
+No
+extra
+param
+speci
+the
+excha
+API
+endp
+params.until
+int
+No
+times
+in ms
+the la
+ledge
+fetchDeposits
+fetch all deposits made to an account
+Kind: instance method of hyperliquid
+Returns: Array<object>  - a list of transaction
+structures
+Param
+Type
+Required
+Desc
+code
+string
+Yes
+unifie
+curre
+code
+since
+int
+No
+the e
+time 
+to fet
+depo
+limit
+int
+No
+the
+maxi
+numb
+depo
+
+
+hyperliquid
+ 
+code  since  
+.fetchLedger ([
+,
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+39/56
+
+
+
+Param
+Type
+Required
+Desc
+struct
+to ret
+params
+object
+No
+extra
+param
+speci
+the
+excha
+API
+endp
+params.until
+int
+No
+the la
+time 
+to fet
+withd
+f
+fetchWithdrawals
+fetch all withdrawals made from an account
+Kind: instance method of hyperliquid
+Returns: Array<object>  - a list of transaction
+structures
+Param
+Type
+Required
+Desc
+code
+string
+Yes
+unifie
+curre
+code
+since
+int
+No
+the e
+time 
+to fet
+withd
+for
+limit
+int
+No
+the
+maxi
+numb
+
+
+hyperliquid
+ code
+ since
+.fetchDeposits (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+40/56
+
+
+
+Param
+Type
+Required
+Desc
+withd
+struct
+to ret
+params
+object
+No
+extra
+param
+speci
+the
+excha
+API
+endp
+params.until
+int
+No
+the la
+time 
+to fet
+withd
+f
+fetchOpenInterests
+Retrieves the open interest for a list of
+symbols
+Kind: instance method of hyperliquid
+Returns: object  - an open interest
+structurehttps://docs.ccxt.com/#/?id=open-
+interest-structure
+Param
+Type
+Required
+De
+symbols
+Array<string>
+No
+Un
+CC
+m
+sy
+
+
+hyperliquid
+ code
+ s
+.fetchWithdrawals (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+41/56
+
+
+
+
+
+Param
+Type
+Required
+De
+params
+object
+No
+ex
+sp
+pa
+fetchOpenInterest
+retrieves the open interest of a contract
+trading pair
+Kind: instance method of hyperliquid
+Returns: object  - an open interest structure
+Param
+Type
+Required
+Descriptio
+symbol
+string
+Yes
+unified
+CCXT
+market
+symbol
+params
+object
+No
+exchange
+specific
+parameter
+fetchFundingHistory
+fetch the history of funding payments paid and
+received on this account
+
+
+hyperliquid
+ 
+symbo
+.fetchOpenInterests ([
+javascript
+
+
+hyperliquid
+ symbol
+.fetchOpenInterest (
+[
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+42/56
+
+
+
+Kind: instance method of hyperliquid
+Returns: object  - a funding history structure
+Param
+Type
+Required
+Descriptio
+symbol
+string
+No
+unified
+market
+symbol
+since
+int
+No
+the earlies
+time in ms
+to fetch
+funding
+history for
+limit
+int
+No
+the
+maximum
+number of
+funding
+history
+structures
+to retrieve
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+endpoint
+createOrdersWs
+create a list of trade orders using WebSocket
+post request
+Kind: instance method of hyperliquid
+Returns: object  - an order structure
+
+
+hyperliquid
+ 
+symbo
+.fetchFundingHistory ([
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+43/56
+
+
+
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#place-an-order
+Param
+Type
+Required
+Descriptio
+orders
+Array
+Yes
+list of
+orders to
+create, eac
+object
+should
+contain th
+parameter
+required b
+createOrde
+namely
+symbol,
+type, side,
+amount,
+price and
+params
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+endpoint
+createOrderWs
+create a trade order using WebSocket post
+request
+Kind: instance method of hyperliquid
+Returns: object  - an order structure
+
+
+hyperliquid
+ orders
+ p
+.createOrdersWs (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+44/56
+
+
+
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#place-an-order
+Param
+Type
+Required
+symbol
+string
+Yes
+type
+string
+Yes
+side
+string
+Yes
+amount
+float
+Yes
+price
+float
+No
+params
+object
+No
+params.timeInForce
+string
+No
+params.postOnly
+bool
+No
+params.reduceOnly
+bool
+No
+params.triggerPrice
+float
+No
+params.clientOrderId
+string
+No
+params.slippage
+string
+No
+params.vaultAddress
+string
+No
+editOrderWs
+
+
+hyperliquid
+ symbol  type
+.createOrderWs (
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+45/56
+
+
+
+edit a trade order
+Kind: instance method of hyperliquid
+Returns: object  - an order structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-developers/api/exchange-
+endpoint#modify-multiple-orders
+Param
+Type
+Required
+id
+string
+Yes
+symbol
+string
+Yes
+type
+string
+Yes
+side
+string
+Yes
+amount
+float
+Yes
+price
+float
+No
+params
+object
+No
+params.timeInForce
+string
+No
+params.postOnly
+bool
+No
+params.reduceOnly
+bool
+No
+params.triggerPrice
+float
+No
+params.clientOrderId
+string
+No
+params.vaultAddress
+string
+No
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+46/56
+
+
+
+watchOrderBook
+watches information on open orders with bid
+(buy) and ask (sell) prices, volumes and other
+data
+Kind: instance method of hyperliquid
+Returns: object  - A dictionary of order book
+structures indexed by market symbols
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-
+developers/api/websocket/subscriptions
+Param
+Type
+Required
+Descriptio
+symbol
+string
+Yes
+unified
+symbol of
+the market
+to fetch
+the order
+book for
+limit
+int
+No
+the
+maximum
+amount of
+order book
+entries to
+return
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+endpoint
+
+
+hyperliquid
+ id  symbol  ty
+.editOrderWs (
+,
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+47/56
+
+
+
+unWatchOrderBook
+unWatches information on open orders with
+bid (buy) and ask (sell) prices, volumes and
+other data
+Kind: instance method of hyperliquid
+Returns: object  - A dictionary of order book
+structures indexed by market symbols
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-
+developers/api/websocket/subscriptions
+Param
+Type
+Required
+Descriptio
+symbol
+string
+Yes
+unified
+symbol of
+the market
+to fetch
+the order
+book for
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+endpoint
+
+
+hyperliquid
+ symbol
+ l
+.watchOrderBook (
+[,
+javascript
+
+
+hyperliquid
+ symbol
+ 
+.unWatchOrderBook (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+48/56
+
+
+
+watchTicker
+watches a price ticker, a statistical calculation
+with the information calculated over the past
+24 hours for a specific market
+Kind: instance method of hyperliquid
+Returns: object  - a ticker structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-
+developers/api/websocket/subscriptions
+Param
+Type
+Required
+Descriptio
+symbol
+string
+Yes
+unified
+symbol of
+the market
+to fetch
+the ticker
+for
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+endpoint
+watchTickers
+watches a price ticker, a statistical calculation
+with the information calculated over the past
+24 hours for all markets of a specific list
+
+
+hyperliquid
+ symbol
+ param
+.watchTicker (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+49/56
+
+
+
+Kind: instance method of hyperliquid
+Returns: object  - a ticker structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-
+developers/api/websocket/subscriptions
+Param
+Type
+Required
+De
+symbols
+Array<string>
+Yes
+un
+sy
+th
+to
+th
+fo
+params
+object
+No
+ex
+pa
+sp
+th
+ex
+AP
+en
+unWatchTickers
+unWatches a price ticker, a statistical
+calculation with the information calculated
+over the past 24 hours for all markets of a
+specific list
+Kind: instance method of hyperliquid
+Returns: object  - a ticker structure
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-
+developers/api/websocket/subscriptions
+
+
+hyperliquid
+ symbols
+ pa
+.watchTickers (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+50/56
+
+
+
+Param
+Type
+Required
+De
+symbols
+Array<string>
+Yes
+un
+sy
+th
+to
+th
+fo
+params
+object
+No
+ex
+pa
+sp
+th
+ex
+AP
+en
+watchMyTrades
+watches information on multiple trades made
+by the user
+Kind: instance method of hyperliquid
+Returns: Array<object>  - a list of order
+structures
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-
+developers/api/websocket/subscriptions
+Param
+Type
+Required
+De
+symbol
+string
+Yes
+unifie
+symbo
+marke
+were 
+since
+int
+No
+the ea
+in ms 
+
+
+hyperliquid
+ symbols
+ 
+.unWatchTickers (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+51/56
+
+
+
+Param
+Type
+Required
+De
+orders
+limit
+int
+No
+the m
+numb
+struct
+retriev
+params
+object
+No
+extra 
+specifi
+excha
+endpo
+params.user
+string
+No
+user a
+defau
+this.w
+if
+unWatchTrades
+unWatches information on multiple trades
+made in a market
+Kind: instance method of hyperliquid
+Returns: Array<object>  - a list of trade
+structures
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-
+developers/api/websocket/subscriptions
+
+
+hyperliquid
+ symbol
+ si
+.watchMyTrades (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+52/56
+
+
+
+Param
+Type
+Required
+Descriptio
+symbol
+string
+Yes
+unified
+market
+symbol of
+the market
+trades
+were made
+in
+params
+object
+No
+extra
+parameter
+specific to
+the
+exchange
+API
+endpoint
+watchOHLCV
+watches historical candlestick data containing
+the open, high, low, close price, and the
+volume of a market
+Kind: instance method of hyperliquid
+Returns: Array<Array<int>>  - A list of candles
+ordered as timestamp, open, high, low, close,
+volume
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-
+developers/api/websocket/subscriptions
+Param
+Type
+Required
+Descrip
+symbol
+string
+Yes
+unified
+symbol
+the mar
+
+
+hyperliquid
+ symbol
+ pa
+.unWatchTrades (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+53/56
+
+
+
+Param
+Type
+Required
+Descrip
+to fetch
+OHLCV
+data for
+timeframe
+string
+Yes
+the leng
+of time
+each
+candle
+represe
+since
+int
+No
+timesta
+in ms o
+the ear
+candle 
+fetch
+limit
+int
+No
+the
+maximu
+amount
+candles
+fetch
+params
+object
+No
+extra
+parame
+specific
+the
+exchan
+API
+d
+i
+unWatchOHLCV
+watches historical candlestick data containing
+the open, high, low, close price, and the
+volume of a market
+Kind: instance method of hyperliquid
+Returns: Array<Array<int>>  - A list of candles
+
+
+hyperliquid
+ symbol  timefra
+.watchOHLCV (
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+54/56
+
+
+
+ordered as timestamp, open, high, low, close,
+volume
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-
+developers/api/websocket/subscriptions
+Param
+Type
+Required
+Descrip
+symbol
+string
+Yes
+unified
+symbol
+the mar
+to fetch
+OHLCV
+data for
+timeframe
+string
+Yes
+the leng
+of time
+each
+candle
+represe
+params
+object
+No
+extra
+parame
+specific
+the
+exchan
+API
+endpoin
+watchOrders
+watches information on multiple orders made
+by the user
+Kind: instance method of hyperliquid
+Returns: Array<object>  - a list of order
+structures
+
+
+hyperliquid
+ symbol  timef
+.unWatchOHLCV (
+,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+55/56
+
+
+
+See: https://hyperliquid.gitbook.io/hyperliquid-
+docs/for-
+developers/api/websocket/subscriptions
+Param
+Type
+Required
+De
+symbol
+string
+Yes
+unifie
+symbo
+marke
+were 
+since
+int
+No
+the ea
+in ms 
+orders
+limit
+int
+No
+the m
+numb
+struct
+retriev
+params
+object
+No
+extra 
+specifi
+excha
+endpo
+params.user
+string
+No
+user a
+defau
+this.w
+if not 
+
+
+hyperliquid
+ symbol
+ since
+.watchOrders (
+[,
+javascript
+4/17/25, 12:55 AM
+hyperliquid
+https://docs.ccxt.com/#/exchanges/hyperliquid
+56/56
+

@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CryptoFinance Corpus Builder</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- App Header -->
+        <header class="app-header">
+            <div class="app-title">
+                <h1>CryptoFinance Corpus Builder</h1>
+            </div>
+            <div class="app-controls">
+                <button class="btn btn--sm btn--secondary" id="theme-toggle">Toggle Theme</button>
+                <span class="status status--info" id="system-status">System Ready</span>
+            </div>
+        </header>
+
+        <!-- Tab Navigation -->
+        <nav class="app-tabs">
+            <button class="tab-button active" data-tab="dashboard">Dashboard</button>
+            <button class="tab-button" data-tab="collectors">Collectors</button>
+            <button class="tab-button" data-tab="processors">Processors</button>
+            <button class="tab-button" data-tab="corpus-manager">Corpus Manager</button>
+            <button class="tab-button" data-tab="balancer">Balancer</button>
+            <button class="tab-button" data-tab="analytics">Analytics</button>
+            <button class="tab-button" data-tab="configuration">Configuration</button>
+            <button class="tab-button" data-tab="logs">Logs</button>
+        </nav>
+
+        <!-- Tab Content -->
+        <main class="tab-content">
+            <!-- Dashboard Tab -->
+            <section class="tab-pane active" id="dashboard">
+                <div class="dashboard-grid">
+                    <!-- Corpus Statistics Card -->
+                    <div class="card dashboard-card">
+                        <div class="card__header">
+                            <h3>Corpus Statistics</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-value" id="total-documents">2,570</div>
+                                    <div class="stat-label">Total Documents</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="total-size">45.8 GB</div>
+                                    <div class="stat-label">Total Size</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="processed-docs">2,234</div>
+                                    <div class="stat-label">Processed</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="pending-docs">336</div>
+                                    <div class="stat-label">Pending</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="average-quality">82%</div>
+                                    <div class="stat-label">Avg. Quality</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value" id="last-update">Today 22:45</div>
+                                    <div class="stat-label">Last Updated</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Domain Distribution Card -->
+                    <div class="card dashboard-card">
+                        <div class="card__header">
+                            <h3>Domain Distribution</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="chart-container">
+                                <canvas id="domainDistributionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Active Operations Card -->
+                    <div class="card dashboard-card">
+                        <div class="card__header">
+                            <h3>Active Operations</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="active-operations" id="active-operations">
+                                <div class="operation-item">
+                                    <div class="operation-header">
+                                        <span class="operation-name">GitHub Collection</span>
+                                        <span class="status status--success">Running</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar" style="width: 45%"></div>
+                                    </div>
+                                    <div class="operation-details">45% complete - 40/89 documents</div>
+                                </div>
+                                <div class="operation-item">
+                                    <div class="operation-header">
+                                        <span class="operation-name">Domain Rebalancing</span>
+                                        <span class="status status--success">Running</span>
+                                    </div>
+                                    <div class="progress-container">
+                                        <div class="progress-bar" style="width: 78%"></div>
+                                    </div>
+                                    <div class="operation-details">78% complete</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity Card -->
+                    <div class="card dashboard-card">
+                        <div class="card__header">
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="activity-list" id="activity-list">
+                                <!-- Activity items will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Collectors Tab -->
+            <section class="tab-pane" id="collectors">
+                <div class="collectors-grid">
+                    <!-- Collector cards will be dynamically generated -->
+                </div>
+            </section>
+
+            <!-- Processors Tab -->
+            <section class="tab-pane" id="processors">
+                <div class="processors-container">
+                    <!-- PDF Processor Panel -->
+                    <div class="card processor-card">
+                        <div class="card__header">
+                            <h3>PDF Processor</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="processor-controls">
+                                <div class="form-group">
+                                    <label class="form-label">Input Directory</label>
+                                    <div class="input-with-button">
+                                        <input type="text" class="form-control" value="G:/corpus/raw/pdf" readonly>
+                                        <button class="btn btn--secondary btn--sm">Browse</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Output Directory</label>
+                                    <div class="input-with-button">
+                                        <input type="text" class="form-control" value="G:/corpus/processed/pdf" readonly>
+                                        <button class="btn btn--secondary btn--sm">Browse</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">OCR Quality</label>
+                                    <select class="form-control">
+                                        <option>High (Slow)</option>
+                                        <option selected>Medium (Recommended)</option>
+                                        <option>Low (Fast)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Processing Options</label>
+                                    <div class="checkbox-group">
+                                        <label><input type="checkbox" checked> Extract Text</label>
+                                        <label><input type="checkbox" checked> Extract Metadata</label>
+                                        <label><input type="checkbox" checked> Extract Tables</label>
+                                        <label><input type="checkbox"> Extract Images</label>
+                                    </div>
+                                </div>
+                                <div class="processor-actions">
+                                    <button class="btn btn--primary" id="start-pdf-processor">Start Processing</button>
+                                    <button class="btn btn--secondary" disabled id="stop-pdf-processor">Stop</button>
+                                </div>
+                            </div>
+                            <div class="processor-queue">
+                                <h4>Processing Queue</h4>
+                                <div class="queue-list" id="pdf-queue">
+                                    <!-- Queue items will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Non-PDF Processor Panel -->
+                    <div class="card processor-card">
+                        <div class="card__header">
+                            <h3>Non-PDF Processor</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="processor-controls">
+                                <div class="form-group">
+                                    <label class="form-label">Input Directory</label>
+                                    <div class="input-with-button">
+                                        <input type="text" class="form-control" value="G:/corpus/raw/non-pdf" readonly>
+                                        <button class="btn btn--secondary btn--sm">Browse</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Output Directory</label>
+                                    <div class="input-with-button">
+                                        <input type="text" class="form-control" value="G:/corpus/processed/non-pdf" readonly>
+                                        <button class="btn btn--secondary btn--sm">Browse</button>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">File Types</label>
+                                    <select class="form-control">
+                                        <option selected>All Supported Types</option>
+                                        <option>Text Files (.txt, .md, .csv)</option>
+                                        <option>Code Files (.py, .js, .cpp)</option>
+                                        <option>Data Files (.json, .xml)</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Processing Options</label>
+                                    <div class="checkbox-group">
+                                        <label><input type="checkbox" checked> Extract Metadata</label>
+                                        <label><input type="checkbox" checked> Generate Summary</label>
+                                        <label><input type="checkbox" checked> Extract Keywords</label>
+                                        <label><input type="checkbox" checked> Code Analysis</label>
+                                    </div>
+                                </div>
+                                <div class="processor-actions">
+                                    <button class="btn btn--primary" id="start-nonpdf-processor">Start Processing</button>
+                                    <button class="btn btn--secondary" disabled id="stop-nonpdf-processor">Stop</button>
+                                </div>
+                            </div>
+                            <div class="processor-queue">
+                                <h4>Processing Queue</h4>
+                                <div class="queue-list" id="nonpdf-queue">
+                                    <!-- Non-PDF queue items will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Batch Operations Panel -->
+                    <div class="card processor-card">
+                        <div class="card__header">
+                            <h3>Batch Operations</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="batch-operations">
+                                <button class="btn btn--secondary" id="reprocess-failed">Reprocess Failed Files</button>
+                                <button class="btn btn--secondary" id="verify-checksums">Verify Checksums</button>
+                                <button class="btn btn--secondary" id="regenerate-metadata">Regenerate Metadata</button>
+                                <button class="btn btn--secondary" id="cleanup-temp">Clean Temporary Files</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Corpus Manager Tab -->
+            <section class="tab-pane" id="corpus-manager">
+                <div class="corpus-manager-container">
+                    <div class="corpus-sidebar card">
+                        <div class="card__header">
+                            <h3>Domain Structure</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="domain-tree" id="domain-tree">
+                                <!-- Domain tree will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="corpus-content">
+                        <div class="card corpus-search-card">
+                            <div class="card__body">
+                                <div class="corpus-search">
+                                    <input type="text" class="form-control" placeholder="Search by title, keywords, content...">
+                                    <button class="btn btn--primary">Search</button>
+                                    <button class="btn btn--secondary">Advanced</button>
+                                </div>
+                                <div class="corpus-filters">
+                                    <div class="filter-group">
+                                        <label class="form-label">Domain</label>
+                                        <select class="form-control form-control-sm">
+                                            <option selected>All Domains</option>
+                                            <option>Crypto Derivatives</option>
+                                            <option>DeFi</option>
+                                            <option>High Frequency Trading</option>
+                                            <!-- Other domains -->
+                                        </select>
+                                    </div>
+                                    <div class="filter-group">
+                                        <label class="form-label">Type</label>
+                                        <select class="form-control form-control-sm">
+                                            <option selected>All Types</option>
+                                            <option>PDF</option>
+                                            <option>Code</option>
+                                            <option>Data</option>
+                                            <option>Text</option>
+                                        </select>
+                                    </div>
+                                    <div class="filter-group">
+                                        <label class="form-label">Date</label>
+                                        <select class="form-control form-control-sm">
+                                            <option selected>Any Time</option>
+                                            <option>Last 7 Days</option>
+                                            <option>Last 30 Days</option>
+                                            <option>Last 90 Days</option>
+                                            <option>Custom Range</option>
+                                        </select>
+                                    </div>
+                                    <div class="filter-group">
+                                        <label class="form-label">Quality</label>
+                                        <select class="form-control form-control-sm">
+                                            <option selected>Any Quality</option>
+                                            <option>High (>90%)</option>
+                                            <option>Medium (70-90%)</option>
+                                            <option>Low (<70%)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card corpus-results-card">
+                            <div class="card__header">
+                                <h3>Search Results</h3>
+                                <div class="results-actions">
+                                    <button class="btn btn--sm btn--secondary">Export</button>
+                                    <button class="btn btn--sm btn--secondary">Select All</button>
+                                    <button class="btn btn--sm btn--secondary">Batch Edit</button>
+                                </div>
+                            </div>
+                            <div class="card__body">
+                                <div class="corpus-results" id="corpus-results">
+                                    <!-- Results will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Balancer Tab -->
+            <section class="tab-pane" id="balancer">
+                <div class="balancer-container">
+                    <div class="card">
+                        <div class="card__header">
+                            <h3>Domain Allocation</h3>
+                            <div class="balancer-actions">
+                                <button class="btn btn--primary" id="rebalance-corpus">Rebalance Corpus</button>
+                                <button class="btn btn--secondary" id="save-allocations">Save Allocations</button>
+                            </div>
+                        </div>
+                        <div class="card__body">
+                            <div class="balancer-chart-container">
+                                <canvas id="balancerChart"></canvas>
+                            </div>
+                            <div class="allocation-table-container">
+                                <table class="allocation-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Domain</th>
+                                            <th>Target %</th>
+                                            <th>Current %</th>
+                                            <th>Documents</th>
+                                            <th>Quality</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="allocation-table-body">
+                                        <!-- Will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Analytics Tab -->
+            <section class="tab-pane" id="analytics">
+                <div class="analytics-grid">
+                    <!-- Content Type Distribution -->
+                    <div class="card analytics-card">
+                        <div class="card__header">
+                            <h3>Content Type Distribution</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="chart-container">
+                                <canvas id="contentTypeChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Collection Trends -->
+                    <div class="card analytics-card">
+                        <div class="card__header">
+                            <h3>Collection Trends</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="chart-container">
+                                <canvas id="collectionTrendsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quality Analysis -->
+                    <div class="card analytics-card">
+                        <div class="card__header">
+                            <h3>Quality Analysis</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="chart-container">
+                                <canvas id="qualityAnalysisChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Keyword Frequency -->
+                    <div class="card analytics-card">
+                        <div class="card__header">
+                            <h3>Keyword Frequency</h3>
+                            <div class="keyword-controls">
+                                <select class="form-control form-control-sm">
+                                    <option selected>All Domains</option>
+                                    <option>Crypto Derivatives</option>
+                                    <option>DeFi</option>
+                                    <!-- Other domains -->
+                                </select>
+                                <button class="btn btn--sm btn--secondary">Export</button>
+                            </div>
+                        </div>
+                        <div class="card__body">
+                            <div class="chart-container">
+                                <canvas id="keywordFrequencyChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Configuration Tab -->
+            <section class="tab-pane" id="configuration">
+                <div class="configuration-grid">
+                    <!-- Environment Settings -->
+                    <div class="card config-card">
+                        <div class="card__header">
+                            <h3>Environment Settings</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="form-group">
+                                <label class="form-label">Active Environment</label>
+                                <select class="form-control" id="environment-select">
+                                    <option selected>Production</option>
+                                    <option>Development</option>
+                                    <option>Testing</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Base Directory</label>
+                                <input type="text" class="form-control" value="G:/venv/ai_trading_dev_1" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Corpus Root</label>
+                                <input type="text" class="form-control" value="G:/corpus" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Temp Directory</label>
+                                <input type="text" class="form-control" value="G:/corpus/temp" readonly>
+                            </div>
+                            <button class="btn btn--primary">Save Environment Settings</button>
+                        </div>
+                    </div>
+
+                    <!-- API Keys -->
+                    <div class="card config-card">
+                        <div class="card__header">
+                            <h3>API Keys</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="api-keys-list">
+                                <div class="api-key-item">
+                                    <div class="api-key-name">arXiv API</div>
+                                    <div class="api-key-value">••••••••••••••••••••••</div>
+                                    <button class="btn btn--sm btn--secondary">Edit</button>
+                                </div>
+                                <div class="api-key-item">
+                                    <div class="api-key-name">GitHub API</div>
+                                    <div class="api-key-value">••••••••••••••••••••••</div>
+                                    <button class="btn btn--sm btn--secondary">Edit</button>
+                                </div>
+                                <div class="api-key-item">
+                                    <div class="api-key-name">FRED API</div>
+                                    <div class="api-key-value">••••••••••••••••••••••</div>
+                                    <button class="btn btn--sm btn--secondary">Edit</button>
+                                </div>
+                                <div class="api-key-item">
+                                    <div class="api-key-name">BitMEX API</div>
+                                    <div class="api-key-value">••••••••••••••••••••••</div>
+                                    <button class="btn btn--sm btn--secondary">Edit</button>
+                                </div>
+                                <div class="api-key-item">
+                                    <div class="api-key-name">SciDB API</div>
+                                    <div class="api-key-value">••••••••••••••••••••••</div>
+                                    <button class="btn btn--sm btn--secondary">Edit</button>
+                                </div>
+                                <button class="btn btn--primary mt-8">Save API Keys</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Processing Settings -->
+                    <div class="card config-card">
+                        <div class="card__header">
+                            <h3>Processing Settings</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="form-group">
+                                <label class="form-label">Default OCR Engine</label>
+                                <select class="form-control">
+                                    <option selected>Tesseract</option>
+                                    <option>ABBYY FineReader</option>
+                                    <option>Adobe OCR</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">PDF Processing Threads</label>
+                                <input type="number" class="form-control" value="4" min="1" max="16">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Default Language</label>
+                                <select class="form-control">
+                                    <option selected>English</option>
+                                    <option>Spanish</option>
+                                    <option>French</option>
+                                    <option>German</option>
+                                    <option>Chinese</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Quality Threshold</label>
+                                <input type="range" class="form-control" min="0" max="100" value="75">
+                                <div class="range-value">75%</div>
+                            </div>
+                            <button class="btn btn--primary">Save Processing Settings</button>
+                        </div>
+                    </div>
+
+                    <!-- Domain Configuration -->
+                    <div class="card config-card">
+                        <div class="card__header">
+                            <h3>Domain Configuration</h3>
+                        </div>
+                        <div class="card__body">
+                            <div class="domain-config-controls">
+                                <button class="btn btn--secondary">Add Domain</button>
+                                <button class="btn btn--secondary">Edit Selected</button>
+                                <button class="btn btn--secondary">Remove Selected</button>
+                            </div>
+                            <div class="domain-config-list">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                            <button class="btn btn--primary mt-8">Save Domain Configuration</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Logs Tab -->
+            <section class="tab-pane" id="logs">
+                <div class="logs-container">
+                    <div class="logs-header">
+                        <div class="logs-controls">
+                            <select class="form-control form-control-sm">
+                                <option selected>All Logs</option>
+                                <option>Collector Logs</option>
+                                <option>Processor Logs</option>
+                                <option>System Logs</option>
+                                <option>Error Logs</option>
+                            </select>
+                            <input type="text" class="form-control form-control-sm" placeholder="Filter logs...">
+                            <button class="btn btn--sm btn--secondary">Clear Logs</button>
+                            <button class="btn btn--sm btn--secondary">Export Logs</button>
+                        </div>
+                        <div class="log-level-filters">
+                            <label><input type="checkbox" checked> Info</label>
+                            <label><input type="checkbox" checked> Warning</label>
+                            <label><input type="checkbox" checked> Error</label>
+                            <label><input type="checkbox" checked> Debug</label>
+                        </div>
+                    </div>
+                    <div class="logs-content card">
+                        <div class="card__body">
+                            <div class="logs-viewer" id="logs-viewer">
+                                <!-- Will be populated by JavaScript -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Status Bar -->
+        <footer class="app-status-bar">
+            <div class="status-item">Environment: Production</div>
+            <div class="status-item">Documents: 2,570</div>
+            <div class="status-item">Active Tasks: 2</div>
+            <div class="status-item">Disk: 45.8/100 GB</div>
+            <div class="status-item">Last Updated: June 3, 2025 22:45</div>
+        </footer>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast-container" id="toast-container">
+        <!-- Toast notifications will be added dynamically -->
+    </div>
+
+    <!-- Modal Templates -->
+    <div class="modal-container hidden" id="modal-container">
+        <div class="modal-backdrop"></div>
+        <div class="modal" id="modal">
+            <div class="modal-header">
+                <h3 id="modal-title">Modal Title</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Modal content will be dynamically inserted -->
+            </div>
+            <div class="modal-footer" id="modal-footer">
+                <button class="btn btn--secondary" id="modal-cancel">Cancel</button>
+                <button class="btn btn--primary" id="modal-confirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Load Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

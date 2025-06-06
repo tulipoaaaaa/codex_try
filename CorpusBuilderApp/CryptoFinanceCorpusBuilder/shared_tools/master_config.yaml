@@ -1,0 +1,558 @@
+# Master configuration for CryptoFinanceCorpusBuilder
+# This file controls the entire pipeline from collection to processing
+
+# Environment selection
+environment: "production"  # or "test"
+
+# Base configurations for different environments
+environments:
+  production:
+    corpus_dir: "G:/ai_trading_dev/data/production"
+    cache_dir: "G:/ai_trading_dev/cache/production"
+    log_dir: "G:/ai_trading_dev/logs/production"
+    
+  test:
+    corpus_dir: "G:/ai_trading_dev/data/test"
+    cache_dir: "G:/ai_trading_dev/cache/test"
+    log_dir: "G:/ai_trading_dev/logs/test"
+
+# Directory structure configuration
+directories:
+  raw_data: "raw_data"
+  extracted: "extracted"
+  processed: "processed"
+  reports: "reports"
+  logs: "logs"
+  cache: "cache"
+  temp: "temp"
+
+# Domain configurations
+domains:
+  crypto_derivatives:
+    allocation: 0.2
+    min_documents: 100
+    priority: "high"
+    quality_threshold: 0.8
+    target_weight: 0.2
+    search_terms:
+      - "cryptocurrency derivatives"
+      - "bitcoin futures"
+      - "crypto options"
+      - "perpetual swap"
+      - "funding rate"
+      - "basis trading"
+      - "crypto derivatives pricing"
+
+  decentralized_finance:
+    allocation: 0.12
+    min_documents: 70
+    priority: "medium"
+    quality_threshold: 0.75
+    target_weight: 0.12
+    search_terms:
+      - "defi protocols"
+      - "automated market maker design"
+      - "yield optimization strategies"
+      - "liquidity mining"
+
+  high_frequency_trading:
+    allocation: 0.15
+    min_documents: 80
+    priority: "high"
+    quality_threshold: 0.85
+    target_weight: 0.15
+    search_terms:
+      - "high frequency trading cryptocurrency"
+      - "algorithmic crypto trading"
+      - "low latency trading blockchain"
+      - "market making algorithms crypto"
+
+  market_microstructure:
+    allocation: 0.15
+    min_documents: 60
+    priority: "medium"
+    quality_threshold: 0.75
+    target_weight: 0.15
+    search_terms:
+      - "crypto market microstructure"
+      - "order book dynamics"
+      - "liquidity provision blockchain"
+      - "market impact crypto"
+
+  portfolio_construction:
+    allocation: 0.1
+    min_documents: 50
+    priority: "medium"
+    quality_threshold: 0.75
+    target_weight: 0.1
+    search_terms:
+      - "crypto portfolio construction"
+      - "bitcoin asset allocation"
+      - "digital asset correlation"
+      - "crypto diversification"
+
+  regulation_compliance:
+    allocation: 0.05
+    min_documents: 30
+    priority: "medium"
+    quality_threshold: 0.9
+    target_weight: 0.05
+    search_terms:
+      - "cryptocurrency regulation"
+      - "crypto compliance framework"
+      - "digital asset taxation"
+      - "crypto KYC AML"
+
+  risk_management:
+    allocation: 0.15
+    min_documents: 90
+    priority: "high"
+    quality_threshold: 0.8
+    target_weight: 0.15
+    search_terms:
+      - "cryptocurrency risk models"
+      - "crypto portfolio hedging"
+      - "defi risk management"
+      - "crypto VaR"
+
+  valuation_models:
+    allocation: 0.08
+    min_documents: 40
+    priority: "low"
+    quality_threshold: 0.7
+    target_weight: 0.08
+    search_terms:
+      - "token valuation models"
+      - "cryptocurrency fundamental analysis"
+      - "on-chain metrics valuation"
+      - "crypto DCF"
+
+# Collector configurations
+collectors:
+  arxiv:
+    enabled: true
+    categories: 
+      - "q-fin"
+      - "cs.AI"
+      - "cs.LG"
+    max_results: 100
+    delay_range: [3, 7]
+    output_dir: "{corpus_dir}/raw_data/arxiv"
+    domains:
+      - "crypto_derivatives"
+      - "decentralized_finance"
+      - "high_frequency_trading"
+      - "market_microstructure"
+      - "portfolio_construction"
+      - "regulation_compliance"
+      - "risk_management"
+      - "valuation_models"
+    domain_mapping:
+      crypto_derivatives: ["crypto derivatives", "bitcoin futures", "options pricing"]
+      high_frequency_trading: ["high frequency trading", "algorithmic trading", "market making"]
+      market_microstructure: ["market microstructure", "order book", "liquidity"]
+      risk_management: ["risk management", "portfolio risk", "VaR", "hedging"]
+      decentralized_finance: ["decentralized finance", "defi"]
+      portfolio_construction: ["portfolio construction", "asset allocation"]
+      valuation_models: ["valuation models", "pricing model"]
+      regulation_compliance: ["regulation", "compliance", "tax"]
+    quality_checks:
+      min_papers: 50
+      max_retries: 3
+      timeout: 30
+
+  scidb:
+    enabled: true
+    max_results_per_term: 10
+    delay_range: [3, 7]
+    output_dir: "{corpus_dir}/raw_data/scidb"
+    domains:
+      - "crypto_derivatives"
+      - "decentralized_finance"
+      - "high_frequency_trading"
+      - "market_microstructure"
+      - "portfolio_construction"
+      - "regulation_compliance"
+      - "risk_management"
+      - "valuation_models"
+    domain_mapping:
+      crypto_derivatives: ["crypto derivatives", "bitcoin futures", "options pricing"]
+      high_frequency_trading: ["high frequency trading", "algorithmic trading", "market making"]
+      market_microstructure: ["market microstructure", "order book", "liquidity"]
+      risk_management: ["risk management", "portfolio risk", "VaR", "hedging"]
+      decentralized_finance: ["decentralized finance", "defi"]
+      portfolio_construction: ["portfolio construction", "asset allocation"]
+      valuation_models: ["valuation models", "pricing model"]
+      regulation_compliance: ["regulation", "compliance", "tax"]
+    quality_checks:
+      min_papers: 30
+      max_retries: 3
+      timeout: 30
+
+  github:
+    enabled: true
+    topics:
+      - "cryptocurrency"
+      - "trading"
+      - "defi"
+      - "blockchain"
+    min_stars: 100
+    max_results: 50
+    output_dir: "{corpus_dir}/raw_data/github"
+    domains:
+      - "crypto_derivatives"
+      - "decentralized_finance"
+      - "high_frequency_trading"
+      - "market_microstructure"
+    domain_mapping:
+      high_frequency_trading: ["high-frequency-trading", "algo-trading", "market-making"]
+      crypto_derivatives: ["crypto-derivatives", "perpetual-swap", "futures-trading"]
+      market_microstructure: ["order-book", "market-microstructure"]
+      decentralized_finance: ["defi", "amm", "yield-farming"]
+    quality_checks:
+      min_repos: 20
+      max_retries: 3
+      timeout: 30
+
+# Extractor configurations
+extractors:
+  pdf:
+    enabled: true
+    min_tokens: 200
+    quality_threshold: 0.8
+    chunk_size: 1000
+    overlap: 200
+    input_dir: "{corpus_dir}/raw_data"
+    output_dir: "{corpus_dir}/extracted/pdf"
+    domains:
+      - "crypto_derivatives"
+      - "decentralized_finance"
+      - "high_frequency_trading"
+      - "market_microstructure"
+      - "portfolio_construction"
+      - "regulation_compliance"
+      - "risk_management"
+      - "valuation_models"
+    processing:
+      max_workers: 4
+      batch_size: 10
+      timeout: 300
+
+  nonpdf:
+    enabled: true
+    min_tokens: 100
+    quality_threshold: 0.7
+    chunk_size: 800
+    overlap: 150
+    input_dir: "{corpus_dir}/raw_data"
+    output_dir: "{corpus_dir}/extracted/nonpdf"
+    domains:
+      - "crypto_derivatives"
+      - "decentralized_finance"
+      - "high_frequency_trading"
+      - "market_microstructure"
+      - "portfolio_construction"
+      - "regulation_compliance"
+      - "risk_management"
+      - "valuation_models"
+    processing:
+      max_workers: 4
+      batch_size: 10
+      timeout: 300
+
+# Processor configurations
+processors:
+  quality_control:
+    enabled: true
+    input_dir: "{corpus_dir}/extracted"
+    output_dir: "{corpus_dir}/processed/quality_checked"
+    min_token_count: 100
+    min_quality_score: 0.7
+    checks:
+      language:
+        enabled: true
+        min_confidence: 0.8
+        supported_languages: ["en"]
+        metrics:
+          grammar_check: true
+          vocabulary_check: true
+          fluency_check: true
+      corruption:
+        enabled: true
+        min_quality: 0.7
+        corruption_threshold: 0.3
+        min_text_length: 100
+        checks:
+          encoding_errors: true
+          gibberish: true
+          format_errors: true
+      duplication:
+        enabled: true
+        similarity_threshold: 0.8
+      translation:
+        enabled: true
+        min_confidence: 0.9
+        min_text_length: 100
+        patterns:
+          repetitive_phrases: true
+          unnatural_word_order: true
+          literal_translations: true
+        disclaimer_patterns:
+          - "translated by"
+          - "machine translation"
+          - "automatic translation"
+          - "originally written in"
+          - "this document was automatically translated"
+          - "translation provided by"
+          - "translated from"
+          - "google translate"
+        ngram_repetition_threshold: 4
+        rare_word_ratio_threshold: 0.15
+        functional_to_content_ratio: 0.7
+        missing_article_threshold: 0.08
+        unusual_verb_tense_threshold: 0.12
+        domain_exclusions:
+          - "blockchain"
+          - "cryptocurrency"
+          - "API"
+          - "function"
+          - "parameter"
+        code_comment_thresholds:
+          ngram_repetition: 6
+          rare_word_ratio: 0.25
+        high_precision: false
+        verbose: false
+    processing:
+      max_workers: 4
+      batch_size: 20
+      timeout: 600
+
+  corpus_balancer:
+    enabled: true
+    input_dir: "{corpus_dir}/processed/quality_checked"
+    output_dir: "{corpus_dir}/processed/balanced"
+    target_ratios:
+      crypto_derivatives: 0.2
+      decentralized_finance: 0.12
+      high_frequency_trading: 0.15
+      market_microstructure: 0.15
+      portfolio_construction: 0.1
+      regulation_compliance: 0.05
+      risk_management: 0.15
+      valuation_models: 0.08
+    balance_thresholds:
+      entropy_min: 2.0
+      gini_max: 0.7
+      ratio_max: 10.0
+      min_samples: 30
+    quality_weights:
+      token_count: 0.3
+      quality_flag: 0.4
+      language_confidence: 0.2
+      corruption_score: 0.1
+    file_types: [".txt", ".json"]
+    analysis_cache_ttl: 3600
+    visualization_output_dir: "analysis_reports"
+    processing:
+      max_workers: 2
+      batch_size: 50
+      timeout: 1200
+
+  specialized:
+    charts:
+      enabled: true
+      input_dir: "{corpus_dir}/processed/balanced"
+      output_dir: "{corpus_dir}/processed/specialized/charts"
+      min_image_size: [100, 100]
+      max_image_size: [4000, 4000]
+      dpi: 300
+      ocr_enabled: true
+      save_images: false
+      image_output_dir: "extracted_images"
+      detect_chart_type: true
+      extract_text_from_images: true
+      image_quality_threshold: 0.7
+      supported_formats: ["png", "jpg", "jpeg", "tiff", "bmp"]
+      processing:
+        max_workers: 2
+        batch_size: 10
+        timeout: 300
+
+    formulas:
+      enabled: true
+      input_dir: "{corpus_dir}/processed/balanced"
+      output_dir: "{corpus_dir}/processed/specialized/formulas"
+      formula_patterns:
+        - pattern: '\$.*?\$'
+          type: 'inline'
+          description: 'Inline mathematical formulas'
+        - pattern: '\\begin\{.*?\}.*?\\end\{.*?\}'
+          type: 'display'
+          description: 'Display mathematical formulas'
+        - pattern: '\\\(.*?\\\)'
+          type: 'inline'
+          description: 'Alternative inline math'
+        - pattern: '\\\[.*?\\\]'
+          type: 'display'
+          description: 'Alternative display math'
+      formula_processing:
+        preserve_context: true
+        extract_equations: true
+        extract_inequalities: true
+        extract_sets: true
+        extract_matrices: true
+      formula_output:
+        include_position: true
+        include_type: true
+        include_context: true
+        include_metadata: true
+      formula_validation:
+        min_length: 3
+        max_length: 1000
+        require_balanced: true
+        check_syntax: true
+      processing:
+        max_workers: 2
+        batch_size: 10
+        timeout: 300
+
+    symbols:
+      enabled: true
+      input_dir: "{corpus_dir}/processed/balanced"
+      output_dir: "{corpus_dir}/processed/specialized/symbols"
+      preserve_case: true
+      preserve_spacing: true
+      validate_tickers: true
+      extract_greek_letters: true
+      extract_mathematical_symbols: true
+      extract_currency_symbols: true
+      custom_symbol_file: null
+      min_symbol_length: 1
+      max_symbol_length: 10
+      processing:
+        max_workers: 2
+        batch_size: 10
+        timeout: 300
+
+  domain_classifier:
+    enabled: true
+    input_dir: "{corpus_dir}/processed/balanced"
+    output_dir: "{corpus_dir}/processed/classified"
+    domains:
+      crypto_derivatives:
+        allocation: 0.20
+      high_frequency_trading:
+        allocation: 0.15
+      market_microstructure:
+        allocation: 0.15
+      risk_management:
+        allocation: 0.15
+      decentralized_finance:
+        allocation: 0.12
+      portfolio_construction:
+        allocation: 0.10
+      valuation_models:
+        allocation: 0.08
+      regulation_compliance:
+        allocation: 0.05
+    processing:
+      max_workers: 2
+      batch_size: 20
+      timeout: 300
+
+# Logging configuration
+logging:
+  level: "INFO"
+  file: "{log_dir}/corpus_builder.log"
+  max_size: 10485760  # 10MB
+  backup_count: 5
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  collectors:
+    file: "{log_dir}/collectors.log"
+    level: "INFO"
+  extractors:
+    file: "{log_dir}/extractors.log"
+    level: "INFO"
+  processors:
+    file: "{log_dir}/processors.log"
+    level: "INFO"
+
+# Corpus Manager configuration
+corpus_manager:
+  enabled: true
+  metadata:
+    file: "corpus_metadata.json"
+    backup_dir: "{corpus_dir}/metadata/backups"
+    retention_days: 30
+    auto_backup: true
+    backup_interval: 86400  # 24 hours in seconds
+  
+  statistics:
+    enabled: true
+    update_interval: 3600  # 1 hour in seconds
+    metrics:
+      token_counts: true
+      file_types: true
+      languages: true
+      quality_flags: true
+      date_ranges: true
+      domain_balance: true
+      duplicates: true
+      authors: true
+      sources: true
+    
+    thresholds:
+      min_tokens: 100
+      max_tokens: 1000000
+      min_quality_score: 0.7
+      max_duplicate_ratio: 0.1
+      min_domain_entropy: 2.0
+      max_gini_coefficient: 0.7
+    
+    reporting:
+      enabled: true
+      output_dir: "{corpus_dir}/reports"
+      formats: ["json", "csv", "html"]
+      include_charts: true
+      auto_generate: true
+      schedule: "0 0 * * *"  # Daily at midnight
+  
+  processing:
+    max_workers: 4
+    batch_size: 50
+    timeout: 600
+    retry_attempts: 3
+    retry_delay: 5
+    
+  directories:
+    raw_data: "{corpus_dir}/raw_data"
+    extracted: "{corpus_dir}/extracted"
+    processed: "{corpus_dir}/processed"
+    reports: "{corpus_dir}/reports"
+    logs: "{corpus_dir}/logs"
+    
+  domains:
+    crypto_derivatives:
+      allocation: 0.2
+      search_terms: ["crypto derivatives", "cryptocurrency futures", "crypto options"]
+    high_frequency_trading:
+      allocation: 0.2
+      search_terms: ["high frequency trading", "algorithmic trading", "market making"]
+    portfolio_construction:
+      allocation: 0.15
+      search_terms: ["portfolio optimization", "asset allocation", "risk parity"]
+    risk_management:
+      allocation: 0.15
+      search_terms: ["risk management", "value at risk", "volatility"]
+    market_microstructure:
+      allocation: 0.1
+      search_terms: ["market microstructure", "order book", "price discovery"]
+    trading_strategies:
+      allocation: 0.1
+      search_terms: ["trading strategies", "trading algorithms", "trading systems"]
+    regulation_compliance:
+      allocation: 0.05
+      search_terms: ["regulation", "compliance", "legal framework"]
+    decentralized_finance:
+      allocation: 0.05
+      search_terms: ["defi", "decentralized finance", "smart contracts"] 

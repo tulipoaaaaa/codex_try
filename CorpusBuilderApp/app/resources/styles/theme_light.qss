@@ -1,0 +1,335 @@
+# --- theme_light.qss ---
+/* Fonts & Base */
+QWidget {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    font-size: 14px;
+    color: #13343B;
+    background-color: #FCFCF9;
+    padding: 0;
+    margin: 0;
+}
+
+/* Layout defaults */
+QVBoxLayout, QHBoxLayout, QFormLayout {
+    margin: 0;
+    spacing: 12px;
+}
+
+/* Group Boxes */
+QGroupBox {
+    border: 1px solid #ECEAE3;
+    border-radius: 12px;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    padding: 12px 16px 16px 16px;
+    background-color: #FFFFFD;
+    font-weight: 550;
+}
+QGroupBox:title {
+    subcontrol-origin: margin;
+    left: 12px;
+    top: 8px;
+    padding: 0 4px;
+    color: #21808D;
+    background: transparent;
+    font-size: 16px;
+}
+
+/* Buttons */
+QPushButton {
+    border-radius: 8px;
+    padding: 8px 16px;
+    background-color: #21808D;
+    color: #FFFFFF;
+    border: none;
+    font-weight: 600;
+}
+QPushButton:hover {
+    background-color: #1D7480;
+    color: #FFFFFF;
+}
+QPushButton:pressed {
+    background-color: #1A6873;
+    color: #FFFFFF;
+}
+QPushButton:focus {
+    outline: 2px solid #21808D;
+    outline-offset: 2px;
+}
+QPushButton:disabled {
+    background-color: #ECEAE3;
+    color: #6B6D6D;
+}
+
+/* Tab Bar */
+QTabBar::tab {
+    background: #FFFFFD;
+    color: #21808D;
+    border-radius: 8px 8px 0 0;
+    padding: 8px 20px 8px 20px;
+    margin-right: 2px;
+    font-weight: 500;
+}
+QTabBar::tab:selected {
+    background: #21808D;
+    color: #FCFCF9;
+}
+QTabBar::tab:hover {
+    background: #E0F3F6;
+    color: #21808D;
+}
+
+/* Cards */
+QFrame[objectName="card"], QWidget[objectName="card"] {
+    background-color: #FFFFFD;
+    border: 1px solid #ECEAE3;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+/* Labels */
+QLabel[objectName="status-info"] {
+    background-color: rgba(98, 108, 113, 0.15);
+    color: #626C71;
+    border: 1px solid rgba(98, 108, 113, 0.25);
+    border-radius: 9999px;
+    padding: 4px 12px;
+    font-size: 13px;
+    margin: 4px 0;
+}
+
+/* Inputs */
+QLineEdit, QTextEdit, QComboBox, QSpinBox {
+    border: 1px solid #ECEAE3;
+    border-radius: 8px;
+    padding: 6px 10px;
+    background: #FFF;
+    color: #13343B;
+    font-size: 14px;
+}
+QLineEdit:focus, QTextEdit:focus, QComboBox:focus, QSpinBox:focus {
+    border: 1.5px solid #21808D;
+    background: #F4F8F9;
+}
+
+/* Scrollbar */
+QScrollBar:vertical, QScrollBar:horizontal {
+    background: #F4F8F9;
+    border-radius: 8px;
+    width: 10px;
+    margin: 2px;
+}
+QScrollBar::handle:vertical, QScrollBar::handle:horizontal {
+    background: #21808D;
+    border-radius: 8px;
+    min-height: 20px;
+}
+QScrollBar::add-line, QScrollBar::sub-line {
+    background: none;
+}
+
+/* DashboardTab headers */
+#dashboard-header {
+    font-size: 24px;
+    font-weight: 600;
+    color: #21808D;
+    margin-bottom: 10px;
+    padding: 8px 0px;
+}
+
+/* Dashboard section headers (consistent across all 4 columns) */
+#dashboard-section-header {
+    font-size: 16px;
+    font-weight: 600;
+    color: #21808D;
+    margin: 8px 0px;
+    padding: 6px 0px;
+}
+#activity-header {
+    font-size: 14px;
+    font-weight: bold;
+}
+#notifications-header {
+    font-size: 14px;
+    font-weight: bold;
+    padding: 5px;
+}
+
+/* Drop area styling */
+#config-drop-area {
+    border: 2px dashed #21808D;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: rgba(33, 128, 141, 0.05);
+    color: #21808D;
+}
+
+/* Progress bar status colors */
+QProgressBar#progress-on-target::chunk {
+    background-color: #21808D;
+}
+
+QProgressBar#progress-good::chunk {
+    background-color: #E68161;
+}
+
+QProgressBar#progress-needs-attention::chunk {
+    background-color: #FF5459;
+}
+
+QProgressBar#progress-below-target::chunk {
+    background-color: #FF5459;
+}
+
+QProgressBar#progress-above-target::chunk {
+    background-color: #E68161;
+}
+
+/* Chart styling for consistent theming */
+QChartView#chart-view {
+    background-color: #FFFFFD;
+    border: 1px solid #ECEAE3;
+    border-radius: 8px;
+}
+
+/* Splitter styling for responsive layouts */
+QSplitter#chart-splitter::handle {
+    background-color: #21808D;
+}
+
+QSplitter#chart-splitter::handle:horizontal {
+    width: 3px;
+}
+
+QSplitter#chart-splitter::handle:vertical {
+    height: 3px;
+}
+
+/* Analytics tab styling */
+QTabWidget[objectName="analytics_tabs"] {
+    background-color: #FFFFFD;
+}
+
+QTabWidget[objectName="analytics_tabs"]::pane {
+    background-color: #FFFFFD;
+    border: 1px solid #ECEAE3;
+    border-radius: 8px;
+    margin-top: 4px;
+}
+
+/* Filter group styling */
+QGroupBox[objectName="filter_group"] {
+    background-color: #FFFFFD;
+    border: 1px solid #ECEAE3;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 24px;
+    margin-bottom: 16px;
+}
+
+QGroupBox[objectName="filter_group"]::title {
+    color: #21808D;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 0px;
+    background: transparent;
+    subcontrol-origin: margin;
+    subcontrol-position: top left;
+    left: 0px;
+    top: -20px;
+}
+
+/* Dashboard 4-column layout */
+QSplitter#dashboard-splitter {
+    border: none;
+    background: transparent;
+}
+
+QSplitter#dashboard-splitter::handle {
+    background: #ECEAE3;
+    width: 2px;
+    border-radius: 1px;
+}
+
+QSplitter#dashboard-splitter::handle:hover {
+    background: #21808D;
+}
+
+/* Dashboard cards */
+QWidget[objectName="card"] {
+    background-color: #FFFFFD;
+    border: 1px solid #ECEAE3;
+    border-radius: 12px;
+    padding: 16px;
+    margin: 4px;
+}
+
+/* Link button styling for "View All" buttons */
+QPushButton#btn--link {
+    background: transparent;
+    border: none;
+    color: #21808D;
+    font-size: 12px;
+    text-decoration: underline;
+    padding: 2px 4px;
+}
+
+QPushButton#btn--link:hover {
+    color: #1D7480;
+    background: rgba(33, 128, 141, 0.1);
+    border-radius: 4px;
+}
+
+/* Analytics grid layout */
+QFrame[objectName="card"] QLabel[objectName="card__header"] {
+    font-size: 16px;
+    font-weight: 600;
+    color: #FFFFFF;
+    background-color: #21808D;
+    margin-bottom: 8px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    width: auto;
+    min-height: 20px;
+    text-align: center;
+}
+
+/* Enhanced chart container styling */
+QFrame[objectName="card"] QChartView {
+    background-color: #FFFFFD;
+    border: none;
+    border-radius: 8px;
+}
+
+/* Analytics and Activity header bars */
+#analytics-headers-bar, #activity-headers-bar {
+    background-color: #E5E5E5;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 8px 0px;
+}
+
+/* Analytics Filters header (restored) */
+#analytics-filters-header {
+    font-size: 16px;
+    font-weight: 600;
+    color: #21808D;
+    margin-bottom: 8px;
+}
+
+/* Filter group without header background */
+#filter_group {
+    border: 1px solid #D0D0D0;
+    border-radius: 6px;
+    background-color: #FAFAFA;
+    margin-top: 4px;
+}
+
+#filter_group::title {
+    subcontrol-origin: margin;
+    left: 10px;
+    padding: 0 5px 0 5px;
+    color: transparent; /* Hide the title since we have separate header */
+}
+

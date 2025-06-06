@@ -1,0 +1,183 @@
+See discussions, st ats, and author pr ofiles f or this public ation at : https://www .researchgate.ne t/public ation/355130491
+Cryptocu rrencies Market
+Pr eprint  · Oct ober 2021
+DOI: 10.13140/RG.2.2.10085.93929
+CITATIONS
+0READS
+610
+All c ontent f ollo wing this p age was uplo aded b y Nabeel-Ud-Din Jalal  on 07 Oct ober 2021.
+The user has r equest ed enhanc ement of the do wnlo aded file.
+ 1 Cryptocurrencies Market : A Basic Introduction  
+Raja Nabeel -Ud-Din Jalal, PhD  
+ 
+In 2008, Satoshi Nakamoto introduced Bitcoin, a peer -to-peer 
+electronic transaction system that replaces paper and plastic money with 
+crypto coins. The primary purpose of Bitcoin or any cryptocurrency is to cut 
+out the middleman, the financial institution, and reduce the costs incurred 
+by using a financial institution for transactions and payments.  
+Low transaction costs, peer -to-peer transaction networks,  and 
+decreased user control have all increased the overall popularity of 
+cryptocurrencies, resulting in an explosive increase in market size. The 
+rapid growth that was triggered by this event has led to volatile market 
+conditions, rapid market speculation,  and a group -think mentality in the 
+market. The price of Bitcoin increased from $300 to $7,500 over the course 
+ 2 of 3 years before peaking in June of 2018. Frisby (2014)  claimed that it 
+appears that Bitcoin exhibits the characteristics of money, while offering 
+additional benef its. A lot of market traders find the supply and demand 
+volatility it has, along with its resiliency, divisibility, portability, and liquidity, 
+to be attractive (Jalal and Leonelli, 2020; Jalal et al. , 2020; Jalal, Alon and 
+Paltrinieri, 2 021). 
+Several new cryptocurrencies have emerged in a short period of 
+time, most of which also rely on blockchain technology. Examples include 
+Ethereum (ETH) and Ripple (XRP). Ethereum uses advanced hardware that 
+reduces the time needed to process transa ctions. Ripple supports the free 
+transfer of different currencies. Although there are no significant differences 
+in these currencies' underlying technology, various characteristics of each 
+currency may affect their value, stability, and relationship with o ther 
+cryptocurrencies.  
+ 3 Bitcoin dominates the cryptocurrency market and is the world’s first 
+digital currency. Between October 2016 and October 2017, blockchain's 
+market capitalization grew from $10.1 billion to $79.7 billion, and prices have 
+risen from $61 6 billion to $4800 billion (US dollars). This substantial 
+increase of 680% gave investors returns per annum that no other 
+investments could achieve.  Cryptocurrencies other than Bitcoin are 
+commonly known as “Altcoins” (alternative coin). These altcoins ar e divided 
+into two categories: (i) altcoin, which follows Bitcoin’s open -source protocols 
+with minor changes in the underlying codes and (ii) independent source 
+protocols with independent distributed ledgers. Litecoin is one of the major 
+altcoins in the fi rst category, whereas Ethereum and Ripple are in the 
+second category. Although altcoins are part of the cryptocurrency market, 
+each of them has different characteristics. Some use Bitcoin protocols, and 
+some use a completely different system, with centrali zed, decentralized, 
+ 4 pseudo -anonymous or completely anonymous PoW or PoS 
+mechanisms (Jalal, Alon and Paltrinieri, 2021) .  Table 1 identifies the 
+characteristics of the major cryptocurrencies. The top 10 of these such as 
+Bitcoin, Ethereum, Ripple, Bitcoin Cash, Litecoin, Stellar, IOTA, Cardano, 
+Monero, NEO and DASH are decentralized. Most of them can be converted 
+into stabl e fiat currencies. Most of these cryptocurrencies use smart 
+contracts for security purposes to protect the users and are pseudo -
+anonymous in nature.  
+ 5  
+Table 1: Characteristics of Majorly Traded Cryptocurrencies  
+ 
+Name  Symbol  Centralized/ 
+Decentralized  Smart 
+contacts  Altcoin 
+category  Pseudo 
+anonymous/completely 
+anonymous  Open/public 
+permissionless 
+blockchain/Public 
+Permissioned 
+blockchain  PoW 
+Mechanism 
+/PoS 
+Meachanism  Acceptance as 
+payment mode  
+Bitcoin  BTC Decentralized  No Parent source  completely anonymous*  Open permissionless 
+blockchain  PoW 
+Mechanism  Yes, and 
+Convertible into fiat 
+currency  
+    
+Ethereum  ETH Decentralized  Yes Independent  
+source code  Completely anonymous*  Open permissionless 
+blockchain  PoW 
+Meachanism, 
+but moving to 
+PoS.  Yes, and 
+Convertible into fiat 
+currency  
+Ripple  XRP Decentralized  Yes Independent 
+source code  Pseudo anonymous  Public Permissioned 
+blockchain for 
+transaction  None, use own 
+conseus 
+meachanism  Yes, and 
+Convertible into fiat 
+currency  
+ 6 Bitcoin 
+Cash  BCH  Decentralized  Yes Bitcoin source 
+code  Pseudo anonymous  Open permissionless 
+blockchain  PoW 
+Meachanism  Yes, and 
+Convertible into fiat 
+currency  
+Litecoin  LTC Decentralized  No Bitcoin source 
+code  Pseudo anonymous  Open permissionless 
+blockchain  PoW 
+Meachanism  Yes, and 
+Convertible into fiat 
+currency  
+Stellar  XLM Decentralized  Yes Independent  
+source code  Pseudo anonymous  Open permissionless 
+blockchain  None, use own 
+conseus 
+meachanism  Yes, and 
+Convertible into fiat 
+currency  
+IOTA  MIOTA  Decentralized  Yes Independent  
+source code  Pseudo anonymous  Public Permissionless 
+blockchain for 
+transaction  PoS 
+meachanism  Yes, and 
+Convertible into fiat 
+currency  
+Cardano  ADA Decentralized  Yes Independent  
+source code  Completely anonymous  Open permissionless 
+blockchain  but can be 
+permissioned  PoW 
+Meachanism  Yes, and 
+Convertible into fiat 
+currency  
+Monero  XMR  Decentralized  Yes Independent  
+source code  Pseudo anonymous  Both PoW 
+Meachanism  Yes, and 
+Convertible into fiat 
+currency  
+NEO  NEO  Decentralized  Yes Independent 
+Source code  Pseudo anonymous  Public Permissioned 
+blockchain for 
+transaction  None, use own 
+conseus 
+meachanism  Yes, and 
+Convertible into fiat 
+currency  
+ 7 DASH  DASH  Decentralized  Yes Independent 
+Source code  Pseudo anonymous  Open permissionless 
+blockchain  None, use own 
+conseus 
+meachanism  Yes, and 
+Convertible into fiat 
+currency  
+*But can be verifiable by connected the chains.  
+ 
+ 8 The lack of connectedness to any central or regional authority and ease of 
+accessibility have made cryptocurrencies a global financial asset that can be 
+accessed in multiple locations worldwide (Corbet et al. , 2019; Jalal, Alon and 
+Paltrinieri, 2021) . The decentralized nature makes cryptocurrencies easy to invest in, 
+hacking, theft, unethical use, and the  financing of terror are linked with 
+cryptocurrencies and activities on the Dark Web. It would be interesting to see the 
+impact of cryptocurrencies on market, and individual level.  
+ 
+ 
+References  
+ 
+Corbet, S. et al. (2019) ‘Cryptocurrencies as a Financial Asset: A Systematic 
+Analysis’, International Review of Financial Analysis , 62. doi: 10.2139/ssrn.3143122.  
+Frisby, D. (2014) Bitcoin: the future of money?  Unbound Publishing.  
+Jalal, R. N. -U.-D. et al.  (2020) ‘Herd ing Behavior and Cryptocurrency  : Market 
+Asymmetries ’, Journal of Asian Finance, Economics and Business , 7(7), pp. 27 –34. 
+doi: 10.13106/jafeb.2020.vol7.no7.027.  
+Jalal, R. N. -U.-D. and Leonelli, S. (2020) ‘Does self -attribution impact investor 
+perception a bout cryptocurrency market efficiency? Mediating role overconfidence in 
+the relation of self -attribution with perceived market efficiency’, in ITAIS2020: XVII 
+CONFERENCE OF THE ITALIAN CHAPTER OF AIS - ORGANIZING IN A 
+DIGITIZED WORLD: DIVERSITY, EQUALITY A ND INCLUSION . Available at: 
+http://www.itais.org/ITAIS2020_proceedings/.  
+Jalal, R. N. U. D., Alon, I. and Paltrinieri, A. (2021) ‘A bibliometric review of 
+cryptocurrencies as a financial asset’, Technology Analysis and Strategic 
+Management . Taylor & Franci s, 0(0), pp. 1 –16. doi: 
+10.1080/09537325.2021.1939001.  
+ 
+View publication stats

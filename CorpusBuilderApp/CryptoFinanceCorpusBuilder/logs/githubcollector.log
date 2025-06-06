@@ -1,0 +1,52 @@
+2025-05-10 08:59:28,750 - GitHubCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 08:59:28,752 - GitHubCollector - INFO - Cloning repository: https://github.com/Shekhargupta01/price-prediction-using-AI.git
+2025-05-10 08:59:30,189 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\Shekhargupta01_price-prediction-using-AI
+2025-05-10 08:59:30,189 - GitHubCollector - INFO - Cloning repository: https://github.com/MohitCodes46/The-Market-Maven.git
+2025-05-10 08:59:31,445 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\MohitCodes46_The-Market-Maven
+2025-05-10 08:59:31,445 - GitHubCollector - INFO - Cloning repository: https://github.com/zszszszsz/.config.git
+2025-05-10 08:59:32,697 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\zszszszsz_.config
+2025-05-10 08:59:32,698 - GitHubCollector - INFO - Cloning repository: https://github.com/chrisneagu/FTC-Skystone-Dark-Angels-Romania-2020.git
+2025-05-10 08:59:42,590 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\chrisneagu_FTC-Skystone-Dark-Angels-Romania-2020
+2025-05-10 08:59:42,590 - GitHubCollector - INFO - Cloning repository: https://github.com/klonnet23/helloy-word.git
+2025-05-10 08:59:43,795 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\klonnet23_helloy-word
+2025-05-10 08:59:43,795 - GitHubCollector - INFO - Cloning repository: https://github.com/MateusNobreSilva/app_send_mail.git
+2025-05-10 08:59:45,691 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\MateusNobreSilva_app_send_mail
+2025-05-10 08:59:45,692 - GitHubCollector - INFO - Cloning repository: https://github.com/Martlgap/human-machine-fusion.git
+2025-05-10 08:59:48,299 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\Martlgap_human-machine-fusion
+2025-05-10 08:59:48,300 - GitHubCollector - INFO - Cloned 7 repositories
+2025-05-10 09:05:03,210 - GitHubCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Shekhargupta01_price-prediction-using-AI
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MohitCodes46_The-Market-Maven
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\zszszszsz_.config
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\chrisneagu_FTC-Skystone-Dark-Angels-Romania-2020
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\klonnet23_helloy-word
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MateusNobreSilva_app_send_mail
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Martlgap_human-machine-fusion
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Cloned 7 repositories
+2025-05-10 09:17:43,998 - GitHubCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 09:17:43,999 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Shekhargupta01_price-prediction-using-AI
+2025-05-10 09:17:43,999 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MohitCodes46_The-Market-Maven
+2025-05-10 09:17:43,999 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\zszszszsz_.config
+2025-05-10 09:17:43,999 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\chrisneagu_FTC-Skystone-Dark-Angels-Romania-2020
+2025-05-10 09:17:43,999 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\klonnet23_helloy-word
+2025-05-10 09:17:43,999 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MateusNobreSilva_app_send_mail
+2025-05-10 09:17:44,000 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Martlgap_human-machine-fusion
+2025-05-10 09:17:44,000 - GitHubCollector - INFO - Cloned 7 repositories
+2025-05-10 09:23:30,929 - GitHubCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 09:23:30,930 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Shekhargupta01_price-prediction-using-AI
+2025-05-10 09:23:30,930 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MohitCodes46_The-Market-Maven
+2025-05-10 09:23:30,930 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\zszszszsz_.config
+2025-05-10 09:23:30,931 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\chrisneagu_FTC-Skystone-Dark-Angels-Romania-2020
+2025-05-10 09:23:30,931 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\klonnet23_helloy-word
+2025-05-10 09:23:30,931 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MateusNobreSilva_app_send_mail
+2025-05-10 09:23:30,931 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Martlgap_human-machine-fusion
+2025-05-10 09:23:30,931 - GitHubCollector - INFO - Cloned 7 repositories
+2025-05-10 09:25:00,511 - GitHubCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 09:25:00,512 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Shekhargupta01_price-prediction-using-AI
+2025-05-10 09:25:00,512 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MohitCodes46_The-Market-Maven
+2025-05-10 09:25:00,512 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\zszszszsz_.config
+2025-05-10 09:25:00,513 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\chrisneagu_FTC-Skystone-Dark-Angels-Romania-2020
+2025-05-10 09:25:00,513 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\klonnet23_helloy-word
+2025-05-10 09:25:00,513 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MateusNobreSilva_app_send_mail
+2025-05-10 09:25:00,513 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Martlgap_human-machine-fusion
+2025-05-10 09:25:00,513 - GitHubCollector - INFO - Cloned 7 repositories

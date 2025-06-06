@@ -1,0 +1,205 @@
+J.P. Morgan Strategic Volatility Index  
+OVERVIEW  
+The J.P. Morgan  Strategic  Volatility  Index   (the 
+“Index”  or “Strat  Vol Index”)  provides  long exposure  
+to VIX futures  at the 2-month  point,  and aims  to 
+offset  and potentially  profit  from the “negative  roll 
+yield”1 often  associated  with a long VIX futures  
+position  by activating  a short  position  in VIX futures  
+at the 1-month  point  during  certain  market  
+conditions . The Index  is rules -based,  with daily 
+levels  published  to Bloomberg  under  the ticker  
+JPUSSTVL .  
+How the Index Works  
+Maintains  long exposure  to the 2-month  point  on the VIX 
+futures  curve .  
+An opportunistic  short  position  at the 1-month  point  on the 
+VIX futures  curve  is activated  during  certain  market  
+scenarios  (as described  below),   which  aims  to offset  and 
+potentially  profit  from the negative  roll yield associated  with 
+the VIX curve  in those  market  conditions . 
+When  activated,  the short  position  is increased  in 20% 
+daily increments ; when  de-activated  it is decreased  in 20% 
+daily decrements . The short  position  ranges  from 0% to 
+100%. 
+Activation/De -activation  signal :  If the level of the VIX 
+Index  is below  the 1-month  point  on the VIX futures  curve  
+(as would  typically  be the case  when  the curve  is in 
+contango)  for 3 consecutive  days,  the short  position  is 
+activated  (in 20% increments)  and if it is above  the 1-
+month  point  on the VIX futures  curve  for 3 consecutive  
+days,  the short  position  is de-activated  (in 20% 
+decrements) .  
+The Index  level incorporates  a 0.75% per annum  index  
+fee, as well as additional  deductions  related  to the notional  
+rebalancing  of the VIX futures  contracts3 Brief Background on Volatility Investing  
+The VIX Index,  published  by the Chicago  Board  of Options  
+Exchange  (“CBOE”),  is viewed  as the benchmark  index  for 
+measuring  the market’s  expectation  of the near-term (30 
+days)  volatility  of the S&P 500®  Index .  
+Volatility,  as measured  by the VIX Index,  has historically  
+increased  during  periods  of decline  in the equity  markets .  
+(See  the chart  below .)  However,  the VIX Index  is not an 
+investable  index . 
+Futures  contracts  on the VIX Index  were  introduced  by the 
+CBOE  in 2004  to provide  investable  access  to volatility . 
+The VIX futures  curve  is often  in “contango”2 which  can, all 
+else being  equal,  result  in negative  returns  for a strategy  
+that is long VIX futures . Hypothetical historical performance comparison: Strategic 
+Volatility Index and S&P 500 ®  Index - Sep 2006 to Jul 2014  
+1. See the section  labelled  “Glossary”  on the following  page  for the definition  of “negative  roll yield” . 
+2. See the section  labelled  “Glossary”  on the following  page  for the definition  of “contango” . 
+3. The level of the Index  incorporates  the daily deduction  of (a) the index  fee of 0.75% per annum  and (b) a “daily  rebalancing  adjustment  amount”  that is 
+determined  by applying  a rebalancing  adjustment  factor  of between  0.20% and 0.50% per day, both to the aggregate  notional  amount  of each  of the VIX 
+futures  contracts  hypothetically  traded  that day and the amount  of the change,  if any, in the level of the exposure  to the synthetic  short  position . Please  
+review  the relevant  product  supplement  we have  filed and any relevant  term sheet  or pricing  supplement  for further  details  on the J.P. Morgan  Strategic  
+Volatility  Index,  including  the daily rebalancing  adjustment  amount .  Historical performance comparison of the S&P 500 ® Index 
+and the VIX Index: July 2003 – July 2014  
+Source : J.P. Morgan . As of 7/31/2014 . PAST  PERFORMANCE  IS NOT INDICATIVE  
+OF FUTURE  RESULTS .  The VIX Index  is not an investable  Index .  The Strat  Vol 
+Index  is not linked  to the VIX Index .  The information  in this chart  is provided  solely  
+for reference . 
+1 month  2 month  3 month  Volatility  
+negative roll yield from sliding down a futures 
+curve that is in contango  
+spot Source : J.P. Morgan . As of 7/31/2014 . PAST  PERFORMANCE  AND  BACK -TESTED  
+PERFOMANCE  ARE NOT  INDICATIVE  OF FUTURE  RESULTS . The Strat  Vol Index  
+was launched  on 7/30/2010 ; therefore  any data shown  for that index  prior to that date 
+is back -tested . The information  in this chart  is provided  solely  for reference . 
+Illustration of a futures curve in contango Source : J.P. Morgan . As of 7/31/2014 . PAST  PERFORMANCE  AND  BACK -
+TESTED  PERFORMANCE  ARE NOT  INDICATIVE  OF FUTURE  RESULTS . 
+Annualized  Return  is based  on compounded  performance  of returns  over the 
+specified  period .  Annualized  Volatility  represents  the standard  deviation  of daily 
+returns  scaled  to one year.  “80/20 S&P 500® Index   / Strat  Vol Index”  means  a 
+portfolio  that is allocated  80% to S&P 500® Index  and 20% to Strat Vol Index  that 
+is rebalanced  quarterly . The Strat  Vol Index  was launched  on 7/30/2010 , therefore  
+any data used  for that index  prior to that date is back -tested . The information  in 
+this chart  is provided  solely  for reference . Annualized 
+Return  Annualized 
+Volatility  
+Strategic Volatility Index  16.56%  30.63%  
+S&P 500 ®  Index  4.97%  22.33%  
+80/20 S&P 500®   Index / Strategic                 
+Volatility Index  9.62%  15.86%  Hypothetical historical returns and volatilities: Strategic 
+Volatility Index and S&P 500 ®  Index - Sep 2006 to Jul 2014  
+J.P. Morgan Structured Investments | 800 576 3529 | JPM_Structured_Investments@jpmorgan.com                      June 30, 2014  
+6008001 ,0001 ,2001 ,4001 ,6001 ,8002,000
+Jul-03 Jul-04 Jul-05 Jul-06 Jul-07 Jul-08 Jul-09 Jul-10 Jul-11 Jul-12 Jul-13 Jul-14020406080VIX INDEX (right axis)
+S&P 500® Index (left axis)
+6008001 ,0001 ,2001 ,4001 ,6001 ,800
+Sep-06 Sep-07 Sep-08 Sep-09 Sep-1 0 Sep-1 1 Sep-1 2 Sep-1 301 00200300400500600700
+S&P 500® Index (left axis)
+Strategic Vol Index (right axis)
+Disclaimer  
+SEC Legend : JPMorgan  Chase  & Co. has filed a registration  statement  (including  a prospectus)  with the SEC for any offerings  to which  these  materials  
+relate . Before  you invest,  you should  read the prospectus  in that registration  statement  and the other  documents  relating  to this offering  that JPMorgan  
+Chase  & Co. has filed with the SEC for more  complete  information  about  JPMorgan  Chase  & Co. and this offering . You may get these  documents  without  
+cost by visiting  EDGAR  on the SEC Web  site at www .sec.gov. Alternatively,  JPMorgan  Chase  & Co., any agent  or any dealer  participating  in this offering  
+will arrange  to send  you the prospectus  and each  prospectus  supplement  as well as any product  supplement,  pricing  supplement  and term sheet  if you 
+so request  by calling  toll-free 800-576-3529 .  
+Free Writing  Prospectus  Filed  Pursuant  to Rule 433 Registration  Statement  No. 333-177923  
+To the extent  there  are any inconsistencies  between  this free writing  prospectus  and the relevant  pricing  supplement,  the relevant  pricing  supplement,  
+including  any hyperlinked  information,  shall supersede  this free writing  prospectus . 
+Investment  suitability  must  be determined  individually  for each  investor . The financial  instruments  described  herein  may not be suitable  for all investors .  
+This information  is not intended  to provide  and should  not be relied  upon  as providing  accounting,  legal,  regulatory  or tax advice . Investors  should  consult  
+their own advisors  on these  matters . 
+IRS Circular  230 Disclosure : JPMorgan  Chase  & Co. and its affiliates  do not provide  tax advice . Accordingly,  any discussion  of U.S. tax matters  
+contained  herein  (including  any attachments)  is not intended  or written  to be used,  and cannot  be used,  in connection  with the promotion,  marketing  or 
+recommendation  by anyone  unaffiliated  with JPMorgan  Chase  & Co. of any of the matters  address  herein  or for the purpose  of avoiding  U.S. tax-related  
+penalties .  Index fee and deductions for rebalancing 
+adjustments  
+The reported  level of the Index  incorporates  the daily 
+deduction  of (a) an index  fee of 0.75% per annum  and (b) a 
+“daily  rebalancing  adjustment  amount”  that is determined  by 
+applying  a rebalancing  adjustment  factor  of between  0.20% 
+and 0.50% per day, both to the aggregate  notional  amount  
+of each  of the VIX futures  contracts  hypothetically  traded  
+that day and the amount  of the change,  if any, in the level of 
+the exposure  to the synthetic  short  position .  
+The daily rebalancing  adjustment  amount  is intended  to 
+approximate  the “slippage  costs”  that would  be experienced  
+by a professional  investor  seeking  to replicate  the 
+hypothetical  portfolio  contemplated  by the Index  at prices  
+that approximate  the official  settlement  prices  (which  are not 
+generally  tradable)  of the relevant  VIX futures  contracts .   
+These  risk factors  are not exhaustive . Please  review  the 
+relevant  product  supplement  we have  filed and any relevant  
+term  sheet  or pricing  supplement  for further  information  on 
+risk factors  associated  with the J.P. Morgan  Strategic  
+Volatility  Index .    “contango”  is used  to describe  the shape  of a futures  curve  
+when  the price  of a futures  contract  with a later expiration  is 
+higher  than that of a futures  contract  with an earlier  expiration .  
+ “backwardation”  is the opposite  of contango  and is used  to 
+describe  the shape  of a futures  curve  when  the price  of a futures  
+contract  with a later expiration  is lower  than the price  of a futures  
+contract  with an earlier  expiration . 
+“negative  roll yield”  / “positive  roll yield” : Because  futures  
+contracts  have  specific  expiration  dates,  in order  for an investor  
+to maintain  exposure,  the investor  needs  to sell a futures  
+contracts  as it gets close  to expiration  and purchase  another  
+contract  with a later expiration  date.  This process  is known  as 
+“rolling”  the futures  position .  When  a futures  curve  is in 
+“contango”  (see above),  all else being  equal,  an investor  in a 
+long futures  position  pays  a higher  price  to buy a later expiration  
+futures  contract  than the price  at which  the investor  sells the 
+contract  as it nears  expiration,  thus suffering  negative  returns  
+(“negative  roll yield”) .   Whereas  when  the futures  curve  is in 
+“backwardation”  (see above),  all else being  equal,  an investor  in 
+a long futures  position  pays  a lower  price  to buy a later expiration  
+futures  contract  than the price  at which  the investor  sells the 
+contract  as it nears  expiration  thus generating  positive  returns  
+(“positive  roll yield”) . Glossary of Select Terms Hypothetical historical illustration of the exposure to the short component of the Strategic Volatility Index:          
+Sep 2006 to July 2014 
+What are the main risks in the Index?  
+Any securities  we may issue  linked  to the Index  may result  
+in a loss, and are exposed  to the credit  risk of J.P. Morgan  
+Chase  & Co. 
+The Index  has limited  operating  history .  
+The reported  level of the Index  incorporates  the daily 
+deduction  of (a) an index  fee of 0.75% per annum  and (b) a 
+“daily  rebalancing  adjustment  amount”  (as described  
+above) . 
+The daily rebalancing  adjustment  amount  is likely  to have  a 
+substantial  adverse  effect  on the level of the Index . 
+The Index  may not be successful  and may not outperform  
+any alternative  strategy . 
+Strategies  that provide  exposure  to equity  volatility,  which  
+are subject  to significant  fluctuations,  are not suitable  for all 
+investors .  
+When  the synthetic  short  position  is activated,  your return  
+on the notes  is dependent  on the net performance,  not the 
+absolute  performance,  of the long and short  positions .  
+Due to the time lag inherent  in the Index,  the exposure  to 
+the synthetic  short  position  may not be adjusted  quickly  
+enough  to offset  loss or generate  profit . 
+The Index  comprises  only notional  assets  and liabilities .  
+The Index  is an excess  return  index  and reflects  the 
+performance  of an uncollateralized  investment  in futures  
+contracts . 
+Our affiliate,  J.P. Morgan  Securities  Ltd. (“JPMSL”),  is the 
+Sponsor  and Calculation  Agent  for the Index  and may 
+adjust  the Index  in a way that affects  its level.  
+The Index  is subject  to risks associated  with futures  
+contracts . 
+0200400600800
+Sep-
+06Mar-
+07Sep-
+07Mar-
+08Sep-
+08Mar-
+09Sep-
+09Mar-
+10Sep-
+10Mar-
+11Sep-
+11Mar-
+12Sep-
+12Mar-
+13Sep-
+13Mar-
+140%25%50%75%1 00%Exposure to the Short Leg (right axis) Strategic Vol Index (left axis)Source : J.P. Morgan . As of 7/31/2014 . PAST  PERFORMANCE  AND  BACK -TESTED  PERFORMANCE  ARE NOT  INDICATIVE  OF FUTURE  LEVELS . The Strategic  
+Volatility  Index  was launched  on 7/30/2010 ; therefore  any data used  for that Index  prior to that date is back -tested . The hypothetical,  exposure  to the short  leg obtained  from 
+such  back -testing  should  not be considered  indicative  of the actual  exposure  that would  be realized  during  an investment  in the Index .  The information  in this chart  is 
+provided  solely  for reference .  
+J.P. Morgan Structured Investments | 800 576 3529 | JPM_Structured_Investments@jpmorgan.com                      June 30, 2014  

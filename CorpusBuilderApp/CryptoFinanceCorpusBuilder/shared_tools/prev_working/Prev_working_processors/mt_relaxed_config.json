@@ -1,0 +1,5 @@
+{
+  "ngram_repetition_threshold": 6,
+  "rare_word_ratio_threshold": 0.25,
+  "missing_article_threshold": 0.15
+} 

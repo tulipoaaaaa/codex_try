@@ -1,0 +1,3401 @@
+ 
+Trading Order Flow  
+Understanding & Profiting From Market 
+Generated Information As It Occurs  
+ 
+Michael Valtos  
+http://www. orderflows.com  
+ 
+ 
+  
+Page 1 of 150 
+ 
+Table of Contents  
+INTRODUCTION TO ORDE R FLOW  ................................ ................................ ................................ ..........  3 
+BENEFITS OF TRADING ORDER FLOW  ................................ ................................ ................................  11 
+EXAMPLES OF ORDER FL OW IN EVERYDAY LIFE  ................................ ................................ ............  13 
+ORDERFLOWS SOFTWARE  ................................ ................................ ................................ ....................  15 
+INTERPRETING ORDER F LOW  ................................ ................................ ................................ ...............  17 
+READING AN ORDER FLO W CHART  ................................ ................................ ................................ ..... 20 
+THE IMPORTANCE OF PR ICE ................................ ................................ ................................ .................  24 
+THE IMPORTANCE OF VO LUME  ................................ ................................ ................................ .............  28 
+THE IMPORTANCE OF DE LTA  ................................ ................................ ................................ ................  32 
+COT – COMMITMENT OF TRADER S ................................ ................................ ................................ ...... 34 
+DIFFERENT TYPES OF B UYERS AND SELLERS  ................................ ................................ .................  39 
+AGGRESSIVE PARTICIPA NTS  ................................ ................................ ................................ ................  41 
+PASSIVE PARTICIPANTS  ................................ ................................ ................................ .........................  44 
+THE IMPO RTANCE OF AGGRESSIVE  AND PASSIVE PARTICPA NTS  ................................ .............  47 
+IMBALANCE LEVELS  ................................ ................................ ................................ ................................  49 
+STACKED IMBALANCE  ................................ ................................ ................................ ............................  51 
+TRAPPED  B UYERS AND SELLERS  ................................ ................................ ................................ ...... 55 
+ABSORPTION  ................................ ................................ ................................ ................................ .............  60 
+INITIATIVE ACTIVITY  ................................ ................................ ................................ ................................ . 63 
+CANDLESTICK CHARTS &  ORDER FLOW ................................ ................................ ............................  66 
+WHAT KIND OF CHARTS CAN BE USED WITH ORD ER FLOW  ................................ .........................  72 
+HIGH FREQUENCY TRADE RS (HFT) AND SCALPER S ................................ ................................ .......  74 
+INSTITUTIONS AND THE IR USE OF ALGORITHMI C TRADING  ................................ .........................  76 
+VWAP  ................................ ................................ ................................ ................................ ...........................  81 
+ICEBERG ORDERS  ................................ ................................ ................................ ................................ .... 84 
+SUPPORT AND RESISTAN CE ................................ ................................ ................................ .................  86 
+PREVIOUS HIGHS AND L OWS  ................................ ................................ ................................ ................  89 
+TODAY’S HIGH AND LOW S ................................ ................................ ................................ .....................  98 
+MACRO APPROACH  ................................ ................................ ................................ ...............................  109 
+TRADING NUMBERS  ................................ ................................ ................................ ...............................  110 
+OTHER FORCES  ................................ ................................ ................................ ................................ ...... 111 
+LONG TERM APPLICATIO NS OF ORDER FLOW  ................................ ................................ ...............  112 
+TRADE MANAGEMENT AND  MONEY MANAGEMENT  ................................ ................................ ...... 115 
+Page 2 of 150 
+ 
+PROPER TRADE EXECUTI ON ................................ ................................ ................................ ...............  122 
+PYSCHOLOGICAL ASPECT S OF TRADING  ................................ ................................ ........................  123 
+OVERTRADING AND GREE D ................................ ................................ ................................ ................  125 
+SITTING OUT IS A TRA DE ................................ ................................ ................................ ......................  126 
+CONFLICTING SIGNS ................................ ................................ ................................ ..............................  127 
+COMMON CHARACTERISTI CS OF A TRADING OPPO RTUNITY  ................................ ....................  129 
+PUTTING IT ALL TOGET HER  ................................ ................................ ................................ .................  131 
+HOW I USE ORDERFLOWS  SOFTWARE TO FIND TRA DES  ................................ ............................  139 
+WRAP UP  ................................ ................................ ................................ ................................ ..................  147 
+ 
+Disclaimer: Futures and options trading have large potential rewards, but also large  
+potential risk. You must be aware of the risks and be willing to accept them in order 
+to invest in the futures and options markets. Don't trade with money you can't 
+afford to lose. Th is is neither a solicitation nor an offer to buy or sell futures, stocks 
+or options. No representation is being made that any account will or is likely to 
+achieve profits or losses similar to those discussed here. The past performance of 
+any trading system  or methodology is not necessarily indicative of future results. If 
+you decide to invest real money, all trading decisions should be your own.  
+ 
+CFTC Required Disclaimer: Hypothetical or simulated performance results have 
+certain inherent limitations. Unlik e an actual performance record, simulated results 
+do not represent actual trading. Also, since the trades have not actually been 
+executed, the results may have under – or over–compensated for the impact, if any, 
+of certain market factors, such as lack of li quidity. Simulated trading programs in 
+general are also subject to the fact that they are designed with the benefit of 
+hindsight. No representation in being made that any account will or is likely to 
+achieve profits or losses similar to those shown.  
+ 
+Speci al Thanks To: NinjaTrader.com is the award winning trading software and 
+platform which I use to generate my charts.  
+ 
+Copyright 2015   
+Page 3 of 150 
+ 
+INTRODUCTION  TO ORDER FLOW  
+My name is Michael Valtos and since 1994 I have been trading for banks 
+(JP Morgan and Commerzba nk) as well commodity trading houses 
+(Cargill and EDF Man) and for myself. While trading for the investment 
+banks I learned how to get information out of the market and how to 
+trade off that information into a profitable position; when there is an 
+opportun ity to earn a significant return relative to risk you get into a 
+position. While trading at commodity trading houses I learned to think 
+how commercial end -users think; you are always in a position just by 
+being in that business whether or not you chose to hedge a position in 
+the futures market. While trading for myself I learned to take low risk 
+high return trades; I do not try and capture every random move in the 
+market. What I look for is what I like to call “Stress Free Trades” which to 
+me are low risk e ntries that have high profit potential. I have enough 
+stress in my life I don’t want trading to add to it.  
+Order flow analysis is a visual representation of market price movements 
+constructed by recording the volume traded on the bid and the offer as 
+oppos ed to just looking solely at price. The value in order flow analysis is 
+in instantly confirming market tops and bottoms when they form, 
+determining where changes in supply and demand have occurred and 
+providing insight into market psychology and market con ditions.  
+Here is an Orderflows chart compared to a traditional candlestick chart:  
+ 
+
+Page 4 of 150 
+ 
+Normal bar charts only show the open, high, low and close. They don’t 
+show how much traded on the bid and offer. They don’t measure how 
+strong the buyers and sellers were. Orderflows charts tell you that.  
+New traders  are always trying to find the Holy Gra il when it comes to 
+trading. A way to trade that will allow them to pull money out of the 
+market as if it is t heir own personal cash machine, a secret order to the 
+markets based on price indicators and moving averages. However, 
+when it comes to the market there are no secrets. Nothing in the market 
+is 100% certain. Hard work, practice, sound money management and, 
+most of all, discipline are what will make a trader profitable.  
+Just as the alchemists used to try to turn lead into gold, mathematicians 
+and com puter programmers come up with new indicators to try and 
+predict the next market trend. Gann enthusiasts and Elliot Wave 
+practitioners throw stones at me when I say the market is not ruled by 
+mathematical formulas.  
+Not much has changed over the last 100 ye ars of trading except the 
+advent of computers making the dissemination of market information 
+faster. Traders still look at the open, high, low, close and volume in 
+almost the same fashion as they did 100 years ago. Traders still look at 
+the ticker tape, al though now they refer to it as order flow.  Computers 
+have made tracking the trades as they occur much easier and allows for 
+the data to be analysed and deciphered.  
+The Japanese have a saying “consult the market about the market” 
+which means that when trading the market, we should pay close 
+attention to the market movement is telling us , rather by swayed by 
+information outside of the market, either fundamentally or technically.  In 
+volatile times, a fundamental trader/analyst can be exactly right about 
+the ma rket but they can get run over in the short run. A long term trader 
+needs to be aware of what is happening in the market in the short term.  
+It isn’t just the retail traders that get caught off side. Sometimes it is the 
+big institutional hedge funds not wat ching what is happening in the 
+market. In the case of Clive Capital, the fundamentals were still bullish, 
+the technicals were something that rarely happens - the market moved 5 
+standard deviations. None of that stopped the market.  
+Page 5 of 150 
+ 
+ 
+Would order flow analysis have helped Clive Capital? I don’t know. But I 
+do know that when I see smoke I look for a fire and if there is a fire I run 
+for the exit. I don’t wait around for the fire to be put out.  
+I know what you are going to say, “Warren B uffet says to buy when 
+everyone is selling and sell when everyone is buying.” You have to fade 
+the crowd mentality. While that is indeed true most of the time, you have 
+to get out when the signs are there. If you are an American visiting Iran 
+and people ar e chanting “death to Americans” it is your best interest to 
+get out there. Granted that is an ex treme example , but you should get 
+the point. If the market is telling you to get out, you should get out.  
+
+Page 6 of 150 
+ 
+Order flow is not another form of technical analysis  per se . Technical 
+analysis is the study of prices as they appear on a price chart and it 
+assumes that current prices represent all known information about the 
+market. The problem with that is that traded prices don’t just represent 
+intrinsic facts  about s upply and demand numbers, prices also take into 
+account people’s expectations about the future . Order flow analysis is a 
+dynamic, real -time way to view the market’s evolving and changing 
+market state. Its primary benefit rests in its unique ability to see a clearly 
+who is in control of the market based on market generated information 
+as it happens.  
+The key elements of order flow are price, traded bid volume, traded ask 
+volume. When these elements are displayed in an order flow chart, 
+traders who understand order flow will be able to identify the market’s 
+areas of strength and weakness. Every market moves up or down based 
+on the interaction between supply and demand. Traditional charting 
+techniques or analysis do not accurately allow you to analyse, 
+understan d and interpret the fighting  occurring between  supply and 
+demand. Order flow charts allow you to dissect supply and demand 
+balance in real time as it is happening. You will understand which side is 
+in control and be prepared to respond when it changes.  
+As we are taught in Economics 101, prices are a function of supply and 
+demand, and both supply and demand are affected by people’s 
+emotions.  Markets move based on people’s needs and more importantly 
+their future expectations of needs. The problem is that a tr aditional  bar 
+chart does not accurately measure nor reflect the emotions of the market 
+participants.  
+Order flow analysis allows a trader a quick read on changes in supply 
+and demand . By analysing the price movements of the volume traded on 
+the bid and ask, a trader is can confirm a trend continuation or reversal 
+early on  and gauge market sentiment by determining how aggressive 
+the market traded.  
+In the past it was difficult to read an d understand order flow,  however  
+advances in technology and the exchanges have made reading and 
+following order flow accessible to anyone who is interested to learn it.  
+Page 7 of 150 
+ 
+The advantage of order flow analysis is that it shows the trader a very 
+clear visual i mage of what is happening in the market. It provides a 
+deeper insight into the market when compared to other types of charts. 
+The market signals that show up in the order flow are not available in 
+other forms of bar charts.  Now you can see and determine  for yourself  
+how aggressive the buying or selling in a bar really is.  
+It is a fact that institutional traders are the first to act when a big move is 
+about to happen because they have the money to move the market  and 
+they are often the traders that give the  market the push it needs to get 
+started moving . In the past there used to be a trading floor where 
+independent traders who paid big sums of money to be in the trading pit 
+would yell and scream while trading with brokers who were executing 
+the institutiona l trader’s orders. When a sizable order would go into the 
+trading put the independent floor traders could make an educated guess 
+if the order would move the market and trade accordingly. Today there 
+are no trading pits. There are no people screaming to exe cute their 
+trades in a trading pit where you can see which players are buying and 
+selling. Trading is done electronically now. However, electronic trading is 
+anonymous and quiet. You need to be able to read the footprints the 
+institutional traders leave be hind in the market.   
+Roughly 95% of traders lose money. Why? Losing traders make trading 
+decisions based on indicators such as RSI, Stochastics, MACD, Moving 
+Averages, etc. All these indicators are derived off of price. I find it is 
+better to just look at price and how the market participants react to price. 
+Price is an advertising mechanism. It is there to get you into a trade.  
+Losing traders are your edge in the market. It is their money you have to 
+take. In order to do that you have to approach and read the market in a 
+way that is different than what the 95% of losing trader do.  
+Many traders are led to believe that they can blindly follow a mechanical 
+system that is based on a mathematical formula and back tested on 20 
+years of data to show its profitabil ity. But what they fail to understand is 
+that it is not mathematical formulas that move markets.  
+You do not need an advanced degree in Applied Mathematics to 
+understand and make efficient use of order flow. Even financial experts 
+don’t know all the answers. Nobody does. Order flow analysis is a tool to 
+Page 8 of 150 
+ 
+help a trader make the right decisions, to spot w eak highs and lows, to 
+spot aggressive buying and selling and much more.  
+Other traders think they can just entrust their money to a “black box” 
+computer program and sit back and make monthly withdrawals from 
+their brokerage account. They think they can mak e the money 
+successful traders do with an off the shelf computer program. They do 
+not want to put in the hard work necessary to develop the skills to 
+become a successful trader.  
+A trader has to learn how to trade, not learn how to take a trade. What I 
+mean is a trader has to learn how to read the market, learn how to 
+anticipate what the market will do based on what it is telling you and go 
+with it. If you talk to any aspiring trader they will tell you all about the 
+latest indicator or moving average crosso ver they are using to trade. 
+That is not trading, that is just taking a trade.  
+So how does one 
+make money trading? 
+By listening to what 
+the market is telling 
+you and using 
+strategies and taking 
+trades that give you 
+an edge by being 
+more knowledgeable 
+than most of the other 
+traders. It is not as 
+difficult as it looks.  
+The key to 
+successfully trading 
+futures is to stack the 
+deck in your favour. 
+This is done by 
+trading when you 
+have an edge. Order 
+flow gives you that 
+edge. Most traders 
+Page 9 of 150 
+ 
+don’t pay attention to order flow. One of the benefits of order is that you 
+don’t have to analyse every tick. Most numbers can be disregarded. 
+What you are looking for are numbers that stick out and then ask 
+yourself what is going on in the market.  
+Be realistic in your thinking and approach to the market. At any given 
+moment there are literally thousands if not tens of thousands of traders 
+watching the market with the intention of finding a profitable trade to 
+take. You don’t need a crystal ball to know when they are coming, you 
+just have to get in before everyone else does.  
+Time may prove me wrong, but I worry about the state of the markets 
+when all the big trading firms only want to hire traders with advanced 
+math degrees. It doesn’t take a PhD to understand why a market moves. 
+I have always felt that trading is like most professions in as much as the 
+accumulation of knowledge is concerned. Markets do not always do 
+what they are supposed to do.  
+Trading futures is a business just like any other. It is easy to be dazzled 
+by the sto ries of the million dollar bonuses. Most people trade the 
+markets for one reason – to make money. A successful trader has a 
+business plan (trading plan – when to get in and out), a budget (trading 
+capital), an operating plan (money management) and most imp ortantly 
+has discipline and will use that discipline to stick to their plans and make 
+money. They recognize when it just isn’t their day and stop trading for 
+the day. They know when to be aggressive and when to back off. 
+Tomorrow is another day. Futures ma rkets are open every weekday. 
+Successful traders trade on their own terms and conditions. When the 
+conditions are ripe they go in for the trade, if not they wait. Successful 
+traders approach trading as a business like any professional would.  
+We all want th e big money as a trader. When we watch basketball we all 
+want the amount of money Michael Jordan made or what Lebron James 
+makes now around $20 million a year. The fact is those guys are 
+superstars and the best at their trade. Look at lesser players like R ay 
+Allen who is Basketball’s All Time leading 3 point shooter. He earns $3 
+million dollars a year. He comes on late in the game and shoots and 
+score 3 point attempts. He specializes is one thing, but he does it 
+Page 10 of 150 
+ 
+extremely well. He has become a master at it.  Trading is the same way. 
+Understand the basics and become a master in an aspect of trading.  
+Every mother wants their child to grow up to be a doctor. Why? Because 
+they know doctors make very good money. But I am sure among the 
+doctors you know, the ones w ho make the most money are those who 
+specialize in one area and are experts in their field of training, like the 
+cardiologist or neurosurgeon. Some of the highest paid professionals are 
+specialists. The point here is that in almost every field you can make  
+good money by specializing in a certain area.  
+Most people who are new to trading do not take the time to become 
+experts in an area of trading. They jump from indicator to indicato r when 
+they experience a loss. These new traders then think they know it al l 
+when it comes to the market. But the fact is they don’t know much, their 
+problem is they haven’t taken the time to learn about the market and 
+what makes it move.  
+Retail traders often place way too much emphasis on finding the 
+absolute “perfect” system to  trade with the right balance of technical 
+indicators. Professional traders make their trading decisions without 
+relying on indicators and cluttered charts.  
+Global political events, monetary policies, economic reports and other 
+external fundamental forces are key factors in what drive price 
+movements. These factors cannot be measured with an oscillator or a 
+moving average. Knowing how to read the order flow, what is happening 
+in the market, as these fundamental forces appear give you an  edge 
+over other trad ers who are simply following indicators or oscillators 
+which lag price.  
+If I achieve my objective through this book, I will have taken you to a 
+new level of understanding the market that most traders never think 
+about or understand. As with any way of tra ding the markets one must 
+proceed with baby steps when starting out. Make sure you understand 
+what you are doing before jumping in as there are risks involved when 
+you start trading with new ideas and concepts.  
+Enough of this preaching, let’s get on to the  heart of the matter and 
+begin to learn how to use order flow to become a profitable trader.  
+Page 11 of 150 
+ 
+BENEFITS OF TRADING ORDER FLOW  
+Order flow shows the market psychology. What is happening in the 
+struggle between buyers and sellers.  There is no other form of analysis 
+that shows you how aggressive traders are being in the market, among 
+other things.  
+Beginning traders often spend their time coming up with trading systems 
+that show amazing win -loss ratios of 80% winning trades, profit r atios far 
+exceeding $3 profit to every $1  loss and generating millions of dollars 
+when back tested. So they open a trading account and promptly lose all 
+their money. They think the markets are logical when in fact it is 
+psychological. It is the emotions of  the market participants that dictate 
+their buying and selling, not mathematical formulas. A market doesn’t 
+reach a high and turn because the RSI say s the market is overbought, it 
+turns because the sellers have overwhelmed the buyers or the buyers 
+have dis appeared.  
+Institutional traders make their money by being on the right side of the 
+market when it moves. These traders work for banks, large corporations, 
+hedge funds and governments. They can’t afford to be wrong on the 
+market very often because it will u ltimately cost them their job and cushy 
+lifestyle. At times these traders may be privy to information not readily 
+available to the general trading public. These traders are able to see 
+major trends before they take place and position themselves 
+accordingly . They don’t rely on technical indicators and black box 
+systems. They use the black box between their ears called their brain. 
+What is great about order flow, is that their actions are recognizable in 
+the volume after their trades. This enables the order f low trader to 
+understand what is happening in the market before other traders are 
+able to notice what is happening.  
+Order flow h elps to remove the randomness from trade decisions. 
+Traders who use technical indicators are basing their trading decisions 
+on combinations of fast and slow moving averages. There is no logic 
+behind it. Why should a 21 day moving average be that much better than 
+a 20 day moving average? Technical indicators just curve fit past results 
+to make the results  look pretty. We have all se en the charts showing a 
+perfect MACD trade giving a buy signal at the low and sell signal at the 
+high. But you don’t see the charts where you would be chopped up 
+Page 12 of 150 
+ 
+every other bar, buy, sell, buy, sell, buy, sell, etc. Order flow will help to 
+keep you out of  the choppy markets.  
+Order flow e nables a trader to make accurate trading decisions.  It is 
+easy to make money when the market is trending beautifully in one 
+direction. But the market doesn’t always do that. The market trends, 
+stops, continues, turns direction, etc. Most technical tools  lag the current 
+price. When market behaviour starts to change you need to quickly 
+adapt. Order flow show s what is happening in the market NOW  so that 
+you can capitalize on the opportunities as they happen . Order flows 
+shows you why prices turned at a level. Order flow shows you how 
+aggressive the market participants are.  
+Order flow p rovides and objective means to quantify risk.  Every trading 
+book says to “cut your losses short and let your winners run.” While 
+great in th eory, the reality is when you cut your losses short, you also cut 
+your potential profits. Technical and fundamental traders struggle to 
+know when to cut losses short. There is no technical indicator that says 
+you can cut a position short here or there. Order flow shows you exactly 
+where to get out of a trade when it is not going as planned. You are not 
+left to guess if a trade is working out or not. You will know before you get 
+in. Additionally order flow shows you when there has been a change in 
+supply and  demand which will help you determine if you should indeed 
+cut your losses short.  
+Order flow al lows for more structured and less stressful trading.  All 
+traders look for low risk trades, but I take it a step further and look for 
+low stress trades. We all  have enough stress in our life, there is no 
+reason why trading should add to it. Order flow allows you to know the 
+areas to get in and the area where you will know if a trade is not working 
+out.  
+  
+Page 13 of 150 
+ 
+EXAMPLES OF ORDER FLOW  IN EVERYDAY LIFE  
+Non-traders think tr ading futures is some black art that is only for those 
+on the inside  and if you try to explain what order flow analysis is to them, 
+they will think you are some sort of voodoo witch doctor . Actually we are 
+all order flow traders in real life without realizing it. In our everyday life 
+we are confronted with decisions about value of things, whether it is 
+deciding to fill up your car with gasoline at Shell or Texaco based on 
+price or reading about a sale for the latest hand phone. We make 
+decisions based  on based on our perceived value of a product relative to 
+what we are willing to pay for it and how desperately we need it.  
+When you buy a car you go to a car dealer with an idea of what the car 
+you want to buy is worth and what you are willing to pay for it. The 
+dealer knows what the lowest price is that he can sell it at. You and the 
+dealer negotiate back and forth until both of you are happy and agree on 
+a price. Within the negotiation one of you had to be the initiator in the 
+trade. Either the dealer ca me down to the price you wanted to pay or 
+you went up to paid the price the dealer was offering to sell the car to 
+you.  
+Women don’t realize but they are on the forefront beneficiaries of trading 
+and market forces because the fashion business operates just  like the 
+market. Trends in fashion are constantly changing, skirts get shorter, 
+certain fabrics become more popular as do colours.  Clothing stores 
+watch their inventory and anticipate changes in fashion trends to make 
+sure they are adequately stocked wit h items where there is strong 
+demand and they can charge high prices. The stores lower prices on 
+items when the demand is waning and they can still make a profit on it. If 
+a store does not change its position quickly enough and go down on 
+price on items wi th dying demand they will be forced to sell those items 
+at a loss.  
+Your body temperature fluctuates during the day, most of the time your 
+temperature is within a normal range of 36 to 37 degrees Celsius. Body 
+temperature tends to be at its lowest during th e morning and it is at its 
+highest during the afternoon. Many outside factors such as exercise, 
+eating, consuming alcohol or catching a virus can cause your 
+temperature to rise outside its normal range. If it reaches a certain level 
+and stays there for a p rolonged period you know you are not healthy. 
+Page 14 of 150 
+ 
+The markets are the same way, only instead of temperature you are 
+dealing with prices. If a price is too extreme it can be a sign of the 
+market being unhealthy. When external factors are added to the normal 
+routine, the market can and will react to it, just like your body 
+temperature.  
+It doesn’t always rain when the sky is cloudy. Nor does a bright shining 
+sun indicate warm weather. Weather predictions depend on such factors 
+as the time of year, high and low pr essure areas, barometer readings, 
+etc. The markets behave the same way. Just because a chart indicates 
+something  should happen  doesn’t mean it will happen. Just because 
+fundamental analysis leads you to believe prices should go up that they 
+will. You need to look at what is actually happening in the market to 
+know what is happening in the market.  
+  
+Page 15 of 150 
+ 
+ORDERFLOWS SOFTWARE  
+There are several different order flow software vendors in the market. I 
+tried most of them. The prices range from a few hundred dollars to w ell 
+over $3000! The scary part is people actually spend $3000 and more for 
+trading software thinking it will make them a better trader. It is tempting 
+when you see their slick sales pitch. I mean who wouldn’t want to trade 2 
+hours a day and make $1000? If you could guarantee me $1000 a day 
+profit trading for only 2 hours a day, sign me up. Unfortunately there are 
+no guarantees in trading and it takes work, sometimes a lot of work.  
+I created the Orderflows software so that reading and understanding 
+order flo w is easier based on what I feel is important to the trader. I 
+spent the better part of three decades trading all different sizes  of 
+orders . I traded more than my share of thousand lot orders. I know the 
+impact certain types of orders and trades have on th e market. I know 
+what it is like to trapped in a position and need to scramble to get out. I 
+know what  will happen to the market  when I step in with 1500 lots to buy 
+and create a low of the day.  There are a lot of market intricacies that the 
+current order flow software just did not highlight or explain. I found a 
+coder and gave him my instructions and the result is the Orderflows 
+software.  
+When creating the Orderflows Trader software I want ed the indicators to 
+be displayed automatically on the chart. The be auty of order flow 
+analysis is that it can be applied to any timeframe, range -frame or 
+volume -frame with consistent results.  
+Orderflows Trader software can be used on its own or in conjunction 
+with whatever method you use to analyse the market and make tra ding 
+decisions.  
+I purposely  wanted to keep  the chart clean and uncluttered so that it is 
+easy to see setups as they are happening.  The only squiggly line on my 
+chart is the high and low for session.  
+Page 16 of 150 
+ 
+ 
+The Orderflows software runs on the Ninja Trader  trading platform. I 
+chose this platform because for a retail trader it is probably the best 
+trading platform available. Many futures brokers use Ni njaTrader 
+software. Ninja Trader offers a free version. You can run the Orderflows 
+software on a free version  of Ninja Trader if you want  to and execute 
+your trades through your own broker supplied trading front end.   
+I get my data from Kinetick. The quality is excellent and the price is 
+affordable.  
+ 
+  
+
+Page 17 of 150 
+ 
+INTERPRETING ORDER FLOW  
+When an institutional participant , like a hedge fund,  wants to buy 2 500 
+contracts of soybeans, they won’t just put in a market order to buy 2 500 
+contracts at the market . They have to think of the market impact an 
+order of that size could cause. There are many ways they can work the 
+order to minimize market impact, but the fact remains the same. When 
+the trades go through it will show up in the tape and can be interpreted  
+in the order flow.  
+Order flow’s value is not in predicting exact tops or bottoms, but in 
+confirming market tops or bottoms as they form and providing insight 
+into the market’s psychology.  
+At the most basic level of market structure it is buyers (demand) a nd 
+sellers (supply) who move the markets. It is not mathematical formulas. 
+Markets don’t move because the MACD or RSI reached a 
+predetermined level. What causes markets to move is when demand 
+exceeds supply or supply overwhelms demand. Indicators lag price s. 
+When the market makes a high, there are no indicators which will say 
+sell until well after the market has turned lower.  
+What causes markets to turn and change direction is a litt le more 
+complex. M arkets turn when the last buyer has bought or the last se ller 
+has sold. M arkets turn when there price is considered cheap and big 
+buyers start to come in and scoop up supply at those low price levels. 
+Conversely, when prices are rich and sellers want to sell as much as 
+they can high prices.  There are times it is  just obvious you would not 
+believe it. Order flow charts show you these levels.  
+I use order flow to understand the behaviour of the market. Everything I 
+do is to understand the behaviour of other market participants. I try to 
+understand the position the o ther trader is in. Are they long and wrong? 
+Has a big player decided price is too cheap or expensive? Has someone 
+tried to push prices higher or lower and failed? All of these questions 
+and more can be answered with order flow. Imbalances in supply and 
+demand can be detected with volume analysis.  
+Once you start watching the way orders flow into the market by reading 
+the tracks or footprints  left behind  by the traders  it will become clear er 
+where the market is going. Markets are not predictable all the time,  but 
+Page 18 of 150 
+ 
+at certain times the direction the market will be moving will become 
+pretty obvious.  
+Order flow is a discretionary way to trade. Even though it requires 
+discretion, it doesn’t mean that you trade it without rules. Every situation 
+is a bit different. W hat you look for are patterns that occur over and over. 
+They may not be exactly the same, but the pattern of the order flow is 
+recognizable. Are aggressive buyers coming in? Is a high weak? Etc.  
+Order flow allows you to identify price action that repeats i n a general 
+sense. How the order flow flows in the market. While the market activity 
+is never exactly repeated, by knowing how to read the market activity as 
+it happens enables the trader to gauge the current state of the market 
+and form an opinion of what  will happen. There is always a constant 
+struggle between buyers and sellers. Buyers want the price to go higher 
+and sellers want the price to go lower. So you need to ask yourself “who 
+is in control?” The market is always giving clues as to who is in cont rol. 
+By observing the flow of trade can a trader understand who is in control 
+of the market.  
+I spent three decades  watching and trading futures based on order flow. 
+The same concepts still apply from 20 years ago or even 100 years ago 
+as they do today. Wh en the price of something is too cheap people buy 
+it and it becomes a low. When the price is too high, people sell it and the 
+high is made.  
+What order flow provides the trader is the ability to stay out of the market 
+when there is no reason to trade. It al lows the trader to see both sides of 
+the market, what is trading on the bid and what is trading on the offer, 
+and gives the trader a far better view of the current state of supply and 
+demand than the ordinary trader will struggle to see.  
+I have met a lot o f floor traders in my life and some of the best have told 
+me they get a “feel” for the market. While this may have been true during 
+the days of open outcry because you can see and hear the trading going 
+on based on the noise level and hand signals flashing  back and forth. 
+Unfortunately now the open outcry trading floors are closed and 
+everything is traded electronically. It is hard to get that “feel” on the 
+market anymore. Even when I think about it, having a “feeling” on the 
+market has gotten me into more trouble than I care to mention.  
+Page 19 of 150 
+ 
+However I believe that anyone can learn to “read” the market. Reading 
+the market allows you to know where buying and selling is going on or 
+drying up. Reading the market allows you to know where solid highs and 
+lows have bee n made.  
+Traders make money by being positioned in the direction the market is 
+moving. They are long when the market is going up. They are short 
+when the market is going down. It sounds simple, yet so many people 
+lose money in the market because they are sh ort when the market is 
+going up or long when the market is going down. By reading the order 
+flow a trader can determine the direction of the market. If the market tells 
+you to go long, then buy and go long, and when it starts to go down, 
+then get out of th e position or get short.  
+Let the market show you the direction it wants to go rather than trying to 
+predict where the market will go.  
+Order flow charts can be used in any futures market that has sufficient 
+volume traded daily. There are different strategi es to employ for different 
+market conditions. Markets that have high price volatility (have large 
+price ranges) with varying volume, i.e. currency futures, have certain 
+characteristics that are inherent to them, while markets that have low 
+price volatility  but high volume, i.e. interest rate futures, have their own 
+characteristics. However many of the same underlying principles 
+discussed here can be applied to both types of markets.  
+  
+Page 20 of 150 
+ 
+READING AN ORDER FLOW CHART  
+ 
+When comparing prices on an order flow chart you have to do it 
+diagonally  from the left to up on level on the right , not horizontally . 
+Futures markets no longer  trade in a fixing in that they when it gets to a 
+price like 1.1244  all the people that want to buy it  and sell it  at that price  
+can. The way the markets work is traders put in bids and offers and 
+people buy and sell accordingly. The market will move from 1.1240  bid / 
+1.1241  offer to 1.1241  bid / 1.1242  offer to 1.1242 bid /1.1243  offer.  
+When you look at the example above , when the market was 1.1240  bid / 
+offered at 1.1241 . 9 lots were sold into the bid and 94 lots were bought 
+from the offer. When the market was 1.1241  bid / offered at 1.1242 , 38 
+lots were sold into the bid and 29 lots were bought from the offer. When 
+the market was 1.1242  bid / 1.1243  offer, 67 lots were sold into the bid 
+and 57 lots bought from the offer. When the market was 1.1243  bid / 
+1.1244  offer, 86 lots were sold into the bid and 80 lots bought from the 
+offer at 1.1244 . When the market was 1.1244 bi d / 1.1245 offer, 85 lots 
+were sold in the bid and 100 lots bought from the offer. When the market 
+
+Page 21 of 150 
+ 
+was 1.1245 bid/1.1246 offer, 53 lots were sold into the bid and 53 lots 
+were bought from the offer. When the market was 1.1246 bid/1.1247 
+offer, 37 lots were  sold into the bid and 13 lots bought from the offer.  
+The market did not go 1.1247  bid because the volume on the bid is 17. 
+This is called unfinished business. The market tried to go higher and 
+was bid 1.1247 and in this case 17 lots sold into it, but no one bought 
+from the offer at 1.1248. The reason this is referred to as unfinished 
+business is because the market has a tendency to come back to that 
+level.  
+The market did not go 1.1240  offer because the offer volume is 0.  If the 
+market went offered at 1.12 40 and traded it would show a volume other 
+than 0.  
+There is alway s a bid and offer in the market (unless the market is limit 
+big or limit offer).  That is how trading is done. Someone wants to buy so 
+they work a bid, someone wants to sell so they work and o ffer. When 
+someone is tired of waiting they go to the market on their order or they 
+just get in at the market . They buy at the offer price or they sell at the bi d 
+price. Order flow charts allow you to compare what traded on the bid 
+side and what traded on the offer side.  
+Order flow charts monitor not just volume and price, but more 
+importantly on which side of the market the volume happened. The bid 
+side or the offer side. It is this information that gives the order flow 
+footprint charts their color  – green for aggressive buying (more trading at 
+the offer price) and red for aggressive selling (more trading at the bid 
+price). Black prices are considered neutral.  
+On the next couple of pages is a quick glance at Orderflows Trader 
+software generated char ts. Don’t worry about understanding all the 
+notations now. It will make sense to you once you read through this 
+guide.  
+Page 22 of 150 
+ 
+ 
+
+Page 23 of 150 
+ 
+ 
+  
+
+Page 24 of 150 
+ 
+THE IMPORTANCE OF PRICE  
+Price is one of the most important pieces of information in trading. Price 
+is what makes people want to buy or sell  a commodity . The change  in 
+the price of a commodity is  the determining factor between  a profit or a 
+loss for traders .  
+The goal for traders is to buy when the price is low and sell when it is 
+high. That is common sense, Trading 101. So why do s o many people 
+lose money trading?  
+When the price of a commodity starts to move there needs to be a big 
+enough force behind it to overcome its opposing force. Stated another 
+way, there has to be more buyers than sellers for the price to move up or 
+more sel lers than buyers for price to move down. The market 
+participants cause the market to move with their buying or selling 
+activities.  
+HOW  price moves out of a n area  can determine if the impending move 
+will be  strong or weak.  Just because priced moved does no t mean it will 
+continue in that direction. Knowing HOW priced moved is important in 
+understanding the health of the 
+market, if it is strong or weak.  
+How often have you seen price 
+action on a chart like the one on the 
+right?  
+It is easy to look at a chart an d see a 
+long down  bar and t hink “everyone is 
+selling .” Do you want to sell also? 
+The market can continue down, you 
+see it all the time in the market. 
+However, i t is not uncommon for a 
+long bearish down  bar on a chart to 
+be immediately followed by a long 
+bullish up  bar. But until you look at 
+the next component, volume, you 
+can’t judge how strong the move is 
+and more impo rtantly who is behind the move.  
+Page 25 of 150 
+ 
+Here you have a big down candle , followed by a big up candle, followed 
+by a big down candle again. When you look at the first big down candle 
+you say sellers are in control, which is not wrong but if the sellers are in 
+control why did the market turn around so fast? It just did a complete 
+180 degree turn and even took out the high of the red down bar.  
+When you l ook at an order flow chart you have a better understanding of 
+why the market turned around so fast at point A due to massive passive 
+buying  and why that when the market subsequently tried to sell off again 
+it met support around 368.50  to 369.50 level  at po int B (previous level of 
+aggressive buying imbalance) . Market rotations  like this  happen quite 
+regularly  as you will see throughout this book.  
+ 
+Markets move because of the changes in supply and demand. We all 
+know that. When there is more buying than sell ing, prices go up. When 
+there is more selling than buying, prices go down. While it sounds simple  
+
+Page 26 of 150 
+ 
+that is the textbook theory , but it is actually a little more complex than 
+that. 
+Markets move up because there are no major sellers taking profits yet. 
+The ma jor buying should have already occurred early in the move by 
+institutions. So until institutions start selling their positions out, the 
+market keeps going higher. If institutional players are still expecting 
+higher prices they will absorb selling that come s into the market. But 
+they won’t be buying just to support the market, they are buying until 
+they are sure all the supply at these lower  levels has disappeared.  
+Markets may move down not just because there are more sellers than 
+buyers. It could very well be that there is just not enough buying to 
+support the market on its way down. In a down market there is very little 
+to hold up the market in terms of bids, as a result prices drop. This is 
+one of the reasons markets drop much faster than they go up.  
+When the market is moving the best trades are to buy when buyers are 
+buying and sell when the sellers are selling. In the days of pit trading, 
+locals used to stand in the pit all day and could see when the institutional 
+money would come into the market to move it. They locals joined in on 
+the moves. This is not rocket science. The trading pits were filled with 
+guys with only high school degrees or even college degrees. It doesn’t 
+take a PhD to know that when the market is moving is a good idea to 
+move in the sam e direction.  
+Prices go up until:  
+1. Buyers become unwilling to buy.  
+2. Buyers run out of buying power.  
+3. Buyers are overwhelmed by sellers.  
+Prices go down until:  
+1. Sellers become unwilling to sell.  
+2. Sellers run out of inventory.  
+3. Sellers are overwhelmed by buyers.  
+A trader needs to be able to understand what kind of activity is moving 
+prices. If sellers are pounding into bids and clearing them out, your 
+position can get run over pretty fast, especially depending on who else is 
+Page 27 of 150 
+ 
+there selling. You have to determine if  it is better to be a buyer in a 
+market going down or a seller.  
+Only an order flow chart can give a trader the insight into why the market 
+turned around. Not all market turns will be as clear cut as the example 
+above. But when they are you need to be able to react quickly to take 
+advantage of the opportunity.  
+  
+Page 28 of 150 
+ 
+THE IMPORTANCE OF VOLUME  
+Volume is also an  important part of a trader’s arsenal but also is perhaps 
+one of the least understood. Until now most analysis of volume has been 
+on total volume . Order flow breaks down volume by the amount traded 
+on the bid side and the amount traded on the offer side. Now traders can 
+determine if the buyers were aggressive or passive and if the sellers 
+were aggressive or passive.  Price and volume loo ked at togeth er will 
+help the trader  determine the current state of the market and if supply 
+and demand is imbalanced.  
+Traditionally volume has been looked and analysed after the fact, not as 
+it is happening.  Generally volume  would be plotte d along the bottom and 
+would  be used to confirm a trend. Technical analysts will tell you that 
+volume is a measure of the strength of the current price trend.  
+ 
+The problem that I always had when looking at volume in this simplistic, 
+already rudimentary way was that you couldn’t diff erentiate between 
+volumes traded on the bid versus volume traded on the offer. This is 
+
+Page 29 of 150 
+ 
+especially important on bars that look neutral, where the opened and 
+closed at about the same level . 
+If you look at volume by itself, its meaning has little value  becaus e you 
+don’t know where price is  relative to the amount of volume traded . Once 
+you start to look at volume relative to price you begin to understand the 
+momentum within the market. Volume is perhaps the most important 
+piece of information when determining the strength of a trend. Markets 
+move up, down and sideways over time and price.  
+In an up trend, traded volume should be increasing on the offer side. This 
+shows that buyers are bei ng aggressive and buying all the available 
+supply the market has to offer.  
+In a down trend, traded volume should be increasing on the bid sid e. 
+This shows that sellers are getting rid of their supply to passive buyers.  
+In a sideways trading market  the volu me on both the bids and offers 
+should be absorbed by the marketplace like a sponge.  
+Order flow v olume  analysis  tells us the amount traded at a price during a 
+time frame. When you start to look at the volume that has traded at 
+subsequent prices you can dete rmine if the market is strong or weak.  
+Traditional charting methods only measure volume in regards to time. If 
+you look at volume traded at price you get a much clearer picture of 
+what is going on in the market.  
+Page 30 of 150 
+ 
+ 
+When you look at point A, the internal vol ume trading in that bar 
+screams at you that the buying is done. There is a big buying imbalance 
+at the high 235 and 188 lots over the 2 time periods at 1.0987 and 278 
+lots buying imbalance at 1.0986 , then the market sold off and there is 
+200 lots selling imbalance  traded on the bid at 1.0982 . A stacked 
+imbalance of 3 levels of selling imbalances between 1.0980 and 1.0978.  
+A few more selling imbalances appear in that bar. The market tried to 
+rally on the next couple of bars but could not get past the stacke d selling 
+imbalance, before finally selling off dramatically. It is pretty amazing how 
+stacked imbalances act as great levels for the market bounce off of. 
+They are great areas for low risk entries.  
+Generally speaking when volume is low and the market is m oving up, 
+you know that the market is weak. This could be because the 
+institutional participants are not buying in the up move because they 
+know that higher prices cannot be sustained based on supply and 
+
+Page 31 of 150 
+ 
+demand. Unless the institutions are participating in  the up move, it 
+probably won’t last very long.  If it is just retail money moving the market 
+with little volume, that is not a good sign.  
+For a trend to be down there would need to be institutional participation 
+which would show up in the volume . There is ample supply  in the 
+market , so there will be strong volume on the move down  as the sellers 
+will be offloading their supply to buyers . During down trends you will see 
+small, temporary up moves within the down trend. Watch the move and 
+check the volume. Inst itutions have been bearish the markets and 
+selling, you won’t see them buying into a weak market just because 
+price bounced a little bit. When you notice the volume start to diminish 
+on a down trend the selling pressure by institutions is subsiding. While 
+the market may continue to fall be aware that it could quickly turn and 
+rise momentarily due to lack of supply.  For a market to turn from a 
+downtrend to an uptrend, buyers would need to come in and take control 
+from the sellers which usually equates to a r ise in volume.  
+  
+Page 32 of 150 
+ 
+THE IMPORTANCE OF DELTA  
+Delta is a term used by order flow traders to define the net buying or 
+selling that took place for a given bar. It is calculated by using tick data 
+and seeing who initiated the trade, either the buyer or seller. If more 
+sellers initiated the trade, then the delta is considered negative. If more 
+buyers initiated the trade, then the delta is considered positive.  
+The reason delta is important is because you can determine the strength 
+of a trend based on volume. As price  trends higher you would want to 
+see positive delta which is a sign of buying driving the price. The 
+opposite would be true for a market trading lower, there should be 
+sellers driving the price which would translate into negative delta.  
+Visually, delta measurements look like this:  
+ 
+Delta – delta for the bar  
+Max. Delta  – Maximum delta in the bar  
+Min. Delta  – Minimum delta in the bar  
+
+Page 33 of 150 
+ 
+Cum . Delta  – Cumulative delta of the day  
+Cum . Delta/Volume  – Cumulative delta divided by volume  
+Volume  – Volume for the bar  
+Cum . Volume  – Cumulative volume for the day  
+ 
+If a market is consolidating  or range trading, the delta  number generally 
+will be a low number, depending on the market it could be less than 100 
+when normally it is over 1000,  and will bounce around back and forth 
+between positive and negative.  
+There will be times when the delta is very close to zero which is a sign 
+that there is an almost equal amount of volume trading on both sides of 
+the market. This is called absorption and is usually a place where supply 
+and demand can shi ft and a new trend start.  
+Delta is also relative to the type of chart and what part of the trading day 
+you are looking at. If you have a 1 minute chart up, the delta can be very 
+low just because there might no t be much trading going on. The same 
+can be said if you are trading in the evening or early morning sessions, 
+before the old regular trading hours start. Those times of the day 
+generally have little volume trading so delta will be small.  
+If you are looking  at a 10000 volume E -mini SP chart and the bar has a 
+delta of 100, that would be more important than a 5 minutes chart where 
+the total volume traded was 1500 lots and the delta was 100. You have 
+to take the delta in context to what kind of chart you are us ing. 
+ 
+  
+Page 34 of 150 
+ 
+COT – COMMITMENT OF TRADERS  
+I am not talking about the Commitment Of Traders report put out by the 
+CFTC which is a breakdown of open interest in futures markets. That 
+report has its own uses not covered here.  
+With order flow analysis footprint char ts, each price bar has a COT or 
+Commitment Of Traders in it. This is the price level within a bar that the 
+most traded volume occurred on both sides, where the most trade was 
+committed within the bar. Remember order flow analysis looks within the 
+bar. With  a regular bar chart or candlestick chart there is no way of 
+knowing this.  
+ 
+The Orderflows Trader software package will put a box aroun d the COT 
+for easy visualization on your chart.  
+
+Page 35 of 150 
+ 
+With the COT you can see where the most volume occurred, whether it 
+was near the top, middle or bottom.  
+The COT is important because it gives you clues as to what the market 
+forces were up to within the bar. It can tell you within the bar where 
+demand has overcome supply and vice versa as one side will be 
+dominant.  
+The COT t ells you something that traditional bar or candlestick charts 
+cannot.  Depending on where the COT is you can get a quick glimpse 
+where the most activity was which in turn can give you hint to anything 
+out of the ordinary.  
+ 
+In the above chart, the COT occurred near the low of the bar which 
+closed on near its high. When the most volume trades near the low of a 
+bar that closed higher, it is usually a sign that there are strong passive 
+
+Page 36 of 150 
+ 
+buyers. In this case we see strong passive buying as well as buyers 
+willing to buy all the supply other sellers were offering.  
+ 
+In the above example, at point A, the COT occurred near the top of the 
+bar and the bar closed lower. This tells me that there were interested 
+buyers near the high, but they were met with just as many interested 
+sellers and the sellers took control of the market and moved it lower.  
+At point B. The market tried to rally and lost steam as the buyers just 
+dried up as evidenced by only 1 lot trading at the high, then a sellin g 
+imbalance  just below the high of the bar and the market sold off and 
+closed on its low. The COT appears near the bottom of the bar and there 
+is a big buyer that was aggressively sold into causing a selling 
+imbalance.  Just above the COT there is also a b ig number on the bid 
+that was sold into, the market participants just ate through the bids and 
+
+Page 37 of 150 
+ 
+closed on the low of the bar. Also there was not much buying in the bar. 
+When I see the COT near or at the bottom of a bar that closed on its 
+lows that is usuall y a sign or the market going lower since there were 
+active sellers to move prices lower.  
+Generally speaking when the COT is in the middle of a bar, it is market 
+neutral. If it appears at the top of a bar and the bar closed lower that is a 
+bearish sign as a lot of trade was facilitated at the high but the market 
+couldn’t trade higher, all the buyers were met big sellers. If the COT 
+appears at the bottom of the bar and the bar closed higher, it is generally 
+a bullish sign as all the selling pressure was met with buyers. There are 
+many different combinations  of COT locations . 
+ 
+In the example above, the market is just sort of going nowhere.  It would 
+go up a couple of points then come down a couple of points. The COT’s 
+are appearing mostly in the middle of the  bars. Then at point A, all of a 
+
+Page 38 of 150 
+ 
+sudden there are some big new passive sellers that put in offers at the 
+1984.00 and 1984.25 level which were bought up but the market couldn’t 
+go higher and actually closed lower and there were a few selling 
+imbalances near  the low of the bar. The COT is near the top of the bar, 
+yet the bar closed lower. This is my clue that the market is primed to go 
+lower which it does.  
+The COT by itself is not an indicator, but can be used for confirmation of 
+a move. I like to look at the  COT location in a bar when I am lost on the 
+direction of the market. If the market is just range trading I look to the 
+COT for some sort of sign as to the direction or potential direction.  
+  
+Page 39 of 150 
+ 
+DIFFERENT TYPES OF BUYERS AND SELLERS  
+Every book on futures trad ing says that the market is a zero sum game. 
+For every winner there is a loser. This is true, but not everyone trades 
+futures for the same reasons.  
+It is a common belief that everyone is trading the futures market to make 
+a profit. That is not always the case , even though the overwhelming 
+majority of trading is done to make profits.  Futures trades could be put 
+on as a hedge. When someone is long an underlying  commodity , they 
+sell the futures  to hedge  their price risk . Farmers have been doing this 
+for centuries  as a form of insurance. If the futures position loses money, 
+they don’t worry so much. Just like with life insurance, you don’t feel bad 
+when you don’t die and your family can’t claim the money.   
+There are many other reasons people enter into trades in the futures 
+markets which are not for the sole purpose of making money in and of 
+itself or without directional bias. A trade can be part of a statistical arb 
+trade where a trader is long/short diff erent markets trying to take 
+advantage of miniscule pricing differences. A trade can be part of a 
+spread between correlated markets. There are many reasons too 
+numerous to mention in this book alone. But each reason helps to 
+explain why a market can facili tate trade on both the bid and offer and 
+not move much.  
+So as you can see there are several different types of buyers and 
+sellers. Being able to distinguish between them will help you understand 
+what the market is showing you as to its direction.  
+What doe s it mean when there is an aggressive buyer? It means that 
+someone bought the offer. They paid the market price to get into our out 
+of a position.  
+What does it mean when there is an aggressive seller? It means that 
+someone sold into the bid. They sold at t he market to get into or out of a 
+position.  
+What does it mean when there are passive buyers? It means they 
+bought at the bid price. An aggressive seller sold it to them.  
+What does it mean when there are passive sellers? It means they sold at 
+the offer pric e. An aggressive buyer bought from them.  
+Page 40 of 150 
+ 
+Generally I find that aggressive buyers and sellers are those who need 
+to get into a position. We may not know the reason these participants 
+are getting into the position so aggressively, but when they are it leads 
+to imbalances which is a sign of a market getting ready to move.  
+Passive buyers and sellers are less aggressive, but just as important. 
+They provide support and resistance to the market place. They are the 
+buyers at the low and sellers at the high. When a market cannot get past 
+a big passive buyer that is a signal the market can be ready to turn.  
+  
+Page 41 of 150 
+ 
+AGGRESSIVE PARTICIPANTS  
+In the old days when a market would move without a clear reason, 
+brokers would say “there are more buyers than sellers” or vice versa. 
+However the problem with that is that it is just not true. There are not 
+more buyers or sellers. What you have is different types of buyers and 
+sellers. There are aggressive buyers and sellers and there are passive 
+buyers and sellers.  Every bar is made up of  both aggressive buyers and 
+sellers as well as passive buyers and sellers.  
+Throughout this book you will see the words “aggressive buyers” and 
+“aggressive sellers.” When a trader is being aggressive they are hitting 
+the bid or lifting the offer. They are e ssentially paying the market price to 
+get into the market. Aggressive participants trade into passive 
+participants resting limit orders.  
+Aggressive buyers and sellers are represented by selling at the bid or 
+buying at the offer. They are willing to sell o r buy at the market price 
+because they want out of they want in.  
+An aggressive buyer is someone who is will to pay what the seller is 
+asking. An aggressive seller is someone who is willing to sell at a price 
+the buyer is bidding.  
+ 
+
+Page 42 of 150 
+ 
+When you see big aggressive buyers or sellers come in to the market, 
+you should watch what the market does afterwards. Does the market 
+rally? Does it sell off? Does it hesitate? Does it get absorbed? When 
+there are big aggressive buyers the market will typically rally. Whe n 
+there are big aggressive sellers the market will typically sell off.  If the 
+market does not do what it is supposed to do, the contrary move is likely 
+to be magnified.  
+ 
+It is easy to confuse aggressive buying and selling with buying and 
+selling imbalanc es. The difference is for every trade there is either an 
+aggressive buyer and passive seller or an aggressive seller and passive 
+buyer, one participant will be aggressive and one will be passive; a 
+buying or selling imbalance doesn’t have to happen. An imb alance 
+occurs when the buying/selling ratio is above a certain level. There is a 
+whole section devoted to buying and selling imbalances in this book.  
+
+Page 43 of 150 
+ 
+ 
+By itself just looking at aggressive participants and trying to determine 
+market direction is a bit difficult because in every trade there is an 
+aggressive participant and a passive participant. You have to take the 
+information in context to the rest of th e market.  
+Of course every buyer has to be met by a seller and that is the subject of 
+the next chapter – passive participants.  
+  
+
+Page 44 of 150 
+ 
+PASSIVE PARTICIPANTS  
+Passive participants are those who are willing to sit on the bid or sit on 
+the offer to get into a trade.  They are not moving their price to get into 
+the market. They have decided that at a particular level they want to buy 
+or sell and are willing to sit there until they get filled. Passive participants 
+will enter the market on limit orders. Aggressive partic ipants will trade 
+into passive participants limit orders.  
+ 
+Passive buyers and sellers are represented by limit orders. They let the 
+market come to them.  So in the above picture at 1.1244 , 85 lots were 
+bought by passive buyers, people just sitting on the b id. 80 lots were 
+sold by passive sellers, it was bought by aggressive buyers. At 1.1243, 
+86 lots were bought by passive buyers, the people that sold it to them 
+were aggressive sellers, because they had to go down in price to meet 
+the bid price;  57 lots we re sold by passive sellers at 1.1243, sellers who 
+were working an offer at 1.1243.  
+A passive buyer is someone who is willing to buy at his bid price. A 
+passive seller is some who is willing to sell at his offer price.  
+
+Page 45 of 150 
+ 
+In other words, when you look at the market quote:  
+ 
+393.50 bid / 393.75 offer  
+393.50 bid for 500 contracts / 393.75 offer for 200 contracts  
+The 500 contracts on the bid are passive buyers  
+The 200 contracts  on the offer are passive sellers  
+ 
+If someone one is working a bid for 10 contracts at 393.50 and decides 
+to just go ahead and buy his 10 contracts at the market price of 393.75 
+he is now consider an aggressive buyer. The opposite is true if a seller 
+working an offer at 393.75 decides to sell at the market price of 393.50, 
+he has become an a ggressive seller.  
+While most traders like watch what the aggressive participants are 
+doing, keeping an eye on the passive participants can be extremely 
+profitable as their levels can often times signify major turning points in 
+the market. Passive participa nts are usually institutions who can help set 
+the price highs or lows. When price gets too cheap they step in and buy 
+everything. When price gets too high they sell as much as they can. 
+When you see huge numbers that traded on the bid side at a low or 
+huge  numbers traded on the offer side on a high these are usually good 
+indications of institutions passive participants.  
+I like to see big passive participants at highs and lows rather than in the 
+middle of a move.  
+ 
+Page 46 of 150 
+ 
+ 
+  
+
+Page 47 of 150 
+ 
+THE IMPORTANCE OF AGGRESSIVE AND PASSIVE PARTICPANTS  
+When the market starts to move, it takes market orders to push the price 
+higher or lower. Limit orders don’t move the market. For the market to go 
+up traders have to buy at subsequently higher prices. For the market to 
+go lower traders have to sell at lower prices. The market has to work 
+through levels of passive buyers or sellers.  
+Every trader knows that certain price levels are important in terms of 
+supply and demand. By seeing the volume that traded at that particular 
+level and even how the market reacted around the level, a trader can 
+determine if the level will hold or not.  
+Many trading “gurus” teach that declining volume always precedes a 
+market top or market bottom  as if it is an immutable law . In school book 
+theory yes it may be true, but in reality it is not always true as evidenced 
+in the order flow chart.  You can have heavy selling at market bottoms 
+and market tops , almost as if the market hits a wall and turns around in 
+the opposite direction .  
+ 
+
+Page 48 of 150 
+ 
+Think of these levels as lines  in the sand. You do not want to cross that 
+level without good reason or else you will find yourself in trouble.  
+A trade looks more appealing if there is a big volume number that 
+supported the market than just an average number. These trades don’t 
+happen every day but when they do they are pretty reliable indications of 
+market bias, at least in the short term.  
+  
+
+Page 49 of 150 
+ 
+IMBALANCE LEVELS  
+The volume traded at a price level in the market can either be balanced 
+or imbalanced. When a level is out of balance there are proportionally 
+more buyers or sellers at that level. Most commonly used ratios are 
+250%, 300% and 400%.  
+What does it mean when there is a buying imbalance? It means that the 
+quantity bought on the offer is greater than a set ratio than the amount 
+traded o n the bid, usually 250% (2.5 -1), 300% (3 -1) or 400% (4 -1). It 
+may not be just one buyer, it can be several, but what is important is the 
+traded quantity is greater on the offer than the bid.  
+What does it mean when there is a selling imbalance? It means tha t the 
+quantity sold on the bid is greater than a set ratio than the amount 
+traded on the offer, usually 250% (2.5 -1), 300% (3 -1) or 400% (4 -1).. It 
+may not be just one seller, it can be several, but what is important is the 
+traded quantity is greater on th e bid than the offer.  
+Here is what imbalance levels look like on an Orderflows  chart:  
+ 
+
+Page 50 of 150 
+ 
+ 
+When an imbalance happens  in supply and demand that is where 
+trading opportunities appear. When big buyers come in and the market 
+can’t rotate up then look for a change in bias. The opposite is true when 
+big sellers come in and the market can’t sell off, be on the lookout for a 
+change in bias.  
+The beginning s of a trend as well as ends of a trend are  often marked 
+with market imbalances caused by aggressive participants. This shows 
+that participants are anxious to get in the market and large volume 
+enters the market and prices move q uickly.  
+ 
+  
+
+Page 51 of 150 
+ 
+STACKED IMBALANCE  
+Stack ed imbalances are important levels to look for when initiating a 
+position. When you get stacked imbalances of 3 or more on top of one 
+another it is a good sign of strong pressure in the market and that the 
+market will con tinue in that direction.  It acts as support and resistance.  
+ 
+The reason s tacked imbalances are good levels  of support and 
+resistance as they are levels where the market was aggressive ly sold 
+into a bid or  an offer was  aggressively bought into. In theory these 
+stacked imbalance levels are levels where participants aggressively 
+wanted to get into the market, so when the market retests those levels, 
+the same participants may appear again.  
+
+Page 52 of 150 
+ 
+The beauty of stacked imbalances is that they make great entries for low 
+risk trades. Quite often price will retrace back into a stack imbalance 
+zone before continuing in the direction of the stacked imbalance. The 
+stop placement is very easy, it is just outsid e of the stacked imbalance 
+zone, literally a tick or two outside the stacked imbalance.  
+ 
+At point A  there was a stacked selling imbalance and  the market sold off 
+from the middle of the imbalance zone before rallying through it.  At point 
+B, there was a stacked buying imbalance, the market traded down 
+through it before rallying back up where it hit point C, and could not get 
+past that level and then turned and sold off. Depending on where you 
+put your limit order to get in the pos ition, I like to put my entry limit order 
+at the middle and last price in the stacked imbalance zone then I place 
+my stop one and two ticks outside the stacked imbalance zone. This 
+trade has an average 1.5 tick stop. A small loss at point A and point B, 
+
+Page 53 of 150 
+ 
+but point C was a nice winner. The market sold off 50 points to 1.0930 , 
+not bad considering your entry was at 1.0979 and 1.0980.  
+During the course of the trading day there can be many stacked 
+imbalances. There will be some that work out beautifully, but most  will 
+fail. But for a trade where you are risking 1 tick to 2 ticks with a potential 
+profit of 10ticks, 20 ticks and more it is worth the trade. I like to look for 
+these trades on longer time frame charts like a 15 minute or 30 minute 
+chart.  
+ 
+
+Page 54 of 150 
+ 
+Orderflows s oftware has a feature that will find stacked imbalances in a 
+market and draw on your chart the support and resistance levels 
+generated by the market.  For buying imbalances a green zone will be 
+shown on your chart. For selling imbalances a red zone will be shown on 
+your chart.  
+ 
+
+Page 55 of 150 
+ 
+TRAPPED  BUYERS AND SELLERS  
+Trapped buyers and sellers are short term market participants that 
+bought at or near the high or sold at or near the low and the market has 
+not followed through for them, they are trapped in a losing position , the 
+market has turned against them and they need to cover their position to 
+get out.  
+You can see trapped sellers when the imbalance numbers are  at the 
+bottom or a tick or two off the bottom and the market is not going lower 
+and instead turns and goes higher and the price bar closes higher. 
+There is a saying in the markets “someone has to sell the low” and it is 
+usually the trapped sellers that do . Trapped sellers are usually the last 
+people to sell in a move.  
+ 
+
+Page 56 of 150 
+ 
+You can see trapped buyers when the imbalance numbers are at the 
+high or a tick or two off the high and the market is not going higher and 
+instead turns and goes lower and the price bar clo ses lower.  Trapped 
+buyers are usually the last people to buy in a move up.  These buyers will 
+have to turn into sellers which adds to supply causing prices to move 
+down.  
+ 
+Trapped traders are those caught in a trade that moves against them 
+and are hoping and praying that the market will quickly come back to 
+their entry level so they can get out. Trapped traders usually find 
+themselves on the wrong side of the market pretty quickly and are under 
+immediate pressure to cover losses once price moves against th em. 
+
+Page 57 of 150 
+ 
+When you are able to find trapped buyers or sellers there is usually a 
+good short term trad ing opportunity. While it may not signal the end of a 
+long term trend, it can identify market turning points in the short term.   
+ 
+Trends can start once the trap ped traders are shaken out of their losing 
+positions and aggressive participants start to be active.    
+Candlestick bars and traditional bar charts cannot show you trapped 
+buyers or sellers. You need the ability to look inside the bar to determine 
+what is a ctually going on in the market.  
+When you look at the order flow you have solid clues the market is ready 
+to pop higher.  
+ 
+
+Page 58 of 150 
+ 
+Order flow charts can be applied to longer term time frames. Of course 
+not all trades will be as beautiful as these trades. But as you can see the 
+profit potential is quite large. Just catching a few of these moves a year 
+can really make reading the order flow footprint charts worthwhile.  
+Here are another set of charts, this time in the 6E – the eurocurrency 
+futures contract.  
+ 
+
+Page 59 of 150 
+ 
+ 
+Ok, I know it is a stretch to say trapped traders with 250 lots will turn the 
+market and cause a trend in the opposite direction. Rather what is 
+happening is that the market sentiment in general has changed. The 
+market cannot carry through and the last buyers (o n a high) or the last 
+sellers (on a low) have gotten in.  
+ 
+  
+
+Page 60 of 150 
+ 
+ABSORPTION  
+Markets are always looking for a level for two sided trade to take place. 
+A price level where both buyers and sellers can participate back and 
+forth without moving price very much . This  is called absorption. These 
+are the price levels where both buyers and sellers are happy to transact 
+major volume with each other. You will see big size trade into the bid 
+and big size trade into the offer. The net difference between the two will 
+be small  relative to the amount of volume that traded.  
+A traditional technical analyst may think of absorption as consolidation. 
+But there is a difference and that is volume. A market may consolidate 
+because of a reason other than what is happening in the market. There 
+may be a FED announcement so trading volumes have decreased and 
+the ranges get small , this may look like absorption . There may be a 
+holiday so volumes are low because traders are on vacation. It could be 
+the day before the Non -Farm Payrolls number co mes out. These events 
+and others can lead to consolidation  before price moves .  
+Absorption on the other hand is a level where you see heavy volume go 
+through bu t on both sides of the market – the bid side and the offer side.  
+This is where inventory changes  hands.  
+The big money long term commercial players don’t come in and butcher 
+the market. They trade their size where there is size that can be traded. 
+Big money moves markets, but usually it is not just one player. It might 
+be a few big players, some mediu m size players and a bunch of smaller 
+players. The place where they meet and do the majority of their trading 
+is called an absorption level because that is the level where a lot of 
+volume occurred but the market did not get affected by it. Both buyers 
+and sellers were happy.  
+ 
+Page 61 of 150 
+ 
+ 
+The origin of any price move is where supply and demand start s to move 
+out of balance. This is where the low risk, high probability and high 
+reward entry levels are.  Prices start to turn higher when demand 
+exceeds supply. Price turn s lower once supply exceeds demand. When 
+the market starts to move out of absorption levels there are some great 
+trading opportunities. The only way to see absorption is by looking at 
+volume footprint charts.  
+Absorption  can occur anytime in the market. When it occurs it is relative 
+to what happens afterwards. Major trends do not happen immediately 
+after each other. The start of a major trend is often seen after a period of 
+absorption where one side of the market is able to build their position up. 
+As absorption dries up price is free to move in the direction of 
+aggressive buyers.  Once all the supply has been removed from the 
+marketplace, the market is free to move higher without much resistance.  
+Absorption  can be  presen t at the end of trends and profit taking mid -
+trend. When absorption occurs it indicates demand is being met by new 
+supply at market highs or supply is being met by new demand at market 
+
+Page 62 of 150 
+ 
+lows. Basically price is not able to move any further as new supply or 
+demand appears in the markets.  
+What is good about absorption is that it can be regarded as a sign for a 
+breakout move as the buyers and sellers fight for control of the market. 
+Once the transfer of supply or demand has taken place, price is likely to 
+move away from value.  
+One caveat with absorption, you tend to see absorption occur within the 
+last few minutes of the day. This does not necessarily mean new supply 
+or demand has come into the market, it can likely be attributed to day 
+traders closing out their  positions be fore the end of the trading day and 
+hedge funds trying to execute orders as close to the closing price as 
+possible.  
+  
+Page 63 of 150 
+ 
+INITIATIVE ACTIVITY  
+Institutional long term players dictate trends and when the volume they 
+wish to trade cannot be satisfied  at one price their perception of fair 
+value shifts and price starts to trend. This is called initiative activity.  
+To move a market outside of a value area it takes large orders. It takes 
+institutional players. Retail traders just do not have the financia l 
+resources to move prices for extended periods outside of value areas.  
+ 
+ 
+ 
+If the market is trading above value as a result of buyer pressure that is 
+initiative buying. If the market is trading below value because of selling 
+pressure that is initiative selling.  
+You have to understand where fair prices are and understand where 
+unfair prices are. Once you start to move away from fair prices it is 
+important to know why. Is it initiative activity?  Are buying taking the 
+initiative to move prices higher? Or if the market is moving lower, are 
+sellers taking the initiative to move the ma rket lower?  
+When the market breaks out of a value area but there is no strong 
+buying or selling pressure then you look for responsive activity which is 
+in the form of limit orders. For example, when you buy a house you will 
+usually submit a bid. If the price of the house is valued at $1 million and 
+you like the house but you are not in a hurry to buy you may submit a bid 
+of $750,000. The seller might then lower his price to $850,000 because 
+he is a little more motivated to sell. But you are firm in your bid. 
+Eventually the seller gets aggressive and lowers his price to your bid 
+and sells it to you. You are a responsive buyer. The price of the house 
+has moved below the value area. You are buying below value, but not 
+aggressively.  
+ VALUE AREA  
+ 
+Page 64 of 150 
+ 
+ 
+Breakout trades can hap pen in either direction of value. What is 
+important to note is if there is any responsive activity to stop the move 
+and push the market back into the value area.  
+How do you determine what the value area is? The most common 
+method is with Market Profile. It  is the area where 70% of the day’s 
+trading occurs. The value area is based on what time period you decide.  
+ 
+
+Page 65 of 150 
+ 
+ 
+Once you learn to recognize the players, institutional or retail, by the 
+order flow  footprint you can determine what type of activity is going o n. 
+  
+
+Page 66 of 150 
+ 
+CANDLESTICK CHARTS  & ORDER FLOW  
+Candlestick charts are a simple visual form of tape reading and price 
+action  and were created  by the Japanese a few hundred years ago . 
+They show you were the market opened, the low, the high and where it 
+closed for the period.  
+Traders try to predict future price movements based on candlestick 
+patterns that have formed.  There are all sorts of patterns with colourful 
+names that traders look for: Abandoned Baby, Dark Cloud Cover, 
+Hanging Man, Gravestone Doji  and many more. Sometimes the patterns 
+are reliable, other times they are not.   
+I think the reason candlestick charting has lost some of their 
+effectiveness is that markets have evolved over the last several 
+hundreds of years.  Market participants and thei r activities have 
+changed. Japanese candlestick charting was developed in an era when 
+there were no institutional traders or day traders or high frequency 
+traders.  
+ 
+This is not to say that candlestick charts are useless in today’s trading 
+environment, be cause they are not. They give a quick visual colourful 
+
+Page 67 of 150 
+ 
+representation of the market which is useful to most traders. I do use 
+candlestick charts in conjunction with order flow charts to help keep me 
+abreast of the short term direction of a bar on the chart . It is important for 
+me to know where the bar closed in relation to its open.  Actually a 
+normal bar chart can also show that information, but aren’t as colourful.  
+The essence of candlestick charting is the relationship between the 
+opening price and closin g price. In simple terms, a long green  (I have 
+mine set to green instead of traditional white, because my charts are 
+white background) candlestick bar indicates buying pressure. However, 
+you cannot understand the magnitude of the buying pressure without 
+looking at the order flow. Even with candlestick charts it is difficult to 
+know if the buying will continue or stop.  A red candlestick indicates that 
+during the bar, the market closed at a lower price than it opened.  
+Candlestick  charting  and also traditional  bar charting  methods fail to 
+show  is what really happened during the bar. You can see a big white 
+candle stick, which is a bullish candlestick, and conclude that buyers 
+were aggressive. While that may be the logical conclusion to make as 
+obviously buyers w ere in control to cause the bar to close much higher 
+than it opened, you don’t know how much in control they were or if their 
+control waned at the end.  
+ 
+
+Page 68 of 150 
+ 
+The order flow chart is on the left and the candlestick chart is on the 
+right. In the run up in price there are five green up candlesticks, but in 
+the fourth and fifth  candlestick you start to see aggressive selling come 
+into the market as seen  in the fourth bar  (at 3:20) by the 790 lots traded 
+on the bid at 2094.50 and 503 3 lots traded at 2094.00 . Also the bar had 
+a negative delta of -1177 which is a sign of selling pressure . So while the 
+bar still closed higher than it opened, there was more selling than buying 
+in the bar.  On the fifth bar volume was less and the market couldn’t go 
+any higher and you al ready had a sign in the previous bar that sellers 
+were now coming into the market. I would be hesitant to buy at this level 
+and more inclined to look to be a seller.  
+Imagine a soccer game where the score ends 4 -0. You read the score 
+line and see the final score 4 -0 and think the winner had a nice easy 
+game all the way. But if you actually watched the game, you might see 
+that the first 60 minutes the game was evenly matched as both sides 
+failed to score. But over the last 30 minutes the winning team scored a  
+goal and that caused the other team to change their style of play to try 
+and tie the game. But winner scored yet another goal a few minutes later 
+and it was now 2 -0 with 20 minutes to play. The losing team yet again 
+changed their tactics and gave up anoth er goal. The score was then 3 -0. 
+At this point the other team just played to run the clock out and gave up 
+yet another goal and the match ended up 4 -0. If you just look at the final 
+score you will think one thing, but when you dissect the match you see 
+that it wasn’t until late that one team really asserted it dominance.  
+Just looking at a candlestick form on a chart you may miss the essence 
+of how the candlestick was actually formed. Did buyers or sellers 
+become more dominant? Did one side give up? Did one  side become 
+trapped ? Candlestick charts do not show that. Order flow charts do. If 
+you were going to pick a winner in the soccer game, it is easier when the 
+score is 2 -0 than when it is 0 -0.  
+Candlestick charts are a useful tool by themselves, but when partnered 
+with order flow they help create  a powerful analysis method.  
+One of my favo urite trades occur when I see buying or selling 
+imbalances in the wick areas that run contrary to the candlestick type to 
+try and trade in the direction of the candle. For example, a red 
+Page 69 of 150 
+ 
+candlestick with buying imbalances near the top in the wicks and selling 
+imbalances in the body, I look to short.  For example, the 6:35am bar, 
+there were buying imbalances at the top near in the wick and selling 
+imbalances in the body.  
+ 
+The opposite is true with a green candlestick. I look for selling 
+imbalances in the wick and buying imbalances in the body. What is 
+happening in the bar is the market sells off first aggressively before 
+aggressive buyers come in and really take control of th e market.  
+
+Page 70 of 150 
+ 
+ 
+The 8:45 bar a selling imbalance in the wick and buying imbalances in 
+the body. The next bar at 8:50 the market went down and tested the low 
+of the previous bar before rallying on the 8:55 bar.  
+The setup works on a variety of charts, short term, like the 5 minute 
+charts in the example above and even longer term like a 40 range chart:  
+
+Page 71 of 150 
+ 
+ 
+
+Page 72 of 150 
+ 
+WHAT KIND OF CHARTS CAN BE USED WITH ORDER FLOW  
+I use a variety of charts daily in my analysis of the markets. I am not tied 
+down to one particular type of ch art. To do so would be foolish. There 
+are different types of participants in the market, from the extremely short 
+term to very long term. If you decide to base all your trading decisions on 
+one type of chart, say a 5 minute chart, you are missing out  on t he 
+bigger picture.  
+There are three types of charts I like to use: range charts, volume charts 
+and time charts. Even though all three types of charts have the same 
+variables of price, volume and time, it is how each chart uses them that 
+makes it different a nd useful.  
+My first choice of chart  to use is a volatility based chart , also known as 
+range charts, where volume and time are variables. The market doesn’t 
+care about every 5 minute time period or 15 minute time period or 
+whatever time period you set your charts to . You want to  see where the 
+market rotates. With a range chart, b ars are created when price moves. 
+A 4 range bar chart will have a size of 4 bars. Price would have to move 
+4 ticks for a new bar to be created. You can set the amount of bars to 
+what ever you like. New bars will only form when price is moving. If price 
+is not moving or stuck in a range within the bar, a new bar won’t form 
+until it moves outside of the bar. When price breaks outside of the set 
+range of the bar, a new bar will form.  
+The second choice of chart  type that I use  is volume based charts where 
+price and time are the variables. You can choose any amount of volume 
+for this type of bar. Each bar will have roughly an equal amount of 
+volume that is traded in that bar and when the vol ume exceeds the set 
+amount a new bar will be formed. When I say each bar will have roughly 
+an equal amount of volume, for example a 1000 volume bar, one bar 
+may have 988 lots wh ile the next bar may have 1012. T his happens 
+when trades are split between bars . Ther e will be times when it takes a 
+lot of price levels to facilitate a trade of 1000 lots  and there will be times 
+where 1000 lots can be traded without moving price. This is valuable 
+information that can be used in making trading decisions.  
+The third ty pe of chart that I look  at are time based charts where price 
+and volume are variables.  This would be something like your normal 5 
+Page 73 of 150 
+ 
+minute chart.  However to get a handle on the importance of volume in 
+trading you need periods where volume is trading. If the time period is 
+too short there may not be enough volume traded to understand what is 
+happening in the market. One minute charts is too short, five minutes 
+give a better look on the market. Thirty minutes is good for longer 
+duration trades that can last for  days. Time based charts are the way the 
+majority of traders choose to view the market.  
+You will see many examples in this book using time based charts in 
+addition to range and volume charts. This just shows you how order flow 
+footprint charts can be used  in various ways and how the market can be 
+broken down.  
+Given a choice between range based charts, volume based charts and 
+time based charts I would choose range based charts followed by 
+volume charts followed by time based charts.  
+I am also interested in are daily, weekly and monthly charts. I find 
+previous highs and lows are important to look at and keep in mind when 
+trading today. Those are levels where the market stopped and turned 
+due to supply and demand. When the market revisits those levels, I 
+watch  to see if they are accepted or rejected again.  
+  
+Page 74 of 150 
+ 
+HIGH FREQUENCY TRADERS (HFT) AND SCALPERS  
+There has been a lot of bad press about High Frequency Trading over 
+the last several years. Some lawmakers even want to ban the practice. 
+A majority of the bad press you hear about HFT’s comes out of the 
+equity markets where there are multiple exchanges trading the same 
+issues. Most HFT’s in equities work multiple orders across multiple 
+exchanges so there can be a chain reaction when an issue trades on 
+one exchan ge resulting in quick price movements in other related 
+exchanges . This explains why a majority of  people think high frequency 
+trading  is a way  for some traders to front run orders since a computer 
+can react much faster than a human.  
+The important function  of HFT’s  in futures markets  is that they provide 
+liquidity in the markets.  I won’t get into the intricacies of HFT’s but suffice 
+it to say that High Frequency Trading firms have become the new 
+scalpers in the futures market. In the days of pit trading, lo cals would 
+stand in the pit and make markets all day long,  trying to buy on the bid or 
+sell on the offer,  holding positions for seconds or minutes. Now there are 
+computer  programs  that essentially do the same thing. The programs 
+work bids and offers across  multiple futures markets.  
+HFT’s don’t have a clue what is going on in the world and don’t care. 
+These programs are reacting to market movement before they occur. All 
+other traders react after they occur. HFT’s don’t take positions and ride 
+them as long as  they can. By their very definition “High Frequency 
+Trading,” they are in and out of the market many times a day.  
+Scalpers are traders who trade in the extreme short term. They 
+originated from the trading pits where they would generally try and at 
+least ca pture  the bid -ask spread.  However, in today’s trading 
+environment scalpers do not try to capture just the bid -ask spread.  Yes, 
+they will take just a one tick profit if that is all the market will give them, 
+but usually they will try and make 4 -10 ticks if they can. Usually though, 
+scalpers will get out of the market once they feel momentum has 
+stopped. A more apt name for scalpers would be short term day traders.  
+HFT’s and scalpers do use order flow analysis. They look for areas 
+where orders will come in and try and jump ahead of those orders. That 
+Page 75 of 150 
+ 
+is why sometimes it appears that these guys  are front running your 
+trades , when all they are doing is simply analysing order flow.  
+You ar e not competing against HFT’s or scalpers  or the mythical group 
+of traders known as “them”. You are competing against yourself. HFT’s 
+do not control the market. They are reacting to market conditions and 
+trading opportunities as they occur instantaneously.  There are much 
+bigger participants in the market moving in and out daily. There are 
+banks, pension funds, hedge funds, commercial producers, asset 
+managers and more. You don’t know what their position is. You don’t 
+know why they are getting in or out of a  position. What is important to 
+you is how you are able to analyse what is going on in the market and 
+profit from it.  
+  
+Page 76 of 150 
+ 
+INSTITUTIONS  AND THEIR USE OF ALGORITHMIC TRADING  
+I mentioned earlier that on the basic fundamental level what move s a 
+market are buyers  and sellers. When you break  it down I suppose  the 
+one thing that moves markets is money  and it’s not a little bit of money – 
+it’s A LOT of money.  
+Who has the money to move markets? Hedge Funds, banks and 
+commercials. For simplicity s ake I will refer to th ese players going 
+forward as “i nstitutions .” In different markets they have  different  
+identities . In commodity markets it may be a big commercial company 
+like Cargill , ADM  or Unilever, a company involved in the production or 
+consumption of a commodity . In stock indices it may be a fund 
+management company like Profund  or Fidelity, a company that invests in 
+the underlying stock markets . In the bond market it may be a player like 
+Western Asset  Management Corporation , a company that invests in 
+global gover nment bonds . 
+Institutions generally are always involved in the market  in some way as  it 
+is inherent to their business . Even if they don’t have a position, that can 
+be considered a position.  Being on the side of the institutions is 
+important because they ma ke the trend, they have the money to make 
+the markets move up or down on a sustained basis.  
+Let me be clear, when I t alk about i nstitutions, I don’t mean any one 
+player in particular. It is their cumulative effort that moves the markets. 
+Not only do they have the money, but they also have knowledge about 
+the market  that not every trader is privy to. A market participant like 
+Cargill will have better knowledge of Malaysian palm oil production in the 
+near term than the average market participant simply becau se of their 
+palm oil holdings and daily dealing with other suppliers.   
+Institutions not only make the market, they are the market. If you are 
+picking a side of the market to follow in the market place, the odds are 
+tremendously better when you stay on the side of the institutions. But 
+how do you know what the institutions are doing? Imagine they are a 
+herd of elephants walking in the jungle. T hey are  knocking over trees, 
+stepping on bushes and  leaving their footprints  everywhere. I t is easy to 
+see what they  are doing.  Trading volume tells us what these trading 
+elephants are doing in the market. By reading the v olume  in the order 
+Page 77 of 150 
+ 
+flow not only can we tell when an institution is active in the market but it 
+also tells us whether  the surrounding  buyers or sellers are becoming 
+stronger or weaker.  
+The companies that produce commodities and turn them into products 
+don’t get big by being wrong on the markets, at least not very often. 
+Because of their size and their requirements for huge amounts of 
+physical commodities these players are constantly in and out of the 
+markets.   
+Institutional traders are not concerned with well -known indicators like 
+MACD, RSI and Stochastics. They are concerned with the current and 
+future state of supply and demand and use  this analysis to make their 
+trading decisions. They listen to  what the market is telling them and 
+react accordingly.   
+But the hard part is determining when an Institution is participating in the 
+market. In the old days, when Institutions had to place thei r trades 
+through brokers, if you had a good relationship with your broker they 
+would tell you who was buying and selling. For example, if you called 
+down to the SP500 floor and your broker said “Deutsche Bank is buying” 
+or “Goldman ’s is selling”. Then if y ou knew Paul Tudor Jones traded 
+through Goldman ’s in the SP500 pit, you were led to believe Paul Tudor 
+Jones himself was selling. That was how order flow was back in the day 
+of pit trading. Many i nstitutions now execute their trades themselves 
+electronical ly through broker provided trading front ends so it is not as 
+easy as it once was. One way to tell what an institution is doing is by 
+reading the order flow . You will see huge size go through particular 
+levels. It is important to watch the edges of the mar ket. The day’s high 
+and low, was there a big buyer or seller? Where were the levels of 
+aggression?  
+A lot is written these days about the evils of algorithmic trading. Most 
+people hav e no idea what algo trading is  and they lump in with high 
+frequency tradi ng. Algo trading in one sense, as applied for futures 
+markets, is a way to execute orders with minimal market impact. It could 
+be something as simple as an iceberg order or more complex like a 
+ghost bid where the order is only shown when the market is offe red at a 
+level where the customer wants to buy it.  
+Page 78 of 150 
+ 
+The reason these “algo s” were created was for i nstitutional players to 
+hide their activities in the electronic mar ket. If everyone knows that an 
+institution has 1000 lots of corn to buy at 378.00 then othe r participants 
+will also start to buy corn, but not at the same price, maybe just a little bit 
+higher at 378.25 and 378.50 before the market starts to move higher and 
+the Institution can’t get filled at their level of 378.00 . So banks and hedge 
+funds started to create algos to mask their market activities. I won’t get 
+into all the different types of algo trades that are available because that 
+would be another book, what is important to know is that whatever 
+volume that is trade d in the market either on the bid or offer will show up 
+in the order flow.  
+Size does  matter  in the markets  and i nstitutions do not want to tip their 
+hand to everyone else. You have to realize that most markets just do not 
+have the available size an institu tional size player  wants to trade. An 
+institution may want to trade 3000 lots but there may only be 300 lots 
+available at a price , 100 lots at the next price, 100 lots at the next price, 
+50 lots at the next, etc . So to get their order completed they would  either 
+have to push the market to an unrealistic level or try and finesse their 
+order into the market.  
+Sometimes institutions have orders so l arge that they  it can take hours 
+or even days to move or build their position efficiently without bullying  
+the ma rket. There are players that have positions of 200,000 ES futures, 
+100,000 bunds, etc.  Although they don’t get in or out all at once, when 
+they add or reduce positions it can be in the 5,000 -10,000 lot size.  
+One of the things I learned as a broker about t he biggest and juiciest 
+orders from Institutions is that they do not always get filled. An Institution 
+has a level or price range they want to participate at and stick with it. 
+They don’t call back and ask their broker to chase the market. They want 
+to get  in at the price  levels  they want , they don’t want to move the 
+market  and know that even if they miss the  trade by a tick, its ok, there 
+will be other opportunities in the future.  Institutional traders don’t panic 
+the same way retail traders do when the ma rket starts moving and they 
+are not getting filled on their orders.  
+ 
+ 
+Page 79 of 150 
+ 
+ 
+ 
+Here is an example on solid institutional buying in the corn market:  
+ 
+In the example above, all you know is that someone is trying to buy a 
+truck load of corn and that caused a short term rally of about 20 cents 
+over the next few days.  
+Now the rub is you 
+don’t know exactly if 
+the institution is buying 
+to get into a position or 
+get out of one.  They 
+could be hedging their 
+position. No one really 
+knows except the 
+actual people doing the 
+buying.  Ultimately you 
+just don’t know the 
+
+Page 80 of 150 
+ 
+reason W HY they are active in the market. A majority of the volume you 
+see daily is pure speculation, either long term or short term. However 
+there is a portion of volume that is end users buying for delivery.  
+If you constantly trade against i nstitutions you will have a hard time 
+being profitable in the long run. Futures’ trading has  attracted some of 
+the sharpest minds on the planet. At the very least, all you have to do is 
+trade in the same direction as them. If  you are going to be trading 
+alongside the institutions you need a way to determine the level of 
+institutional activity in the market place or the lack of it. Order flow 
+provides you that opportunity.  
+I am not saying you have to copy what the institutions are doing  to be 
+successful. What I am saying is if you buy when the institutions are 
+buying and sell when the institutions are selling you stand a far higher 
+chance of success than trying to go against them  constantly . At the very 
+least you need to be awar e of what the big players are doing.  
+  
+Page 81 of 150 
+ 
+VWAP  
+VWAP stands for Volume Weighted Average Price and is perhaps the 
+most commonly us ed algorithm for trading today ; it assumes the markets 
+are efficient. The reason it is important is because it is the benchmark by 
+which trade exe cution is measured. I t is the average price at which the 
+majority of a given period’s trading took place weighted by volume at 
+each price level.  In other words it means to fill a trade where everyone 
+else is trading.  
+A broker c an add value by working an order with their discretion , buying 
+when they thought the market  was cheap or selling when the price 
+looked rich  based on their subjective judgement about the market . 
+VWAP is a replacement for that.  
+When an Institution has large orders that m ust be filled they will often 
+use a VWAP based algorithm to execute the order as close to VWAP as 
+possible. By executing their order as close to VWAP as possible it 
+indicates that they have been able to minimize the market impact of their 
+order. Hedge fund s are conscious of their market impact costs which are 
+the costs incurre d by trades  so big that they will move the market.  
+In a simple form VWAP is used to determine value for i nstitutional 
+traders  much in the same way a moving average works as a trading 
+indicator . But VWAP is used more for trade analysis than trade entry . 
+When a buy order is filled at a price better than VWAP it is good for the 
+trader as the average transaction value is better than what everyone 
+else in market for that time period also re ceived. The reverse is also true 
+for when one is selling. If a sell order is filled at a price better than 
+VWAP the trader is selling at a higher average price than everyone else 
+during that time period. VWAP is the measuring stick for large orders.  
+When p rice is below VWAP, i nstitutions that are looking to buy will tend 
+to buy at prices below VWAP as they are able to build a position that is 
+better than the VWAP. They won’t be that willing to buy when the price is 
+trading above VWAP as it will ruin their own average price against 
+VWAP.  
+When price is above VWAP, i nstitutions that are looking to sell or get 
+short will try to execute their orders as they are selling at prices that they 
+feel are better than what has been recently trading. If an institution is 
+Page 82 of 150 
+ 
+trying to fill an order they won’t be as willing to buy when price is trading 
+above VWAP, they may buy some just to participate in case price never 
+comes back to VWAP, but it will be minimal.  
+The interesting thing about VWAP orders is that there is no guar antee 
+that it will be filled or that it will match VWAP.  
+So why is VWAP important? For an intraday trader VWAP is important 
+because they can determine if they are selling too cheap or buying to 
+rich. When prices start moving 1 or 2 standard deviations abov e VWAP 
+and you are buying you could be buying at prices too expensive. 
+Conversely, if you are selling and prices are 2 standard deviations below 
+VWAP you could very well be selling too cheap.  This is not to say that 
+prices cannot move 3  and even 4  standard  deviations away from VWAP 
+because it can.  
+When trading with order flow you can lay VWAP lines on your chart to 
+give you an indication if it trading cheap or rich. I am more prone to take 
+buy signals when the market is trading cheap and sell signals when the 
+market is trading rich to VWAP.  
+Do not think for a minute that VWAP has to revert to the mean. A market 
+can stay above or below VWAP most of the day.  
+VWAP is not without its limitations. As the trading day goes on the lag in 
+VWAP become stronger. This is because a lot of trade data has already 
+been factored in and new trade data has less of an impact on the overall 
+VWAP number and will tend to flatten out. On strong trending days price 
+will be above or bel ow VWAP pretty much all day. On  range trading da ys 
+VWAP will run through the middle of price action.  On days when 
+important news comes into the market late in the day, that cause 
+significant price movements on heavy volume the VWAP profile will be 
+affected.  How an order is executed will also affect the VWAP since the 
+average execution sits somewhere between the bid and offer spread. To 
+match VWAP an order would need to be a combination of limit orders 
+and market orders.  
+A problem I see with VWAP with the trading public is they don’t fully 
+understand how or why it is used. The trading public is using it as a form 
+of moving average and think that when the market breaks through 
+Page 83 of 150 
+ 
+VWAP to look for it to go to the 1st standard deviation and revert back to 
+the mean. In theory that should happen. But the reality i s it doesn’t 
+happen. I spent 8 years at JP Morgan executing VWAP trades for the 
+biggest hedge funds in the world and some of the biggest internal bank 
+traders. Orders are only executed over a part of the day, for example 
+from cash open to cash close or the  first hour of cash open, etc.  Very, 
+very few orders are executed VWAP from the exact open to the exact 
+close which is what most software will calculate and draw on a chart. An 
+order executed over the first hour beginning at the cash open would only 
+look a t VWAP for that time period, not the entire day VWAP.  Large 
+orders need to trade where the size in the market. A majority of trade 
+happens at the open and the close.  
+ 
+Don’t be misled into thinking that VWAP is a new excellent indicator to 
+take trades against. As I mentioned earlier, VWAP is a way to measure 
+a broker ’s trade execution. Traders make money by buying low and 
+selling high, not by beating VWAP.  
+  
+
+Page 84 of 150 
+ 
+ICEBERG ORDE RS 
+One of the tricks that traders use to disguise their intentions in the 
+market is by placing their orders using the iceberg function. Simply put, 
+iceberg orders are  just large orders that are hiding their true size.  A 
+trader may have 500 lots of corn to buy, but will enter his order with an 
+iceberg of 50 lots, meaning he will only show 50 lots at a clip. When the 
+first 50 lots are filled then another order for 50 lots will be entered 
+automatically.  
+Iceberg orders have mixed meanings these days simply bec ause 
+everyone uses them, even retail traders trying the trade 5 lots – they will 
+iceberg the order to show 1 lot. Iceberg orders are used in nearly all 
+markets nowadays, even thinly traded ones. In some markets depending 
+on the time of day, a 10 lot order can spook the market a few ticks.  
+Unfortunately to see iceberg orders one has to be watching the order 
+book and what is trading in order to see them. There is no special 
+designation in the ticker for them. Icebergs are obvious when you are 
+watching the bid /ask and you are buying the offer, but every time you 
+buy the offer it refreshes the quantity and doesn’t break through the 
+level.  
+In my past life as an institutional futures broker we would almost always 
+use icebergs on orders that were over 50 lots.  It was normal for us to 
+iceberg orders that we needed to get done immediately. If I had to buy 
+500 lots of soybeans, I would use an iceberg of maybe 15 lots per clip 
+and immediately lift the offer. If I know the size of my order will move the 
+market I may eve n buy it 1 or 2 ticks beyond the offer to get a good 
+portion of the trade on. So it is not uncommon to see iceberg orders 
+appearing  in the middle of nowhere and sometimes you may not even 
+notice it.  
+What is tricky about Icebergs is that they can be signifi cant or totally 
+irrelevant. You have to take them in the market context.  An iceberg 
+order in the middle of a range can mean nothing. It can be part of a 
+spread trade against a physical trade and the trade doesn’t want to 
+spook the market by showing his en tire size. In this case the trader 
+doesn’t really have a view of direction on the market as he is hedging.  
+Page 85 of 150 
+ 
+Icebergs that I have found to be significant are ones that are hold ing up 
+or holding down a market, usually long term macro levels and 
+psychological levels. These are l evels where the market can’t seem to 
+get below or above. The volume keeps refreshing when it trades a 
+certain quantity. When these Icebergs are take n out the market can 
+explode really quick  in that direction. An iceberg on its own will not stop 
+a screaming market. But it can serve as a sign of absorption, where 
+price is being absorbed by the market participants.  
+Along this thread, an iceberg can stop a pullback  in the market as there 
+may be  some significant size behind it  and a pullback has weaker 
+selling, but it mo st likely will not stop a trend because with a trend there 
+is a tendency for aggressive participants to come in and take out levels.  
+A buy iceberg on a market moving up near highs  is important as it can 
+signal that a long term timeframe trader is getting involved in the market 
+and doesn’t want to show his hand as he is building a position. The 
+reverse is true as a market nears its lows or is making new lows. These 
+other time frame traders may be coming into the market to move size 
+and are afraid of moving price too much before they can get their entire 
+size off.  But I think taking a trade based on an iceberg order appearing 
+in the order book is a leap of faith.  
+The problem with iceb erg orders is you have to be watching the market 
+trade to notice them. There is no way to look at a chart after the market 
+closed and see it.  I think finding iceberg orders to use as a trade entry is 
+over rated as they appear too frequently to add any valu e in making a 
+trading decision.  
+In the end the traded volume from iceberg orders that are filled or even 
+partially filled will show up in the order flow chart. It is understandable 
+that institutional traders want to hide their market activities and really the 
+only way to see what the institutional traders are doing is by looking at 
+an order flow chart.  
+  
+Page 86 of 150 
+ 
+SUPPORT AND RESISTANCE  
+Every trader should have levels they look for in a market that determine 
+support  and resistance. How price acts at points that a trader considers 
+critical is important to your trading. You want to determine if other time 
+frame traders are coming into the market at these levels to either defend 
+a price level or push the market through the price level to a new level.  
+There are many wa ys to find support and resistance levels. You can use 
+traditional technical analysis such as pivot points, Fibonacci 
+retracements, moving averages, previous highs and lows, etc. The 
+question you want to a sk is once you have your levels how do you know 
+whet her these levels are going to hold or break? You let the volume tell 
+you what the market wants to do.  
+Here is an example using Fibonacci retracements on 60 minute corn 
+charts. Corn is a great market to trade. A lot of traders turn their noses 
+up at the agr icultural markets in favour of faster moving currencies and 
+stock indices but there are no truer market s to supply and demand as 
+the agricultural markets.  
+ 
+
+Page 87 of 150 
+ 
+ 
+ 
+
+Page 88 of 150 
+ 
+Order flow charts give the trader plenty of information to make informed 
+trading decisions especially when combined with their own view of the 
+market.  
+If we are coming into a resistance level and we see buy volume slowing 
+down or coming into a support level and see sell volume slowing down 
+this is a good indication the market may reverse. That i s why you need 
+to know where support and resistance are located . Otherwise you may 
+just be poking around in the dark trying to understand if the market is at 
+a turning point.  You need effort to break through a support or resistance 
+level and continue in th at direction. This effort is usually shown by 
+aggressive participants in the market place.  
+Look for macro levels in the market to trade around. A macro level is one 
+that is large in scope and is easily seen and watched by market 
+participants.  When a macro level is penetrated it attracts long term 
+money in the form of institutions as they come in to the market to 
+reposition themselves and take profits or loses.  Is volume heavy at these 
+levels? Is this level being defended or abandoned? Are buyers or sellers 
+being aggressive? Looking at a n order flow  chart will tell you what is 
+going on and tell you what to do.  
+  
+Page 89 of 150 
+ 
+PREVIOUS HIGHS AND LOWS  
+An often overlooked suppor t and resistance level is the previous day’s 
+high, low and close. These are levels that market perceived as being too 
+expensive (yesterday’s high) or too cheap (yesterday’s low). Baring a 
+change in fundamentals what makes a trader think those prices won’t 
+hold again today?  
+One of my favourite trades is when a market struggles to stay below 
+yesterday’s lows  and I see big volume numbers trading on the bid side . I 
+look for signs for a bounce higher. There is a well -established tendency 
+among retail traders to place their stop levels above the previous high or 
+below the previous low. This is a sign that there is support at these low 
+prices because when short term traders try to move the price lower a 
+bigger stronger other time frame participant s are  willing to b uy their 
+selling.  
+ 
+
+Page 90 of 150 
+ 
+ 
+If the market starts to trade above and more importantly stay above the 
+previous day’s high with heavy volume that signals that new buyers are 
+coming in. What the market is telling you is that yesterday the market 
+couldn’t go any higher, but since the market close, something in the 
+market fundamentals may have changed enticing new buyers to come 
+into the market and get involved.  If the market can’t stay above 
+yesterday ’s high and sellers come in, then watch out below. Look for a 
+move to the downside.  
+
+Page 91 of 150 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+Page 92 of 150 
+ 
+The previous day’s close is an important level for the current day trading 
+since the previous day’s close is the price level that positions are 
+marked to market against. It is the level that institutions use to determine 
+if their position is making money o r losing money. When today’s prices 
+start to trade to the previous day’s closing price, keep an eye on volume 
+for signs of further moves. I am looking for levels to trade around.  
+ 
+An important high and low to watch  is the previous month’s levels as 
+they s how where price was contained over an extended period of time. 
+When the market takes out one of these levels you know that change is 
+occurring in the market place.  I find  there are three things that can 
+happen when you trade at last month’s high or low. 1.  The market will 
+fail to take out the level and trade back into the range. 2. The market will 
+take out the  high or  low and then re -enter the 2 month range  and bounce 
+off the level as it is rejected once again . 3. Trade outside of the 2 month 
+range and stay  outside of the 2 month range  and new participants come 
+into the market . The 2nd and 3rd market action s are where the big 
+opportunit ies are as the market previous month’s  highs or lows.  
+Short term traders who are not aware of long term levels have a high 
+chance of getting run over by institutional trade participating at these 
+
+Page 93 of 150 
+ 
+levels. Additionally, they may miss the potentially large intraday trading 
+opportunities these levels often present.  
+So let’s take a look at what happens with a test of a monthly high and 
+low. In this example I will use the September -15 Corn futures.  
+ 
+
+Page 94 of 150 
+ 
+ 
+
+Page 95 of 150 
+ 
+ 
+What I like about this chart is that as the market traded below the low 
+you see 2 101 lots were sold into the bid at 352.50, 17 58 lots sold into 
+the bid at 352.25 and only 378 sold into the bid at 352.00. But as the 
+market started trading back up, only 467 lots were bought at 352.25 and 
+868 lots bought at 352.50, this signals to me that there isn’t much 
+interest in sellers trying to  work offers below 352.75. In the 10:00am bar 
+there is 1 102 lots bought at the offer at 353.25 and 2821lots  bought at 
+the offer at 353.50. Obviously someone had some selling to do, but the 
+market participants  just swallowed it up and kept the market biddin g 
+higher.  
+Now let’s look at what happened when the previous month’s high of 
+376.00 was tested.  
+ 
+
+Page 96 of 150 
+ 
+ 
+This is a beautiful chart. The market traded right up to exactly the high of 
+376.00 came off, tried again in the next bar and couldn’t quite make it 
+back to t he level. It was a tick off at 375.75 but a big seller appeared to 
+cap the buying  and the market sold off for the time being.  
+The next day the market made a run at the high again and here is what 
+happened:  
+
+Page 97 of 150 
+ 
+ 
+This is exactly what you want to see with order flow. Strong buying 
+coming into a previous high, preferably aggressive buy ers leaving 
+buying imbalances and just moving through the level like it wasn’t even 
+an important level. The market never looked back.  
+While the market may not approach long term leve ls like previous 
+month’s or even yearly highs and lows  very often , when it does the 
+levels are extremely important. Institutions will often reduce their risk by 
+taking off positions when the market reaches long term levels. If prices 
+become accepted outsid e the price levels contained by the long term 
+levels, these same institutions may decide  to re-establish their position 
+or enter into new positions.  
+  
+
+Page 98 of 150 
+ 
+TODAY’S HIGH AND LOWS  
+The high and low of the day is generally not going to be known until after 
+it has been made. However there are often signs in the volume footprint 
+if a high or low is going to hold.  By judging the type of buying and selling 
+occurred at a high or low you can determine if that level will in fact be the 
+high or low.  Sometimes it is easy to  see, other times you won’t know for 
+sure. Stick with the ones that are easy to see as they offer the best 
+reward for least risk.  
+ 
+Trying to pick the day’s high or low can be like trying to catch a falling 
+knife. However the nice thing about order flow i s it can give you some 
+trading opportunities once a high  or low  is made. You will never sell the 
+exact high or low with order flow, but you can find trading opportunities 
+just after the high or low has been made.  
+Also if a high or low has been made, when t he market comes back to 
+test the level it will either succeed or fail. Here is an example of when a 
+high was made, point A and subsequent failures at point B and C.  
+
+Page 99 of 150 
+ 
+ 
+ 
+
+Page 100 of 150 
+ 
+ 
+ 
+ 
+
+Page 101 of 150 
+ 
+As a trader your job is to find trades. That is how you get paid. But more 
+importantly you need to find trades that have solid reasoning behind 
+them.  
+Futures markets now trade almost around the clock from Sunday night 
+until Friday afternoon. A trading day which used to be 6 hours can now 
+be as long as 23 hours. You don’t see gaps  occurring as much as you 
+used to. Now if something happens in the evening or early morning, the 
+markets are open and can react accordingly. Highs and lows made 
+outside the normal trading day hours, ie overnight, often can  help set the 
+range for the day.  
+ 
+Around the clock trading is significant because it gives traders in other 
+locations a better opportunity to trade. Highs and low that are made 
+during the overnight session are significant levels to watch during the 
+day. Unless the market is in a trending mode, the highs and/or lows 
+made during the night sessions will be revisited at some point during the 
+day session and it is important to watch how markets react to those 
+levels. All major brokers and institutional trading firms  have fully staffed 
+desks tha t trade around the clock in all time zones. They are constantly 
+
+Page 102 of 150 
+ 
+reacting to fundamentals affecting the market, trading accordingly and 
+adjusting their positions. Keep an eye  on the levels made overnight.  
+What I love about order flow  charts is that you can  determine where and 
+when  buyers and sellers are being aggressive. When the market is 
+making new highs I like to see aggressive buyers. This shows me that 
+the buyers are clearly in control. If I don’t see aggressive buyers and 
+instead see aggressive sellers near the high, I will look for the market to 
+sell off. You always want to know who is in control of a high or low.  
+ 
+How about when a market comes back to the high or low? You  want to 
+determine if the level will be taken out and a new high or low made. If a 
+high is to hold I like to see some aggressive selling come in and defend 
+the level. Just as I would expect with a low, I would expect to see 
+aggressive buying come in.  If a low is going to be taken out, I expect to 
+see aggressive selling come in at the level and below it.  
+
+Page 103 of 150 
+ 
+ 
+When a market struggles to take out a high chances are lower that it will 
+make a new high later in the session. Conversely, if a market struggles 
+to take out a low then the chances are lower that it will make a new low 
+later in the session. Again volume footprint charts tell you when a market 
+is struggling to take out a high or low.  
+A good sign  to look for to decide  if a high or low is going to hold is if 
+there are stacked volume imbalances of sellers (at a high) or buyers (at 
+a low). A stacked imbalance is where there are a multiple levels of 
+volume imbalances. A stacked imbalance shows who has taken control 
+of the price area.  If you are at a low and see st acked buying imbalances 
+that is a sign that aggressive buyers have come into the market to 
+sweep it off its lows. If you see selling imbalances near a high that is a 
+sign that aggressive sellers have come in to move the market lower.  
+While you won’t see ac tivity like this at every high or low, when it does 
+appear you can trade with more confidence.  
+Markets rally off of lows for two reasons. Traders are covering shorts. 
+Traders are getting long.  
+
+Page 104 of 150 
+ 
+Markets fall off highs for two reasons. Traders are taking prof its (in other 
+words covering their longs, but it is not phrased in that way). Traders are 
+getting short.  
+Picking when a high of day or low of day occurs and the subsequent 
+reversal can be extremely rewarding, but can be dangerous if you are 
+wrong and don’ t manage the trade properly.  
+Order flow  charts give you the ability to look inside the bar  as it is 
+forming on the chart . There are certain patterns I like to look for at and 
+near highs and lows. They are large prints and small prints.  
+When you see HUGE volume as you reach highs it is a good sign the 
+market may turn if there is no follow through or there is signs of 
+absorption. If a market cannot break through huge passive sellers and 
+turns lower, the weak buyers on the way up will be lo oking to get out of 
+their positions before they suffer losses causing a liquidation break. The 
+result of this is that the weak hands are cleared out of the market on the 
+liquidation break, their supply has been transferred to the stronger hands 
+and the mar ket is now ready to rally again. This is the meaning of the 
+saying “a market needs to break before it can rally.” I carry forward this 
+previous level of HUGE volume that traded on the offers at a high to 
+future trading sessions to watch and perhaps when we  reach that level 
+again.  
+It is important to note that the huge volume doesn’t have to occur exactly 
+at one price point. It can be scaled in there as it is not uncommon for 
+passive sellers to work scale orders.  
+Page 105 of 150 
+ 
+ 
+Large prints  that you see  at a high signify  that there is a large seller, it 
+could be one institution or it could be a combination of several market 
+participants deciding that the high is such a great level to sell that they 
+sell as much as they can to all the willing buyers . They want to get rid o f 
+excess inventory at advantageous prices. This is obvious is in a n order 
+flow footprint chart because it sticks out like a sore thumb. When y ou 
+see an abnormally large volume print at the high the market is telling you 
+that institutions are selling to suc h an extent that higher prices are not 
+possible. The market has basically been “capped.” Institutions will not 
+cap the market if they expect higher prices ; they will  do it if they expect 
+lower prices.  
+When you see abnormally large prints at a high it shows  that institutional 
+selling has come in to the market and is willing to offer their supply for 
+sale. This will usually stop an up move at least in the short term. When 
+the market comes back to test the highs and cannot break that high, it is 
+a sign of mark et weakness.  
+ 
+
+Page 106 of 150 
+ 
+ 
+ 
+
+Page 107 of 150 
+ 
+When you see abnormally large prints at a low it shows that institutional 
+buying has come in to the market and is willing to accept all the supply 
+available. This will usually stop a down move at least in the short term. 
+When the market comes back to test the lows and cannot break that low, 
+it is a sign of market strength. The opposite is true for large prints at a 
+high.  
+Small prints at a high or low are just as significant, especially if it comes 
+after a large print. It shows that the la st buyer (at a high) has given up or 
+that the last seller (at a low) has given up. Markets that are rallying stop 
+and go down when the last buyer has bought and there are no more 
+buyers. Markets that are going down stop and reverse when the last 
+seller has  sold. Granted single prints are extreme, but I like trades that 
+stick out like a sore thumb. You can actually use single digit prints. Like 
+3 or 5 or 8.  
+ 
+This is how the trade played out  over the next few days … 
+
+Page 108 of 150 
+ 
+ 
+Single prints suggest weakness. The marke t simply cannot follow 
+through in that direction and turns. It could be caused by someone trying 
+to trigger stops. It could be the absolute last buyer came in and bought.  
+When you see extremely large prints or single prints at a top or bottom 
+look for a tu rn in the opposite direction. The risk for these trades is small 
+as it is just behind the print that stuck out.  
+Knowing when a market is ready for a reversal offers low risk entry 
+points with possible high returns. Trying to identify them with a traditiona l 
+bar chart can be difficult, but if you follow the order flow you can notice it 
+developing and trade it accordingly.  
+Time spent at a high or low is also important. For example, when the 
+market spends a long time near the lows without any downside follow 
+through. The market came down to the low and sort of hung around and 
+trade was slowing down and the market just could not push any lower, 
+the intraday short start to become anxious. They had helped to push the 
+market down to the lows but they weren’t getti ng paid for it. Prices then 
+start to tick higher, the short term traders start to cover, pushing the 
+market higher causing more traders to cover their short positions. 
+Ultimately there is a short cove ring rally and the low is made.  
+  
+
+Page 109 of 150 
+ 
+MACRO  APPROACH   
+The macro approach is how I  approach the market on a daily basis . I 
+want to get a big picture market perspective so I s tart with a longer term 
+monthly and weekly charts. Do I see upward continuation, downward 
+continuation? Then I will look at daily and intraday charts and ask myself 
+is the market in balance? What are the value areas? What are levels 
+where there were  big passive buyers or sellers?   
+Each day before the market opens I identify these levels since these are 
+the levels I will be trading around.  Traders  often get so focused on the 
+short -term market trends, economic reports, Bloomberg news,  CNBC 
+TV, etc. that they do not keep a perspective on w hat the market is 
+actually telling them .  
+More often than not traders remain too narrowly focused on price and 
+short-term bars, never fully appreciating the market’s ongoing auction 
+process  that takes place daily . By taking a step back and looking at the 
+bigger picture you will get a clearer market perspective and it will save 
+you from becoming hypnotized by intraday  price action.  Staring at a 
+DOM or a chart all day can be dizzying.  
+With a macro approach I can see where the important long term levels 
+are in the market so I can react accordingly.  
+  
+Page 110 of 150 
+ 
+TRADIN G NUMBERS  
+Knowing where price can trade to and react off of  is essential to success 
+in trading. You cannot just approach the market with a gut feeling for the 
+day and trade according to it.  
+Building on the macro  approach, each day we must prepare for the 
+trading day by making a note of important levels where the m arket may 
+have reactions.  
+ Yearly High  
+ Yearly Low  
+ High 2 months ago  
+ Low 2 months ago  
+ Last month’s  high  
+ Last month’s low  
+ High 2 days ago  
+ Low 2 days ago  
+ Close 2 days ago  
+ Yesterday’s high  
+ Yesterday’s low  
+ Yesterday’s close  
+ Overnight high  
+ Overnight low  
+ Resistance  
+ Support  
+ Pivot Point  
+ Yesterday’s Value Area High  
+ Yesterday’s Value Area Low  
+ Economic Releases due today and time  
+ Any economic events today and time  
+It may seem like a lot of numbers to keep track of, but the reality of it  is 
+that it should only t ake a few minutes to make note of these levels on 
+your chart.  
+ 
+  
+Page 111 of 150 
+ 
+OTHER FORCES  
+One of t he basic premise s in trading  is that markets will do what they are 
+supposed to do. If they do not do what they are supposed to do, then 
+there is a reason. That reason is that there are unusually strong forces 
+at work temporarily acting contrary to what the markets want to do. The 
+trade r can take advantage of this knowledge and go with the temporary 
+strong forces and make a profit.  It may not be known why the other 
+forces i n the market until much later, but being able to recognize them 
+allows a trader the chance at short term profits.  
+When you see a big amount of volume trading at a top and the market 
+can’t go bid there, that is a sign of weakness. You  should look to get 
+short there because there is another force at work. There are ample 
+traders buying but the market just cannot go any higher as it should. 
+This is a clear sign of other forces at work.  
+You will never know the intentions of a trader  yet to enter the market. At 
+any given moment there could be an institutional player ready to step 
+into the market and move it opposite of what you predicted.  
+An outside factor in the market that causes havoc with order flow is 
+when there is an economic report coming out or an FOMC me eting. 
+Order flow will dry up ahead of the announcement and explode just after 
+the announcement. When I started out in the futures business as a clerk 
+on the CME floor one of the things I learned was that when a number 
+like Non -Farm Payrolls comes out the institutional players are not the 
+ones doing all the trading that causes the knee jerk spike up and down 
+reaction to price that you see on the chart. They are already positioned 
+on how they view the market. It is usually the weak holders scrambling 
+to cove r their position and stops getting hit. When the market slows 
+down and has stabilized is the time when the institutional players will 
+decide what to do. Sometimes the actual market direction might not 
+emerge until the day after a big announcement or number . 
+I am an advocate of staying out of the market slightly before and just 
+after any important number or announcement when trading in the short 
+term. Of course there will be times the market just gets blindsided with 
+some news. You just have to be prepared t o take the loss.   
+Page 112 of 150 
+ 
+LONG TERM  APPLICATIONS OF ORDER FLOW  
+Most traders who use order flow tend to apply it to short term trading 
+decisions. However it can also be applied to longer term outlooks. 
+Position traders attempt to come up with models to forecast price 
+movements of markets by analysing supply and demand forces in the 
+economy, economic indicators and even government policy.   
+One of the problems with forecasting models is that past variables are 
+used to extrapolate future values. A market forecast is  only as strong as 
+the data used to make it. Unfortunately fundamental data is usually 
+based on samples and are estimates at best. These estimates are 
+usually subject to revision.  
+The same t heories of order flow that appear intraday  can be applied on 
+long term charts.  Here is a nice example of the Euro Currency futures. It 
+hit a high at 1.1450 on June 18th then sold off about 250 ticks over the 
+next few days  and down below 1.0850 over the next month . Could you 
+have predicted it by looking at t raditional ca ndlestick or bar  charts? 
+Maybe you could have . It is always easy to look at a chart after the fact 
+and say that you would have sold here and bought there. You wouldn’t 
+have sold the exact high, but realistically you could have sold around the 
+1.1400 level.  What you need are concrete signs of a turning point.  
+ 
+
+Page 113 of 150 
+ 
+And here it is. At the high of 1.1450 you have a buying imbalance of 944.  
+ 
+By itself 944 is a big number. But for extra confirmation you also have a 
+buying imbalance at the top when the bar closed lower than it opened. 
+On the two preceding bars on the way up you can see some buying 
+imbalances and the market still went up. When it hit 1.1450 the market 
+hit a br ick wall. There was a big seller or sellers, it doesn’t really matter if 
+it was one or more. The buyers just could not push the market any 
+higher past that level. Then you see a stacked selling imbalance on the 
+way down. The short term traders who bought a t 1.1450 are now stuck 
+and got to get out and they can’t sell fast enough.  
+
+Page 114 of 150 
+ 
+This top just sticks out like a sore thumb as a reversal.  
+Here is the daily chart. Again based on a daily candlestick would you 
+have sold?   There are a couple of ways to look at it.  You can say that 
+1.1450 is a nice round number so there should be some resistance 
+there. But if that is the case, why did it blow through 1.1400 even on the 
+way up and down? The previous month’s high was 1.1486. So we are 
+still 36 ticks off from it. With order flow and looking inside the bar you 
+can see what is actually going on between the buyers and sellers to 
+make informed  trade decisions. Order flow can identify reversals that 
+may not be obvious to the rest of the trading world and that is reason 
+enoug h to use them.  
+The advantage of order flow analysis is that the underlying forces of the 
+market are shown in a recognizable visual form. The market participants 
+are showing you what their intentions are.  
+ 
+  
+Page 115 of 150 
+ 
+TRADE MANAGEMENT  AND  MONEY MANAGEMENT  
+Trade mana gement is an overlooked part of trading. Nearly every book 
+written on trading covers money management. While defining your 
+monetary risk per trade is important, a trader should be able to manage 
+their trades to earn the maximum they can out of a position w hile 
+knowing when a trade is not working out.  
+Professional traders recognize the fact that even when they do 
+everything right, they will sometimes find themselves on the wrong side 
+during a trade.  Market conditions are always changing and they accept 
+that it is part of trading. Even the best looking trade set ups will 
+sometimes fail.  
+Create a set of rules that give you an edge. If the rules are not met then 
+no trade, PERIOD. Once you start to bend the rules you start getting into 
+trouble and getting into to trouble leads to one thing – loses. Pick your 
+spots to get into and out of trades. Ideally what you want are “sweet 
+spots” of entry so that if the market starts to move against you it doesn’t 
+feel like it.  
+By taking a reasonable profit if there are signs in a change of trend or 
+change of reason for taking the trade you may avoid a loss. You do give 
+up profit potential though. But more importantly you have the chance to 
+trade again. When trading w ith order flow you can usually see levels 
+where the markets reach a level and can’t move anymore. Or you can 
+see that the market is full of aggressive players and there is no need to 
+get out of the position yet.  
+All successful traders practice sound trade and money management. 
+Traders minimize their los ses and maximize their wins. There is no 
+worse feeling than having been up substantially in a trade only to exit the 
+trade at a loss simply because you lost your discipline with your trading 
+plan, money manag ement and failed to heed your exit strategy.  
+There are only five possible outcomes to any trade.  You can have a big 
+winner, a small winner, a break -even trade, a small loser or a large 
+loser. You can make a lot of money trading if you do any of the above, 
+except taking repeated large losses. This is why stop have to be used in 
+some form.  But you need to monitor the trade so you are not always 
+Page 116 of 150 
+ 
+getting stopped out for the maximum loss.  Scaling out of positions gives 
+you a way to get out with a small profit ra ther than a total loss.  
+I like to get in, capture what part of the trend I can, get my money and 
+get out. There comes a point in every trader’s life that he will realize that 
+he will not pick up every tick in a trend.  
+Let me give you an example, let’s say you decide to go long corn at 
+357.75, you know that at 351.00 that your set up would be invalid so that 
+is your stop level. You have a target at 380.00. At first the trade goes 
+well and corn rallies up to 373.00, then the market starts to range trade 
+and you notice some absorption appearing around the 371.00 level, then 
+the market start to drop to 367.00 on some aggressive sellers. The 
+market conditions have changed and there are two clear signs of market 
+weakness. You didn’t reach your profit target and the conditions are now 
+such that it looks unlikely that you will. You can either start cutting your 
+position and taking some profits, or you can just try and let it run in a 
+“damn the torpedos” type of trade – either go to the target level or go to 
+the stop level. The former would be the prudent thing to do since the 
+market has already shown you that it has changed.  
+Loses are a part of trading. That is a fact. One way of looking at it is it is 
+part of doing business. That  is why you have to control your lo sses. 
+Keep them small and manageable. Don’t let one loss be the cause of 
+your entire trading career failure. A loss should not be a bullet to the 
+head. It should be more of a punch to the body , one that you can take 
+and k eep trading . Keep loses small so you don’t get knocked out of the 
+trading game.  
+It is imperative that a trader understand how to manage their risk. With 
+proper risk management, a trader can have more losing trades than 
+winning trades. As long as the winnin g trades are bigger than the losing 
+trades they will still make a lot of money.  
+Being a good trader is about making money day after day. Never losing 
+a lot, losing only a little and not losing often. A trader wants to make 
+money often and make a lot when h e does. How does a trader do this? 
+They look for quality trades. It is not just about looking for something to 
+trade for the sake of trading. It is about spotting quality trades and taking 
+them. It is not always about getting the big homerun trade every ti me. It 
+Page 117 of 150 
+ 
+is about consistency. If you are not consistent your capital will slowly 
+erode and when the big homerun trade comes you won’t be able to 
+capitalize on it.  
+The size of a move is nearly impossible to predict until it happens. Don’t 
+spend all your time  trying to hit home run trades. Look for low risk high 
+probability trades that give you an edge and aim for profits of all sizes. 
+The setup s I have laid out for you in this book will sometimes result in a 
+big move, sometimes a small profit or a small loss.  
+An often overlooked part of trading/money management is a trader’s 
+own pain threshold. This is the level where a loss starts to have an 
+emotional impact on a trader. Knowing your pain threshold will reduce 
+the emotionality in your trading decisions. If you r monetary threshold is 
+10 ticks but your stop level is 20 ticks away you will find yourself wanting 
+to get out of trades too early because you are afraid of losing more. This 
+will have an adverse effect on your winning trades.  
+The worst enemy you can have  marketwise is the desire to make the 
+market do what you want it to do. Your wishes don’t count. The market 
+has a job to do and does that job in its own way.  If you feel that you are 
+wrong just get out of the trade.  
+You have to determine the price you wan t to pay , the level you want to 
+get in.  If you miss a trade don’t chase it, you will lower your profit 
+potential and the  reason for getting into a trade may have passed  or the 
+market conditions changed . The markets provide trading opportunities 
+everyday se veral times a day. Missing a trade is not the end of the 
+world.  There will be many more trades in the future.  
+A mistake traders make is getting into a trade and waiting for the marke t 
+to react and then it doesn’t do anything, it just range trades , in and out of 
+profit for a while. When you have a setup based on certain criteria and 
+the market doesn’t react the way it is supposed to that is a clear sign to  
+get out or reduce the size of the position to minimize the risk . If a lot of 
+time has elapsed and the position is not in the money, the chances of it 
+going into the money are getting reduced with each second of the clock. 
+Traders sit and wait for a breakout when there is no breakout occurring. 
+If the breakout is not there, get out and prepare for the next trade 
+opportunity. Don’t marry a trade that is going nowhere hoping that it will 
+Page 118 of 150 
+ 
+finally turn and go your way. You will miss the other trades that are 
+setting up. After a while if a trade is not developing as planned you have 
+to start thinking of bailing o ut of the trade as the reason for getting into 
+the trade may have changed.  
+An over looked form of stop is a time stop. Most people think of stops in 
+terms of price, if the market moves against them a certain amount they 
+get out. A time stop is based on tim e. When a trader gets into a position 
+but the market just range trades and goes nowhere over a long period of 
+time, the reasons for taking the trade in the first place have diminished 
+because the market is not moving. It would be wise to get out and 
+reasse ss the market as opposed to having a position on and being 
+married to it. A trader can think more clearly without a position on than 
+with a position on going nowhere or even slightly against him.  
+There is a luck factor involved in trading. Anything can hap pen on any 
+given day. There are going to be times when you join the sellers and you 
+are the last seller and you sell the exact low and the market turns and 
+rallies against you. There are going to be times when everything looks 
+perfect, you get in and the m arket moves but only a 8 or 9 points and 
+your target is 10 points. You miss your target by one point before it 
+moves against you never to return. There is nothing you can do about it 
+because you cannot will the market to move the extra tic. There will be 
+days when you can do nothing wrong. You get short the market and it 
+just falls out of bed and you make a ton of money. Luck goes both ways.  
+Retail traders think that they can hide behind support and resistance 
+levels. That if they place their stops behind s upport and resistance levels 
+their los ses will be minimal. But the reality is that many professional 
+traders know where these levels are go look for them to trade around 
+because that is where the volume will be.  
+The most important question when deciding to  enter a trade is “what risk 
+am I getting into with this trade?” Most new traders read a few books on 
+trading and the books all tell you that you can manage your risks by 
+using stops. But what they don’t tell you in the books is that stops will 
+help you ge t out of a position but there is no guarantee you get out at 
+your desired level. The market can blow right through your level and you 
+Page 119 of 150 
+ 
+can be filled at a price much worse than your desired exit level.  Using 
+stops is not risk management.   
+There is a lot of n onsense in the market when it comes to stops. While I 
+agree that stops should always be used, as traders are wiped out not by 
+taking relatively small repeated loses, rather traders are wiped out by 
+taking an occasional big loss. A good stop loss point shou ld be part of 
+your trading plan and decided upon before any trade is entered. You 
+need to be willing to get out of a trade when the reason for being in the 
+trade in the first place is no longer valid. Saying that you have to use a 
+hard and firm 10 point st op or something like that on every single trade 
+is wrong.  Yes, you do need a point at which you have to get out of a 
+trade no matter what. But a trader will realize that when the conditions 
+change that they need to get out.  
+The most important factor for c hoosing a stop loss level is actually very 
+simple. It should be the price level that would indicate that the setup has 
+become invalid. This should be common sense. If you get into a position 
+based on a bullish setup, where would the price need to go to inv alidate 
+the setup?  
+Getting stopped out of trades too often  is a sign that your stops are too 
+tight. You may think having tight stops make you a prudent trader but 
+you are actually increasing your risk and the chances of getting stopped 
+out. Trades need a little room. You should look to place your stop at a 
+place where there is a structural reason. Not a hard and fast one size fits 
+all type of stop. You should not be getting stopped out too often. If you 
+are always getting stopped out, it is a sign that you  still have a lot to 
+learn. You should be getting out under your own power and decisions.  
+When I first started trading, I swear that I thought I was psychic or 
+something for getting out or setting my stop right at the exact level that 
+the stop gets elected  then the market dramatically turns around and 
+goes directly to my profit level.  Order flow footprint charts give me better 
+stop locations.  
+Remember that not all trades work. Although the probabilities are greatly 
+in your favour that the trade will be succ essful, there is also the small 
+probability that th e trade will fail. If a trade does not work out that doesn’t 
+mean that the analysis was incorrect. There may have been a change in 
+Page 120 of 150 
+ 
+market sentiment from the time the trade was established. With order 
+flow analysis you will be able to detect the changes and exit the trade.  
+Think like a boxer. A boxer is not going to win a fight unless he can take 
+a lot of hits. When you see a boxer getting punched it doesn’t mean that 
+he is going to lose the fight. It is his  ability to absorb the hits and come 
+back and be aggressive and punch back at the right times that 
+determines if he will win or lose.  
+A lot of self -proclaimed trading gurus tell you that once you are in a 
+position and that it starts moving in your favour t hat you should move 
+your stop to break even. The problem with this is that when you are 
+trading around a level, especially a macro level, there will be a lot of tug 
+of war going on between buyers and sellers. If you are convinced in your 
+method of trading you have to give your trades a chance to get to your 
+level. One of the worst feelings as a trader is knowingly leaving money 
+on the table by moving your stop to break even too soon.   
+There is a saying “You will never go broke taking profits.” But the secon d 
+line should be “You will never get rich getting out of trades early.” Taking 
+small profits is the surest way to ultimate losses as small profits are 
+never allowed to develop in full size or even enormous profits.  
+A trader does not need to worry so much a bout their stops getting 
+elected when they have a better read on the directional bias, or better 
+entry level or market timing. When a trader stops following the same old 
+technical analysis that everyone else does and starts looking at market 
+structure then  they don’t have to worry about their stops so much.  
+Your decision to get out of a position means that you think the market 
+conditions have changed. When you are in a position your thoughts will 
+be biased to support your position. You must remember the rea son for 
+getting i nto a trade in the first place and respect it. If the reason for 
+entering into a trade has disappeared and you are still in the trade, then 
+you are just looking to lose money.  
+Once you have decided to get out of a trade, don’t think you ca n pick a 
+price level to get out at, just get out and take a fresh look at the market. 
+Every now and then you may be able to pick up a few extra ticks here 
+and there trying to pick a level to get out at, but more often than not the 
+Page 121 of 150 
+ 
+market will move away fro m you and then you will end up taking a full 
+loss at your stop level just because you tried to save a few extra ticks.  
+Exits are the most important half of the trading equation because where 
+you get out of a trade determines your profits and losses. So don ’t take it 
+lightly. Most traders are focused on the trade entry and not so much on 
+the exit.  
+  
+Page 122 of 150 
+ 
+PROPER TRADE EXECUTION  
+Proper trade execution is the ability to act on an opportunity the moment 
+you identify it. While it is easy to look at a chart after the f act and say 
+that you would have sold here or bought there, the fact is that it is easier 
+said than done.  
+There are no guaranteed outcomes when it comes to trading. Every time 
+you enter into a position, you put your money at risk. But traders  want 
+guarantee d outcomes and that is why they hesitate to put on a position 
+or get out of a position.  
+When you enter a trade or are in a trade it is because of a conscious 
+decision you made about the state of supply and demand. Unlike 
+gambling, where the result is random and not based on your analysis, 
+when you lose a bet at a casino you accept it because it is random. 
+When you are in a trade and it is losing money you start to second 
+guess yourself and take on additional stress.  
+Proper trade execution is the ability to remove the second guessing and 
+act accordingly when you see a trade to get in and manag e a trade once 
+you are in it and exit the trade when it is time to exit.  
+  
+Page 123 of 150 
+ 
+PYSCHOLOGICAL ASPECTS OF TRADING  
+There is more than money involved in trading. Your trading can have an 
+effect on your life  without you even knowing it . Trading affects your 
+mood, trading  affects your appetite,  trading  affects your relationships.  
+When you are maki ng money, the world is perfect and you have it in the 
+palm of your hand. But when you lose money your stomach can tighten, 
+your temper can shorten or worse.  
+As a trader you  want to make money every day. Setting an easy 
+attainable goal will help a trader’s confidence.  People start trading 
+because they want to make money. Too often when new traders start 
+out they want to make big money right away. They want to make a 
+million d ollars this year starting with an account of $50k. That is not 
+really an attainable goal. It is just not realistic. Start with a daily goal of 
+$250 or $500.  Once you are able to reach your daily goal you can 
+always increase it and build on it from there. For example if the goal is 
+20 ticks, once 20 ticks is reached, you can pause and determine if you 
+still want to continue trading for the day. On good trading days you can 
+make 100 or 500 ticks. But if it was a struggle to make the 20 ticks you 
+may want to s top and take a breather. If you are down 20 ticks it is a 
+sign that things are not going right. You need to reduce your size , pay 
+closer attention to what the market is telling you. If you just can’t get into 
+positive territory it may be time to stop tradi ng for the day.  
+By having an easy attainable daily goal you can start to string together 
+winning streaks. Psychologically speaking, once you are able to put 
+together winning streak it will help you mentally when you think back on 
+them. “I made money 8 days  in a row. I made money 22 days in a row.” 
+It gives you the confidence when you have a losing day. It is like what 
+recovering alcoholics go through in rehab. They try and get through the 
+next hour without a drink, then the next day, then days become weeks,  
+weeks become months. Winning days become weeks, weeks become 
+months, months become years.  
+The market will still be here tomorrow so don’t feel that you have to 
+wrestle it to the ground all in one day. Just like with sports, the champion 
+doesn’t win the le ague by pounding the other team in just one match. It 
+is a series of matches over a period of time by which the champion is 
+decided.  
+Page 124 of 150 
+ 
+Consistency is the key to success  as a trader for most traders. Sure 
+there are some traders out there that will have 9 out of 10 trades that are 
+losers but the 10th trade covers all 9 losers and makes a lot of money. 
+Most traders would be so emotionally drained suffering through 9 
+consecu tive losses that by the time the 10th trade came along they might 
+not see it all the way through and close it out early with only a small win. 
+That takes discipline and understanding one’s own trading ability.  
+Huge winning trades will come, but the problem  is you do not know 
+when they will come. You need to be prepared mentally as well as 
+financially to take advantage of when they come instead.  
+It is important to understand your own trading personality. Every trader is 
+different and it affects the profits a nd losses. Can you take big losses in 
+return for big winners? Or are you willing to take a series of small losses 
+and small winners? Are you comfortable trading on small time frames of 
+1 to 2 minutes or would you rather trade with a 60 minute or even daily  
+chart s? You need to find your comfort zone as a trader.  
+  
+Page 125 of 150 
+ 
+OVERTRADING  AND GREED  
+Overtrading has been the downfall of many traders over the years. 
+There are many reasons for overtrading , the main one i s greed. Being 
+greedy is easy. After a few profitable trades you start to think trading is 
+easy and take borderline trades  that don’t exactly fit your criteria, but are 
+close enough  to meeting your trade requirements even though they don’t 
+really qualify  but you take them anyway because  you think you can 
+make more money. Another example would be when y ou increase your 
+order size even though your recent trades have been losers but you 
+want to try and make back your losses by booking smaller gains  or 
+thinking that by adding more contracts you can cover back your losses 
+quicker . A lot of traders will  average down their losing trades with 
+additional trades. The “I am right and the market is wrong” trade. You 
+get angry at the market and take it person ally. Never rationalize losing 
+money with your need to make money.  
+It is easy to think you can get more money out of a trade when it is 
+moving in your favour. But that is feeling is wishful thinking, it is not 
+based on any factor. Wishful thinking in the market will not make you 
+money on a consistent basis.  When you are up 5 points in a trade and 
+that is your price target, don’t all of a sudden think you can squeeze out 
+an extra point.   
+Boredom is also a cause for overtrading. Some people have a  need for 
+action. Don’t  trade for excitement. The market is not your casino. When 
+you gamble and win, it might be because you had a gut feeling or were 
+just plain lucky. If you start trading based on your gut feeling or relying 
+on luck the n you are not trading, you are gambling.  
+Basically you have taken your trading plan and thrown it out the window. 
+Stick to your trading plan.  Overtrading is one of the fastest ways to blow 
+up an account.  
+  
+Page 126 of 150 
+ 
+SITTING OUT  IS A TRADE  
+I have spent most of this book talking about getting into and out of 
+trades. But there are a lot of times when you are not in a trade and that 
+is a trade  in itself . Knowing when not to trade is just as important as 
+knowing when to trade. I am sure you have heard the phrase “trade with 
+the trend.” Well what do you suppose you do when there is no trend? Sit 
+on the side  lines and wait for the market to show you it is trending.  
+It takes discipline, but if there is no reason to be in a trade, then you 
+should not be in a trade.  
+There are going to be days when you can do nothing right in the market. 
+These are the days when you can’t get into a winning trade to save your 
+life. When the market is acting unpredictably, by that I mean your entry 
+setups are failing one after another, then you know the market is not 
+actin g as it normally does and you should sit out for a while. It could be 
+due to lack of liquidity and the market can move faster and farther on 
+small volume. It could be that a big position is being unwound and the 
+player isn’t so concerned about price – they just want out.  
+  
+Page 127 of 150 
+ 
+CONFLICTING SIGNS  
+The market will do what it wants to do. One thing traders cannot predict 
+is what other traders will do. I don’t mean finding a level where there 
+may be some big stops are than can be run or where there may be size 
+in the order book. What I mean is a trader has no idea if or when an 
+institutional player may change their thinking about supply and demand 
+or when a participant needs to do an arb trade or hedge a physical sale.  
+When you starting thinking the market must do wh at you think it will do 
+based on your analysis you will become doomed when the market starts 
+to move against you.  For example, say you got short because you read 
+the market as being heavily sold based on your analysis. The market 
+drops a few ticks, then t he market shows aggressive buying coming in 
+during the same bar. Your original read says the market will go down, 
+but it is not really dropping and you ignore the signals that are showing 
+the market is poised for a rally because you are already in a positi on. 
+This is a conflicting signal.  
+If you weren’t in a trade and were looking at a chart the next day you 
+would probably say to yourself that you would have passed on both 
+trades since they were conflicting or you would think to yourself that it is 
+obvious  that you would have taken the trade that worked. But since you 
+find yourself in the trade you might miss or dismiss the change in the 
+market and hope the market continues in the direction of your original 
+trade.  
+It is OK to be wrong about the market. But it is not OK to be wrong about 
+the market direction and ignore the signs that it is time to get out of the 
+position. Your read of the market can be wrong just as easily as it can be 
+right. You have to accept that you will be wrong.  
+Being a successful trade r is much more difficult than it appears. 
+Experience is a long process of watching the markets and learning to 
+recognize situations as they appear.  
+Here is a  chart of what I mean by conflicting signs. You get into a 
+position based on what the market is te lling you  but then you get a signal 
+that the market conditions have changed. It can either be the setup is 
+invalidated or another trade setup in the opposite direction.  
+Page 128 of 150 
+ 
+ 
+In this example, we got long based on a series of small prints, but just 2 
+bars later before the market got to my take profit area a setup in the 
+other direction appears. You have 3 choices. You can either start getting 
+out of your position, wait for the m arket to either hit your profit target or 
+you stop loss  or flip your position. This is where reading the market via 
+the order flow is useful. In the above example, I chose to scale out rather 
+than flip my position because the even through there was a sell set up, I 
+felt there was support in the market with the stacked buying imbalaces. 
+So I didn’t feel like the market was ready for a big sell off, I thought it will 
+trade lower and range trade for a while.  
+ 
+  
+
+Page 129 of 150 
+ 
+COMMON CHARACTERISTICS OF A TRADING OPPORTUNITY  
+Trading opportunities arise when you can identify market developments 
+as they are occurring. Any form of market analysis is only useful in as 
+much as it is readable and reliable. T rading opportunities need to be 
+easily recognizable and determine market dir ection.  Order flow allows 
+me to quickly see opportunities developing and keep an eye on them as 
+they develop so as to be ready to trade them when they can be 
+confirmed.  
+I have a basic set of criteria, so to speak, that I adhere to when looking 
+over the mar kets before getting into a trade on either the buy side or the 
+sell side. If these basic criteria can’t be met then chances are the trade 
+opportunity is not there.  
+What I look for in BUYS  
+ A closed footprint with positive delta.  
+ A closed footprint where the  candlestick was green (up).  
+ Evidence within the bar that buyers have aggressively bought the 
+seller’s offers at subsequently higher prices.  
+ Significantly higher volume traded on the offer than the bid.  
+What I look for in SELLS  
+ A closed footprint with nega tive delta.  
+ A closed footprint where the candlestick was red (down)  
+ Evidence within the bar that sellers have aggressively sold into the 
+buyer’s bid at subsequently lower prices.  
+ Significantly higher volume traded on the bid than the offer.  
+ 
+The best buy s ignal s are when a market starts to move up and showing 
+buying imbalances while the market is breaking  out of the accumulation 
+stages as noted by signs of absorption.  The shift from adequate supply 
+to stronger demand is happening in the market place  and tre nds can 
+start. 
+The best sell signals are when a market starts to move down out of an 
+area of absorption and showing selling imbalances. Sellers are 
+Page 130 of 150 
+ 
+overwhelming the buyers with excess supply. When a market starts to 
+drop due to excess supply it can drop ve ry fast.  
+Not every trading opportunity is going to look exactly alike. The volume 
+numbers will vary, the aggressive participant’s position in a bar will vary, 
+the location of the COT will vary. What will remain the same is the 
+concept behind the setup.  
+Being a successful trader is much more difficult than it appears. 
+Experience is a long process of watching the markets and learning to 
+recognize situations as they appear.  
+  
+  
+Page 131 of 150 
+ 
+PUTTING IT ALL TOGETHER  
+I have explained a lot in this book and shown many different examples.  
+What I am going to show you is how I put it all together to get make a 
+trading decision. There are many different styles of trading the futures 
+markets and no one style is right or wro ng. What I am showing you is 
+how I trade. What I have to say may either make total sense to you and 
+be similar to how you already trade or I may make no sense to you 
+whatsoever and you will think I am a crackpot. I am not saying my way is 
+the best way for you to trade, but it just happens to be what works best 
+for me.  
+These trade setups have a very high probability of success. They may 
+not occur every day but they happen enough to put up some impressive 
+profits. I use these set up in all major futures m arkets: ES, YM, ZN, 6E 
+ZC and many more.  
+A major problem that many traders have is too many indicators that their 
+screen is so cluttered that it is difficult to make a decision because one 
+indicator says buy and another one says sell. I like to keep my screen  
+clean so it is easy to see trade setups as they are happening.  
+Traders often get caught up using complex technical indicators that are 
+based on price to try and predict the market movements. What they tend 
+to forget is that the main driver of price direct ion comes down to simple 
+supply and demand. If we see demand for a product, service, 
+commodity, or currency accelerate, we will begin to see increasing 
+prices for that product. Economists call it “The LAW of Demand”, not the 
+“theory of demand”, or th e “ide a of demand”. The Law of D emand  and 
+the Law of Supply,  like the Law of Gravity is a proven concept.  
+I will show you how supply and demand affects price and how to use 
+order flow to predict market moves that would otherwise not be noticed 
+with traditional charting methods.  
+The main focus of this book is to show you how I identify hidden trading 
+opportunities that have low risk entries. The techniques here are the 
+simplest and most direct that can easily be seen with order flow footprint 
+charts.  
+Page 132 of 150 
+ 
+This set up  can be traded on just about ANY futures market with decent 
+volume and ANY intraday time frame or range or volume chart.  
+Take a look at the bar chart below. Can you tell by looking at the 
+candlesticks that the market was ready to turn around? It is easy to  look 
+back at a chart well after the fact and say “oh yeah, the market looked 
+like it was ready to turn around.” But why would you say that? Is there 
+any evidence other than the bar closed lower  than where it opened? It 
+couldn’t even close lower  than the p revious low. 
+ 
+ 
+ 
+ 
+ 
+ 
+
+Page 133 of 150 
+ 
+Now look at the Order flows chart :  
+ 
+Do you see that big red number at the top ? That is a buying  imbalance 
+greater than 400%. 546 traded on the offer at 1938.25, in the previous 
+bar there were 182 lots that traded at the same price and 681 traded just 
+below at 1938 . These are traders who got into the move at the very end. 
+These could be traders who tried to push the market higher  to continue 
+its upward  move. It doesn’t really matter what the people were thinking 
+that bought that high . Someone has to buy the high . 
+What is important is that we have an imbalance at a recent high. It 
+doesn’t need to be the high of the day, it can be the high of a swing 
+move. You have all these people that bought at the high  and the market 
+couldn’t go any higher. 
+So how do we trade this?  
+1. You see a  selling imbalance at the top on a high . I like the 
+imbalance to occur at the high of the bar rather than the second or 
+third price from the high like in the previous bar.  
+
+Page 134 of 150 
+ 
+2. The bar closed lower  than the open so we see that there was 
+some selling  pressure to cause the market to drop. If there are 
+some selling  imbalances in the bar, even better, but it is not 
+necessarily needed.  
+3. Wait for confirmation of the high by waiting for the bar to close. 
+There will be times when it  looks like you have a set up and want 
+to get in early but the bar hasn’t closed yet and the market 
+reverses and the setup is erased and you are in a position you 
+shouldn’t be in.  
+4. Choose your entry. There are many ways you can enter. You can 
+just enter at the market once the next bar has begun. You can try 
+and scale in the length of the setup bar, but you run the risk of 
+missing the trade when it just shoots straight up. The way I trade it 
+is I like to get involved no matter what, so I will sell 2 contracts  at 
+the market then I will scale the rest in between the low and high of 
+the setup bar in case there is a retracement. Sometimes there are 
+retracements and sometimes not. I like to try to get in also during a 
+retracement by working a limit order around the  middle of the bar.  
+5. Place your stop. I like to place my stop 2 ticks above  the selling 
+imbalance price in the setup bar just to give it some room. This is 
+more generous than I really should. You can place your stop at the 
+imbalance price or a tick below it  since that would invalidate the 
+set up. Once in while price does go back up to retest the high 
+before going lower . In this example, I would have placed my stop 
+at 1938.25 . 
+6. Take profit level. You can be either mechanical or discretionary in 
+deciding where to get out. In the ES I will put in a take profit level 5 
+points away . Once I get into a position I monitor it and see if the 
+conditions change. If they do I just get out. For example I may get 
+a setup in the opposite direction.  
+As you will see there will be some trades that seem so obvious they are 
+“slam dunks.” These are the trades with high probability, low risk and 
+high reward.  
+I like setups that generate signals with winners that are at least twice the 
+size of losses and a minimum 50% winning average, however, I have 
+that 60%+ winning averages are optimum and realistic.  
+Page 135 of 150 
+ 
+Once your entry setups have be defined, don’t fiddle around with them 
+trying to make them marginally better. What you should do is focus your 
+attention and work on making you exits bette r. 
+You can pick tops and bottoms and have a high success rate if you are 
+quick to realize when you are wrong. You won’t be getting in at the exact 
+low, but pretty darn close, usually in the next bar.  
+Not all trading opportunities occur near the highs and lows. Often times 
+a move can happen when the market is range trading. Trends come out 
+from periods of consolidation.  
+ 
+
+Page 136 of 150 
+ 
+ 
+This is a trade that is you will only find with order flow analysis. It won’t 
+show up on a traditional bar chart. You need to look insi de of the actual 
+bar to see what is trading to fully understand the market. The battle 
+between buyers and sellers is constantly going on. When one side starts 
+to take over that is the side you want to be on.  
+
+Page 137 of 150 
+ 
+ 
+What I like about these trade setups  is that t hey provide low risk entries 
+to the market because you know exactly where you want to get out if the 
+trade breaks down. Not adhering to a defined money management stop 
+is the most common cause of failure among traders.  
+The great set -ups like these are not something that just happens once in 
+a while, but almost every day. Some days there might be only one or two 
+trading opportunities. Some days there might be none.  
+As I mentioned in the beginning, order flow footprint trading is not for 
+everyone. But I thin k it is a useful skill and tool for traders to learn and 
+understand.  
+The downside of order flow trading is that it can be a labo ur intensive 
+style of trading. Depending on your time frame you may end up 
+spending a good deal of your time paying attention t o the order flow as it 
+occurs.  
+You should try to avoid the marginal trades and concentrate on the good 
+set-ups.  
+
+Page 138 of 150 
+ 
+Each day in the market is different. Some days the market will have 
+periods of choppy trading followed by slightly larger trends. On other 
+days the market will trade in one direction most of the day. While some 
+days will be more challenging than others, you should still have 
+profitable days using these set -ups. 
+So there you have it –simple, easy to understand setup s.  
+A key point to keep in mind  is that order flow trading is not an exact 
+science. You still need to trade in the direction of the market and be 
+flexible.  
+At first sight, the details of trading off of order flow and foot print charts 
+may seem laborious. Over time, as you get more comfo rtable with what 
+to look for in the order flow you will find yourself making more high 
+probability trades.  
+Successful traders are patient and disciplined. Successful trading begins 
+in your mind. Develop patience and disciple if you want to be successful. 
+You might ask me why does patience play such an important role in 
+trading? In order to answer that question, you should look at and 
+compare the different ways that institutional traders and retail traders do 
+their trading . Generally speaking, retail have sh orter time frames to hold 
+losing positions because they tend to be leveraged more than 
+institutional traders and just don’t have the financial resources to take 
+too much heat when a position goes against them.  
+Remember the best traders always trade when t hey feel they have an 
+edge to put the odds in their favour and they trade for one reason only 
+and that is to make money. They don’t trade simply because the market 
+is open and they have a need for action. They have discipline.  
+Just wait for the right setup  whenever it happens and take what the 
+market gives you. After all that is the nature of trading – taking what the 
+market gives you.  
+Before you get too excited: These setups, while impressive, ARE NOT 
+the Holy Grail traders are always looking for. The nic e thing about order 
+flow set ups is that they have their own built in stop loss i.e. your stop 
+loss is basically the high or low of the set up bar.   
+Page 139 of 150 
+ 
+HOW I USE ORDERFLOWS SOFTWARE TO FIND TRADES  
+The following are some examples of trades I have taken. All of  them 
+incorporated Orderflows techniques. Since I trade futures, the examples 
+are futures oriented. Also, my basis is short term so the examples will be 
+based off of intra -day charts. I believe each person has their own unique 
+trading style. How you trade is different than how I trade . You probably 
+don’t have the same thought process as I do.  
+The purpose of this chapter is not to give you a firm set of rules for 
+taking trades. It is to show you how to incorporate order flow into your 
+trading. Hopefully by s eeing the examples here, you will have a better 
+understanding of using order flow in your trading.  
+There are several types of setups that I am always on the lookout for:  
+1. A small print / single print high or low that occurs at a low or a high. 
+I also look f or a small print / print that occurs just after a high or 
+low. For buys the print should occur on the bottom of a bar that 
+closed higher. For sells it should occur at the top of a bar that 
+closed lower. The single print should be between 1 and 9. The 
+ratio for a small print and single print should be greater than 28 at 
+the minimum. I am not interested in a single print of say 2 lots 
+when the next number is 5 lots. I want the small print to be 
+because there was just no more buying or selling interest, not 
+because of low volume.  
+2. A market that is bottom heavy or top heavy. This is a variation of a 
+large print. This occurs when the extreme bottom or top print is 
+much greater than the next print. For example 
+96 and 15, 53 and 16.   The reason I like to 
+look for these big prints on the lows or highs 
+of the bar is it indicates to me that there are 
+either a strong buyer or seller that came into 
+the market with a big bid or offer. This caused 
+the other participants to scramble and try and 
+jump ahead of the larger orders. I have the 
+ratio set to 0.699 and below, meaning the 
+extreme print is 69.9% greater than the next 
+print.  
+
+Page 140 of 150 
+ 
+ 
+3. Trapped selling imbalances at highs or 
+trapped buying imbalances at lows. This 
+marked with a green arrow when it  is a 
+trapped buying imbalance and a red 
+arrow if it is a trapped selling imbalance.  
+If there is a confluence with another 
+setup, for example a small or single print 
+or a top or bottom heavy print then that 
+gives me a little more incentive to take 
+the trad e setup. I prefer to see trapped 
+buyers on or near the low and trapped 
+sellers on or near the high.  
+ 
+4. Orderflows divergence. The Orderflows divergence is a little 
+different than the other divergence indicators out there. It is 
+marked on the screen with a g reen triangle for a bullish divergence 
+setup and a red arrow for a bearish divergence setup. What makes 
+the Orderflows divergence setup different is that we require an 
+extra confirmation that the market has turned. For a bullish 
+divergence setup we require  the market to make or equal a new 
+low, have positive delta and the bar to close higher relative to 
+where it opened. For a bearish divergence setup we require the 
+market to make or equal a new high, have negative delta and the 
+bar to close lower relative t o its open. Most order flow divergence 
+signals only require a new or equal high and negative delta or a 
+new or equal low and positive delta. By qualifying the bar close 
+relative to its open we have eli minated a lot of false signals which 
+can occur when the re is absorption, a lot of two way trade going on 
+at a high or low. We need to see price move as well.
+ 
+
+Page 141 of 150 
+ 
+So let’s now take a look at the setups as they occur so that you can 
+better understand how to apply them in your trading. Setups are like 
+snowflakes, no  two are exactly the same although they may look similar.  
+This first chart I call being Top Heavy In CL. One of the indicators of 
+Orderflows software is that it for a down candlestick it takes the top two 
+numbers and divides them and for an up candlestick it takes the top two 
+numbers and divides them then plots the ratio number below for a bar 
+that closes lower and below for a bar that closes higher. I have the 
+software set so that when the ratio is below 0.69 it will print the ratio in 
+BLUE ; meaning, for a  down bar, that the second number is much less 
+than the top number.  
+ 
+In this case, at point A, when you divide 80 into 26 you get  0.325. This is 
+important because it indicates there was more volume traded on the 
+offer at the high than the level just below it. In theory it should be less, as 
+you get higher in price the buying should be less before prices decline. 
+The indication here is that there is a seller willing to step in at this level 
+with supply.  
+
+Page 142 of 150 
+ 
+At point B, we also see a bar where the top number is greater than the 
+number beneath it. This bar is a doji in Japanese candlestick terms and 
+is a sign of market indecision. The Order flows software does not mark 
+ratios on doji candlesticks because I have found that the market could 
+really go either way.  
+At point C, there is yet another ratio. This time it is 0.2559 . Which 
+indicates to me that the bar has a top number much greater than the 
+number just below it. This indicates to me that there is ample supply in 
+the market and that every time the market tries to go higher someone 
+comes in and offers their supply for sale.  
+The market sold off from the 39.45 level to the 38.90 level.  
+I have  the ratio set to 0.699 or less. Ideally I like to see a number below 
+0.50 which would indicate that the extreme number is a minimum twice 
+as big as the next number. However, it is not set in stone. I can’t say that 
+it only works if it is 0.50 or below. I execute my discretion for ratios 
+between 0.699 and 0.50 because I also take into account the volume 
+that actually trades. You could have a ratio of 0.20 which would look 
+good but the volumes involved might only be 1 lot and 5 lots which is 
+hardly convincin g. This is why I don’t create a bot to trade this. I like to 
+see the ebb and flow of the market. I am the trader, not the computer.  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+Page 143 of 150 
+ 
+The next chart highlights the Single Print High set up. It occurs when 
+there is a single print in volume (volume of  9 or less) at a high or low.  
+The Orderflows software draws a red box if there is a single print in a bar 
+that closes down or a green box if the bar closes up. Also the ratio is 
+printed above or below the bar if it is greater than 28. Ideally the bigger 
+the number the more powerful it signal.  
+ 
+This single print is off the Richter scale. It measures 1805. In the interest 
+rate futures you do tend to get big ratio numbers like that. When I see 
+big ratios like that I look to get short as soon as the bar closed . This was 
+on a 15 minute chart. The market could not even print more than the 1 
+lot when it traded that level. It could have been some algo buying the 1 
+lot to see if there are any stops there. Earlier it traded there for 1383 lots, 
+but on the retest only  one person was interested in paying that high.  
+This next chart is a variation on the Single Print High. I call it the Small 
+Print High. It occurs when the ratio between the top and second to top 
+number is greater than 28. Sometimes the market just pushes through a 
+level but can’t go any higher because all the buyers are exhausted. The 
+
+Page 144 of 150 
+ 
+only traders who will see this trade are those who are trading order flow. 
+The re st of the world won’t notice it, they will just see a big down bar.  
+ 
+There is also something else in this chart that is quite powerful to trade 
+with. When you look at bar A, you see two buying imbalances in the 
+candlestick wick and selling imbalances in the body. That tells me the 
+sentiment has changed in the market as the bar was forming. The bar 
+opened up with some strong aggressive buying , but the market just 
+couldn’t carry through and strong aggressive selling came in. So, with 
+the small print high and the imbalances this is a strong indicat ion for the 
+market to sell off.  
+ 
+ 
+ 
+
+Page 145 of 150 
+ 
+ 
+In the next chart we have t wo setups  occurring at the same time  - 
+confluence . There is a Trapped Selling Imbalance and a ratio trade.  
+ 
+I like it when there are two setups in a bar. It gives me more confidence 
+in taking the trade, although it is no guarantee that the trade will work.  
+Ok, so here we have a selling imb alance on a low of a bar where the bar 
+closed higher and there are some buying imbalances in the body, just 
+barely, but still near the opposite end of the bar. Also the ratio between 
+the bottom number of 113 and the second number of 78 is 0.6903 just 
+barel y under the ratio of 0.699. This is why I like to include between 
+0.699 and 0.50, so I can eyeball it and make my own decision to take 
+the trade or not. 113 lots at the low in the Crude Oil is a decent number.  
+I really think that as a trader you have to kn ow how to read the signals. 
+Just because a set up occurs doesn’t mean you have to take it, if the 
+volume doesn’t look right then you can pass.  
+ 
+
+Page 146 of 150 
+ 
+Let’s now take a look at an Orderflows divergence trade. The problem 
+with divergence that I had in the past was when the market was trending 
+you could get a lot of divergences appearing on the way up when the 
+market constantly is making new highs throughout the trading day or 
+new lows. After seeing the problem with a trending market and 
+divergence I came to the conc lusion that price also has to start moving 
+away from the high or low for it to be a valid divergence.  
+The beauty of this setup is that the stop placement is just behind the 
+high or the low. As you can see you can catch some nice moves. But 
+remember that y ou can also get chopped up in a one way street type of 
+trending market.  
+Orderflows divergence is a powerful setup because it occurs at the day’s 
+low or high. If institutions are bullish on the market, they will support the 
+market which entails them to buy at or near the low. If institutions are 
+bearish, they will need to sell at or near the high so the market doesn’t 
+go higher.   
+
+Page 147 of 150 
+ 
+WRAP UP  
+No matter what kind of trader you are, there are certain basics common 
+to the markets which will ultimately determine whether you make money 
+or lose money. There are books, videos, websites, training courses from 
+many different sources which promise you the easy road to trading 
+success. I will tell you right now that there is no easy mechanical way to 
+trade and win consis tently. The markets are always changing . Factors 
+that move the markets are always changing. It is not really that tough, it 
+just takes some time and patience and practice on your part to become 
+a profitable trader.  
+A study of order flow  reveals patterns th at occur again and again. The 
+overall trend will be either up or down regardless of the number of 
+changes in direction within the period. Once a trend has been 
+determined, ride along with it. If there is a signal that the trend is starting 
+to head  the othe r way, jump off and prepare yourself  for the next turn. 
+Trying to go against the trend is like trying to swim up river against the 
+flow of water.  
+Once you start to learn to read what the market is telling you, it is then 
+that you can see patterns emerge, i f there is a pattern. Most of the time 
+there is no discernible pattern. The market is facilitating trade just as it is 
+supposed to.  
+Nothing is certain in trading. Fundamentals  and technicals  can change 
+at any time during a trade. There are a multitude of u ncertain factors that 
+can make short term price swing occur s. Option hedging, delta 
+positioning, portfolio adjustments, risk on -risk off trades,  a FED official 
+speaking,  etc. All these things and more will affect your position. With 
+order flow  analysis you can see what is developing in real time and react 
+to it as it is happening.  
+There is a time to buy and a time to sell. No set formula is infallible. But 
+knowing how to interpret order flow  is invaluable in minimizing your 
+losses and making your trades mor e profitable.  
+Practice, practice, practice. Get screen time. Pour over charts and look 
+for instances where the market turned and try and understand what 
+market forces were present that caused the move. Great atheletes 
+spend hours and hours a day practicing . Guys like David Beckham or 
+Page 148 of 150 
+ 
+Cristiano Ronaldo take 100’s of practice shots from all over the field so 
+during game time when they are in that situation they know exactly how 
+to take that shot. They take the pressure of themselves since they know 
+what to do . 
+Once you finish reading this book, you will likely feel confident that you 
+can successfully trade using order flow. In all likelihood you will because 
+you will understand order flow better. But that doesn’t mean you should 
+jump right in and start throwin g around size trades. You do need some 
+practice first. Being able to read the charts in real time and being able to 
+make trading decisions  on entering or exiting a trade  requires practice 
+until it become almost second nature or in other words reactionary.   
+The actual steps of entering a trade into a trading system may not seem 
+all that important to your trading, but it is easy to make a mistake by 
+clicking on the wrong price or quantity or even mix up a buy order with a 
+sell order. Get practice entering ord ers yourself. It will serve you well in 
+the future. Mistakes cost money. If you enter into a trade in error, just get 
+out. Don’t try to finesse the error or scratch it. It can easily go from bad 
+to worse and very quickly. Just chalk it up to experience and  don’t make 
+the same mistake again.  
+Really the only way to develop this intuition is by extensive practicing. 
+After you have watched your real -time charts long enough and have 
+witnessed many different types of set -ups as they happen, you will begin 
+to unde rstand what the market is doing based on the order flow. This 
+book will give you the knowledge about order flow trading, but you need 
+to develop the experience of using this knowledge through actual trades.  
+Remember there are 2 immutable laws in the market . As demand goes 
+up, prices go up. As supply increases, prices go down.  
+Congratulations on making it to the end of this book. Hopefully this isn’t 
+“the end” for you, but rather just the beginning of trading with order flow. 
+Now is the time for you to start  applying what you have learned. Watch 
+the charts, do some trades and practice. Simply reading this book won’t 
+transform you into a successful trader.  
+Even though many of you will be using this book as a reference guide 
+when it comes to order flow trading,  at least I hope you will, it doesn’t 
+Page 149 of 150 
+ 
+mean that everyone will use or der flow in the same way as I do. Some of 
+you may incorporate only parts of what I have shown you here. Every 
+trader has different idiosyncrasies and our risk tolerances differ.  
+Some people are going to read this book and flat out tell me I am just 
+wrong in my analysis of order flow or that order flow charts are nice but 
+not really that important. I am fine with that. I don’t need everyone to 
+agree with my way of trading the markets af ter all that is what gives me 
+an edge in the market.  
+Happy Trading.  
+Mike  
+  
+Page 150 of 150 
+ 
+ 

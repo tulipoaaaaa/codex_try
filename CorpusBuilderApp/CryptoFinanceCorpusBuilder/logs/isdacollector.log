@@ -1,0 +1,4 @@
+2025-05-08 20:09:16,481 - ISDACollector - INFO - Collecting ISDA documentation (max 2 pages)
+2025-05-08 20:09:16,482 - ISDACollector - INFO - Fetching page 1: https://www.isda.org/category/documentation/
+2025-05-08 20:09:25,914 - ISDACollector - INFO - No more documents found on page 1
+2025-05-08 20:09:25,925 - ISDACollector - INFO - Saved metadata for 0 documents to /workspace/data/test_isda/isda_documents.json

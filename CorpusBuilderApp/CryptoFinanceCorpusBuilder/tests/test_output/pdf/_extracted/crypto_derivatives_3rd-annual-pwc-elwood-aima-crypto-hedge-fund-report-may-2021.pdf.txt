@@ -1,0 +1,2191 @@
+3rd Annual Global 
+Crypto Hedge Fund 
+Report 2021
+
+Contents
+Introduction
+2
+Key takeaways
+3
+Crypto hedge funds
+5
+Survey data
+6
+Investment data
+7
+Strategy insights
+8
+Market analysis
+10
+Assets under management
+11
+Fund performance
+12
+Fees
+14
+Cryptocurrencies
+16
+Derivatives and leverage
+18
+Decentralised exchanges 
+21
+Predictions
+22
+Non-investment data
+23
+Team expertise
+24
+Custody and counterparty risk
+26
+Governance
+28
+Valuation and fund administration
+29
+Liquidity and lock-ups 
+30
+Legal and regulatory
+32
+Tax
+33
+List of crypto hedge fund survey respondents
+35
+Traditional hedge funds
+37
+Hedge funds who are investing in digital assets
+40
+Hedge funds who do not currently invest in digital assets
+44
+
+This report provides an overview of the global 
+crypto hedge fund landscape and offer insights 
+into both quantitative elements (such as liquidity 
+terms, trading of cryptocurrencies, and 
+performance) and qualitative aspects, such as best 
+practice with respect to custody and governance. 
+By sharing these insights with the broader crypto 
+industry, PwC’s goal is to encourage the adoption 
+of sound practices by market participants as the 
+ecosystem matures. 
+For this 3rd annual edition, PwC have partnered 
+with the Alternative Investment Management 
+Association (AIMA) to also survey some of the 
+non-crypto focused hedge funds (referred to as 
+‘traditional’ hedge funds in this report). The data on 
+these traditional hedge funds is provided in the 
+second part of this report. 
+Introduction
+2
+3rd Annual Global Crypto Hedge Fund Report 2021
+
+3
+3rd Annual Global Crypto Hedge Fund Report 2021
+Key takeaways
+We estimate that the total assets under management (AuM) of 
+crypto hedge funds globally increased to nearly US$3.8 billion 
+in 2020 from US$2 billion the previous year. 
+The percentage of crypto hedge funds with AuM over US$20 
+million increased in 2020 from 35% to 46%. 
+The average AuM for this year’s surveyed funds increased from 
+US$12.8 million to US$42.8 million, while the median AuM
+increased from US$3.8 million to US$15.0 million. 
+The median AuM at fund launch is US$1 million, indicating that 
+funds have generally seen an impressive 15X increase in AuM.
+1
+Size of the market and AuM
+The median crypto hedge fund returned +128% in 2020 (vs 
++30% in 2019).
+The median best performance strategy in 2020 was 
+discretionary long only (+294%) followed by discretionary 
+long-short (+129%), multi-strategy (+114%) and quant (+72%).
+Median management and performance fees remained 
+unchanged at 2% and 20% respectively, average management 
+fees was also stable, at 2.3%, but average performance fees 
+increased from 21.1% to 22.5%.
+49% of crypto hedge funds have either a hard or soft lock and 
+31% have either an investor level or fund level gate. 
+2
+Performance and fees
+The vast majority of investors in crypto hedge funds are either 
+high-net worth individuals (54%) or family offices (30%). 
+The median ticket size is US$0.4 million, while the average 
+ticket size is US$1.1 million. 
+Over half of crypto hedge funds have average ticket sizes of 
+US$0.5 million and below.
+Crypto hedge funds have a median of 23 separate investors.
+3
+Investor type and average ticket size
+Crypto Hedge Funds
+
+4
+3rd Annual Global Crypto Hedge Fund Report 2021
+The most common crypto hedge fund strategy is quantitative (37% of funds), 
+followed by discretionary long/short (28%), discretionary long-only (20%), and 
+multi-strategy (11%).
+Most crypto hedge funds trade Bitcoin ‘BTC’ (92%) followed by Ethereum ‘ETH’ 
+(67%), Litecoin ‘LTC’ (34%), Chainlink ‘LINK’ (30%), Polkadot ‘DOT’ (28%) and 
+Aave ‘AAVE’ (27%).
+About half of crypto hedge funds trade derivatives (56%), but short-selling has 
+drastically reduced, from 48% to 28% in 2020. Crypto hedge funds are also 
+involved in cryptocurrency staking (42%), lending (33%) and borrowing (24%).
+4
+Fund strategies, activities and trading
+The percentage of crypto hedge funds using an independent custodian 
+decreased in 2020 from 81% to 76%.
+The percentage with at least one independent director on their board decreased 
+from 43% to 38% in 2020.
+The percentage of crypto hedge funds using third party research increased from 
+38% to 47% in 2020.
+88% were using an independent fund administrator in 2020, up from 86% in 2019.
+5
+Governance
+Funds tend to be domiciled in the same jurisdictions as traditional hedge funds, 
+with the top three being the Cayman Islands (34%), the United States (33%) 
+and Gibraltar (9%).
+The most common location for crypto hedge fund managers is the United States 
+(43%), followed by the United Kingdom (19%) and Hong Kong (11%).
+6
+Location
+Around a fifth of hedge funds are investing in digital assets (21%); the average 
+percentage of their total hedge fund AuM invested in digital assets is 3%. More 
+than 85% of those hedge funds intend to deploy more capital into the asset 
+class by the end of 2021.
+Around a quarter of hedge fund managers who are not yet investing in digital 
+assets confirmed that they are in late-stage planning to invest or looking to 
+invest (26%).
+In terms of the main obstacles to investing, regulatory uncertainty is by far the 
+greatest barrier (82%). Even those who do invest in digital assets cite it as a 
+major challenge (50%). Client reaction/reputational risk is high (77%) as well as 
+digital assets being outside the scope of current investment mandates (68%). 
+Over half of the respondents said that they don’t have enough knowledge of 
+digital assets (64%).
+64% of respondents said that if the main barriers were to be removed they 
+would definitely start/accelerate their involvement/investment or potentially 
+change their approach and become more involved. 
+7
+Non-crypto focused (traditional hedge funds)
+
+This chapter comes from research that was 
+conducted in Q1 2021 across the largest global 
+crypto hedge funds by assets under 
+management (AuM). This section specifically 
+focuses on crypto hedge funds and excludes 
+data from crypto index/tracking/passive funds 
+and crypto venture capital funds.
+Crypto hedge funds
+5
+3rd Annual Global Crypto Hedge Fund Report 2021
+
+This report shares the results of survey-
+based research conducted in Q1 2021 by 
+Elwood Asset Management, combined with 
+qualitative inputs on sound practices 
+observed within the crypto hedge fund space 
+from PwC’s crypto team. The report focuses 
+on actively managed crypto hedge funds 
+which invest/trade in liquid, public 
+cryptocurrencies and other instruments. 
+This report excludes:
+•
+Crypto index funds (including 
+passive/tracker funds); and
+•
+Crypto venture capital funds (which make 
+equity type investments).
+The report excludes exchange-traded funds 
+‘ETFs’ and access products.
+Given the focus of the report, there were 
+certain participants in the survey whose data 
+we needed to exclude from the final results, 
+as our research showed they were not 
+actively managed crypto hedge funds as 
+described above. 
+While most crypto hedge funds provided 
+responses to all the survey questions
+some were not in a position to provide 
+information on certain topics/questions. 
+However, all data analysed in this report is 
+based on information provided by a majority 
+of the funds that Elwood surveyed. 
+There is an inherent element of survivorship 
+bias in the fund universe surveyed, as the 
+report only includes crypto hedge funds that 
+were in operation in Q1 2021. Funds that 
+were forced to shut down prior to this date 
+due to the difficult market conditions of 2019 
+and early 2020 have been excluded. The 
+data provided in this report, including 
+performance data, has also not been verified 
+by an independent fund administrator or 
+other third party, but was provided by the 
+crypto hedge fund managers directly.
+Finally, all participants were asked to give 
+consent to Elwood Asset Management and 
+PwC for their name to be shared in the report. 
+Some firms requested that their name not be 
+shared. Those which have given their 
+consent are listed in alphabetical order in the 
+appendix. However, individual firms have not 
+been linked to any specific comment or data 
+point.
+6
+3rd Annual Global Crypto Hedge Fund Report 2021
+Survey data and Methodology
+
+Investment data
+7
+3rd Annual Global Crypto Hedge Fund Report 2021
+
+$0
+$10,000
+$20,000
+$30,000
+$40,000
+$50,000
+$60,000
+$70,000
+0%
+5%
+10%
+15%
+20%
+25%
+30%
+BTC price
+Frequency
+Fund inception
+BTC Price
+Our research this year shows that there are between 150 and 200 active crypto hedge funds 
+currently. Our survey results suggest that four in every five of these were launched between 
+2017 and 2020 (81%).
+8
+3rd Annual Global Crypto Hedge Fund Report 2021
+Launch of new crypto hedge funds appears correlated to the price of Bitcoin
+As shown by the graph above, the launch of 
+actively managed crypto funds is highly 
+correlated with the price of Bitcoin (BTC). 
+The price spike in 2018 appears to have 
+been a catalyst for further crypto funds to 
+launch, while the decrease in 2018 led to 
+fewer funds being launched in 2019. 18% of 
+the survey respondents were launched in 
+2020, when prices were rising again.
+We have classified crypto hedge funds 
+according to four broad fund strategies:
+•
+Discretionary Long Only: Funds which 
+are long only and whose investors have a 
+longer investment horizon. These funds 
+tend to invest in early stage token/coin 
+projects, and they also buy and hold more 
+liquid cryptocurrencies. These funds tend 
+to have the longest lock-up periods for 
+investors.
+•
+Discretionary Long/Short: Funds which 
+cover a broad range of strategies 
+including: long/short, relative value, event 
+driven, technical analysis and some 
+strategies which are crypto specific, such 
+as mining. Discretionary funds often have 
+hybrid strategies which can include 
+investing in early stage projects. They 
+tend to have a similar lock-up period to 
+the Discretionary long only group. 
+Strategy insights
+2012
+2013
+2014
+2015
+2016
+2017
+2018
+2019
+2020
+
+9
+3rd Annual Global Crypto Hedge Fund Report 2021
+•
+Quantitative: Funds taking a quantitative 
+approach to the market in either a 
+directional or a market neutral manner. 
+Indicative strategies include: market-
+making, arbitrage and low latency trading. 
+Liquidity is key for these strategies and 
+restricts these funds to only trading more 
+liquid cryptocurrencies. As a result, these 
+funds typically have the shortest lock-up 
+periods for investors.
+•
+Multi-strategy: Funds adopting a 
+combination of the above strategies. For 
+instance, within the limitations set in the 
+prospectus of a particular fund, traders 
+may manage discretionary long/short and 
+quantitative sub-accounts.
+Assuming our dataset is representative of 
+the total crypto hedge fund universe, we 
+conclude that quantitative funds are the most 
+common among crypto hedge funds, making 
+up for just over a third of all currently active 
+crypto funds. 
+The next two larger categories are 
+discretionary long/short (28%) and 
+discretionary long only (20%), with multi-
+strategy funds making up a much smaller 
+proportion, at 11%. 
+Most common strategies of crypto hedge funds
+0%
+10%
+20%
+30%
+40%
+50%
+Quantitative
+Discretionary Long /
+Short
+Discretionary Long
+Only
+Multi-strategy
+Fund strategy
+2020
+2019
+
+Looking at the market for crypto hedge funds, we identified High-net worth 
+individuals ‘HNWIs as the most common investor type in crypto hedge funds, 
+with more than half of funds mentioning them as the most common investor type. 
+Family offices come second (30%) and funds of funds, a distant third (4%). 
+Although institutions have been aggressively ploughing into cryptocurrency 
+markets, they are not yet prevalent investors in crypto hedge funds, with only 
+one fund in our sample mentioning them as their main investor type and the top 
+spots still dominated by HNWIs and family offices. Going forward, it is expected 
+that this mix in the investor base while gradually change with the increased 
+levels of interest from institutional investors.
+10
+3rd Annual Global Crypto Hedge Fund Report 2021
+The median number of investors in funds is 23 and the average is 70.1, while 
+the median ticket size is US$0.4 million and the average is US$1.1 million. The 
+graph below shows the distribution of the average ticket size and suggests that 
+half of funds have tickets below US$0.5 million. 
+Market analysis
+Number of investors in crypto hedge funds and average ticket size
+Average
+Median
+Number of investors
+70.1
+23.0
+Average ticket size (US$m)
+1.1
+0.4
+Average investor ticket size distribution of crypto hedge funds
+0%
+10%
+20%
+30%
+40%
+<= 0.1
+0.1 - 0.5
+0.5 - 1
+1 - 2
+2 -10
+>= 10
+Average ticket size distribution (US$m)
+Most common investors in crypto hedge funds
+0%
+20%
+40%
+60%
+High-net worth
+individuals
+Family offices Fund of Funds
+Asset
+management
+Wealth
+Management
+Firms
+Largest investor category
+2020
+2019
+
+Average
+Median
+2020 year-end AuM (US$m)
+42.8
+15.0
+2019 year-end AuM (US$m)
+12.8
+3.8
+AuM level at launch (US$m)
+11.3
+1.0
+We estimate that the total AuM of crypto hedge funds globally 
+increased to over US$3.8 billion in 2020, just over US$2 billion 
+in the previous year. This data is based on the AuM responses 
+given to us by the surveyed fund managers with certain 
+adjustments due to some funds having not disclosed their total 
+AuM.
+The graph below shows the distribution of AuM held by 
+individual crypto hedge funds. Although there are many smaller 
+funds, assets are still highly concentrated among the largest 
+hedge funds. Our survey showed that the top-10 largest crypto 
+hedge funds control 63% of total AuM.
+11
+3rd Annual Global Crypto Hedge Fund Report 2021
+Average and median AuM of crypto hedge funds 
+Also, the effect of the 2020 crypto bull market is clearly visible in 
+the data above, with the number of funds with smaller AuMs
+being considerably lower in 2019 than in 2020, while, at the 
+other end of the spectrum, the number of funds managing larger 
+amounts of assets is considerably higher in 2020.
+Assets under management 
+Crypto hedge fund AuM distribution
+0
+1
+2
+3
+4
+2018
+2019
+2020
+AuM (US$bn)
+Year
+0%
+20%
+40%
+60%
+80%
+< 20
+20 - 50
+50 - 100
+100 - 250
+>= 250
+AuM (US$m)
+2019 year-end AuM
+2020 year-end AuM
+
+The table above shows a breakdown of the performance by investment strategy. On a 
+median basis, quantitative long/short funds have considerably underperformed other 
+strategies (72%), while discretionary long only out on top (294%). This is not surprising 
+considering the market rally that took place in the fourth quarter of 2020.
+12
+3rd Annual Global Crypto Hedge Fund Report 2021
+2020 year-end crypto hedge fund performance by strategies 
+Overall, the crypto hedge funds in our 
+sample had a median performance of 184% 
+last year, vastly higher than 2019 (17%) and, 
+while different strategies have yielded 
+different levels of performance, neither was
+able to outperform BTC itself, which went up 
+305% during 2020. A similar picture can be 
+drawn from 2019 data, when our sample had 
+a median performance of 17%, against the 
+BTC rally of 95% in that year.
+Fund performance 
+2020 vs 2019 crypto hedge fund median performance comparison
+Average
+Median
+Quantitative Long / Short
++87%
++72%
+Discretionary Long / Short
++202%
++129%
+Discretionary Long Only
++231%
++294%
+Multi-strategy
++108%
++114%
+2020
+2019
+Quantitative Long / Short
++72%
++17%
+Discretionary Long / Short
++129%
++23%
+Discretionary Long Only
++294%
++10%
+Multi-strategy
++114%
++12%
+
+13
+3rd Annual Global Crypto Hedge Fund Report 2021
+2020 vs 2019 crypto hedge fund median performance by strategy 
+Our data also suggests that, while 
+discretionary long-only funds were not able 
+to capitalise on the 2019 cryptocurrency 
+market recovery, lagging behind other 
+strategies, they performed exceptionally well 
+in the 2020 bull market. On the other hand, 
+long-short underperformed, as one would 
+expect bearish bets to do in a heated market.
+Finally, it is important to note that, while the 
+chart above does show funds 
+underperforming their main benchmark, we 
+are not able to tell whether they were able to 
+offer higher or lower volatility in relation to 
+cryptocurrencies, which could make crypto 
+hedge funds more attractive investment 
+propositions, despite the lower returns.
+0%
+50%
+100%
+150%
+200%
+250%
+300%
+350%
+Quantitative Long
+/ Short
+Discretionary
+Long / Short
+Discretionary
+Long Only
+Multi-strategy
+Bitcoin
+2019 year-end
+2020 year-end
+
+Fees
+14
+3rd Annual Global Crypto Hedge Fund Report 2021
+Crypto hedge fund management and 
+performance fees
+Median fees were the same as 2019: a 2% 
+management fee with a 20% performance fee. Average 
+management fees remained the same (2.3%) but the 
+average performance fee increased (from 21.1% to 
+22.5%). The slight increase in performance fees can be 
+simply attributable to the fact that fund managers were 
+able to command higher performance fees in a bull 
+market.
+Going forward, we expect funds to incur higher costs, 
+as regulations are likely to become more stringent and 
+investors demand higher institutional set-ups. However, 
+the growing number of funds, as we saw in 2020, is 
+likely to increase competitive pressures between 
+managers, which would eventually seek to lower their 
+fees in order to attract new clients, especially 
+institutional investors. As a result, investors are likely to 
+benefit from increased investment options, while funds 
+are likely to have their profits squeezed by lower 
+margins and increased competition.
+Average
+Median
+Management fees (%)
+2.3
+2.0
+Performance fees (%)
+22.5
+20.0
+
+15
+3rd Annual Global Crypto Hedge Fund Report 2021
+Despite the slight increase in management fees, crypto 
+funds will still find it challenging to break even, unless 
+they are able to attract enough investors, keeping in 
+mind that the median crypto hedge fund in 2020 had 
+US$15 million in AuM.
+To illustrate this point, if the median crypto fund 
+manages US$15 million and charges a 2% 
+management fee, then they have US$300,000 in annual 
+revenue. This is unlikely to be sufficient to sustain a 
+business operation, especially considering that the 
+median fund has a payroll with six employees. As a 
+result, some funds are exploring ways to increase their 
+income in order to cover costs. For example, we have 
+seen quantitative long/short funds diversify their 
+approach and start market making, and early-stage 
+focused funds take on advisory roles for new projects, 
+while other funds seek to raise additional capital by 
+selling stakes in their General Partner (GP). Some 
+funds remain focused on their core strategy and hope to 
+cover costs via the performance fee. In 2020, this would 
+have been extremely successful, as the median fund 
+returned 128% and would have been able to generate 
+an additional US$3.8m in income, assuming the above 
+mentioned median AuM. While this approach looks 
+positive at first, the downside is that managers may be 
+inclined to take additional risks, especially towards 
+year-end if they are still under their high-water mark.
+
+Looking at how crypto hedge funds are using Bitcoin and other cryptocurrencies other than 
+for investment purposes, we asked whether they stake, lend or borrow digital assets.
+The activities listed below were highlighted by the funds.
+Percentage of crypto hedge funds involved in staking, lending and borrowing
+Cryptocurrencies 
+16
+3rd Annual Global Crypto Hedge Fund Report 2021
+The number of funds staking, borrowing and lending has remained stable across the board, 
+despite a slight drop in the percentage of funds involved in lending in 2019.
+23.6%
+32.6%
+41.6%
+24.0%
+38.0%
+42.0%
+0%
+5%
+10%
+15%
+20%
+25%
+30%
+35%
+40%
+45%
+Borrows
+Lends
+Stakes
+2019
+2020
+
+Among the top 15 traded altcoins, some of 
+them are considerably more popular than 
+their market capitalisation would suggest. 
+Litecoin and Chainlink are the second and 
+third most traded altcoins, but their market 
+capitalisations are far lower than Polkadot
+and Cardano, which fare lower in the 
+trading ranks. Aave, the fifth most traded 
+altcoin by hedge funds, has a market 
+capitalisation of US$5 billion, compared to 
+Cardano’s US$48 billion, which ranks one 
+position below it.
+17
+3rd Annual Global Crypto Hedge Fund Report 2021
+Looking at daily trading activity attributed to 
+BTC, 56% of the funds in our survey 
+reported that at least half of their daily 
+cryptocurrency trading volume is BTC, while 
+15% of funds are pure Bitcoin funds and 
+trade only BTC.
+We also asked funds to name their top 
+traded altcoins by daily volume (stablecoins
+were excluded). We found that the top five 
+were: Ethereum (ETH, 67%), Litecoin (LTC, 
+34%), Chainlink (LINK, 30%), Polkadot (DOT, 
+28%) and Aave (AAVE, 27%).
+Cryptocurrencies traded by crypto hedge funds and their market cap
+0
+250
+500
+750
+1000
+1250
+0%
+25%
+50%
+75%
+100%BTCETHLTCLINKDOTAAVEADABCHUNIXRPXLMATOMBNBSUSHIEOSXTZ
+Funds trading %
+Cryptocurrency
+Funds trading %
+Market cap
+
+56%
+31%
+29%
+12%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+Derivatives
+Options
+Cash settled futures
+Physically settled futures
+53%
+28%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+FFM permits the fund to take short
+positions
+Actively shorts crypto assets
+3rd Annual Global Crypto Hedge Fund Report 2021
+Crypto hedge funds and shorting
+Derivatives can either be used as hedging or alpha-enhancing 
+instruments. 2020 was a very busy year in this space. Bitcoin futures 
+open interest saw a substantial rise, indicating increasing institutional 
+interest in cryptocurrencies. As a result, existing derivatives exchanges 
+sought to enrich their offerings, while a number of new players entered 
+this space, leading to a decrease in the concentration of trading volume 
+distribution between exchanges. Towards the end of the year, Bitcoin 
+futures notional trading volumes exploded and trading currently includes  
+billions of US dollars per day, up from hundreds of millions a year ago. 
+The increased number of players and liquidity is rapidly transforming 
+the cryptocurrency derivatives market, enabling widespread institutional 
+adoption, which will, in turn, allow exchanges to offer more 
+sophisticated products, further allowing crypto hedge funds to take 
+advantage of mispricing and arbitrage opportunities.
+Derivatives and leverage
+Crypto hedge funds and derivatives
+Prospectus/PPM permits the fund to 
+take short positions
+18
+
+0%
+10% 20% 30% 40% 50% 60% 70%
+No
+Yes, enhanced counterparty/exchange
+due diligence
+Yes, other
+Fund launched after March 2020
+Yes, set up a formal counterparty risk
+management policy
+19
+Changes in risk management policy after 
+the March 2020 crypto market crash
+Our 2020 data shows that more than half of the surveyed funds use 
+derivatives, with options being the most commonly used tool (31%). 
+However, in contrast with our previous survey, funds are taking less 
+short positions, with only 28% stating they actively short 
+cryptocurrencies. This is consistent with the extremely bullish views in 
+this market, especially from Q4 2020 and into Q1 2021, when the 
+survey was conducted.
+In March 2020, Bitcoin crashed to US$4,904, 53% below its intra-year 
+peak of US$10,344 in February. The drop was particularly abrupt on the 
+week of 9th of March, when prices collapsed by 27% in a single day. 
+In light of this event, we asked the crypto hedge funds whether they put 
+new risk management policies in place. Most funds (61%) stated that no 
+changes had been made, with some funds mentioning that they already 
+had risk management systems in place. Among the funds that did 
+implement new policies, the most common was establishing 
+counterparty or exchange due diligence so as to not be exposed to 
+events such as the one described above. Others implemented a formal 
+counterparty risk management policy and changes in management 
+techniques.
+Yes, enhanced counterparty/
+exchange due diligence
+Yes, set up a formal counterparty 
+risk management policy
+3rd Annual Global Crypto Hedge Fund Report 2021
+
+20
+3rd Annual Global Crypto Hedge Fund Report 2021
+51%
+27%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+Leverage is permitted in your prospectus/PPM
+Your fund actively utilises leverage
+Crypto hedge funds and leverage
+In bull markets, managers are likely to 
+compound their returns by increasing 
+leverage and taking larger exposure to their 
+underlying positions. Our data shows that 
+about half (51%) of funds are allowed to use 
+leverage and, although we are seeing a rise 
+in financial institutions offering 
+cryptocurrency collateralised loans, several 
+obstacles remain in order for it to become 
+more widespread (e.g. high collateral 
+requirements, inherent risk, price volatility). 
+As a result, only 27% of crypto hedge funds 
+actively use leverage, up from 19% in 2019.
+
+21
+3rd Annual Global Crypto Hedge Fund Report 2021
+Decentralised finance (DeFi) had 
+extraordinary growth in 2020 and was the 
+year’s buzzword within the cryptocurrency 
+community. DeFi protocols aim to render 
+peer-to-peer financial services, which allow 
+cryptocurrency trading, loans, interest 
+accounts without the use of traditional banks 
+and traditional financial intermediaries.
+Last summer, DeFi started booming and, 
+between April 2020 and April 2021, the 
+trading volume on these platforms grew 
+more than 90-fold, with Uniswap making up 
+for half of the DeFi market volume in April 
+2021.
+Decentralised exchanges 
+Top 5 most used decentralised exchanges by crypto hedge funds
+15.7%
+7.9%
+4.5%
+3.4%
+2.2%
+0%
+2%
+4%
+6%
+8%
+10%
+12%
+14%
+16%
+18%
+Uniswap
+1inch
+SushiSwap
+Balancer
+Curve
+Our data shows that 31% of crypto hedge funds use decentralised exchanges, with Uniswap
+being the most widely used (16%), followed by 1inch (8%) and SushiSwap (4%).
+
+22
+3rd Annual Global Crypto Hedge Fund Report 2021
+Distribution of Bitcoin price predictions for the end of 2021
+This year, we gave crypto hedge fund 
+managers the opportunity to provide their 
+views on where the price of Bitcoin and 
+overall cryptocurrency market capitalisation
+would be on 31 December 2021. 
+Our data shows that managers remain 
+bullish on Bitcoin. At the time of the closure 
+of our survey, the Bitcoin price was hovering 
+around US$59,000, and all but one 
+respondent predicted a value higher than 
+that, with the median predicted price being 
+US$100,000. In fact, the majority of 
+predictions were in the US$50,000 to 
+US$100,000 range (65%), with another 21% 
+predicting prices would be between 
+US$100,000 and US$150,000.
+Outlook or Fund manager predictions
+With regards to the total cryptocurrency 
+market capitalisation, by the time we closed 
+our survey, the crypto market was worth 
+approximately US$2 trillion. Fund managers 
+are also bullish, with over 76% of funds
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+50
+50 - 100
+100 - 150
+150 - 200
+> 200
+Bitcoin price prediction (US$'000)
+estimating that market capitalisation would 
+finish the year above current levels, with the 
+median predicted level at US$3 trillion, and 
+most forecasts falling in the US$2 trillion to 
+US$5 trillion range.
+Distribution of cryptocurrency market cap predictions for end of 2021
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+1
+1 - 2
+2 - 5
+5 - 10
+10
+Cryptocurrency market cap prediction (US$ trillion)
+
+Non-investment data
+3rd Annual Global Crypto Hedge Fund Report 2021
+23
+
+24
+3rd Annual Global Crypto Hedge Fund Report 2021
+Change in crypto hedge fund average team size and cumulative years 
+of investment management experience
+In 2020, the average size of the investment 
+teams marginally decreased from 8.7 to 7.6 
+people, while the average number for 
+cumulative years of investment management 
+experience has increased from 50 to 60. 
+This suggests that there is an increasing 
+number of experienced investment 
+professionals entering into this space, thus 
+leading to financially savvier crypto fund 
+teams. But it is possible that there may also 
+be survivorship bias where crypto funds that 
+closed during the previous year had a higher 
+proportion of junior staff. Additionally, it could 
+also mean that newer funds are being 
+established that had fewer but more 
+experienced staff at the initial stage. 
+We expect this trend to continue where we 
+see experienced finance professionals enter 
+the crypto space as the industry evolves and 
+matures.
+An investment team with ‘traditional’ asset 
+management experience will likely give 
+investors, as well as regulators, greater 
+confidence that the fund is being managed in 
+a professional and compliant manner.
+Experienced, non-investment professionals 
+are also critical for the smooth running of the 
+fund and its operational set-up. For example, 
+a Chief Operating Officer (COO) or Head of 
+Compliance with years of experience in the 
+‘traditional’ asset management world will be 
+well-versed in applicable rules and 
+regulations and the importance of investor 
+protection. As previously mentioned, due to 
+the particular nature of crypto assets, having 
+a Chief Technology Officer (CTO) with a 
+strong tech background is often essential. 
+2020 
+Average
+2020 
+Median
+2019 
+Average
+2019 
+Median
+2018 
+Average
+2018 
+Median
+Team size
+7.6
+6
+8.7
+6
+7.5
+6
+Cumulative 
+years of team 
+investment 
+management 
+experience
+60
+40
+50.1
+40
+24
+20
+Cumulative years of team crypto/blockchain experience
+2020 
+Average
+2020 
+Median
+2019
+Average
+2019
+Median
+Cumulative 
+years of 
+team 
+crypto/ 
+blockchain 
+experience
+21
+19
+16.0
+14.5
+21
+16
+0
+10
+20
+30
+2020
+2019
+Team size
+Investment Team expertise 
+
+25
+3rd Annual Global Crypto Hedge Fund Report 2021
+Compared to 2019, we have seen a 
+continued increase in the cumulative years 
+of team/blockchain experience, in particular 
+it has grown from 16 to 21 years. We expect 
+this number to grow as individuals continue 
+to gain more experience in this niche field 
+and as funds increasingly seek to hire 
+individuals with deep crypto and blockchain 
+experience (e.g., researchers, consultants, 
+engineers). This is likely to give funds 
+competitive edge, a better understanding of 
+a fast changing and complex market. 
+Percentage of crypto hedge funds using third party research
+In 2019, our data showed that 38% of the 
+funds surveyed used third party research. 
+While funds may have historically relied 
+heavily on proprietary valuation models, third 
+party research in recent years have become 
+more available as the industry continues to 
+grow.
+This year, our data shows a near 10% 
+increase in the number of funds using third-
+party research. This may be due to a number 
+of factors, such as the growing universe of
+crypto assets making it challenging for in-
+house teams to cover the whole market 
+themselves. Increased number of dedicated 
+crypto research providers offering targeted 
+research and analysis and managers may 
+find it more efficient to outsource certain 
+parts of their due diligence process. They 
+can then focus their attention and energy on 
+specific areas of expertise where they have 
+an edge and can generate alpha.
+2020
+2019
+2018
+Use of third party 
+research
+47%
+38%
+7%
+
+Custody and counterparty risk
+In the traditional fund management space, 
+using an independent third-party custodian is 
+expected. There is a large number of 
+established players, from licensed 
+custodians to prime brokers, who can take 
+custody of fund assets. In crypto, this is not 
+as straightforward due to the complexity of 
+maintaining private keys, multi-signature 
+wallets, hot/cold wallet set-ups or other 
+innovative ways to hold the private key of 
+fund's crypto assets.
+For funds using such a self-custody 
+approach, having the in-house technology 
+and expertise to design and monitor the self-
+custody set-up is also very important.
+Compared to the 2019 data, the use of 
+independent custodians has decreased 
+slightly. 76% of funds are now using one or 
+more independent custodians (either third 
+party or exchange custodians), down from 
+81%.
+Whilst it is difficult to determine what is 
+causing, we believe that it may be due to the 
+increased levels of comfort that many crypto 
+hedge funds may have towards their crypto 
+exchange and other counterparties. Also, it 
+may be due to the increased levels of usage 
+of decentralised exchanges.
+Percentage of crypto hedge funds using an independent custodian
+% of funds using custodians by strategy
+% (2020)
+% (2019)
+Quantitative Long / Short Crypto
+64%
+74%
+Discretionary Long / Short Crypto
+84%
+88%
+Discretionary Long Only Crypto
+83%
+89%
+Multi Strategy
+80%
+88%
+Quantitative Long Only Crypto
+100%
+n.a.
+26
+3rd Annual Global Crypto Hedge Fund Report 2021
+
+It is important to remember that crypto 
+quant funds traditionally leave their 
+assets directly with the various 
+exchanges as they trade continuously. 
+However, for these quant funds, having 
+a well-defined and enforced risk 
+management policy is likely to be more 
+important than having a custodian. 
+Conducting regular counterparty risk 
+assessments on these exchanges is 
+also becoming important, as 
+institutional investors will likely focus on 
+this area as part of their operational due 
+diligence. 
+Given the relevance of these 
+developments, it is interesting to 
+examine the overall crypto custody 
+landscape. From the chart below, we 
+can see that there is no ‘market leader’ 
+and that the industry is fragmented. Our 
+data shows that the most frequently 
+named custodian serves only 15% of 
+the crypto hedge fund universe in our 
+report. While this data weighs each 
+fund equally (not factoring in AuM), we 
+still consider it relevant as it shows how 
+fragmented the custodian ecosystem is.
+Some of the larger hedge funds will have 
+more than one custodian. There are many 
+reasons for this. Some do it for counterparty 
+risk management reasons, especially 
+considering the increased hacking risks in 
+the industry. Others may require a second 
+custodian due to their primary choice not 
+offering custodial services to their full asset 
+list. Unfortunately, onboarding a second 
+custodian is not always possible for smaller 
+funds due to the minimum monthly fees that 
+are added to the fund expenses, which could 
+significantly impact their net performance.
+We also note that the vast majority of 
+custodians used by funds are regulated or 
+licensed in some form. This is a positive 
+development for the industry and indicates 
+the further institutionalisation of the space. In 
+addition, a handful of custodians also have 
+System and Organisation Controls (SOC) 
+reports (or their ISAE 3402 equivalent), 
+which are different from financial audits. 
+These reports provide a level of 
+transparency around financial reporting 
+(SOC 1/ISAE 3402) and operational controls 
+(SOC 2) and help to build customer trust in 
+their risk management framework. We 
+expect to see an increase in the number of 
+custodians that obtain such public assurance 
+reports. This should give comfort not only to 
+investors in funds which use these 
+custodians but also to the funds’ service 
+providers. 
+Most frequently used crypto custodians 
+among crypto hedge funds
+0%
+2%
+4%
+6%
+8%
+10%
+12%
+14%
+16%
+18%Custodian ACustodian BCustodian CCustodian DCustodian E
+27
+3rd Annual Global Crypto Hedge Fund Report 2021
+
+28
+3rd Annual Global Crypto Hedge Fund Report 2021
+Percentage of crypto hedge funds with independent director
+Having independent directors on a fund 
+board is critical, especially when difficult 
+decisions need to be made that will impact 
+investors. For example, whether a side 
+pocket needs to be set up to hold certain 
+assets or whether restrictions need to be 
+imposed on investor redemptions. In the 
+crypto space, critical decisions are 
+exacerbated by volatility issues and illiquid 
+assets.
+In 2021, we have seen a decline in the 
+percentage of crypto hedge funds with an 
+independent director on their board from 
+43% to 38%. Whilst Whilst difficult to pinpoint 
+why this occurred, we believe that it may be 
+due to the rising markets in 2020
+and the great returns being generated by crypto 
+hedge funds which may have made many of the 
+investors more forgiving of such requirements. 
+As the institutionalisation of the industry continues 
+and the de facto requirement by institutional 
+investors to have independent directors on the 
+boards of the funds, we expect this percentage to 
+increase. The wider availability of board directors 
+with relevant expertise and knowledge of the 
+space will also be a driver of this trend. In the early 
+years these candidates were a rare commodity. 
+But now, as the industry matures, there are more 
+candidates to choose from. This trend is likely to 
+have a positive impact on funds’ ability to attract 
+institutional investors and is another development 
+that should continue as the industry becomes more 
+institutionalised.
+Governance
+2020
+2019
+2018
+Independent director on board
+38%
+43%
+25%
+
+29
+3rd Annual Global Crypto Hedge Fund Report 2021
+Percentage of crypto hedge funds using an independent fund administrator
+An independently verified Net Asset Value 
+(NAV) is a crucial piece of information for 
+fund auditors as well as investors, and we 
+expect to see more developments in this 
+area. We are happy to see that over 88% of 
+the crypto hedge funds in our report this year 
+use an independent fund administrator.
+It is very unlikely that institutional investors 
+will select any fund without an independent 
+administrator. While this was acceptable in 
+the early days of the industry, there is no 
+excuse for a crypto hedge fund to calculate 
+its own NAV each month. We expect only a 
+very restricted number of funds, such as 
+those with small AuM or who hold niche 
+crypto assets, to be able to value part of their 
+portfolio themselves.
+Regardless of the choice of fund 
+administrator, the valuation policy needs 
+particular focus. Most funds will have their 
+valuation methodologies and frameworks set 
+out in the PPM. It is important for any fund to 
+ensure that it complies with what is set out in 
+its documentation. Management fees are 
+determined based on NAV and performance 
+fees are typically charged on NAV 
+appreciation over a set period (e.g., above a 
+‘high-water-mark’).
+Investors expect a monthly NAV to be 
+available and verified by an independent, 
+reputable fund administrator. Cryptocurrency 
+exchanges can provide independent price 
+quotes for certain crypto assets. But for 
+those portfolios made up of less liquid crypto 
+assets, managers may have to source a 
+valuation from an independent third-party 
+which satisfies the requirements set out in 
+the Private Placement Memorandum (PPM).
+However, being able to accurately value a 
+crypto fund remains challenging. This is 
+particularly true for funds that hold illiquid 
+tokens or crypto investments via Simple 
+Agreement for Future Tokens (SAFTs). 
+There are also details that are important for 
+funds trading some of the more liquid crypto 
+assets, such as: the cut-off time for valuation 
+(crypto markets operate 24 hours a day) or 
+how many and which price sources to use 
+(the same crypto asset may be priced 
+differently at different exchanges globally). 
+Valuation and fund administration
+2020
+2019
+Use of independent fund administrator
+88%
+86%
+
+30
+3rd Annual Global Crypto Hedge Fund Report 2021
+Average crypto hedge fund redemption terms by strategy (2020)
+The liquidity and lock-up terms of the crypto hedge fund universe are 
+largely similar to the previous years. Quant funds provide the most 
+liquid fund terms and multi-strategy funds the least. Quant funds trading 
+liquid exchange-listed crypto assets can provide better liquidity in 
+relation to investments in early-stage projects or multi-strategy funds, 
+where managers need to consider the various portfolio strategies and 
+instruments ahead of executing trades.
+One surprising takeaway is that we are seeing hard locks (where an 
+investor is not allowed to redeem until the end of the lock-up period) 
+and soft locks (where an investor is allowed to redeem early by paying a 
+penalty) being used across the various fund strategies, with nearly a 
+third of the funds (31%) having one or the other. 
+Although hard locks are commonly used in situations where liquidity 
+could be an issue, many liquid quant funds have some in place. Also, it 
+may be that some funds were able to negotiate fee reductions via side 
+letters in exchange for locking up their capital. As the industry matures 
+and becomes more competitive, it will be interesting to see whether new 
+crypto hedge fund vintages result in a change in the mix of fund terms 
+that we see below.
+Liquidity and lock-ups
+Strategy
+Redemption 
+frequency
+Redemption 
+notice period
+Lock 
+up 
+period
+Hard 
+lock
+Soft 
+lock
+Discretionary Long 
+/ Short
+Monthly
+30
+1 year
+30%
+21%
+Discretionary Long 
+Only
+Monthly
+30
+1 year
+32%
+20%
+Multi-strategy
+Monthly
+30
+1 year
+22%
+17%
+Quantitative
+Monthly
+30
+1 year
+20%
+40%
+We have not analysed fund liquidity overall, as each strategy is different 
+and has its own liquidity constraints, however we have done an analysis 
+of gates.
+Gates are a useful mechanism that allow fund directors to put in place 
+restrictions in very limited circumstances, which limit the speed at which 
+investors can redeem. The main purpose of a gate is not to protect the 
+fund manager, but rather the remaining shareholders in the fund, so as 
+to ensure that assets do not need to be liquidated in a fire sale solely to 
+meet the large number of redemption requests.
+
+There are two main types of gates:
+•
+Fund-level gates
+‐ Triggered only when redemptions are over a certain threshold of the fund 
+(e.g. when over 25% of fund NAV or of total number of shares in issue at 
+a particular redemption day). 
+‐ All investors generally receive their redemptions on a pro-rata basis 
+depending on the number of investors redeeming, but the total redemption 
+amount is capped (e.g. at 25% of the NAV or total number of shares).
+‐ As there is no priority, the scaled-down redemption request will be treated 
+on the next redemption day on a pro-rata basis with any new redemption 
+requests.
+•
+Investor-level gates 
+‐ Always applied when an investor chooses to redeem (e.g. investors can 
+only redeem 25% of their investment each redemption day regardless of 
+whether other investors are redeeming at the same time).
+Our data shows that the majority of crypto hedge funds have some sort of gate 
+mechanism in place. Whether the industry will move towards investor level or 
+fund level gates over the coming years is still unclear. 
+Fund-level gates may be seen as fairer, as they can only be triggered if a 
+certain threshold of redemption requests on a particular redemption day is 
+crossed. For example, if there is only one investor redeeming, with limited 
+impact on the fund, then there is no reason for a gate to be imposed in the first 
+place. The downside for an investor is that they do not know whether their 
+redemption request will be fulfilled, which may cause some cash management 
+issues if the investor has their own liquidity requirements. Fund-level gates also 
+put more pressure on the fund’s board of directors, as they are responsible for 
+deciding when to enact the gates.
+Investor-level gates can be seen as somewhat favouring the fund manager at 
+first glance, as the investor will never be able to redeem his capital in one go, 
+but rather over a set number of months, during which time the fund manager will 
+continue to collect fees. However, many investors prefer investor-level gates. 
+Although they cannot redeem their full investment in one go, they know exactly 
+what amount they will receive, which helps their cash flow management.
+Generally speaking, investors are now comfortable with both gate mechanisms. 
+In practice, the final decision as to which one to put in place is often made after 
+consulting with the lead or Day 1 investor on their preference.
+We will continue to track this data over the coming years.
+31
+3rd Annual Global Crypto Hedge Fund Report 2021
+Percentage of crypto hedge funds with redemption gates
+Gates
+Investor level gates
+Fund level gates
+31%
+28%
+21%
+
+Top Crypto Hedge Fund Domiciles 
+Top Crypto Hedge Manager Location
+Cayman Islands
+34%
+United States
+43%
+United States
+33%
+United Kingdom
+19%
+Gibraltar
+9%
+Hong Kong
+11%
+British Virgin Islands
+8%
+Cayman Islands
+8%
+Luxembourg
+3%
+Switzerland
+7%
+Liechtenstein, Netherlands, 
+Singapore, Isle of Man and 
+Australia
+<5%
+Spain, Gibraltar , Singapore, 
+Isle of Man, Malta, Canada and 
+Australia
+<5%
+32
+3rd Annual Global Crypto Hedge Fund Report 2021
+Compared to the previous year, the Cayman 
+Islands and the United States have 
+maintained their position as the top-two 
+places where crypto hedge funds are 
+domiciled. With that being said, their market 
+share has declined overall, from (Cayman 
+Islands - 42% to 34%) and (United States -
+38% to 33%). We have also seen Gibraltar 
+overtaking the BVI and Luxembourg pushing 
+down Liechtenstein with the others. 
+Our data last year showed that the Cayman 
+Islands was the second jurisdiction in terms 
+of number of crypto hedge fund managers 
+after the United States. However, we believe 
+that this data was misleading: despite the 
+investment management entity being based 
+in the
+Cayman Islands, very few of the managers 
+were physically based there. 
+For this reason, we look to where the 
+investment team is physically located. Using 
+this new approach, our data shows that two 
+thirds of crypto hedge fund managers are 
+located in the United States and the United 
+Kingdom - two existing financial centers with 
+a large number of traditional hedge fund 
+managers. A significant number of fund 
+managers are also located in Hong Kong 
+Gibraltar and Switzerland. 
+We would expect this to remain mostly 
+constant unless we see particular 
+governments or authorities implement come 
+up with policies to try and attract such fund 
+managers to their jurisdictions.
+Legal and regulatory 
+
+A crypto hedge fund and its manager will 
+need to consider many of the same tax 
+issues that need to be considered when 
+structuring, establishing and operating a 
+traditional hedge fund and fund manager. 
+These include but are not limited to:
+•
+Choice of fund vehicle and ensuring that 
+the fund is set up to be attractive to 
+investors with different tax attributes;
+‐ If the hedge fund will have non-US and 
+US investors, depending on investor 
+mix, the relevant structuring 
+considerations may span a wider 
+spectrum. For instance, considering 
+the use of a flow-through entity  versus 
+a blocked structure to mitigate double 
+taxation and to preserve tax attributes 
+of the character of income derived by 
+entity, unrelated business taxable 
+income considerations for tax-exempt 
+investors, and effectively connected 
+income considerations for non-US 
+investors where applicable.
+•
+Operating issues with respect to 
+contributions, taxable income allocations, 
+distributions, transfers, and redemptions;
+•
+Managing fund and investor tax reporting 
+as well as CRS/FATCA and other 
+reporting;
+•
+Consider tax reporting issues based on 
+the nature of underlying activities of the 
+hedge fund, including the application of 
+passive activity rules, deductibility of 
+expenses, collateral issues specific to 
+various types of investors, wash sale 
+rules, straddle rules, short sale rules, 
+bond discount and premium 
+amortisation, foreign currency 
+transaction rules, among others. In 
+addition, US investors may face 
+various tax issues in the offshore fund 
+context including the passive foreign 
+investment company and controlled 
+foreign corporation rules which are 
+designed to prevents avoidance of 
+current tax on income and character 
+conversion.
+•
+Understanding the capital gains and 
+withholding tax implications of different 
+trades (if any);
+•
+Choice of entity of the fund manager and 
+structuring the performance fees or other 
+compensation structure used to 
+incentivise key staff of the manager;
+•
+Dealing with transfer pricing between any 
+connected entities responsible for 
+managing the fund. 
+Tax
+33
+3rd Annual Global Crypto Hedge Fund Report 2021
+
+However, there are a number of areas where 
+crypto funds have tax issues that are unique. 
+These include:
+•
+Different and unique sources of 
+income/gains - crypto hedge funds can 
+have a variety of sources of income that 
+may require special considerations from a 
+tax perspective (e.g., staking income, 
+mining income, token rewards, coin 
+lending, hard fork, chain split, and 
+airdrops). The taxation of the types of 
+crypto and the such income/gains derived 
+will often be jurisdiction-specific and, in 
+many jurisdictions, the tax treatment is not 
+yet clear. The tax characterisation of 
+crypto held by hedge funds may evolve 
+from initial acquisition throughout the 
+holding period until disposal as certain 
+events occur. 
+•
+Fund tax safe-harbours - if the fund is 
+established in a different jurisdiction to the 
+investment team, then detailed 
+consideration will need to be given as to 
+whether the activities of the investment 
+team could result in tax obligations arising 
+for the fund. Many jurisdictions have safe 
+harbours in place to prevent funds from 
+suffering tax in the location of the 
+investment team as a means of 
+encouraging the development of their 
+local investment management industries. 
+In many cases, these exemptions were 
+written into law prior to the advent of 
+digital assets and therefore there is 
+significant uncertainty as to whether many 
+safe-harbor regimes or fund exemptions 
+can be relied upon for crypto funds. For 
+example, regimes such as the UK's 
+investment manager exemption,
+Hong Kong's unified fund exemption and 
+Singapore's fund exemption include lists 
+of qualifying investments. Many crypto 
+assets (particularly payment tokens and 
+utility tokens) may not qualify as 
+qualifying investments.
+•
+Because of these uncertainties, extra care 
+is needed, and there may be more 
+uncertainty in many of the tax positions 
+that crypto funds take on. As the market 
+develops and becomes more institutional, 
+managers should expect an increased 
+focus on this topic from investors.
+34
+3rd Annual Global Crypto Hedge Fund Report 2021
+
+List of crypto 
+hedge fund 
+respondents
+
+List of crypto hedge fund 
+respondents (in alphabetical order)
+36
+3rd Annual Global Crypto Hedge Fund Report 2021
+168 Trading Limited
+Fasanara Capital
+ODIN88 Asset Management
+Algo Capital PCC Limited
+Ferst Capital Partners
+Off the Chain Capital, LLC
+Alpha Sigma Capital
+Galois Capital Management LLC
+Panxora Management Corp
+Alphabeth Capital Group
+German Deep Tech Quantum 
+GmbH
+Pirata Capital Management
+Altana Wealth
+Hartmann Capital
+Plutus21 Capital
+Apollo Capital
+Hazoor Partners
+PostModern Portfolio Advisors
+ARK36
+Hilbert Capital
+ProChain Capital
+Astronaut Capital
+Hunting Hill Global Capital, LLC
+PROTEIN CAPITAL FUND SLP
+BKCoin Capital
+Huobi Digital Asset Fund Limited
+Proxima Investments
+Block Asset Management
+Hyperion Decimus, LLC
+Pythagoras Management 
+Company
+Blockchain Assets Pty Ltd
+Immutable Insight
+Quantia Capital
+Blockforce Capital
+JKL Capital
+Red Building Capital
+BlockTower Capital
+L1 Digital
+Rivemont Investments
+BLP Asset Management
+KR1 plc
+SeQuant Capital
+Blue Block Group
+Lavaliere Capital Management
+Sigil Limited
+Cambrian Asset Management, Inc. LedgerPrime LLC
+Silver 8 Capital, LLC
+CMCC Global
+Liquibit Capital
+Smart Arbitrage Technologies
+Coincident Capital
+M31 Capital
+Solidum Capital
+CryptAM Capital Limited
+M33 Capital
+St. Gotthard Fund Management 
+AG
+Crypto Consulting AG
+Maicapital Ltd
+Swiss-Asia Financial Services Pte 
+Ltd
+Crypto Fund AG
+Strix Leviathan
+Synchronicity
+DARMA Capital
+Maximalist Capital
+Typhon Capital Management
+DCAP Capital Limited
+S2F Capital
+Uphold Asset Management Ltd
+Dunamis
+Mutual Coin Fund
+Vellum Capital
+Etherbridge
+NAOS Blockchain
+Walden Bridge Capital
+ExoAlpha
+Napoleon AM
+Exosphere Capital Ltd
+Nickel Digital Asset Management
+
+This year, the Alternative Investment 
+Management Association (AIMA) was invited to 
+partner on this initiative and provide insights 
+into the rising interest in the digital assets 
+industry from the perspective of non-crypto 
+focused hedge funds (referred to as ‘Traditional’ 
+hedge funds in this report). AIMA’s chapter 
+within this report looks at whether “traditional” 
+hedge funds have investments in digital assets, 
+their views on the growing asset class and what 
+they believe would be the catalysts for them to 
+invest initially and more significantly in digital 
+assets. 
+Traditional hedge funds
+37
+3rd Annual Global Crypto Hedge Fund Report 2021
+
+This chapter forms part of the ongoing series of annual crypto reports 
+conducted by PwC and Elwood Asset Management which commenced in 
+2019. This year, the Alternative Investment Management Association 
+(AIMA)1  was invited to partner on this initiative and provide insights into 
+the rising interest in the digital assets industry. This chapter looks at 
+whether “traditional” hedge funds have investments in digital assets, their 
+views on the growing asset class and what they believe would be the 
+catalysts for them to invest initially and more significantly in digital assets.
+The data contained in this chapter comes from a survey that was 
+conducted in the first quarter of 2021 with 39 hedge funds that accounted 
+for an estimated US$180 billion in Assets Under Management (AuM). More 
+than 60% of the responses were from hedge funds who manage assets of 
+at least US$1 billion.
+Introduction
+1 AIMA’s work in digital assets is overseen by its global Digital Assets Working Group (‘AIMA DAWG’). 
+This Group is a senior-level industry steering committee tasked with driving AIMA’s regulatory 
+engagement, thought-leadership initiatives and operational guidance in the growing area of digital 
+assets. It encourages thought-leadership across the industry and shares innovations with market 
+participants and regulators to create a feedback loop that encourages the institutionalisation of digital 
+assets.
+38
+3rd Annual Global Crypto Hedge Fund Report 2021
+
+Breakdown of participants: Strategy breakdown
+7.7%
+46.2%
+5.1%
+2.6%2.6%2.6%
+5.1%
+7.7%7.7%
+5.1%
+7.7%
+5.1%
+17.9%
+12.8%
+17.9%
+2.6%
+7.7%
+2.6%2.6%
+0%
+5%
+10%
+15%
+20%
+25%
+30%
+35%
+40%
+45%
+50%Long OnlyEquity: Long / ShortEquity: Market NeutralRelative Value: Fixed Income ArbitrageRelative Value: Convertible ArbitrageRelative Value: Volatility ArbitrageEvent Driven: Risk Arbitrage / Merger ArbitrageCredit Long / ShortCredit Direct LendingCredit DistressedStructured Credit / CLOCredit Asset Based LendingMacroManaged Futures / CTA: FundamentalMulti-strategy hedge fundEmerging MarketsFunds of FundsSector DedicatedOther (please specify)
+39
+3rd Annual Global Crypto Hedge Fund Report 2021
+Breakdown of participants: What is your total hedge fund AuM?
+10.3%
+17.9%
+10.3%
+30.8%
+17.9%
+7.7%
+5.1%
+Less than $100mm
+$100-$500mm
+$500mm-$1bn
+$1-$5bn
+$5-$10bn
+$10-$20bn
+$20bn+
+38.5%
+61.5%
+Less than $1bn
+Greater than $1bn
+
+The survey highlights that around a fifth of survey hedge funds are 
+currently investing in digital assets (21%). Of those hedge funds who 
+invest in digital assets, the average percentage of their total hedge fund 
+AuM invested is 3%
+Hedge funds active in digital assets that have 10-20% of their portfolio 
+invested accounted for 14% of respondents. It is possible that some 
+hedge fund managers who initially may have invested a smaller 
+percentage of their total AuM, e.g. 1-2%, earlier on in the current crypto 
+cycle have seen that portion of their AuM grew exponentially in the past 
+year.
+Breakdown of participants: Are you currently investing in 
+digital assets? 
+21%
+79%
+Yes
+No
+What percentage of hedge fund AuM is invested in digital assets 
+42.9%
+42.9%
+14.2%
+<1%
+1-2%
+10-20%
+Average percentage of hedge fund AuM is invested in digital assets is 3%
+Hedge funds who are 
+investing in digital assets
+40
+3rd Annual Global Crypto Hedge Fund Report 2021
+
+86% of hedge funds who are currently investing in digital assets intend to 
+deploy more capital into the asset class by the end of 2021 with the 
+remainder (14%) planning to maintain the same level of capital.
+By the end of 2021 do you intend to, with respect to digital assets
+86%
+14%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%
+Deploy more capital
+Maintain same levels of capital
+deployed
+When asked what investment strategies (fundamental, trading, arbitrage, 
+venture, pre/post ICO, passive, other) best describe hedge funds 
+exposure to digital assets, the majority responded with fundamental2 
+(57%) and trading (57%). Those currently adopting a passive approach 
+to investing in digital assets included 29% of respondents, with the 
+same number stating they are using arbitrage.
+What investment strategies best describe your digital assets exposure 
+57%
+57%
+29%
+29%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+Fundamental
+Trading
+Passive
+Arbitrage
+41
+3rd Annual Global Crypto Hedge Fund Report 2021
+
+42
+3rd Annual Global Crypto Hedge Fund Report 2021
+Why invest in digital assets?
+The most common primary reason given by hedge fund managers for including digital assets 
+in their portfolio is ‘general diversification’ – as per 57% of the population that responded. Of 
+the remainder, just under one third of respondents (29%) stated ‘exposure to a new value-
+creation ecosystem’ as the primary reason to invest while 14% suggested that it made for a 
+good inflation hedge.
+In terms of exposure, two thirds of the hedge funds who responded have invested in digital 
+assets through derivatives trading (futures/options). While respondents also confirmed that 
+they invest in digital assets, using traditional value strategies – direct/spot (33%) – or passive 
+funds/trusts/etps (33%). 
+What is the primary reason for including digital assets in your portfolio
+57.1%
+14.3%
+28.6%
+General diversification
+Inflation hedge
+Exposure to a new value-creation ecosystem
+How are you invested (all that apply)
+67%
+33%
+33%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+Futures/options
+Spot/direct
+Passive funds/trusts/etps
+
+43
+3rd Annual Global Crypto Hedge Fund Report 2021
+Main challenges for hedge funds investing in digital assets
+The top three challenges cited by hedge fund managers who currently invest in digital 
+assets are: (i) client reaction/reputational risk (67%), (ii) regulatory uncertainty (50%), 
+and (iii) current service provider availability/lack of infrastructure (33%). 
+Custody and safekeeping is seen as the market infrastructure area being the most in 
+need of essential improvements for digital adoption (83%).
+What are your main challenges when it comes to investing in digital assets
+(all that apply)
+67%
+50%
+33%
+17%
+17%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+Client
+reaction/reputational
+risk
+Regulatory
+uncertainty
+Current service
+provider
+availability/lack of
+infrastructure
+Lack of deep and
+liquid traditional
+synthetic/indirect
+products (e.g., ETFs,
+futures/options)
+Volatility of the asset
+prices
+Where do you see the biggest need for market infrastructure improvements
+83%
+17%
+Custody and safekeeping
+Finance and collateral management
+
+44
+3rd Annual Global Crypto Hedge Fund Report 2021
+Around 80% of hedge fund managers who responded to the survey are not currently 
+investing in digital assets. Of those who do not invest in digital assets, 58% of responses 
+were from larger hedge funds (which we describe as any hedge fund which has US$1 billion 
+or greater in assets under management). 
+Around a quarter of hedge fund managers who are not yet investing in digital assets 
+confirmed that they are in late-stage planning to invest (9%) or looking to invest (17%), while 
+just under two thirds are unlikely to invest in the next three years (57%). 17% of hedge funds 
+said that they are curious about digital assets but waiting for further maturity with the large 
+majority of those respondents holding at least US$1 billion in AuM (75%).
+Hedge funds who do not 
+currently invest in digital assets
+Breakdown of those who do invest in digital assets
+25%
+75%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+Less than $1bn
+Greater than $1bn
+42%
+58%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+Less than $1bn
+Greater than $1bn
+Breakdown of those who do not invest in digital assets
+
+9%
+17%
+17%
+57%
+Late-stage planning, will be investing in the course of 2021
+Looking to invest but still researching the space
+Curious about digital assets but waiting for further maturity
+Unlikely to invest in the next three years
+45
+3rd Annual Global Crypto Hedge Fund Report 2021
+What is your current plan with respect to gaining digital asset exposure 
+(size breakdown)
+50%
+50%
+25%
+46%
+50%
+50%
+75%
+54%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+Late-stage planning,
+will be investing in the
+course of 2021
+Looking to invest but
+still researching the
+space
+Curious about digital
+assets but waiting for
+further maturity
+Unlikely to invest in
+the next three years
+Less than $1bn
+Greater than $1bn
+What is your current plan with respect to gaining digital asset exposure 
+
+81.8%
+77.3%
+71.4%
+68.2%
+68.2%
+63.6%
+52.4%
+52.4%
+35.0%
+33.3%
+0%
+10%
+20%
+30%
+40%
+50%
+60%
+70%
+80%
+90%Regulatory uncertaintyClient reaction/reputational riskCurrent service provider availability/lack of infrastructureOutside the scope of current investment mandateLack of deep and liquid traditional synthetic/indirect products (e.g., ETFs, futures/options)Do not have enough knowledge of digital assetsSize and liquidity of the spot digital asset marketVolatilityDo not believe digital assets have valueCurrent price levels unattractive
+46
+3rd Annual Global Crypto Hedge Fund Report 2021
+What are the main obstacles to investing
+Reasons for why hedge funds are not investing in digital assets
+The four main reasons cited by hedge fund managers when looking at investing in digital 
+assets are: 
+•
+Regulatory uncertainty, 
+•
+Client reaction/reputational risk,
+•
+Lack of infrastructure/service provider availability, and
+•
+Outside the scope of current investment mandate. 
+Around two thirds of respondents said that if the main barriers were to be removed they 
+would either actively accelerate involvement/investment in digital assets (18%), or potentially 
+change their approach and become more involved (46%). While 32% of respondents stated 
+that the removal of barriers would still probably not impact their current approach given 
+investing in digital assets remains outside their mandate.
+
+47
+3rd Annual Global Crypto Hedge Fund Report 2021
+If the main obstacles to investing were to be removed would you 
+18.2%
+45.5%
+4.5%
+31.8%
+Definitely start or accelerate involvement/investment
+Potentially change approach and become more involved
+Probably not change approach to digital assets and remain skeptical
+Probably not change approach as obstacles not relevant (not our space)
+
+At PwC, our purpose is to build trust in society and solve important 
+problems. We are a network of firms in 158 countries with more than 
+250,000 people who are committed to delivering quality in assurance, 
+advisory and tax services. 
+The PwC Global Crypto team is composed of over 200 professionals active 
+in over 25 countries that offer a “one stop shop” solutions for our crypto 
+clients across our multiple lines of service. Our clients range from crypto 
+exchanges, crypto funds, custodians and token issuers to traditional 
+financial institutions moving into the crypto space, as well as national 
+regulators and central banks with regards to their crypto policies.
+About PwC
+Luke Walsh
+PwC Gibraltar
+luke.walsh@pwc.com
+Oscar Fung
+PwC Hong Kong SAR
+oscar.sk.fung@hk.pwc.com
+Henri Arslanian (Crypto Leader)
+PwC Hong Kong SAR
+henri.arslanian@hk.pwc.com
+Haydn Jones
+PwC United Kingdom
+haydn.jones@pwc.com
+Pauline Adam-Kalfon
+PwC France
+pauline.adam-kalfon@pwc.com
+Guenther Dobrauz-Saldapenna
+PwC Switzerland
+guenther.dobrauz@pwc.ch
+Chikako Suzuki
+PwC Japan
+chikako.suzuki@pwc.com
+Peter Brewin
+PwC Hong Kong SAR
+p.brewin@hk.pwc.com
+Galen Law-Kun
+PwC Hong Kong SAR
+galen.s.law-kun@hk.pwc.com
+Adrian Keller
+PwC Switzerland
+adrian.keller@pwc.ch
+Thomas Campione
+PwC Luxembourg
+thomas.campione@pwc.com
+Mazhar Wani
+PwC United States
+mazhar.wani@pwc.com
+Marco Monaco
+PwC Italy
+marco.monaco@pwc.com
+Olwyn Alexander 
+PwC Ireland
+olwyn.m.alexander@ie.pwc.com
+3rd Annual Global Crypto Hedge Fund Report 2021
+48
+
+Elwood is an investment and technology firm established in 2018 
+which specialises in digital assets. The team at Elwood combines 
+an institutional heritage in finance with a deep knowledge of 
+blockchain technology to create breakthrough products for global 
+investors.
+In December 2018 Elwood launched its first product, the Elwood 
+Blockchain Global Equity Index, which offers investors exposure 
+to the growth in the blockchain ecosystem via a highly liquid and 
+regulated vehicle. Find out more at www.elwoodam.com
+James Stickland
+Chief Executive Officer
+james.stickland@elwoodam.com
+Alexandre Schmidt
+Investment Analyst
+alexandre.schmidt@elwoodam.com
+About Elwood
+3rd Annual Global Crypto Hedge Fund Report 2021
+49
+
+The Alternative Investment Management Association (AIMA) is the global representative of 
+the alternative investment industry, with around 2,000 corporate members in over 60 
+countries. AIMA’s fund manager members collectively manage more than $2 trillion in hedge 
+fund and private credit assets.
+AIMA draws upon the expertise and diversity of its membership to provide leadership in 
+industry initiatives such as advocacy, policy and regulatory engagement, educational 
+programmes and sound practice guides. AIMA works to raise media and public awareness of 
+the value of the industry. AIMA set up the Alternative Credit Council (ACC) to help firms 
+focused in the private credit and direct lending space.  The ACC currently represents over 
+200 members that manage $450bn of private credit assets globally.
+AIMA is committed to developing skills and education standards and is a co-founder of the 
+Chartered Alternative Investment Analyst designation (CAIA) – the first and only specialised
+educational standard for alternative investment specialists. AIMA is governed by its Council 
+(Board of Directors). For further information, please visit www.aima.org
+Tom Kehoe
+Managing Director, 
+Global Head of Research 
+and Communications
+tkehoe@aima.org
+James Delaney
+Director, Government 
+and Regulatory Affairs
+jdelaney@aima.org
+About AIMA
+50
+3rd Annual Global Crypto Hedge Fund Report 2021
+Michelle Noyes 
+Managing Director, 
+Head of Americas
+mnoyes@aima.org
+Members of AIMA Digital Assets Working Group2 (DAWG) who helped contribute to 
+the report:
+Kristin Boggiano
+CrossTower
+2 This Working Group is a senior-level industry steering group tasked with driving AIMA’s regulatory engagement, thought-
+leadership initiatives, and operational guidance in the growing area of digital assets. 
+Matthew Edwards
+Dalpha Capital Management
+Thomas Ertl
+PwC Luxembourg
+John D’Agostino
+Dagger LLC
+
+This content is for general information purposes only, and should not be used as a substitute for consultation 
+with professional advisors.
+©  2021 PricewaterhouseCoopers Limited. All rights reserved. PwC refers to the PwC network and/or one or 
+more of its member firms, each of which is a separate legal entity. Please see www.pwc.com/structure for 
+further details. PMS-002631
+

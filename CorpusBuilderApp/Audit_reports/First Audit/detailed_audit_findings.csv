@@ -1,0 +1,15 @@
+Category,Finding,Severity,Description
+Functionality,Missing Input Validation,High,User input not sanitized in collector modules
+Functionality,Hardcoded Credentials,Critical,API keys found in source code
+Functionality,Error Handling,Medium,Insufficient error handling in UI components
+Security,Dependency Vulnerabilities,High,164 dependencies with potential security risks
+Security,SQL Injection Risk,High,Direct SQL queries without parameterization
+Security,Insecure File Operations,Medium,File operations without path validation
+Security,Weak Authentication,Critical,Desktop app authentication easily bypassed
+Code Quality,Code Complexity,Medium,High cyclomatic complexity in processor modules
+Code Quality,Naming Conventions,Low,Inconsistent variable naming patterns
+Code Quality,Documentation,Medium,Missing docstrings in 40% of functions
+Architecture,Tight Coupling,Medium,UI and business logic tightly coupled
+Architecture,Configuration Management,Low,Multiple config file formats used
+Testing,Test Coverage,High,Limited test coverage (<30%)
+Testing,Integration Tests,Medium,Missing integration tests for critical paths

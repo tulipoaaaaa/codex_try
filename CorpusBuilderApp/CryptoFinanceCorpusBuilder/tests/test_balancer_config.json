@@ -1,0 +1,172 @@
+{
+  "balance_thresholds": {
+    "entropy_min": 2.0,
+    "entropy_target": 2.5,
+    "gini_max": 0.7,
+    "gini_target": 0.4,
+    "ratio_max": 10.0,
+    "ratio_target": 3.0,
+    "min_samples": 30,
+    "min_samples_strict": 100,
+    "min_quality_ratio": 0.7,
+    "low_quality_max": 0.3
+  },
+  "domain_balance": {
+    "crypto_derivatives": {
+      "priority": "high",
+      "min_documents": 100,
+      "target_weight": 0.2,
+      "quality_threshold": 0.8
+    },
+    "high_frequency_trading": {
+      "priority": "high",
+      "min_documents": 80,
+      "target_weight": 0.15,
+      "quality_threshold": 0.85
+    },
+    "market_microstructure": {
+      "priority": "medium",
+      "min_documents": 60,
+      "target_weight": 0.12,
+      "quality_threshold": 0.75
+    },
+    "risk_management": {
+      "priority": "high",
+      "min_documents": 90,
+      "target_weight": 0.18,
+      "quality_threshold": 0.8
+    },
+    "decentralized_finance": {
+      "priority": "medium",
+      "min_documents": 70,
+      "target_weight": 0.15,
+      "quality_threshold": 0.75
+    },
+    "portfolio_construction": {
+      "priority": "medium",
+      "min_documents": 50,
+      "target_weight": 0.1,
+      "quality_threshold": 0.75
+    },
+    "valuation_models": {
+      "priority": "low",
+      "min_documents": 40,
+      "target_weight": 0.08,
+      "quality_threshold": 0.7
+    },
+    "regulation_compliance": {
+      "priority": "medium",
+      "min_documents": 30,
+      "target_weight": 0.02,
+      "quality_threshold": 0.9
+    }
+  },
+  "file_type_balance": {
+    "pdf": {
+      "target_ratio": 0.6,
+      "max_ratio": 0.8,
+      "quality_requirements": "standard"
+    },
+    "html": {
+      "target_ratio": 0.15,
+      "min_ratio": 0.05,
+      "quality_requirements": "relaxed"
+    },
+    "markdown": {
+      "target_ratio": 0.1,
+      "min_ratio": 0.02,
+      "quality_requirements": "standard"
+    },
+    "python": {
+      "target_ratio": 0.08,
+      "min_ratio": 0.01,
+      "quality_requirements": "code_specific"
+    },
+    "jupyter": {
+      "target_ratio": 0.05,
+      "min_ratio": 0.005,
+      "quality_requirements": "code_specific"
+    },
+    "csv": {
+      "target_ratio": 0.02,
+      "min_ratio": 0.001,
+      "quality_requirements": "data_specific"
+    }
+  },
+  "quality_weights": {
+    "standard": {
+      "token_count": 0.25,
+      "quality_flag": 0.35,
+      "language_confidence": 0.2,
+      "corruption_score": 0.1,
+      "domain_relevance": 0.1
+    },
+    "academic": {
+      "token_count": 0.2,
+      "quality_flag": 0.3,
+      "language_confidence": 0.15,
+      "corruption_score": 0.05,
+      "domain_relevance": 0.15,
+      "citation_quality": 0.15
+    },
+    "code_specific": {
+      "token_count": 0.15,
+      "quality_flag": 0.25,
+      "language_confidence": 0.1,
+      "corruption_score": 0.2,
+      "domain_relevance": 0.2,
+      "code_quality": 0.1
+    },
+    "data_specific": {
+      "token_count": 0.1,
+      "quality_flag": 0.3,
+      "corruption_score": 0.3,
+      "structure_validity": 0.3
+    }
+  },
+  "strategies": {
+    "quality_weighted": {
+      "description": "Prioritize high-quality documents while maintaining balance",
+      "parameters": {
+        "quality_threshold": 0.7,
+        "weight_by_quality": true,
+        "preserve_best": true,
+        "max_duplication_ratio": 3.0
+      }
+    },
+    "stratified": {
+      "description": "Maintain proportional representation across strata",
+      "parameters": {
+        "stratify_by": [
+          "domain",
+          "file_type"
+        ],
+        "maintain_proportions": true,
+        "min_stratum_size": 10
+      }
+    },
+    "synthetic": {
+      "description": "Generate synthetic documents for underrepresented classes",
+      "parameters": {
+        "synthesis_methods": [
+          "paraphrase",
+          "back_translate",
+          "template_fill"
+        ],
+        "quality_check_synthetic": true,
+        "max_synthetic_ratio": 0.3
+      }
+    },
+    "temporal_aware": {
+      "description": "Balance while considering temporal distribution",
+      "parameters": {
+        "time_windows": [
+          "monthly",
+          "quarterly"
+        ],
+        "recent_weight": 1.5,
+        "historical_importance": 0.8
+      }
+    }
+  }
+}

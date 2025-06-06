@@ -1,0 +1,25 @@
+# Table extraction configuration
+min_table_size: 2  # Minimum number of rows/columns to consider as a table
+max_table_size: 100  # Maximum number of rows/columns to process
+table_quality_threshold: 0.8  # Minimum accuracy threshold for table extraction
+
+# Table detection settings
+table_detection:
+  lattice: true  # Use lattice mode for tables with borders
+  stream: true   # Use stream mode for tables without borders
+  pages: 'all'   # Process all pages
+  password: ''   # PDF password if needed
+
+# Table processing settings
+table_processing:
+  strip_text: true  # Remove extra whitespace
+  copy_text: true   # Copy text from cells
+  shift_text: true  # Shift text to align with cells
+  split_text: true  # Split text at newlines
+
+# Table output settings
+table_output:
+  format: 'json'  # Output format (json, csv, excel)
+  include_metadata: true  # Include table metadata
+  include_accuracy: true  # Include accuracy scores
+  include_whitespace: true  # Include whitespace information 

@@ -1,0 +1,1099 @@
+2025-05-10 01:00:12,514 - crypto_corpus_cli - ERROR - Error loading configuration: [Errno 2] No such file or directory: 'config/sources.json'
+2025-05-10 01:00:12,516 - crypto_corpus_cli - ERROR - Failed to load configuration
+2025-05-10 01:00:12,824 - crypto_corpus_cli - INFO - Processing data from data/test_collect
+2025-05-10 01:00:13,124 - crypto_corpus_cli - INFO - Generating statistics for corpus in data/test_collect
+2025-05-10 01:11:13,412 - crypto_corpus_cli - ERROR - Error loading configuration: [Errno 2] No such file or directory: 'config/enhanced_sources.json'
+2025-05-10 01:11:13,412 - crypto_corpus_cli - ERROR - Failed to load configuration
+2025-05-10 01:12:03,865 - crypto_corpus_cli - INFO - Collecting from sources: arxiv
+2025-05-10 01:12:03,866 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 01:12:03,866 - crypto_corpus_cli - ERROR - Error importing collector for arxiv: No module named 'sources'
+2025-05-10 01:12:03,866 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 01:13:12,713 - crypto_corpus_cli - ERROR - Error loading configuration: [Errno 2] No such file or directory: 'config/enhanced_sources.json'
+2025-05-10 01:13:12,713 - crypto_corpus_cli - ERROR - Failed to load configuration
+2025-05-10 01:13:20,640 - crypto_corpus_cli - INFO - Collecting from sources: arxiv
+2025-05-10 01:13:20,642 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 01:13:20,654 - crypto_corpus_cli - ERROR - Error importing collector for arxiv: No module named 'CryptoFinanceCorpusBuilder.sources.specific_collectors.arxiv_collector'
+2025-05-10 01:13:20,654 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 01:14:37,880 - crypto_corpus_cli - ERROR - Error loading configuration: [Errno 2] No such file or directory: 'config/enhanced_sources.json'
+2025-05-10 01:14:37,881 - crypto_corpus_cli - ERROR - Failed to load configuration
+2025-05-10 01:15:04,846 - crypto_corpus_cli - INFO - Collecting from sources: arxiv
+2025-05-10 01:15:04,848 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 01:15:04,863 - crypto_corpus_cli - ERROR - Error importing collector for arxiv: No module named 'sources'
+2025-05-10 01:15:04,863 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 01:18:31,298 - crypto_corpus_cli - INFO - Collecting from sources: arxiv
+2025-05-10 01:18:31,299 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 01:18:31,336 - crypto_corpus_cli - ERROR - Error importing collector for arxiv: No module named 'sources'
+2025-05-10 01:18:31,336 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 01:23:40,491 - crypto_corpus_cli - INFO - Collecting from sources: arxiv
+2025-05-10 01:23:40,492 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 01:23:44,769 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:23:51,067 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:23:57,004 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:24:04,224 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:24:10,774 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:24:16,801 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:28:15,934 - crypto_corpus_cli - ERROR - Error loading configuration: [Errno 2] No such file or directory: 'config/enhanced_sources.json'
+2025-05-10 01:28:15,936 - crypto_corpus_cli - ERROR - Failed to load configuration
+2025-05-10 01:28:16,199 - crypto_corpus_cli - INFO - Processing data from data/test_collect
+2025-05-10 01:28:16,458 - crypto_corpus_cli - INFO - Generating statistics for corpus in data/test_collect
+2025-05-10 01:28:16,459 - CorpusManager - INFO - Initialized corpus manager at data\test_collect
+2025-05-10 01:31:04,075 - crypto_corpus_cli - INFO - Collecting from sources: arxiv
+2025-05-10 01:31:04,075 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 01:31:04,730 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20portfolio%20optimization%20cryptocurrency&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:07,316 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:12,316 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20risk%20management%20blockchain&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:13,419 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:18,420 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20market%20microstructure%20digital%20assets&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:19,222 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:24,223 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20high%20frequency%20trading%20bitcoin&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:25,077 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:30,078 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20decentralized%20finance%20liquidity&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:31,017 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:36,018 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20asset%20allocation%20cryptocurrency&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:36,846 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:41,846 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20regulatory%20compliance%20digital%20assets&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:42,785 - ArxivCollector - INFO - Found 100 papers
+2025-05-10 01:31:47,786 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20token%20valuation%20models&start=0&max_results=100&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:31:48,535 - ArxivCollector - INFO - Found 91 papers
+2025-05-10 01:31:53,536 - ArxivCollector - DEBUG - Waiting 7.91s before requesting from arxiv.org
+2025-05-10 01:32:01,458 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.05113v1 to data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 01:43:06,333 - crypto_corpus_cli - INFO - Collecting from sources: github
+2025-05-10 01:43:06,334 - crypto_corpus_cli - INFO - Collecting from source: github
+2025-05-10 01:43:16,878 - crypto_corpus_cli - INFO - Processing collected data from github
+2025-05-10 01:44:38,325 - crypto_corpus_cli - INFO - Collecting from sources: github
+2025-05-10 01:44:38,327 - crypto_corpus_cli - INFO - Collecting from source: github
+2025-05-10 01:44:49,030 - crypto_corpus_cli - INFO - Processing collected data from github
+2025-05-10 01:44:49,053 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-05-10 01:44:49,217 - CorpusManager - INFO - Initialized corpus manager at data\test_collect\github
+2025-05-10 01:47:13,850 - crypto_corpus_cli - INFO - Collecting from sources: github
+2025-05-10 01:47:13,852 - crypto_corpus_cli - INFO - Collecting from source: github
+2025-05-10 01:47:24,927 - crypto_corpus_cli - INFO - Processing collected data from github
+2025-05-10 01:47:24,932 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-05-10 01:47:24,935 - CorpusManager - INFO - Initialized corpus manager at data\test_collect\github
+2025-05-10 01:47:24,942 - CorpusManager - INFO - Copied data\test_collect\github\github\freqtrade-develop\README.md to data\test_collect\github\crypto_derivatives\README.md
+2025-05-10 01:47:24,949 - crypto_corpus_cli - INFO - Completed processing data from github
+2025-05-10 01:47:24,949 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 01:48:12,072 - crypto_corpus_cli - INFO - Collecting from sources: arxiv
+2025-05-10 01:48:12,073 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 01:48:12,110 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20crypto%20trading&start=0&max_results=2&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:48:13,175 - ArxivCollector - INFO - Found 2 papers
+2025-05-10 01:48:18,176 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20market%20microstructure&start=0&max_results=2&sortBy=submittedDate&sortOrder=descending
+2025-05-10 01:48:18,601 - ArxivCollector - INFO - Found 2 papers
+2025-05-10 01:48:23,602 - ArxivCollector - DEBUG - Waiting 8.48s before requesting from arxiv.org
+2025-05-10 01:48:32,091 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2504.01974v1 to data\test_collect\arxiv\arxiv\q-fin\cryptocurrency-time-series-on-the-binary-complexity-entropy-plane-ranking-efficiency-from-the-perspective-of-complex-systems.pdf
+2025-05-10 01:48:32,602 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\arxiv\q-fin\cryptocurrency-time-series-on-the-binary-complexity-entropy-plane-ranking-efficiency-from-the-perspective-of-complex-systems.pdf
+2025-05-10 01:48:32,602 - ArxivCollector - DEBUG - Waiting 5.38s before requesting from arxiv.org
+2025-05-10 01:48:37,988 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2503.08692v1 to data\test_collect\arxiv\arxiv\q-fin\detecting-crypto-pump-and-dump-schemes-a-thresholding-based-approach-to-handling-market-noise.pdf
+2025-05-10 01:48:38,487 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\arxiv\q-fin\detecting-crypto-pump-and-dump-schemes-a-thresholding-based-approach-to-handling-market-noise.pdf
+2025-05-10 01:48:38,487 - ArxivCollector - DEBUG - Waiting 8.32s before requesting from arxiv.org
+2025-05-10 01:48:46,806 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.05113v1 to data\test_collect\arxiv\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 01:48:47,036 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 01:48:47,037 - ArxivCollector - DEBUG - Waiting 9.96s before requesting from arxiv.org
+2025-05-10 01:48:56,999 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.02678v1 to data\test_collect\arxiv\arxiv\q-fin\why-is-the-volatility-of-single-stocks-so-much-rougher-than-that-of-the-sp500.pdf
+2025-05-10 01:48:57,730 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\arxiv\q-fin\why-is-the-volatility-of-single-stocks-so-much-rougher-than-that-of-the-sp500.pdf
+2025-05-10 01:48:57,730 - ArxivCollector - INFO - Downloaded 4 papers
+2025-05-10 01:48:57,730 - ArxivCollector - DEBUG - 
+Paper #1:
+2025-05-10 01:48:57,730 - ArxivCollector - DEBUG -   Title: Cryptocurrency Time Series on the Binary Complexity-Entropy Plane:
+  Ranking Efficiency from the Perspective of Complex Systems
+2025-05-10 01:48:57,730 - ArxivCollector - DEBUG -   Authors: Erveton P. Pinto, Marcelo A. Pires, Rone N. da Silva, Sílvio M. Duarte Queirós
+2025-05-10 01:48:57,731 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 01:48:57,731 - ArxivCollector - DEBUG -   Category: q-fin.ST
+2025-05-10 01:48:57,731 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2504.01974v1
+2025-05-10 01:48:57,731 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\arxiv\q-fin\cryptocurrency-time-series-on-the-binary-complexity-entropy-plane-ranking-efficiency-from-the-perspective-of-complex-systems.pdf
+2025-05-10 01:48:57,731 - ArxivCollector - DEBUG -   File size: 663.01 KB
+2025-05-10 01:48:57,731 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 01:48:57,732 - ArxivCollector - DEBUG - 
+Paper #2:
+2025-05-10 01:48:57,732 - ArxivCollector - DEBUG -   Title: Detecting Crypto Pump-and-Dump Schemes: A Thresholding-Based Approach to
+  Handling Market Noise
+2025-05-10 01:48:57,732 - ArxivCollector - DEBUG -   Authors: Mahya Karbalaii
+2025-05-10 01:48:57,732 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 01:48:57,732 - ArxivCollector - DEBUG -   Category: q-fin.ST
+2025-05-10 01:48:57,732 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2503.08692v1
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\arxiv\q-fin\detecting-crypto-pump-and-dump-schemes-a-thresholding-based-approach-to-handling-market-noise.pdf
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   File size: 635.89 KB
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG - 
+Paper #3:
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   Title: Loss-Versus-Rebalancing under Deterministic and Generalized block-times
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   Authors: Alex Nezlobin, Martin Tassy
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   Category: q-fin.MF
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.05113v1
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   File size: 234.79 KB
+2025-05-10 01:48:57,733 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG - 
+Paper #4:
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   Title: Why is the volatility of single stocks so much rougher than that of the
+  S&P500?
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   Authors: Othmane Zarhali, Cecilia Aubrun, Emmanuel Bacry, Jean-Philippe Bouchaud, Jean-François Muzy
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   Category: q-fin.ST
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.02678v1
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\arxiv\q-fin\why-is-the-volatility-of-single-stocks-so-much-rougher-than-that-of-the-sp500.pdf
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   File size: 2385.41 KB
+2025-05-10 01:48:57,734 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 01:48:57,734 - ArxivCollector - INFO - Summary: 4 out of 4 papers have valid files
+2025-05-10 01:48:58,736 - crypto_corpus_cli - INFO - Processing collected data from arxiv
+2025-05-10 01:48:58,737 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-05-10 01:48:58,919 - CorpusManager - INFO - Initialized corpus manager at data\test_collect\arxiv
+2025-05-10 01:49:00,005 - CorpusManager - INFO - Copied data\test_collect\arxiv\arxiv\q-fin\cryptocurrency-time-series-on-the-binary-complexity-entropy-plane-ranking-efficiency-from-the-perspective-of-complex-systems.pdf to data\test_collect\arxiv\high_frequency_trading\cryptocurrency-time-series-on-the-binary-complexity-entropy-plane-ranking-efficiency-from-the-perspective-of-complex-systems.pdf
+2025-05-10 01:49:00,099 - CorpusManager - INFO - Copied data\test_collect\arxiv\arxiv\q-fin\detecting-crypto-pump-and-dump-schemes-a-thresholding-based-approach-to-handling-market-noise.pdf to data\test_collect\arxiv\high_frequency_trading\detecting-crypto-pump-and-dump-schemes-a-thresholding-based-approach-to-handling-market-noise.pdf
+2025-05-10 01:49:00,367 - CorpusManager - INFO - Copied data\test_collect\arxiv\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf to data\test_collect\arxiv\high_frequency_trading\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 01:49:05,697 - CorpusManager - INFO - Copied data\test_collect\arxiv\arxiv\q-fin\why-is-the-volatility-of-single-stocks-so-much-rougher-than-that-of-the-sp500.pdf to data\test_collect\arxiv\high_frequency_trading\why-is-the-volatility-of-single-stocks-so-much-rougher-than-that-of-the-sp500.pdf
+2025-05-10 01:49:05,705 - crypto_corpus_cli - INFO - Completed processing data from arxiv
+2025-05-10 01:49:05,705 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 01:55:42,543 - crypto_corpus_cli - INFO - Collecting from sources: 
+2025-05-10 01:55:42,543 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 01:57:46,256 - crypto_corpus_cli - INFO - Collecting from sources: quantopian
+2025-05-10 01:57:46,256 - crypto_corpus_cli - INFO - Collecting from source: quantopian
+2025-05-10 01:57:59,240 - crypto_corpus_cli - INFO - Processing collected data from quantopian
+2025-05-10 01:57:59,241 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-05-10 01:57:59,402 - CorpusManager - INFO - Initialized corpus manager at data\test_collect\quantopian
+2025-05-10 01:57:59,403 - crypto_corpus_cli - INFO - Completed processing data from quantopian
+2025-05-10 01:57:59,403 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 02:00:54,900 - crypto_corpus_cli - INFO - Collecting from sources: 
+2025-05-10 02:00:54,900 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 02:01:46,317 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-10 02:01:46,319 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 02:01:46,340 - crypto_corpus_cli - ERROR - Error collecting from bitmex_research: cannot access local variable 'shutil' where it is not associated with a value
+2025-05-10 02:01:46,341 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 02:03:24,044 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-10 02:03:24,046 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 02:03:24,053 - crypto_corpus_cli - ERROR - Error collecting from bitmex_research: cannot access local variable 'shutil' where it is not associated with a value
+2025-05-10 02:03:24,053 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 02:07:21,761 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-10 02:07:21,763 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 02:07:21,775 - crypto_corpus_cli - ERROR - Error collecting from bitmex_research: cannot access free variable 'requests' where it is not associated with a value in enclosing scope
+2025-05-10 02:07:21,775 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 02:08:12,768 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-10 02:08:12,770 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 02:08:12,784 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-10 02:08:12,784 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-10 02:08:13,304 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-10 02:08:13,305 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-10 02:08:13,308 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 02:08:13,309 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-10 02:08:13,450 - UpdatedBitMEXCollector - INFO - Saved HTML to data\test_collect\bitmex\bitmex_research\removing-bitcoins-guardrails.html
+2025-05-10 02:08:13,452 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 02:08:14,235 - crypto_corpus_cli - INFO - Processing collected data from bitmex_research
+2025-05-10 02:08:14,236 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-05-10 02:08:14,377 - CorpusManager - INFO - Initialized corpus manager at data\test_collect\bitmex
+2025-05-10 02:08:14,378 - crypto_corpus_cli - INFO - Completed processing data from bitmex_research
+2025-05-10 02:08:14,378 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 02:09:36,431 - crypto_corpus_cli - INFO - Collecting from sources: fred
+2025-05-10 02:09:36,431 - crypto_corpus_cli - INFO - Collecting from source: fred
+2025-05-10 02:09:52,349 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 22:11:38,808 - crypto_corpus_cli - INFO - Collecting from sources: fred
+2025-05-09 22:11:38,808 - crypto_corpus_cli - INFO - Collecting from source: fred
+2025-05-09 22:12:01,356 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 22:15:29,791 - crypto_corpus_cli - INFO - Collecting from sources: 
+2025-05-09 22:15:29,791 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 22:16:19,151 - crypto_corpus_cli - INFO - Collecting from sources: isda
+2025-05-09 22:17:26,901 - crypto_corpus_cli - INFO - Collecting from sources: isda
+2025-05-09 22:17:26,903 - crypto_corpus_cli - INFO - Collecting from source: isda
+2025-05-09 22:17:26,910 - crypto_corpus_cli - ERROR - Error importing collector for isda: cannot import name 'ISDACollector' from 'CryptoFinanceCorpusBuilder.sources.specific_collectors.isda_collector' (G:\ai_trading_dev\CryptoFinanceCorpusBuilder\sources\specific_collectors\isda_collector.py)
+2025-05-09 22:17:26,910 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 22:29:14,703 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-09 22:29:14,705 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-09 22:29:14,707 - crypto_corpus_cli - ERROR - Error collecting from bitmex_research: cannot access local variable 'Path' where it is not associated with a value
+2025-05-09 22:29:14,707 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 22:33:00,593 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-09 22:33:00,595 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-09 22:33:00,598 - crypto_corpus_cli - ERROR - Error collecting from bitmex_research: cannot access local variable 'Path' where it is not associated with a value
+2025-05-09 22:33:00,598 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 22:35:17,167 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-09 22:35:17,169 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-09 22:35:17,171 - crypto_corpus_cli - ERROR - Error collecting from bitmex_research: cannot access local variable 'Path' where it is not associated with a value
+2025-05-09 22:35:17,171 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 22:40:40,119 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-09 22:40:40,121 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-09 22:40:40,123 - crypto_corpus_cli - ERROR - Error collecting from bitmex_research: cannot access local variable 'Path' where it is not associated with a value
+2025-05-09 22:40:40,123 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 22:51:23,512 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-09 22:51:23,514 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-09 22:51:23,516 - crypto_corpus_cli - ERROR - Error collecting from bitmex_research: cannot access local variable 'Path' where it is not associated with a value
+2025-05-09 22:51:23,516 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 22:56:17,801 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-09 22:56:17,802 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-09 22:56:17,804 - crypto_corpus_cli - ERROR - Error collecting from bitmex_research: cannot access local variable 'Path' where it is not associated with a value
+2025-05-09 22:56:17,804 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 22:58:54,724 - crypto_corpus_cli - INFO - Collecting from sources: isda
+2025-05-09 22:58:54,726 - crypto_corpus_cli - INFO - Collecting from source: isda
+2025-05-09 22:58:54,736 - ISDADocFinder - INFO - Checking ISDA main site navigation for documentation links
+2025-05-09 22:58:59,379 - ISDADocFinder - INFO - Found potential documentation link in nav: legal -> https://www.isda.org/category/legal/
+2025-05-09 22:58:59,380 - ISDADocFinder - INFO - Found potential documentation link in nav: view all books -> https://www.isda.org/books
+2025-05-09 22:58:59,381 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/books/
+2025-05-09 22:59:06,127 - ISDADocFinder - INFO - Found 1 document sections on https://www.isda.org/books/
+2025-05-09 22:59:06,127 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/documentation/
+2025-05-09 22:59:08,047 - ISDADocFinder - INFO - URL not found: https://www.isda.org/documentation/
+2025-05-09 22:59:08,047 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/documents/
+2025-05-09 22:59:09,849 - ISDADocFinder - INFO - URL not found: https://www.isda.org/documents/
+2025-05-09 22:59:09,849 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/protocols/
+2025-05-09 22:59:12,896 - ISDADocFinder - INFO - Found 2 PDF links on https://www.isda.org/protocols/
+2025-05-09 22:59:12,897 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/guides/
+2025-05-09 22:59:14,799 - ISDADocFinder - INFO - URL not found: https://www.isda.org/guides/
+2025-05-09 22:59:14,799 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/bookstore/
+2025-05-09 22:59:16,653 - ISDADocFinder - INFO - URL not found: https://www.isda.org/bookstore/
+2025-05-09 22:59:16,653 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/books-and-protocols/
+2025-05-09 22:59:18,395 - ISDADocFinder - INFO - URL not found: https://www.isda.org/books-and-protocols/
+2025-05-09 22:59:18,396 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/book-and-protocol-list/
+2025-05-09 22:59:20,235 - ISDADocFinder - INFO - URL not found: https://www.isda.org/book-and-protocol-list/
+2025-05-09 22:59:20,236 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/legal-documentation/
+2025-05-09 22:59:21,920 - ISDADocFinder - INFO - URL not found: https://www.isda.org/legal-documentation/
+2025-05-09 22:59:21,921 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/category/legal/
+2025-05-09 22:59:22,771 - ISDADocFinder - INFO - Found 1 document sections on https://www.isda.org/category/legal/
+2025-05-09 22:59:22,771 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/books
+2025-05-09 22:59:29,291 - ISDADocFinder - INFO - Found 1 document sections on https://www.isda.org/books
+2025-05-09 22:59:29,291 - ISDADocFinder - INFO - Checking search page: https://www.isda.org/?s=documentation+protocol
+2025-05-09 22:59:32,320 - ISDADocFinder - INFO - Found potential documentation link in search: ISDA 2021 SBS Top-Up Protocol -> https://www.isda.org/protocol/isda-2021-sbs-top-up-protocol/
+2025-05-09 22:59:32,320 - ISDADocFinder - INFO - Found potential documentation link in search: Adhere to this Protocol -> https://www.isda.org/protocol/isda-2021-sbs-top-up-protocol/submit/
+2025-05-09 22:59:32,320 - ISDADocFinder - INFO - Found potential documentation link in search: View Adhering Parties -> https://www.isda.org/protocol/isda-2021-sbs-top-up-protocol/adhering-parties
+2025-05-09 22:59:32,320 - ISDADocFinder - INFO - Found potential documentation link in search: ISDA August 2012 DF Protocol -> https://www.isda.org/protocol/isda-august-2012-df-protocol/
+2025-05-09 22:59:32,320 - ISDADocFinder - INFO - Found potential documentation link in search: Adhere to this Protocol -> https://www.isda.org/protocol/isda-august-2012-df-protocol/submit/
+2025-05-09 22:59:32,320 - ISDADocFinder - INFO - Found potential documentation link in search: View Adhering Parties -> https://www.isda.org/protocol/isda-august-2012-df-protocol/adhering-parties
+2025-05-09 22:59:32,320 - ISDADocFinder - INFO - Found potential documentation link in search: April 2025 Benchmark Module of the ISDA 2021 Fallbacks Protocol -> https://www.isda.org/protocol/april-2025-benchmark-module-of-the-isda-2021-fallbacks-protocol/
+2025-05-09 22:59:32,320 - ISDADocFinder - INFO - Found potential documentation link in search: Adhere to this Protocol -> https://www.isda.org/protocol/april-2025-benchmark-module-of-the-isda-2021-fallbacks-protocol/submit/
+2025-05-09 22:59:32,321 - ISDADocFinder - INFO - Found potential documentation link in search: View Adhering Parties -> https://www.isda.org/protocol/april-2025-benchmark-module-of-the-isda-2021-fallbacks-protocol/adhering-parties
+2025-05-09 22:59:32,322 - ISDADocFinder - INFO - Found 13 potential documentation pages, saved to data\test_collect\isda\isda\isda_documentation_sources.json
+2025-05-09 22:59:32,323 - ISDADocCollector - INFO - Collecting ISDA documentation from 13 sources
+2025-05-09 22:59:32,323 - ISDADocCollector - INFO - Processing source 1/2: https://www.isda.org/books/
+2025-05-09 22:59:33,364 - ISDADocCollector - INFO - Found 0 PDF links on https://www.isda.org/books/
+2025-05-09 22:59:36,365 - ISDADocCollector - INFO - Processing source 2/2: https://www.isda.org/protocols/
+2025-05-09 22:59:38,623 - ISDADocCollector - INFO - Found 2 PDF links on https://www.isda.org/protocols/
+2025-05-09 22:59:38,623 - ISDADocCollector - INFO - Downloading PDF: https://www.isda.org/a/k9GEE/ISDA-2018-Benchmarks-Supplement-Protocol.pdf -> data\test_collect\isda\isda\isda-2018-benchmarks-supplement-protocol-agreement.pdf
+2025-05-09 22:59:40,154 - ISDADocCollector - INFO - Successfully downloaded: data\test_collect\isda\isda\isda-2018-benchmarks-supplement-protocol-agreement.pdf
+2025-05-09 22:59:40,154 - ISDADocCollector - INFO - Downloading PDF: https://www.isda.org/a/09GEE/ISDA-2018-Benchmarks-Supplement-Protocol-Questionnaire.pdf -> data\test_collect\isda\isda\isda-2018-benchmarks-supplement-protocol-questionn.pdf
+2025-05-09 22:59:41,326 - ISDADocCollector - INFO - Successfully downloaded: data\test_collect\isda\isda\isda-2018-benchmarks-supplement-protocol-questionn.pdf
+2025-05-09 22:59:44,330 - ISDADocCollector - INFO - Collected 2 documents, metadata saved to data\test_collect\isda\isda\isda_documents_metadata.json
+2025-05-09 22:59:44,332 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 22:59:52,594 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-09 22:59:52,596 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-09 22:59:52,614 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-09 22:59:52,615 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-09 22:59:54,554 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-09 22:59:54,554 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-09 22:59:54,556 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-09 22:59:54,556 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-09 22:59:55,293 - UpdatedBitMEXCollector - INFO - Skipping post 'Removing Bitcoin’s Guardrails' (https://blog.bitmex.com/removing-bitcoins-guardrails/) - no keywords found.
+2025-05-09 22:59:55,297 - UpdatedBitMEXCollector - INFO - Saved metadata for 0 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-09 22:59:55,299 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 23:01:41,551 - crypto_corpus_cli - INFO - Collecting from sources: isda
+2025-05-09 23:01:41,552 - crypto_corpus_cli - INFO - Collecting from source: isda
+2025-05-09 23:01:41,572 - ISDADocFinder - INFO - Checking ISDA main site navigation for documentation links
+2025-05-09 23:01:46,291 - ISDADocFinder - INFO - Found potential documentation link in nav: legal -> https://www.isda.org/category/legal/
+2025-05-09 23:01:46,292 - ISDADocFinder - INFO - Found potential documentation link in nav: view all books -> https://www.isda.org/books
+2025-05-09 23:01:46,292 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/books/
+2025-05-09 23:01:52,862 - ISDADocFinder - INFO - Found 1 document sections on https://www.isda.org/books/
+2025-05-09 23:01:52,862 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/documentation/
+2025-05-09 23:01:54,643 - ISDADocFinder - INFO - URL not found: https://www.isda.org/documentation/
+2025-05-09 23:01:54,643 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/documents/
+2025-05-09 23:01:56,394 - ISDADocFinder - INFO - URL not found: https://www.isda.org/documents/
+2025-05-09 23:01:56,394 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/protocols/
+2025-05-09 23:01:59,478 - ISDADocFinder - INFO - Found 2 PDF links on https://www.isda.org/protocols/
+2025-05-09 23:01:59,479 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/guides/
+2025-05-09 23:02:01,254 - ISDADocFinder - INFO - URL not found: https://www.isda.org/guides/
+2025-05-09 23:02:01,254 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/bookstore/
+2025-05-09 23:02:03,049 - ISDADocFinder - INFO - URL not found: https://www.isda.org/bookstore/
+2025-05-09 23:02:03,050 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/books-and-protocols/
+2025-05-09 23:02:04,868 - ISDADocFinder - INFO - URL not found: https://www.isda.org/books-and-protocols/
+2025-05-09 23:02:04,868 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/book-and-protocol-list/
+2025-05-09 23:02:06,652 - ISDADocFinder - INFO - URL not found: https://www.isda.org/book-and-protocol-list/
+2025-05-09 23:02:06,653 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/legal-documentation/
+2025-05-09 23:02:08,505 - ISDADocFinder - INFO - URL not found: https://www.isda.org/legal-documentation/
+2025-05-09 23:02:08,505 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/category/legal/
+2025-05-09 23:02:10,334 - ISDADocFinder - INFO - Found 1 document sections on https://www.isda.org/category/legal/
+2025-05-09 23:02:10,335 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/books
+2025-05-09 23:02:17,232 - ISDADocFinder - INFO - Found 1 document sections on https://www.isda.org/books
+2025-05-09 23:02:17,232 - ISDADocFinder - INFO - Checking search page: https://www.isda.org/?s=documentation+protocol
+2025-05-09 23:02:20,058 - ISDADocFinder - INFO - Found potential documentation link in search: ISDA 2021 SBS Top-Up Protocol -> https://www.isda.org/protocol/isda-2021-sbs-top-up-protocol/
+2025-05-09 23:02:20,058 - ISDADocFinder - INFO - Found potential documentation link in search: Adhere to this Protocol -> https://www.isda.org/protocol/isda-2021-sbs-top-up-protocol/submit/
+2025-05-09 23:02:20,058 - ISDADocFinder - INFO - Found potential documentation link in search: View Adhering Parties -> https://www.isda.org/protocol/isda-2021-sbs-top-up-protocol/adhering-parties
+2025-05-09 23:02:20,058 - ISDADocFinder - INFO - Found potential documentation link in search: ISDA August 2012 DF Protocol -> https://www.isda.org/protocol/isda-august-2012-df-protocol/
+2025-05-09 23:02:20,058 - ISDADocFinder - INFO - Found potential documentation link in search: Adhere to this Protocol -> https://www.isda.org/protocol/isda-august-2012-df-protocol/submit/
+2025-05-09 23:02:20,058 - ISDADocFinder - INFO - Found potential documentation link in search: View Adhering Parties -> https://www.isda.org/protocol/isda-august-2012-df-protocol/adhering-parties
+2025-05-09 23:02:20,059 - ISDADocFinder - INFO - Found potential documentation link in search: April 2025 Benchmark Module of the ISDA 2021 Fallbacks Protocol -> https://www.isda.org/protocol/april-2025-benchmark-module-of-the-isda-2021-fallbacks-protocol/
+2025-05-09 23:02:20,059 - ISDADocFinder - INFO - Found potential documentation link in search: Adhere to this Protocol -> https://www.isda.org/protocol/april-2025-benchmark-module-of-the-isda-2021-fallbacks-protocol/submit/
+2025-05-09 23:02:20,059 - ISDADocFinder - INFO - Found potential documentation link in search: View Adhering Parties -> https://www.isda.org/protocol/april-2025-benchmark-module-of-the-isda-2021-fallbacks-protocol/adhering-parties
+2025-05-09 23:02:20,061 - ISDADocFinder - INFO - Found 13 potential documentation pages, saved to data\test_collect\isda\isda\isda_documentation_sources.json
+2025-05-09 23:02:20,061 - ISDADocCollector - INFO - Collecting ISDA documentation from 13 sources
+2025-05-09 23:02:20,061 - ISDADocCollector - INFO - Processing source 1/2: https://www.isda.org/books/
+2025-05-09 23:02:27,157 - ISDADocCollector - INFO - Found 0 PDF links on https://www.isda.org/books/
+2025-05-09 23:02:30,158 - ISDADocCollector - INFO - Processing source 2/2: https://www.isda.org/protocols/
+2025-05-09 23:02:32,358 - ISDADocCollector - INFO - Found 2 PDF links on https://www.isda.org/protocols/
+2025-05-09 23:02:32,358 - ISDADocCollector - INFO - Downloading PDF: https://www.isda.org/a/k9GEE/ISDA-2018-Benchmarks-Supplement-Protocol.pdf -> data\test_collect\isda\isda\isda-2018-benchmarks-supplement-protocol-agreement.pdf
+2025-05-09 23:02:33,758 - ISDADocCollector - INFO - Successfully downloaded: data\test_collect\isda\isda\isda-2018-benchmarks-supplement-protocol-agreement.pdf
+2025-05-09 23:02:33,758 - ISDADocCollector - ERROR - Error downloading PDF https://www.isda.org/a/k9GEE/ISDA-2018-Benchmarks-Supplement-Protocol.pdf: cannot access free variable 'os' where it is not associated with a value in enclosing scope
+2025-05-09 23:02:33,758 - ISDADocCollector - INFO - Downloading PDF: https://www.isda.org/a/09GEE/ISDA-2018-Benchmarks-Supplement-Protocol-Questionnaire.pdf -> data\test_collect\isda\isda\isda-2018-benchmarks-supplement-protocol-questionn.pdf
+2025-05-09 23:02:35,018 - ISDADocCollector - INFO - Successfully downloaded: data\test_collect\isda\isda\isda-2018-benchmarks-supplement-protocol-questionn.pdf
+2025-05-09 23:02:35,018 - ISDADocCollector - ERROR - Error downloading PDF https://www.isda.org/a/09GEE/ISDA-2018-Benchmarks-Supplement-Protocol-Questionnaire.pdf: cannot access free variable 'os' where it is not associated with a value in enclosing scope
+2025-05-09 23:02:38,023 - ISDADocCollector - INFO - Collected 0 documents, metadata saved to data\test_collect\isda\isda\isda_documents_metadata.json
+2025-05-09 23:02:53,155 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-09 23:02:53,157 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-09 23:02:53,174 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-09 23:02:53,174 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-09 23:02:53,730 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-09 23:02:53,730 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-09 23:02:53,732 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-09 23:02:53,733 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-09 23:02:53,878 - UpdatedBitMEXCollector - INFO - Skipping post 'Removing Bitcoin’s Guardrails' (https://blog.bitmex.com/removing-bitcoins-guardrails/) - no keywords found.
+2025-05-09 23:02:53,880 - UpdatedBitMEXCollector - INFO - Saved metadata for 0 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-09 23:02:53,882 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 23:04:54,389 - crypto_corpus_cli - INFO - Collecting from sources: isda
+2025-05-09 23:04:54,390 - crypto_corpus_cli - INFO - Collecting from source: isda
+2025-05-09 23:04:54,409 - ISDADocFinder - INFO - Checking ISDA main site navigation for documentation links
+2025-05-09 23:04:55,533 - ISDADocFinder - INFO - Found potential documentation link in nav: legal -> https://www.isda.org/category/legal/
+2025-05-09 23:04:55,534 - ISDADocFinder - INFO - Found potential documentation link in nav: view all books -> https://www.isda.org/books
+2025-05-09 23:04:55,534 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/books/
+2025-05-09 23:05:01,911 - ISDADocFinder - INFO - Found 1 document sections on https://www.isda.org/books/
+2025-05-09 23:05:01,911 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/documentation/
+2025-05-09 23:05:03,669 - ISDADocFinder - INFO - URL not found: https://www.isda.org/documentation/
+2025-05-09 23:05:03,670 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/documents/
+2025-05-09 23:05:05,474 - ISDADocFinder - INFO - URL not found: https://www.isda.org/documents/
+2025-05-09 23:05:05,474 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/protocols/
+2025-05-09 23:05:08,694 - ISDADocFinder - INFO - Found 2 PDF links on https://www.isda.org/protocols/
+2025-05-09 23:05:08,694 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/guides/
+2025-05-09 23:05:10,421 - ISDADocFinder - INFO - URL not found: https://www.isda.org/guides/
+2025-05-09 23:05:10,422 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/bookstore/
+2025-05-09 23:05:12,281 - ISDADocFinder - INFO - URL not found: https://www.isda.org/bookstore/
+2025-05-09 23:05:12,282 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/books-and-protocols/
+2025-05-09 23:05:14,103 - ISDADocFinder - INFO - URL not found: https://www.isda.org/books-and-protocols/
+2025-05-09 23:05:14,103 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/book-and-protocol-list/
+2025-05-09 23:05:15,820 - ISDADocFinder - INFO - URL not found: https://www.isda.org/book-and-protocol-list/
+2025-05-09 23:05:15,820 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/legal-documentation/
+2025-05-09 23:05:17,603 - ISDADocFinder - INFO - URL not found: https://www.isda.org/legal-documentation/
+2025-05-09 23:05:17,603 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/category/legal/
+2025-05-09 23:05:19,377 - ISDADocFinder - INFO - Found 1 document sections on https://www.isda.org/category/legal/
+2025-05-09 23:05:19,378 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/books
+2025-05-09 23:05:26,401 - ISDADocFinder - INFO - Found 1 document sections on https://www.isda.org/books
+2025-05-09 23:05:26,401 - ISDADocFinder - INFO - Checking search page: https://www.isda.org/?s=documentation+protocol
+2025-05-09 23:05:29,240 - ISDADocFinder - INFO - Found potential documentation link in search: ISDA 2021 SBS Top-Up Protocol -> https://www.isda.org/protocol/isda-2021-sbs-top-up-protocol/
+2025-05-09 23:05:29,240 - ISDADocFinder - INFO - Found potential documentation link in search: Adhere to this Protocol -> https://www.isda.org/protocol/isda-2021-sbs-top-up-protocol/submit/
+2025-05-09 23:05:29,240 - ISDADocFinder - INFO - Found potential documentation link in search: View Adhering Parties -> https://www.isda.org/protocol/isda-2021-sbs-top-up-protocol/adhering-parties
+2025-05-09 23:05:29,240 - ISDADocFinder - INFO - Found potential documentation link in search: ISDA August 2012 DF Protocol -> https://www.isda.org/protocol/isda-august-2012-df-protocol/
+2025-05-09 23:05:29,240 - ISDADocFinder - INFO - Found potential documentation link in search: Adhere to this Protocol -> https://www.isda.org/protocol/isda-august-2012-df-protocol/submit/
+2025-05-09 23:05:29,240 - ISDADocFinder - INFO - Found potential documentation link in search: View Adhering Parties -> https://www.isda.org/protocol/isda-august-2012-df-protocol/adhering-parties
+2025-05-09 23:05:29,240 - ISDADocFinder - INFO - Found potential documentation link in search: April 2025 Benchmark Module of the ISDA 2021 Fallbacks Protocol -> https://www.isda.org/protocol/april-2025-benchmark-module-of-the-isda-2021-fallbacks-protocol/
+2025-05-09 23:05:29,240 - ISDADocFinder - INFO - Found potential documentation link in search: Adhere to this Protocol -> https://www.isda.org/protocol/april-2025-benchmark-module-of-the-isda-2021-fallbacks-protocol/submit/
+2025-05-09 23:05:29,240 - ISDADocFinder - INFO - Found potential documentation link in search: View Adhering Parties -> https://www.isda.org/protocol/april-2025-benchmark-module-of-the-isda-2021-fallbacks-protocol/adhering-parties
+2025-05-09 23:05:29,243 - ISDADocFinder - INFO - Found 13 potential documentation pages, saved to data\test_collect\isda\isda\isda_documentation_sources.json
+2025-05-09 23:05:29,244 - ISDADocCollector - INFO - Collecting ISDA documentation from 13 sources
+2025-05-09 23:05:29,244 - ISDADocCollector - INFO - Processing source 1/2: https://www.isda.org/books/
+2025-05-09 23:05:30,324 - ISDADocCollector - INFO - Found 0 PDF links on https://www.isda.org/books/
+2025-05-09 23:05:33,324 - ISDADocCollector - INFO - Processing source 2/2: https://www.isda.org/protocols/
+2025-05-09 23:05:35,482 - ISDADocCollector - INFO - Found 2 PDF links on https://www.isda.org/protocols/
+2025-05-09 23:05:35,482 - ISDADocCollector - INFO - Downloading PDF: https://www.isda.org/a/k9GEE/ISDA-2018-Benchmarks-Supplement-Protocol.pdf -> data\test_collect\isda\isda\isda-2018-benchmarks-supplement-protocol-agreement.pdf
+2025-05-09 23:05:36,896 - ISDADocCollector - INFO - Successfully downloaded: data\test_collect\isda\isda\isda-2018-benchmarks-supplement-protocol-agreement.pdf
+2025-05-09 23:05:36,896 - ISDADocCollector - INFO - Downloading PDF: https://www.isda.org/a/09GEE/ISDA-2018-Benchmarks-Supplement-Protocol-Questionnaire.pdf -> data\test_collect\isda\isda\isda-2018-benchmarks-supplement-protocol-questionn.pdf
+2025-05-09 23:05:38,079 - ISDADocCollector - INFO - Successfully downloaded: data\test_collect\isda\isda\isda-2018-benchmarks-supplement-protocol-questionn.pdf
+2025-05-09 23:05:41,085 - ISDADocCollector - INFO - Collected 2 documents, metadata saved to data\test_collect\isda\isda\isda_documents_metadata.json
+2025-05-09 23:05:41,086 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 23:05:56,199 - crypto_corpus_cli - INFO - Collecting from sources: bitmex_research
+2025-05-09 23:05:56,201 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-09 23:05:56,218 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-09 23:05:56,219 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-09 23:05:56,805 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-09 23:05:56,805 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-09 23:05:56,807 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-09 23:05:56,807 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-09 23:05:56,951 - UpdatedBitMEXCollector - INFO - Skipping post 'Removing Bitcoin’s Guardrails' (https://blog.bitmex.com/removing-bitcoins-guardrails/) - no keywords found.
+2025-05-09 23:05:56,953 - UpdatedBitMEXCollector - INFO - Saved metadata for 0 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-09 23:05:56,954 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 23:18:33,489 - crypto_corpus_cli - INFO - Collecting from sources: 
+2025-05-09 23:18:33,489 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 23:20:28,651 - crypto_corpus_cli - INFO - Collecting from sources: 
+2025-05-09 23:20:28,653 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 23:21:51,592 - crypto_corpus_cli - INFO - Collecting from sources: annas_main_library
+2025-05-09 23:21:51,594 - crypto_corpus_cli - INFO - Collecting from source: annas_main_library
+2025-05-09 23:22:02,680 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 23:31:14,680 - crypto_corpus_cli - INFO - Collecting from sources: annas_main_library
+2025-05-09 23:31:14,682 - crypto_corpus_cli - INFO - Collecting from source: annas_main_library
+2025-05-09 23:35:25,661 - crypto_corpus_cli - INFO - Collecting from sources: annas_main_library
+2025-05-09 23:35:25,663 - crypto_corpus_cli - INFO - Collecting from source: annas_main_library
+2025-05-09 23:35:28,278 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 23:36:44,226 - crypto_corpus_cli - INFO - Collecting from sources: annas_main_library
+2025-05-09 23:36:44,228 - crypto_corpus_cli - INFO - Collecting from source: annas_main_library
+2025-05-09 23:36:55,688 - crypto_corpus_cli - INFO - Processing collected data from annas_main_library
+2025-05-09 23:36:55,689 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-05-09 23:36:55,840 - CorpusManager - INFO - Initialized corpus manager at data\test_collect\annas_main_library
+2025-05-09 23:36:55,840 - crypto_corpus_cli - INFO - Completed processing data from annas_main_library
+2025-05-09 23:36:55,841 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 23:47:07,289 - crypto_corpus_cli - INFO - Collecting from sources: annas_scidb_search
+2025-05-09 23:47:07,289 - crypto_corpus_cli - INFO - Collecting from source: annas_scidb_search
+2025-05-09 23:47:09,541 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 23:48:06,046 - crypto_corpus_cli - INFO - Collecting from sources: annas_scidb_search
+2025-05-09 23:48:06,048 - crypto_corpus_cli - INFO - Collecting from source: annas_scidb_search
+2025-05-09 23:48:14,007 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 23:51:11,221 - crypto_corpus_cli - INFO - Collecting from sources: arxiv
+2025-05-09 23:51:11,222 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-09 23:51:11,229 - crypto_corpus_cli - INFO - Collection completed
+2025-05-09 23:51:12,495 - crypto_corpus_cli - INFO - Processing data from data/test_collect
+2025-05-09 23:51:13,773 - crypto_corpus_cli - INFO - Generating statistics for corpus in data/test_collect
+2025-05-09 23:51:13,915 - CorpusManager - INFO - Initialized corpus manager at data\test_collect
+2025-05-10 00:02:57,164 - crypto_corpus_cli - INFO - Processing data from data/test_collect
+2025-05-10 00:02:58,423 - crypto_corpus_cli - INFO - Generating statistics for corpus in data/test_collect
+2025-05-10 00:02:58,426 - CorpusManager - INFO - Initialized corpus manager at data\test_collect
+2025-05-10 00:07:38,654 - crypto_corpus_cli - ERROR - Error loading configuration: name 'Path' is not defined
+2025-05-10 00:07:38,656 - crypto_corpus_cli - ERROR - Failed to load configuration
+2025-05-10 00:10:20,397 - crypto_corpus_cli - INFO - Collecting from sources: arxiv
+2025-05-10 00:10:20,397 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 00:10:20,403 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 00:10:21,665 - crypto_corpus_cli - INFO - Processing data from data/test_collect
+2025-05-10 00:10:22,923 - crypto_corpus_cli - INFO - Generating statistics for corpus in data/test_collect
+2025-05-10 00:10:22,927 - CorpusManager - INFO - Initialized corpus manager at data\test_collect
+2025-05-10 00:11:48,927 - crypto_corpus_cli - INFO - Collecting from sources: arxiv
+2025-05-10 00:11:48,929 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 00:11:48,934 - crypto_corpus_cli - INFO - Collection completed
+2025-05-10 00:11:50,189 - crypto_corpus_cli - INFO - Processing data from data/test_collect
+2025-05-10 00:11:51,464 - crypto_corpus_cli - INFO - Generating statistics for corpus in data/test_collect
+2025-05-10 00:11:51,468 - CorpusManager - INFO - Initialized corpus manager at data\test_collect
+2025-05-10 07:12:56,416 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 07:12:56,468 - crypto_corpus_cli - ERROR - Error in collect_from_source: 'Namespace' object has no attribute 'client'
+2025-05-10 07:12:58,240 - crypto_corpus_cli - INFO - Collecting from source: isda
+2025-05-10 07:12:58,261 - ISDADocFinder - INFO - Checking ISDA main site navigation for documentation links
+2025-05-10 07:13:03,005 - ISDADocFinder - INFO - Found potential documentation link in nav: legal -> https://www.isda.org/category/legal/
+2025-05-10 07:13:03,005 - ISDADocFinder - INFO - Found potential documentation link in nav: view all books -> https://www.isda.org/books
+2025-05-10 07:13:03,005 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/books/
+2025-05-10 07:13:11,025 - ISDADocFinder - INFO - Found 1 document sections on https://www.isda.org/books/
+2025-05-10 07:13:11,025 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/documentation/
+2025-05-10 07:13:12,900 - ISDADocFinder - INFO - URL not found: https://www.isda.org/documentation/
+2025-05-10 07:13:12,900 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/documents/
+2025-05-10 07:13:14,698 - ISDADocFinder - INFO - URL not found: https://www.isda.org/documents/
+2025-05-10 07:13:14,699 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/protocols/
+2025-05-10 07:13:17,705 - ISDADocFinder - INFO - Found 2 PDF links on https://www.isda.org/protocols/
+2025-05-10 07:13:17,705 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/guides/
+2025-05-10 07:13:19,456 - ISDADocFinder - INFO - URL not found: https://www.isda.org/guides/
+2025-05-10 07:13:19,456 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/bookstore/
+2025-05-10 07:13:21,288 - ISDADocFinder - INFO - URL not found: https://www.isda.org/bookstore/
+2025-05-10 07:13:21,288 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/books-and-protocols/
+2025-05-10 07:13:23,016 - ISDADocFinder - INFO - URL not found: https://www.isda.org/books-and-protocols/
+2025-05-10 07:13:23,017 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/book-and-protocol-list/
+2025-05-10 07:13:24,804 - ISDADocFinder - INFO - URL not found: https://www.isda.org/book-and-protocol-list/
+2025-05-10 07:13:24,804 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/legal-documentation/
+2025-05-10 07:13:26,563 - ISDADocFinder - INFO - URL not found: https://www.isda.org/legal-documentation/
+2025-05-10 07:13:26,564 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/category/legal/
+2025-05-10 07:13:28,404 - ISDADocFinder - INFO - Found 1 document sections on https://www.isda.org/category/legal/
+2025-05-10 07:13:28,404 - ISDADocFinder - INFO - Checking potential documentation URL: https://www.isda.org/books
+2025-05-10 07:13:35,245 - ISDADocFinder - INFO - Found 1 document sections on https://www.isda.org/books
+2025-05-10 07:13:35,246 - ISDADocFinder - INFO - Checking search page: https://www.isda.org/?s=documentation+protocol
+2025-05-10 07:13:38,299 - ISDADocFinder - INFO - Found potential documentation link in search: ISDA 2021 SBS Top-Up Protocol -> https://www.isda.org/protocol/isda-2021-sbs-top-up-protocol/
+2025-05-10 07:13:38,299 - ISDADocFinder - INFO - Found potential documentation link in search: Adhere to this Protocol -> https://www.isda.org/protocol/isda-2021-sbs-top-up-protocol/submit/
+2025-05-10 07:13:38,299 - ISDADocFinder - INFO - Found potential documentation link in search: View Adhering Parties -> https://www.isda.org/protocol/isda-2021-sbs-top-up-protocol/adhering-parties
+2025-05-10 07:13:38,299 - ISDADocFinder - INFO - Found potential documentation link in search: ISDA August 2012 DF Protocol -> https://www.isda.org/protocol/isda-august-2012-df-protocol/
+2025-05-10 07:13:38,299 - ISDADocFinder - INFO - Found potential documentation link in search: Adhere to this Protocol -> https://www.isda.org/protocol/isda-august-2012-df-protocol/submit/
+2025-05-10 07:13:38,299 - ISDADocFinder - INFO - Found potential documentation link in search: View Adhering Parties -> https://www.isda.org/protocol/isda-august-2012-df-protocol/adhering-parties
+2025-05-10 07:13:38,299 - ISDADocFinder - INFO - Found potential documentation link in search: April 2025 Benchmark Module of the ISDA 2021 Fallbacks Protocol -> https://www.isda.org/protocol/april-2025-benchmark-module-of-the-isda-2021-fallbacks-protocol/
+2025-05-10 07:13:38,299 - ISDADocFinder - INFO - Found potential documentation link in search: Adhere to this Protocol -> https://www.isda.org/protocol/april-2025-benchmark-module-of-the-isda-2021-fallbacks-protocol/submit/
+2025-05-10 07:13:38,299 - ISDADocFinder - INFO - Found potential documentation link in search: View Adhering Parties -> https://www.isda.org/protocol/april-2025-benchmark-module-of-the-isda-2021-fallbacks-protocol/adhering-parties
+2025-05-10 07:13:38,301 - ISDADocFinder - INFO - Found 13 potential documentation pages, saved to data\test_collect\isda\isda\isda_documentation_sources.json
+2025-05-10 07:13:38,302 - ISDADocCollector - INFO - Collecting ISDA documentation from 13 sources
+2025-05-10 07:13:38,302 - ISDADocCollector - INFO - Processing source 1/1: https://www.isda.org/books/
+2025-05-10 07:13:45,300 - ISDADocCollector - INFO - Found 0 PDF links on https://www.isda.org/books/
+2025-05-10 07:13:48,304 - ISDADocCollector - INFO - Collected 0 documents, metadata saved to data\test_collect\isda\isda\isda_documents_metadata.json
+2025-05-10 07:13:48,916 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 07:13:48,931 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-10 07:13:48,931 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-10 07:13:51,632 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-10 07:13:51,632 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-10 07:13:51,634 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 07:13:51,634 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-10 07:13:53,051 - UpdatedBitMEXCollector - INFO - Saved HTML to data\test_collect\bitmex\bitmex_research\removing-bitcoins-guardrails.html
+2025-05-10 07:13:53,053 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 07:13:53,625 - crypto_corpus_cli - INFO - Collecting from source: annas_main_library
+2025-05-10 07:13:56,925 - crypto_corpus_cli - ERROR - Error in collect_from_source: 'charmap' codec can't encode character '\U0001f680' in position 54: character maps to <undefined>
+2025-05-10 07:13:57,537 - crypto_corpus_cli - INFO - Collecting from source: annas_scidb_search
+2025-05-10 07:14:02,439 - crypto_corpus_cli - INFO - Collecting from source: general_web_corpus
+2025-05-10 07:14:05,961 - crypto_corpus_cli - ERROR - Error in collect_from_source: 'charmap' codec can't encode character '\U0001f680' in position 29: character maps to <undefined>
+2025-05-10 08:55:25,148 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 08:55:25,165 - crypto_corpus_cli - ERROR - Error in collect_from_source: 'Namespace' object has no attribute 'client'
+2025-05-10 08:55:25,870 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 08:55:25,872 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-10 08:55:25,872 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-10 08:55:27,766 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-10 08:55:27,766 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-10 08:55:27,768 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 08:55:27,768 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-10 08:55:29,508 - UpdatedBitMEXCollector - INFO - Skipping post 'Removing Bitcoin’s Guardrails' (https://blog.bitmex.com/removing-bitcoins-guardrails/) - no keywords found.
+2025-05-10 08:55:29,511 - UpdatedBitMEXCollector - INFO - Saved metadata for 0 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 08:55:30,222 - crypto_corpus_cli - INFO - Collecting from source: github
+2025-05-10 08:55:30,231 - crypto_corpus_cli - ERROR - Error in collect_from_source: 'Namespace' object has no attribute 'client'
+2025-05-10 08:58:56,018 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 08:58:56,025 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20A%20Study%20on%20%CE%B1-Beta&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 08:58:56,867 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 08:59:01,867 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20Unique%20Quantum%20Finance%20Paper&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 08:59:02,192 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 08:59:07,192 - ArxivCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 08:59:07,193 - ArxivCollector - DEBUG - Waiting 7.74s before requesting from arxiv.org
+2025-05-10 08:59:14,936 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.05113v1 to data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 08:59:15,459 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 08:59:15,459 - ArxivCollector - DEBUG - Waiting 9.32s before requesting from arxiv.org
+2025-05-10 08:59:24,791 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2504.21658v1 to data\test_collect\arxiv\math\approximation-and-regularity-results-for-the-heston-model-and-related-processes.pdf
+2025-05-10 08:59:25,636 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\math\approximation-and-regularity-results-for-the-heston-model-and-related-processes.pdf
+2025-05-10 08:59:25,636 - ArxivCollector - INFO - Downloaded 2 papers
+2025-05-10 08:59:25,636 - ArxivCollector - DEBUG - 
+Paper #1:
+2025-05-10 08:59:25,636 - ArxivCollector - DEBUG -   Title: Loss-Versus-Rebalancing under Deterministic and Generalized block-times
+2025-05-10 08:59:25,636 - ArxivCollector - DEBUG -   Authors: Alex Nezlobin, Martin Tassy
+2025-05-10 08:59:25,636 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 08:59:25,636 - ArxivCollector - DEBUG -   Category: q-fin.MF
+2025-05-10 08:59:25,636 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.05113v1
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   File size: 234.79 KB
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG - 
+Paper #2:
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   Title: Approximation and regularity results for the Heston model and related
+  processes
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   Authors: Edoardo Lombardo
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   Category: math.NA
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2504.21658v1
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\math\approximation-and-regularity-results-for-the-heston-model-and-related-processes.pdf
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   File size: 2358.25 KB
+2025-05-10 08:59:25,637 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 08:59:25,637 - ArxivCollector - INFO - Summary: 2 out of 2 papers have valid files
+2025-05-10 08:59:26,361 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 08:59:26,363 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-10 08:59:26,363 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-10 08:59:26,870 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-10 08:59:26,870 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-10 08:59:26,872 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 08:59:26,872 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-10 08:59:27,018 - UpdatedBitMEXCollector - INFO - Skipping post 'Removing Bitcoin’s Guardrails' (https://blog.bitmex.com/removing-bitcoins-guardrails/) - no keywords found.
+2025-05-10 08:59:27,021 - UpdatedBitMEXCollector - INFO - Saved metadata for 0 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 08:59:27,734 - crypto_corpus_cli - INFO - Collecting from source: github
+2025-05-10 08:59:28,750 - GitHubCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 08:59:28,752 - GitHubCollector - INFO - Cloning repository: https://github.com/Shekhargupta01/price-prediction-using-AI.git
+2025-05-10 08:59:30,189 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\Shekhargupta01_price-prediction-using-AI
+2025-05-10 08:59:30,189 - GitHubCollector - INFO - Cloning repository: https://github.com/MohitCodes46/The-Market-Maven.git
+2025-05-10 08:59:31,445 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\MohitCodes46_The-Market-Maven
+2025-05-10 08:59:31,445 - GitHubCollector - INFO - Cloning repository: https://github.com/zszszszsz/.config.git
+2025-05-10 08:59:32,697 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\zszszszsz_.config
+2025-05-10 08:59:32,698 - GitHubCollector - INFO - Cloning repository: https://github.com/chrisneagu/FTC-Skystone-Dark-Angels-Romania-2020.git
+2025-05-10 08:59:42,590 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\chrisneagu_FTC-Skystone-Dark-Angels-Romania-2020
+2025-05-10 08:59:42,590 - GitHubCollector - INFO - Cloning repository: https://github.com/klonnet23/helloy-word.git
+2025-05-10 08:59:43,795 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\klonnet23_helloy-word
+2025-05-10 08:59:43,795 - GitHubCollector - INFO - Cloning repository: https://github.com/MateusNobreSilva/app_send_mail.git
+2025-05-10 08:59:45,691 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\MateusNobreSilva_app_send_mail
+2025-05-10 08:59:45,692 - GitHubCollector - INFO - Cloning repository: https://github.com/Martlgap/human-machine-fusion.git
+2025-05-10 08:59:48,299 - GitHubCollector - INFO - Successfully cloned repository to data\test_collect\github\Martlgap_human-machine-fusion
+2025-05-10 08:59:48,300 - GitHubCollector - INFO - Cloned 7 repositories
+2025-05-10 09:04:36,334 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 09:04:36,343 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20A%20Study%20on%20%CE%B1-Beta&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:04:37,026 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:04:42,027 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20Unique%20Quantum%20Finance%20Paper&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:04:42,357 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:04:47,357 - ArxivCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 09:04:47,358 - ArxivCollector - DEBUG - Waiting 6.17s before requesting from arxiv.org
+2025-05-10 09:04:53,528 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.05113v1 to data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 09:04:53,736 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 09:04:53,736 - ArxivCollector - DEBUG - Waiting 6.21s before requesting from arxiv.org
+2025-05-10 09:04:59,946 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2504.21658v1 to data\test_collect\arxiv\math\approximation-and-regularity-results-for-the-heston-model-and-related-processes.pdf
+2025-05-10 09:05:00,104 - ArxivCollector - INFO - Successfully downloaded data\test_collect\arxiv\math\approximation-and-regularity-results-for-the-heston-model-and-related-processes.pdf
+2025-05-10 09:05:00,105 - ArxivCollector - INFO - Downloaded 2 papers
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG - 
+Paper #1:
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   Title: Loss-Versus-Rebalancing under Deterministic and Generalized block-times
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   Authors: Alex Nezlobin, Martin Tassy
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   Category: q-fin.MF
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.05113v1
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\q-fin\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   File size: 234.79 KB
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG - 
+Paper #2:
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   Title: Approximation and regularity results for the Heston model and related
+  processes
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   Authors: Edoardo Lombardo
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   Category: math.NA
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2504.21658v1
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   File: data\test_collect\arxiv\math\approximation-and-regularity-results-for-the-heston-model-and-related-processes.pdf
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   File size: 2358.25 KB
+2025-05-10 09:05:00,105 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-10 09:05:00,106 - ArxivCollector - INFO - Summary: 2 out of 2 papers have valid files
+2025-05-10 09:05:00,847 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 09:05:00,849 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-10 09:05:00,849 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-10 09:05:01,420 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-10 09:05:01,420 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-10 09:05:01,422 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 09:05:01,422 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-10 09:05:01,562 - UpdatedBitMEXCollector - INFO - Skipping post 'Removing Bitcoin’s Guardrails' (https://blog.bitmex.com/removing-bitcoins-guardrails/) - no keywords found.
+2025-05-10 09:05:01,564 - UpdatedBitMEXCollector - INFO - Saved metadata for 0 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 09:05:02,298 - crypto_corpus_cli - INFO - Collecting from source: github
+2025-05-10 09:05:03,210 - GitHubCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Shekhargupta01_price-prediction-using-AI
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MohitCodes46_The-Market-Maven
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\zszszszsz_.config
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\chrisneagu_FTC-Skystone-Dark-Angels-Romania-2020
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\klonnet23_helloy-word
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MateusNobreSilva_app_send_mail
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Martlgap_human-machine-fusion
+2025-05-10 09:05:03,212 - GitHubCollector - INFO - Cloned 7 repositories
+2025-05-10 09:09:03,859 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 09:09:03,875 - crypto_corpus_cli - ERROR - Error in collect_from_source: 'charmap' codec can't encode character '\u03b1' in position 77: character maps to <undefined>
+2025-05-10 09:09:04,614 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 09:09:04,616 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-10 09:09:04,616 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-10 09:09:07,141 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-10 09:09:07,142 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-10 09:09:07,145 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 09:09:07,145 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-10 09:09:08,852 - UpdatedBitMEXCollector - INFO - Skipping post 'Removing Bitcoin’s Guardrails' (https://blog.bitmex.com/removing-bitcoins-guardrails/) - no keywords found.
+2025-05-10 09:09:08,856 - UpdatedBitMEXCollector - INFO - Saved metadata for 0 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 09:09:09,596 - crypto_corpus_cli - INFO - Collecting from source: github
+2025-05-10 09:09:09,606 - crypto_corpus_cli - ERROR - Error in collect_from_source: 'charmap' codec can't encode character '\u03b1' in position 108: character maps to <undefined>
+2025-05-10 09:15:07,986 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 09:15:08,000 - crypto_corpus_cli - ERROR - Error in collect_from_source: 'charmap' codec can't encode character '\u03b1' in position 44: character maps to <undefined>
+2025-05-10 09:15:08,734 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 09:15:08,736 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-10 09:15:08,736 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-10 09:15:09,318 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-10 09:15:09,318 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-10 09:15:09,321 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 09:15:09,321 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-10 09:15:09,461 - UpdatedBitMEXCollector - INFO - Skipping post 'Removing Bitcoin’s Guardrails' (https://blog.bitmex.com/removing-bitcoins-guardrails/) - no keywords found.
+2025-05-10 09:15:09,463 - UpdatedBitMEXCollector - INFO - Saved metadata for 0 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 09:15:10,199 - crypto_corpus_cli - INFO - Collecting from source: github
+2025-05-10 09:15:10,211 - crypto_corpus_cli - ERROR - Error in collect_from_source: 'charmap' codec can't encode character '\u03b1' in position 77: character maps to <undefined>
+2025-05-10 09:17:29,265 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 09:17:29,281 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20A%20Study%20on%20%CE%B1-Beta&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:17:30,040 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:17:35,041 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20Unique%20Quantum%20Finance%20Paper&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:17:35,435 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:17:40,439 - ArxivCollector - INFO - Deduplication: Skipped 2 results already in the existing titles cache.
+2025-05-10 09:17:40,439 - ArxivCollector - INFO - Downloaded 0 papers
+2025-05-10 09:17:40,439 - ArxivCollector - INFO - Summary: 0 out of 0 papers have valid files
+2025-05-10 09:17:41,187 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 09:17:41,189 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-10 09:17:41,189 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-10 09:17:42,258 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-10 09:17:42,258 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-10 09:17:42,260 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 09:17:42,260 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-10 09:17:42,396 - UpdatedBitMEXCollector - INFO - Skipping post 'Removing Bitcoin’s Guardrails' (https://blog.bitmex.com/removing-bitcoins-guardrails/) - no keywords found.
+2025-05-10 09:17:42,399 - UpdatedBitMEXCollector - INFO - Saved metadata for 0 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 09:17:43,137 - crypto_corpus_cli - INFO - Collecting from source: github
+2025-05-10 09:17:43,998 - GitHubCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 09:17:43,999 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Shekhargupta01_price-prediction-using-AI
+2025-05-10 09:17:43,999 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MohitCodes46_The-Market-Maven
+2025-05-10 09:17:43,999 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\zszszszsz_.config
+2025-05-10 09:17:43,999 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\chrisneagu_FTC-Skystone-Dark-Angels-Romania-2020
+2025-05-10 09:17:43,999 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\klonnet23_helloy-word
+2025-05-10 09:17:43,999 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MateusNobreSilva_app_send_mail
+2025-05-10 09:17:44,000 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Martlgap_human-machine-fusion
+2025-05-10 09:17:44,000 - GitHubCollector - INFO - Cloned 7 repositories
+2025-05-10 09:23:14,200 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 09:23:14,209 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20A%20Study%20on%20%CE%B1-Beta&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:23:14,879 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:23:19,879 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20Unique%20Quantum%20Finance%20Paper&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:23:20,196 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:23:25,200 - ArxivCollector - INFO - Deduplication: Skipped 2 results already in the existing titles cache.
+2025-05-10 09:23:25,200 - ArxivCollector - INFO - Downloaded 0 papers
+2025-05-10 09:23:25,200 - ArxivCollector - INFO - Summary: 0 out of 0 papers have valid files
+2025-05-10 09:23:25,931 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 09:23:25,933 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-10 09:23:25,933 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-10 09:23:28,617 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-10 09:23:28,618 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-10 09:23:28,620 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 09:23:28,620 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-10 09:23:29,382 - UpdatedBitMEXCollector - INFO - Skipping post 'Removing Bitcoin’s Guardrails' (https://blog.bitmex.com/removing-bitcoins-guardrails/) - no keywords found.
+2025-05-10 09:23:29,386 - UpdatedBitMEXCollector - INFO - Saved metadata for 0 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 09:23:30,131 - crypto_corpus_cli - INFO - Collecting from source: github
+2025-05-10 09:23:30,929 - GitHubCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 09:23:30,930 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Shekhargupta01_price-prediction-using-AI
+2025-05-10 09:23:30,930 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MohitCodes46_The-Market-Maven
+2025-05-10 09:23:30,930 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\zszszszsz_.config
+2025-05-10 09:23:30,931 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\chrisneagu_FTC-Skystone-Dark-Angels-Romania-2020
+2025-05-10 09:23:30,931 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\klonnet23_helloy-word
+2025-05-10 09:23:30,931 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MateusNobreSilva_app_send_mail
+2025-05-10 09:23:30,931 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Martlgap_human-machine-fusion
+2025-05-10 09:23:30,931 - GitHubCollector - INFO - Cloned 7 repositories
+2025-05-10 09:24:46,136 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-10 09:24:46,144 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20A%20Study%20on%20%CE%B1-Beta&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:24:46,709 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:24:51,710 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=%28cat%3Aq-fin.CP%20OR%20cat%3Aq-fin.PM%20OR%20cat%3Aq-fin.RM%20OR%20cat%3Aq-fin.ST%20OR%20cat%3Aq-fin.TR%29%20AND%20Unique%20Quantum%20Finance%20Paper&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-10 09:24:52,043 - ArxivCollector - INFO - Found 1 papers
+2025-05-10 09:24:57,047 - ArxivCollector - INFO - Deduplication: Skipped 2 results already in the existing titles cache.
+2025-05-10 09:24:57,047 - ArxivCollector - INFO - Downloaded 0 papers
+2025-05-10 09:24:57,047 - ArxivCollector - INFO - Summary: 0 out of 0 papers have valid files
+2025-05-10 09:24:57,790 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-10 09:24:57,792 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-10 09:24:57,792 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-10 09:24:58,342 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-10 09:24:58,343 - UpdatedBitMEXCollector - INFO - Found post: Removing Bitcoin’s Guardrails
+2025-05-10 09:24:58,345 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 09:24:58,345 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/removing-bitcoins-guardrails/
+2025-05-10 09:24:58,480 - UpdatedBitMEXCollector - INFO - Skipping post 'Removing Bitcoin’s Guardrails' (https://blog.bitmex.com/removing-bitcoins-guardrails/) - no keywords found.
+2025-05-10 09:24:58,481 - UpdatedBitMEXCollector - INFO - Saved metadata for 0 posts to data\test_collect\bitmex\bitmex_research\bitmex_research_posts.json
+2025-05-10 09:24:59,221 - crypto_corpus_cli - INFO - Collecting from source: github
+2025-05-10 09:25:00,511 - GitHubCollector - INFO - Deduplication: Skipped 0 results already in the existing titles cache.
+2025-05-10 09:25:00,512 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Shekhargupta01_price-prediction-using-AI
+2025-05-10 09:25:00,512 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MohitCodes46_The-Market-Maven
+2025-05-10 09:25:00,512 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\zszszszsz_.config
+2025-05-10 09:25:00,513 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\chrisneagu_FTC-Skystone-Dark-Angels-Romania-2020
+2025-05-10 09:25:00,513 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\klonnet23_helloy-word
+2025-05-10 09:25:00,513 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\MateusNobreSilva_app_send_mail
+2025-05-10 09:25:00,513 - GitHubCollector - INFO - Repository already exists at data\test_collect\github\Martlgap_human-machine-fusion
+2025-05-10 09:25:00,513 - GitHubCollector - INFO - Cloned 7 repositories
+2025-05-10 10:38:56,213 - crypto_corpus_cli - INFO - Collecting from source: annas_main_library
+2025-05-10 10:41:59,261 - crypto_corpus_cli - INFO - Collecting from source: annas_main_library
+2025-05-10 10:51:26,639 - crypto_corpus_cli - INFO - Collecting from source: annas_main_library
+2025-05-10 10:53:44,166 - crypto_corpus_cli - INFO - Collecting from source: annas_main_library
+2025-05-10 10:55:23,386 - crypto_corpus_cli - INFO - Collecting from source: annas_main_library
+2025-05-11 08:52:52,168 - root - ERROR - Error processing PDF file CryptoFinanceCorpusBuilder\tests\integration_pdfs\market_microstructure_pcmbrokers_Wiley_finance_series_Adam_Grimes-The_art_and_science_of_technical_analysis___market_structure_price_action_and_trading_strategies-J_Wiley____Sons__2012.pdf: [Errno 2] No such file or directory: 'outputs\\integration_test_outputs\\low_quality\\market_microstructure_pcmbrokers_Wiley_finance_series_Adam_Grimes-The_art_and_science_of_technical_analysis___market_structure_price_action_and_trading_strategies-J_Wiley____Sons__2012.section0.txt'
+2025-05-11 12:02:10,516 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\high_frequency_trading\cryptocurrency-time-series-on-the-binary-complexity-entropy-plane-ranking-efficiency-from-the-perspective-of-complex-systems.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:10,560 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\high_frequency_trading\detecting-crypto-pump-and-dump-schemes-a-thresholding-based-approach-to-handling-market-noise.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:10,611 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\high_frequency_trading\loss-versus-rebalancing-under-deterministic-and-generalized-block-times.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:10,845 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\high_frequency_trading\why-is-the-volatility-of-single-stocks-so-much-rougher-than-that-of-the-sp500.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:10,921 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_3rd-annual-pwc-elwood-aima-crypto-hedge-fund-report-may-2021.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:10,973 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_220001-The-Digital-Asset-Guide-For-Financial-Professionals-eBook-v3.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:11,118 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_A_LASSO_Type_Factor_Model_in_Cryptocurrency.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:11,194 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_A_Model_of_the_Optimal_Selection_of_Crypto_Assets.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:11,342 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_A_Multimodal_Model_with_Twitter_Finbert_Embeddings_for_Extreme_Price_Movement_Prediction_of_Bitcoin.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:11,421 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_A_Random_Forest-Based_Model_for_Crypto_Asset_Forecasts_in_Futures_Markets_with_Out-of-Sample_Prediction.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:11,517 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_A_Review_of_Cryptoasset_Market_Structure_and_Regulation_in_the_United_States.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:11,617 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_A_Survey_of_Graph_Neural_Networks_in_Real_world-_Imbalance_Noise_Privacy_and_OOD_Challenges.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:11,653 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_Adaptive_Risk_Allocation_in_Crypto_Markets-_Evaluating_Volatility-Scaled_Portfolios.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:11,703 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_Advanced_in_Financial_Machine_Learning.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:11,776 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_Alternative_Data.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:11,862 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_An_Adoption_Model_of_Cryptocurrencies.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:11,905 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\crypto_derivatives\crypto_derivatives_An_Economic_Model_of_the_L1-L2_Interaction.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:11,980 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\decentraliced_finance\crypto_derivatives_Binance_Report_data-insights-liquid-staking-and-lsdfi-heat-up.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:12,068 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\decentraliced_finance\crypto_derivatives_Binance_Report_from-challenges-to-opportunities-how-desci-reimagines-science.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:12,158 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\decentraliced_finance\crypto_derivatives_Binance_Report_real-world-asset-report.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:12,249 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\decentraliced_finance\crypto_derivatives_Binance_Report_The-Emergence-of-Real-Yield.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:12,311 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\decentraliced_finance\decentralized_finance_A_Macro_Finance_Model_for_Proof-of-Stake_Ethereum.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:12,400 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\decentraliced_finance\decentralized_finance_Agents_Behavior_and_Interest_Rate_Model_Optimization_in_DeFi_Lending.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:12,730 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\decentraliced_finance\decentralized_finance_Behavioral_Finance_and_Wealth_Management_by_Michael_M_Pompian.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:12,800 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\market_microstructure\crypto_derivatives_Advances_in_design_of_decentralized_exchanges_DEX-s_I.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:12,908 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\market_microstructure\crypto_derivatives_Binance_API_SPOT_documentation.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:12,950 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\market_microstructure\crypto_derivatives_dark_trading_price_discovery.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:13,122 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\market_microstructure\crypto_derivatives_Forecasting.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:13,213 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\market_microstructure\crypto_derivatives_limit_orders.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:13,269 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\market_microstructure\crypto_derivatives_Liquidity_and_Volatility_Nexus_in_Cryptocurrency_Markets.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:13,369 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\market_microstructure\crypto_derivatives_Liquidity_Jump_Liquidity_Diffusion_and_Crypto_Wash_Trading.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:13,695 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\market_microstructure\crypto_derivatives_mastering-ethereum.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:13,744 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\market_microstructure\crypto_derivatives_order_flow_and_price_formation.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:13,870 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\portfolio_construction\crypto_derivatives_Binance_Report_2019_-_Annual_Crypto-Correlations_Review.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:13,928 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\portfolio_construction\crypto_derivatives_Binance_Report_2019_Q3_Crypto-Correlations_Review.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:14,135 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\portfolio_construction\crypto_derivatives_Binance_Report_Exploring_The_Diversification_Benefits_With_Bitcoin.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:14,185 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\risk_management\crypto_derivatives_Binance_Report_data-insights-exploring-crypto-fundraises-3q2023.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:14,583 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\risk_management\crypto_derivatives_Dynamic_Hedging-_Managing_Vanilla_and_Exotic_Options_by_Nassim_Nicholas_Taleb.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:14,633 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\risk_management\crypto_derivatives_dynamic_hedging.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:14,749 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\risk_management\crypto_derivatives_Heterogeneous_Tail_Generalized_Common_Factor_Modeling.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-11 12:02:14,972 - root - ERROR - Error processing PDF file data\test_collect\full_pipeline_short\risk_management\crypto_derivatives_Interpretable_Machine_Learning_2ed_by_Christoph_Molnar_2022.pdf: cannot access local variable 'mt_result' where it is not associated with a value
+2025-05-26 20:26:47,030 - root - WARNING - Using fallback HARDCODED_DOMAINS due to config error: cannot import name 'DOMAINS' from 'CryptoFinanceCorpusBuilder.config.domain_config' (G:\ai_trading_dev\CryptoFinanceCorpusBuilder\config\domain_config.py)
+2025-05-26 20:29:10,173 - root - WARNING - Using fallback HARDCODED_DOMAINS due to config error: Invalid or empty DOMAINS in config.domain_config
+2025-05-26 20:30:56,154 - root - WARNING - Using fallback HARDCODED_DOMAINS due to config error: Invalid or empty DOMAINS in config.domain_config
+2025-05-26 20:31:48,670 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:31:48,671 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:31:48,671 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:31:48,672 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:31:48,673 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:31:48,674 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:31:48,674 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:31:48,768 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:31:48,785 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:31:48,788 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:38:51,942 - root - WARNING - Using fallback HARDCODED_DOMAINS due to config error: Invalid or empty DOMAINS in config.domain_config
+2025-05-26 20:39:46,072 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:39:46,073 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:39:46,074 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:39:46,074 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:39:46,075 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:39:46,075 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:39:46,076 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:39:46,173 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:39:46,190 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:39:46,196 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error in content-based domain classification: 'list' object has no attribute 'items'
+2025-05-26 20:41:26,896 - root - WARNING - Using fallback HARDCODED_DOMAINS due to config error: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,774 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,775 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,775 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,775 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,779 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error parsing code structure: module 'ast' has no attribute 'Comment'
+2025-05-26 20:42:19,779 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\py_functions_many.py: 'unknown'
+2025-05-26 20:42:19,780 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,780 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,780 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,780 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,909 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\json_large_array.json: 'unknown'
+2025-05-26 20:42:19,912 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,912 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,913 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,913 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,924 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\ipynb_many_cells.ipynb.json: 'unknown'
+2025-05-26 20:42:19,925 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,925 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,925 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,925 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,935 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\py_functions_many.py.json: 'unknown'
+2025-05-26 20:42:19,938 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,938 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,939 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,939 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,948 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\csv_long.csv.json: 'unknown'
+2025-05-26 20:42:19,949 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,949 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,949 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,949 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,958 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\json_large_array.json.json: 'unknown'
+2025-05-26 20:42:19,960 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,960 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,960 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:19,960 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:19,961 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error parsing code structure: module 'ast' has no attribute 'Comment'
+2025-05-26 20:42:19,961 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\ipynb_many_cells.ipynb: 'unknown'
+2025-05-26 20:42:20,050 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:20,052 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:20,052 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:20,052 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:20,407 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\bitmex_research.html: 'unknown'
+2025-05-26 20:42:20,430 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:20,430 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:20,430 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:20,430 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:20,442 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\scidb_direct_test.html: 'unknown'
+2025-05-26 20:42:20,448 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:20,448 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:20,448 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:42:20,449 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:42:20,451 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\csv_long.csv: 'unknown'
+2025-05-26 20:43:26,509 - root - WARNING - Using fallback HARDCODED_DOMAINS due to config error: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:18,910 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:18,911 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:18,911 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:18,911 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:18,915 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error parsing code structure: module 'ast' has no attribute 'Comment'
+2025-05-26 20:44:18,916 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\py_functions_many.py: 'unknown'
+2025-05-26 20:44:18,917 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:18,917 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:18,918 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:18,918 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,030 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\json_large_array.json: 'unknown'
+2025-05-26 20:44:19,032 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,033 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,033 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,034 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,044 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\ipynb_many_cells.ipynb.json: 'unknown'
+2025-05-26 20:44:19,048 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,048 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,048 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,049 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,057 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\py_functions_many.py.json: 'unknown'
+2025-05-26 20:44:19,059 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,059 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,060 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,064 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,072 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\csv_long.csv.json: 'unknown'
+2025-05-26 20:44:19,074 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,074 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,074 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,074 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,083 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\json_large_array.json.json: 'unknown'
+2025-05-26 20:44:19,084 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,084 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,085 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,085 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,086 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error parsing code structure: module 'ast' has no attribute 'Comment'
+2025-05-26 20:44:19,086 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\ipynb_many_cells.ipynb: 'unknown'
+2025-05-26 20:44:19,182 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,184 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,184 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,185 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,541 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\bitmex_research.html: 'unknown'
+2025-05-26 20:44:19,931 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,934 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,934 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,934 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,941 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\scidb_direct_test.html: 'unknown'
+2025-05-26 20:44:19,945 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,946 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,946 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:44:19,946 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:44:19,948 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\csv_long.csv: 'unknown'
+2025-05-26 20:45:42,305 - root - WARNING - Using fallback HARDCODED_DOMAINS due to config error: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,358 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,358 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,358 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,358 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,363 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error parsing code structure: module 'ast' has no attribute 'Comment'
+2025-05-26 20:46:33,363 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\py_functions_many.py: 'unknown'
+2025-05-26 20:46:33,364 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,365 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,365 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,365 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,504 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\json_large_array.json: 'unknown'
+2025-05-26 20:46:33,506 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,506 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,506 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,506 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,516 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\ipynb_many_cells.ipynb.json: 'unknown'
+2025-05-26 20:46:33,518 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,518 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,518 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,518 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,529 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\py_functions_many.py.json: 'unknown'
+2025-05-26 20:46:33,530 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,530 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,531 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,531 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,539 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\csv_long.csv.json: 'unknown'
+2025-05-26 20:46:33,539 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,539 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,540 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,540 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,552 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\json_large_array.json.json: 'unknown'
+2025-05-26 20:46:33,553 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,553 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,553 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,553 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,554 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - WARNING - Error parsing code structure: module 'ast' has no attribute 'Comment'
+2025-05-26 20:46:33,554 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\ipynb_many_cells.ipynb: 'unknown'
+2025-05-26 20:46:33,653 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,654 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,655 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:33,655 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:33,994 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\bitmex_research.html: 'unknown'
+2025-05-26 20:46:34,011 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:34,012 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:34,012 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:34,012 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:34,021 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\scidb_direct_test.html: 'unknown'
+2025-05-26 20:46:34,025 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:34,025 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:34,025 - DomainClassifier - ERROR - Error loading domain configuration: Expecting value: line 1 column 1 (char 0)
+2025-05-26 20:46:34,025 - DomainClassifier - INFO - Initialized classifier with 0 domains
+2025-05-26 20:46:34,026 - CryptoFinanceCorpusBuilder.processors.batch_nonpdf_extractor_enhanced - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\csv_long.csv: 'unknown'
+2025-05-27 03:40:35,417 - CorpusBalancerCLI - INFO - Starting corpus balance analysis...
+2025-05-27 03:40:35,419 - CorpusAnalyzer - INFO - Starting comprehensive corpus balance analysis
+2025-05-27 03:40:35,421 - CorpusAnalyzer - WARNING - No documents found in corpus
+2025-05-27 03:40:35,421 - CorpusBalancerCLI - ERROR - Analysis failed: No documents found in corpus
+2025-05-27 03:41:44,491 - CorpusBalancerCLI - INFO - Starting corpus balance analysis...
+2025-05-27 03:41:44,493 - CorpusAnalyzer - INFO - Starting comprehensive corpus balance analysis
+2025-05-27 03:41:44,495 - CorpusAnalyzer - INFO - Found 4 JSON files in _extracted
+2025-05-27 03:41:44,520 - CorpusAnalyzer - INFO - Corpus balance analysis completed
+2025-05-27 03:41:44,535 - CorpusVisualizer - INFO - Report saved to balance_reports\corpus_balance_report_20250527_034144.md
+2025-05-27 03:44:03,581 - CorpusBalancerCLI - INFO - Starting corpus balance analysis...
+2025-05-27 03:44:03,583 - CorpusAnalyzer - INFO - Starting comprehensive corpus balance analysis
+2025-05-27 03:44:03,588 - CorpusAnalyzer - INFO - Found 390 JSON files in _extracted
+2025-05-27 03:44:08,401 - CorpusAnalyzer - INFO - Corpus balance analysis completed
+2025-05-27 03:44:08,701 - CorpusVisualizer - INFO - Report saved to balance_reports\corpus_balance_report_20250527_034408.md
+2025-05-27 04:58:28,196 - crypto_corpus_cli - INFO - Collecting from source: arxiv
+2025-05-27 04:58:28,269 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=cat%3Aq-fin.CP&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-27 04:58:29,062 - ArxivCollector - INFO - Found 1 papers
+2025-05-27 04:58:34,064 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=cat%3Aq-fin.PM&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-27 04:58:34,385 - ArxivCollector - INFO - Found 1 papers
+2025-05-27 04:58:39,387 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=cat%3Aq-fin.RM&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-27 04:58:39,735 - ArxivCollector - INFO - Found 1 papers
+2025-05-27 04:58:44,737 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=cat%3Aq-fin.ST&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-27 04:58:45,047 - ArxivCollector - INFO - Found 1 papers
+2025-05-27 04:58:50,050 - ArxivCollector - DEBUG - Making API request to http://export.arxiv.org/api/query/?search_query=cat%3Aq-fin.TR&start=0&max_results=1&sortBy=submittedDate&sortOrder=descending
+2025-05-27 04:58:50,368 - ArxivCollector - INFO - Found 1 papers
+2025-05-27 04:58:55,370 - ArxivCollector - DEBUG - Waiting 6.93s before requesting from arxiv.org
+2025-05-27 04:59:02,316 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.19243v1 to data\full_corpus\q-fin\comparative-analysis-of-financial-data-differentiation-techniques-using-lstm-neural-network.pdf
+2025-05-27 04:59:03,593 - ArxivCollector - INFO - Successfully downloaded data\full_corpus\q-fin\comparative-analysis-of-financial-data-differentiation-techniques-using-lstm-neural-network.pdf
+2025-05-27 04:59:03,594 - ArxivCollector - DEBUG - Waiting 7.17s before requesting from arxiv.org
+2025-05-27 04:59:10,779 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.19058v1 to data\full_corpus\cs\distributionally-robust-deep-q-learning.pdf
+2025-05-27 04:59:12,162 - ArxivCollector - INFO - Successfully downloaded data\full_corpus\cs\distributionally-robust-deep-q-learning.pdf
+2025-05-27 04:59:12,164 - ArxivCollector - DEBUG - Waiting 7.51s before requesting from arxiv.org
+2025-05-27 04:59:19,672 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.19276v1 to data\full_corpus\q-fin\a-general-theory-of-risk-sharing.pdf
+2025-05-27 04:59:20,164 - ArxivCollector - INFO - Successfully downloaded data\full_corpus\q-fin\a-general-theory-of-risk-sharing.pdf
+2025-05-27 04:59:20,165 - ArxivCollector - DEBUG - Waiting 8.61s before requesting from arxiv.org
+2025-05-27 04:59:28,777 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.19243v1 to data\full_corpus\q-fin\comparative-analysis-of-financial-data-differentiation-techniques-using-lstm-neural-network.pdf
+2025-05-27 04:59:29,041 - ArxivCollector - INFO - Successfully downloaded data\full_corpus\q-fin\comparative-analysis-of-financial-data-differentiation-techniques-using-lstm-neural-network.pdf
+2025-05-27 04:59:29,043 - ArxivCollector - DEBUG - Waiting 5.59s before requesting from arxiv.org
+2025-05-27 04:59:34,634 - ArxivCollector - INFO - Downloading http://arxiv.org/pdf/2505.19617v1 to data\full_corpus\q-fin\hybrid-models-for-financial-forecasting-combining-econometric-machine-learning-and-deep-learning-models.pdf
+2025-05-27 04:59:35,931 - ArxivCollector - INFO - Successfully downloaded data\full_corpus\q-fin\hybrid-models-for-financial-forecasting-combining-econometric-machine-learning-and-deep-learning-models.pdf
+2025-05-27 04:59:35,933 - ArxivCollector - INFO - Downloaded 5 papers
+2025-05-27 04:59:35,933 - ArxivCollector - DEBUG - 
+Paper #1:
+2025-05-27 04:59:35,933 - ArxivCollector - DEBUG -   Title: Comparative analysis of financial data differentiation techniques using
+  LSTM neural network
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   Category: q-fin.ST
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.19243v1
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   File: data\full_corpus\q-fin\comparative-analysis-of-financial-data-differentiation-techniques-using-lstm-neural-network.pdf
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   File size: 4254.43 KB
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG - 
+Paper #2:
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   Title: Distributionally Robust Deep Q-Learning
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   Authors: Chung I Lu, Julian Sester, Aijia Zhang
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   Category: cs.LG
+2025-05-27 04:59:35,943 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.19058v1
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   File: data\full_corpus\cs\distributionally-robust-deep-q-learning.pdf
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   File size: 1982.50 KB
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG - 
+Paper #3:
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   Title: A General Theory of Risk Sharing
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   Authors: Vasily Melnikov
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   Category: q-fin.RM
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.19276v1
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   File: data\full_corpus\q-fin\a-general-theory-of-risk-sharing.pdf
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   File size: 353.31 KB
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG - 
+Paper #4:
+2025-05-27 04:59:35,944 - ArxivCollector - DEBUG -   Title: Comparative analysis of financial data differentiation techniques using
+  LSTM neural network
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   Category: q-fin.ST
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.19243v1
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   File: data\full_corpus\q-fin\comparative-analysis-of-financial-data-differentiation-techniques-using-lstm-neural-network.pdf
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   File size: 4254.43 KB
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG - 
+Paper #5:
+2025-05-27 04:59:35,946 - ArxivCollector - DEBUG -   Title: Hybrid Models for Financial Forecasting: Combining Econometric, Machine
+  Learning, and Deep Learning Models
+2025-05-27 04:59:35,947 - ArxivCollector - DEBUG -   ArXiv ID: None
+2025-05-27 04:59:35,947 - ArxivCollector - DEBUG -   Category: q-fin.TR
+2025-05-27 04:59:35,947 - ArxivCollector - DEBUG -   PDF Link: http://arxiv.org/pdf/2505.19617v1
+2025-05-27 04:59:35,947 - ArxivCollector - DEBUG -   File: data\full_corpus\q-fin\hybrid-models-for-financial-forecasting-combining-econometric-machine-learning-and-deep-learning-models.pdf
+2025-05-27 04:59:35,947 - ArxivCollector - DEBUG -   File size: 5045.39 KB
+2025-05-27 04:59:35,948 - ArxivCollector - DEBUG -   File exists: Yes
+2025-05-27 04:59:35,948 - ArxivCollector - INFO - Summary: 5 out of 5 papers have valid files
+2025-05-27 04:59:35,948 - crypto_corpus_cli - INFO - Collecting from source: bitmex_research
+2025-05-27 04:59:35,959 - UpdatedBitMEXCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
+2025-05-27 04:59:35,959 - UpdatedBitMEXCollector - INFO - Fetching page: https://blog.bitmex.com/research/
+2025-05-27 04:59:37,123 - UpdatedBitMEXCollector - INFO - Found 1 potential post containers
+2025-05-27 04:59:37,124 - UpdatedBitMEXCollector - INFO - Found post: The 2015 Spam Attacks
+2025-05-27 04:59:37,126 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\full_corpus\bitmex_research\bitmex_research_posts.json
+2025-05-27 04:59:37,127 - UpdatedBitMEXCollector - INFO - Fetching post: https://blog.bitmex.com/the-2015-spam-attacks/
+2025-05-27 04:59:39,189 - UpdatedBitMEXCollector - INFO - Saved HTML to data\full_corpus\bitmex_research\the-2015-spam-attacks.html
+2025-05-27 04:59:39,191 - UpdatedBitMEXCollector - INFO - Saved metadata for 1 posts to data\full_corpus\bitmex_research\bitmex_research_posts.json
+2025-05-27 05:17:18,940 - CorpusBalancerCLI - INFO - Starting corpus balance analysis...
+2025-05-27 05:17:18,942 - CorpusAnalyzer - INFO - Starting comprehensive corpus balance analysis
+2025-05-27 05:17:18,947 - CorpusAnalyzer - INFO - Found 4 JSON files in _extracted
+2025-05-27 05:17:19,012 - CorpusAnalyzer - INFO - Corpus balance analysis completed
+2025-05-27 05:17:19,019 - CorpusVisualizer - INFO - Report saved to balance_reports\corpus_balance_report_20250527_051719.md
+2025-05-27 05:23:13,731 - CorpusBalancerCLI - INFO - Starting corpus balance analysis...
+2025-05-27 05:23:13,733 - CorpusAnalyzer - INFO - Starting comprehensive corpus balance analysis
+2025-05-27 05:23:13,738 - CorpusAnalyzer - INFO - Found 2 JSON files in _extracted
+2025-05-27 05:23:13,747 - CorpusAnalyzer - INFO - Corpus balance analysis completed
+2025-05-27 05:23:13,749 - CorpusVisualizer - INFO - Report saved to balance_reports\corpus_balance_report_20250527_052313.md
+2025-05-27 05:31:15,249 - CorpusBalancerCLI - INFO - Starting corpus balance analysis...
+2025-05-27 05:31:15,251 - CorpusAnalyzer - INFO - Starting comprehensive corpus balance analysis
+2025-05-27 05:31:15,254 - CorpusAnalyzer - WARNING - No documents found in corpus
+2025-05-27 05:31:15,255 - CorpusBalancerCLI - ERROR - Analysis failed: No documents found in corpus
+2025-05-27 05:37:34,240 - CorpusBalancerCLI - INFO - Starting corpus balance analysis...
+2025-05-27 05:37:34,242 - CorpusAnalyzer - INFO - Starting comprehensive corpus balance analysis
+2025-05-27 05:37:34,245 - CorpusAnalyzer - INFO - [RECURSIVE] Found 4 JSON files in data\full_corpus_extracted\_extracted
+2025-05-27 05:37:34,315 - CorpusAnalyzer - INFO - Corpus balance analysis completed
+2025-05-27 05:37:34,322 - CorpusVisualizer - INFO - Report saved to balance_reports\corpus_balance_report_20250527_053734.md
+2025-05-27 05:40:42,500 - CorpusBalancerCLI - INFO - Starting corpus balance analysis...
+2025-05-27 05:40:42,501 - CorpusAnalyzer - INFO - Starting comprehensive corpus balance analysis
+2025-05-27 05:40:42,507 - CorpusAnalyzer - INFO - [RECURSIVE] Found 4 JSON files in data\full_corpus_extracted\_extracted
+2025-05-27 05:40:42,567 - CorpusAnalyzer - INFO - [RECURSIVE] Found 2 JSON files in data\full_corpus_extracted\full_corpus_nonpdf_extracted\_extracted
+2025-05-27 05:40:42,576 - CorpusAnalyzer - INFO - Corpus balance analysis completed
+2025-05-27 05:40:42,582 - CorpusVisualizer - INFO - Report saved to balance_reports\corpus_balance_report_20250527_054042.md

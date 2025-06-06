@@ -1,0 +1,84 @@
+2025-06-01 15:52:00,099 - __main__ - INFO - Found 10 files to process
+2025-06-01 15:52:02,411 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,412 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,419 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,438 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,461 - __mp_main__ - WARNING - Error parsing code structure: module 'ast' has no attribute 'Comment'
+2025-06-01 15:52:02,475 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,477 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,479 - __main__ - INFO - Progress: 1/10 files processed (1 successful)
+2025-06-01 15:52:02,546 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,549 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,552 - __mp_main__ - WARNING - Error parsing code structure: module 'ast' has no attribute 'Comment'
+2025-06-01 15:52:02,563 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,564 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,567 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,567 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,568 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,570 - __main__ - INFO - Progress: 2/10 files processed (2 successful)
+2025-06-01 15:52:02,571 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,590 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,590 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,593 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,594 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,640 - __main__ - INFO - Progress: 3/10 files processed (3 successful)
+2025-06-01 15:52:02,647 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,672 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 15:52:02,680 - __main__ - INFO - Progress: 4/10 files processed (4 successful)
+2025-06-01 15:52:02,709 - __mp_main__ - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\py_functions_many.py.json: 'valuation_models'
+2025-06-01 15:52:02,710 - __main__ - INFO - Progress: 5/10 files processed (4 successful)
+2025-06-01 15:52:02,711 - __mp_main__ - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\ipynb_many_cells.ipynb.json: 'valuation_models'
+2025-06-01 15:52:02,711 - __main__ - INFO - Progress: 6/10 files processed (4 successful)
+2025-06-01 15:52:02,719 - __main__ - INFO - Progress: 7/10 files processed (5 successful)
+2025-06-01 15:52:02,723 - __mp_main__ - ERROR - Error processing file G:\ai_trading_dev\data\test_collect\test_fourfiles\_extracted\csv_long.csv.json: 'valuation_models'
+2025-06-01 15:52:02,724 - __main__ - INFO - Progress: 8/10 files processed (5 successful)
+2025-06-01 15:52:02,736 - __main__ - INFO - Progress: 9/10 files processed (6 successful)
+2025-06-01 15:52:03,166 - __main__ - INFO - Progress: 10/10 files processed (7 successful)
+2025-06-01 15:52:03,635 - __main__ - INFO - Processing complete. 7/10 files processed successfully
+2025-06-01 19:09:15,142 - __main__ - INFO - Found 6 files to process
+2025-06-01 19:09:16,888 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:09:16,889 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:09:16,898 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:09:16,918 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:09:16,943 - __mp_main__ - WARNING - Error parsing code structure: module 'ast' has no attribute 'Comment'
+2025-06-01 19:09:16,948 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:09:16,949 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:09:16,962 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:09:16,963 - __main__ - INFO - Progress: 1/6 files processed (1 successful)
+2025-06-01 19:09:16,964 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:09:16,966 - __mp_main__ - WARNING - Error parsing code structure: module 'ast' has no attribute 'Comment'
+2025-06-01 19:09:16,981 - __main__ - INFO - Progress: 2/6 files processed (2 successful)
+2025-06-01 19:09:16,991 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:09:16,993 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:09:17,037 - __main__ - INFO - Progress: 3/6 files processed (3 successful)
+2025-06-01 19:09:17,070 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:09:17,088 - __main__ - INFO - Progress: 4/6 files processed (4 successful)
+2025-06-01 19:09:17,092 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:09:17,113 - __main__ - INFO - Progress: 5/6 files processed (5 successful)
+2025-06-01 19:09:17,562 - __main__ - INFO - Progress: 6/6 files processed (6 successful)
+2025-06-01 19:09:17,929 - __main__ - INFO - Processing complete. 6/6 files processed successfully
+2025-06-01 19:11:27,875 - __main__ - ERROR - No supported files found in G:\ai_trading_dev\data\test_output\nonpdf_extractor_test\raw_data
+2025-06-01 19:12:43,856 - __main__ - ERROR - No supported files found in G:\ai_trading_dev\data\test_output\nonpdf_extractor_test\raw_data
+2025-06-01 19:12:57,338 - __main__ - ERROR - No supported files found in G:\ai_trading_dev\data\test_output\nonpdf_extractor_test\raw_data
+2025-06-01 19:18:57,986 - __main__ - INFO - Found 6 files to process
+2025-06-01 19:18:59,727 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:18:59,730 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:18:59,803 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:18:59,824 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:18:59,825 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:18:59,827 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:18:59,830 - __mp_main__ - WARNING - Error parsing code structure: module 'ast' has no attribute 'Comment'
+2025-06-01 19:18:59,846 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:18:59,848 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:18:59,859 - __main__ - INFO - Progress: 1/6 files processed (1 successful)
+2025-06-01 19:18:59,868 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:18:59,869 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:18:59,872 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:18:59,890 - DomainClassifier - INFO - Initialized classifier with 8 domains
+2025-06-01 19:18:59,899 - __main__ - INFO - Progress: 2/6 files processed (2 successful)
+2025-06-01 19:18:59,912 - __mp_main__ - WARNING - Error parsing code structure: module 'ast' has no attribute 'Comment'
+2025-06-01 19:18:59,918 - __main__ - INFO - Progress: 3/6 files processed (3 successful)
+2025-06-01 19:18:59,973 - __main__ - INFO - Progress: 4/6 files processed (4 successful)
+2025-06-01 19:18:59,992 - __main__ - INFO - Progress: 5/6 files processed (5 successful)
+2025-06-01 19:19:00,319 - __main__ - INFO - Progress: 6/6 files processed (6 successful)
+2025-06-01 19:19:00,683 - __main__ - INFO - Processing complete. 6/6 files processed successfully

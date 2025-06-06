@@ -1,0 +1,394 @@
+ 
+  Global Index Research  
+  
+  
+  
+  20 February 2024  
+J.P. Morgan Volatility Adjusted Real -Rates Bond Index  
+Methodology and Factsheet  
+Highlights   
+The J.P. Morgan Volatility Adjusted Real -Rates Bond Index (VARRI) , part of the J.P. Morgan Macro Aware ™ family of 
+indices , enhances the  well-established methodology and composition of the J.P. Morgan Government Bond Index (GBI ), with  
+a design uplift to achieve a higher real-yield (inflation adjusted) . Unlike traditional bond indices that focus on market value 
+weighting, the VARRI applies a Macro Aware ™ methodology to overweight sovereign exposure to higher real yields ( volatility 
+adjusted ) and u nderweight those markets with lower real yields . The index utilizes macro signals (inflation expectations) from 
+the J.P. Morgan Macrosynergy Quantamental System (JPMaQS)  and implied volatility estimates from J.P. Morgan Research.   
+Index Criteria  
+Instrument  Type : Global Government Bonds belonging to the  GBI Broad (ex US) benchmark.   
+• Includes: Fixed -rate and zero -coupon bonds  
+• Excludes: Floating -rate bonds, capitaliz ing/amortizing bonds, bonds with callable, puttable, 
+or convertible features  
+Remaining Maturity : > 6 months  
+Currency Denomination : Denominated in onshore, floating currency regimes  
+Issuers:  Central governments  
+Country of Domicile:  All markets included in the GBI -Broad (excluding the US)  
+Taxability:  Taxable and tax exempt are eligible  
+Capital Controls:  Excludes countries with explicit capital controls or where foreign investors face constraints in:  
+• Holdings or transacting in bonds  
+• Purchase or sale of spot FX  
+ 
+Index Characteristics  & Methodology  
+Pricing:  Mid prices are taken from a third party pricing source , PricingDirect  
+Aggregate Return:  Weighted average of bond returns using mid side prices  
+Rebalancing:  Rebalances on the last weekday of the month. If FX rates from WM Reuters are unavailable on 
+the last weekday of the month ( e.g., Good Friday), indices are rebalanced on the previous 
+business day.  
+Coupon Reinvestment : Immediately reinvested in to the respective local market returns  
+FX Rates:  All FX rates used for unhedged returns are as of 4pm London time provided by WM/Reuters  
+Weighting:  Baseline m arket capitalization based weighting  scheme of the GBI Broad Ex . US, subject to a 
+Macro Aware ™ methodology which dynamically  overweights sovereign exposure to higher real 
+yields (underweights those with lower real yields)   
+Price Timing:  As of the local market close  
+
+ 
+ Settlement Convention:  Local market country convention  
+Holiday Calendar:  Local market calendar  
+Macro Aware ™ Inputs  • Est. 1 -year ahead inflation expectations (source: JPMaQS ) 
+• Implied volatility based on 3 -month At -The-Money (ATM) FX Options  (source: J.P. Morgan)  
+ 
+Historical revisions to the underlying Macro A ware™ input  data (post-index production ) will be 
+considered in the next rebalance  and will not result in an index restatement  (post -revision) .   
+ 
+Defining the universe of eligible countries   
+The J.P. Morgan Volatility Adjusted Real -Rates Bond Index includes liquid, bullet, fixed - rate local debt issued from countries 
+with floating currency regimes, as defined by the J.P. Morgan Government Bond (GBI) Broad Index  (ex. United States) .  
+This index does not exclud e countries based on credit ratings and therefore can potentially span both investment grade and 
+sub-investment grade government bond markets.  
+ 
+Instrument type  
+Only fixed -rate and zero coupon instruments are included.  Floating -rate and capitaliz ing/amortizing bonds,  or bonds with 
+callable, puttable or convertible features are not part of the ind ex. 
+ 
+Liquidity  
+A key feature that distinguishes our indices from other index products is the strict enforcement of liquidity criteria in the  
+selection of instruments. Yet, while the notion of liquidity differs from market to market, J.P. Morgan indices only include 
+securities, subject to several considerations including but not limited to:  
+ 
+• Pricing: Bonds must trade with enough frequency to prevent stale price quotations  
+ 
+• Availability:  Bonds must be regularly traded in size at acceptable bid -offer spreads and readily redeemable for cash.  
+A reasonable two -way market must exist for the instrument to be included in the index portfolio.  
+ 
+• Replication costs:  Investors should be able to replic ate the index without incurring excessive transaction costs.  
+ 
+Index Methodology  
+The J.P. Morgan Volatility Adjusted Real -Rates Bond Index overweights (OW) the top three countries  with the highest “Real-
+Rate Factor ” and underweights (UW) the bottom three  markets . The Real-Rate Factor is calculated by discounting  the 
+nominal benchmark yields of each sovereign market  by the ir respective JPMaQS estimated 1 -year ahead inflation 
+expectations1, and divid ing by each market’s local currency 3 -month At-The-Money ( ATM ) implied volatility  (IV).  
+Mechanically, an overweight assignment corresponds to a +1.5%  allocation for the corresponding country in the benchmark, 
+while an underweight carries a -1.0% allocation and a market -weight (MW) is held flat.  A floor of 0% is  also imposed for UW 
+countries to avoid reflecting a short position. Once factor adjustments have been applied, we normalize to produce terminal 
+country weights assignments.  
+As additional  notes: countries withou t a 1-year inflation expectation figure, as provided by JPMaQS, were excluded from the 
+index calculation ; Euro denominated countries all use the EUR /USD  3M ATM IV when computing the real -rate factor .  
+JPMaQS Criteria  
+The J.P. Morgan Volatility Adjusted Rea l-Rates Bond Index uses the J.P. Morgan Macrosynergy Quantamental System to 
+inform the Macro A ware™ methodology used as an overlay to the flagship J.P. Morgan GBI -Broad ex. US Index.  
+ 
+1 Estimated CPI inflation expectations of market participants for 12 months after the latest reported CPI data  (Macrosynergy method)  
+ 
+ JPMaQS is a service which provides quantitative -fundamental (qua ntamental) data in line with the information available to 
+market participants at the time of release, not an ex -post (revised) number.  
+Quantamental 
+Indicators  Economic Trends  
+Macroeconomic Balance Sheets  
+Financial Conditions  
+Shock and Risk measures  
+Stylized Trading Factors  
+Data Availability  Coverage for 3 5+ countries (including Euro Area); 20+ years of historical data  
+Data Frequency  Daily, Monthly, Yearly  
+Source: JPMorgan Chase & Co.  
+Bond calculations  
+Calculations are according to market convention : all calculations including accrued interest, duration, yield, etc., 
+are done according to local market convention using parameters (ex -dividend rules, settlement conventions, etc.) 
+relevant to each specific bond. All calculations are gross of tax and ignore transactions costs.  
+ 
+Bond pricing : Pricing for our underlying instruments is provided on a daily basis from Pricing Direct, a third party 
+valuation vendor. In the event the primary source for pricing is unable to provide a quote, the Index G roup reserves 
+the right to consider the use of an appropriate alternative source for index inputs.  Please see http://www.pricing -
+direct.com  for further details.  
+ 
+Ex-dividend rules : ex-dividend rules, when applicable, are incorporated into accrued interest calculations, as 
+appropriate, by country. Ex -dividend rules define the last day a bondholder must own a bond to receive that bond’s 
+next coupon payment, otherwise known as the ex -dividend date.  
+• During the period between the ex -dividend date and the coupon date, the bond trades “ex -dividend”  
+• An investor who purchases a bond for settlement between the ex -dividend date and coupon date will not 
+receive that bond’s next coupon payment.  
+• During this period, according to market convention, accrued interest becomes negative resulting in a total 
+price at a discount to the clean price and in effect, compensating the investor for the time the bond will be 
+held without interest.  
+• On coupon date, interest will start to accrue for the subsequent coupon payment.  
+ 
+Returns and return indices:  return indices on individual bonds are calculated on a daily basis  and measure bond 
+performance over time:  
+• Principal return index is based on changes in clean price.  
+• Interest return index is based  on changes in accrued interest.  
+• Total return index is based on changes in both clean price and accrued interest.  
+ 
+At the individual bond level focus is on total retur n. The segregation of interest and  principal return becomes 
+relevant at the portfolio level.  
+ 
+Reinvestment of coupons:  the J.P. Morgan indices are always fully invested. All  coupons received are immediately 
+reinvested  back into the local market.  
+ 
+ 
+ Interest accruals:  interest is accrued starting from the bond’s dated date up to the  first coupon value date. Accrued 
+interest is calculated according to market  convention,  on a settlement  day basis.  Interest  is accrued  by value or 
+settlement date.  Weekly, seven days of interest are accrued, including the weekend.  
+ 
+In markets with ex -dividend rules, if a bond is purchased after the ex -dividend  date the purchaser will not receive the 
+bond’s next coupon. In order to compensate  the buyer of the bond, the price paid for the bond must be less than the 
+clean market  price, thus, accrued interest will be negative.  
+ 
+Coupon value date:  The coupon value date is the trade date associated with  settlement on coupon date (the day the 
+coupon is paid). Thus, the coupon value date is  the last trade date which an investor may purchase a bond and have 
+that bond settle  prior to payment  of the subsequent coupon. On coupon value date, accrued interest  resets to zero, 
+and accruals begin towards the next coupon.  
+ 
+Yield:  effective annual rate of return, expressed as a percentage. For the  J.P. Morgan  Government  Bond Index body of data, 
+yields are all calculated as yield - to-maturity,  which is the discount r ate that the present value of future payments  equals the 
+price of the security.  
+ 
+Index calculations  
+The base for the index level is January 2, 2006  = 100. 
+ 
+Daily  indicative pricing for each security and FX rate is closely scrutinized and are  reconciled using market 
+movements and other pricing sources as guidance. As  necessary, an established alternate source will be used to 
+maintain the integrity  of daily index calculations.  On any  given calculation day, if the primary source is  unable to 
+provide a quote, the Index Group reserves the right to consider the use of  an appropriate alternate source for index 
+inputs, such as pricing and FX. If a permanent  switch for the primary third party pricing source is necessary,  clients 
+will be notified in advance prior to any official switch.  
+ 
+For any questions or for additional information, please contact index.research@jpmorgan.com   
+Global Index Research  
+   
+www.jpmorganmarkets.com  
+ 
+ 
+ 
+Disclosures   
+ 
+Analyst Certification: The Research Analyst(s) denoted by an “AC” on the cover of this report certifies (or, where multiple Research Analysts are 
+primarily responsible for this report, the Research Analyst denoted by an “AC” on the cover or within the document individual ly certifies, with respect to 
+each security or issuer that the Research Analyst covers in this  research) that: (1) all of the views expressed in this report accurately reflect the Research 
+Analyst’s personal views about any and all of the subject securities or issuers; and (2) no part of any of the Research Analy st's compensation was, is, or 
+will b e directly or indirectly related to the specific recommendations or views expressed by the Research Analyst(s) in this report . For all Korea -based 
+Research Analysts listed on the front cover, if applicable, they also certify, as per KOFIA requirements, tha t the Research Analyst’s analysis was made in 
+good faith and that the views reflect the Research Analyst’s own opinion, without undue influence or intervention.  
+ 
+All authors named within this report are Research Analysts who produce independent research un less otherwise specified. In Europe, Sector Specialists 
+(Sales and Trading) may be shown on this report as contacts but are not authors of the report or part of the Research Departm ent. 
+ 
+Company -Specific Disclosures: Important disclosures, including price charts and credit opinion history tables, are available for compendium reports 
+and all J.P. Morgan –covered companies, and certain non -covered companies, by visiting  https://www.jpmm.com/research/discl osures , calling 1 -800-477-
+0406, or e -mailing research.disclosure.inquiries@jpmorgan.com  with your request.  
+ 
+A history of J.P. Morgan investment recommendations disseminated during the preceding 12 months can be accessed on the Resear ch & Commentary 
+page of http://www.jpmorganmarkets.com  where you can also search by analyst name, sector or financial instrument.  
+ 
+ 
+Analysts' Compensation:  The research analysts responsible for the preparation of this report receive compensation based upon various factors, 
+including the quality and accurac y of research, client feedback, competitive factors, and overall firm revenues.  
+ 
+ 
+ Other Disclosures   
+J.P. Morgan is a marketing name for investment banking businesses of JPMorgan Chase & Co. and its subsidiaries and affiliates  worldwide.  
+ 
+UK MIFID FICC r esearch unbundling exemption:  UK clients should refer to UK MIFID Research Unbundling exemption  for details of JPMorgan’s 
+implementation  of the FICC research exemption and guidance on relevant FICC research categorisation.  
+ 
+ 
+Any long form nomenclature for references to China; Hong Kong; Taiwan; and Macau within this research material are Mainland C hina; Hong Kong 
+SAR (China); Taiwan (China); and Macau SAR (China).  
+ 
+ 
+J.P. Morgan Research may, from time to time, write on issuers or securities targeted by economic or financial sanctions impos ed or administered by the 
+governmental authorities of the U.S., EU, UK or other relevant jurisdic tions (Sanctioned Securities). Nothing in this report is intended to be read or 
+construed as encouraging, facilitating, promoting or otherwise approving investment or dealing in such Sanctioned Securities.  Clients should be aware of 
+their own legal and com pliance obligations when making investment decisions.  
+ 
+ 
+Any digital or crypto assets discussed in this research report are subject to a rapidly changing regulatory landscape. For re levant regulatory advisories on 
+crypto assets, including bitcoin and ether , please see https://www.jpmorgan.com/disclosures/cryptoasset -disclosure . 
+ 
+ 
+The author(s) of this research report may not be licensed to carry on regulated activities in your jurisdiction and, if not l icensed, do not hold themselves 
+out as being able to do so.  
+ 
+ 
+Exchange -Traded Funds (ETFs):  J.P. Morgan Securities LLC (“JPMS”) ac ts as authorized participant for substantially all U.S. -listed ETFs. To the 
+extent that any ETFs are mentioned in this report, JPMS may earn commissions and transaction -based compensation in connection with the distribution 
+of those ETF shares and may earn  fees for performing other trade -related services, such as securities lending to short sellers of the ETF shares. JPMS 
+may also perform services for the ETFs themselves, including acting as a broker or dealer to the ETFs. In addition, affiliate s of JPMS ma y perform 
+services for the ETFs, including trust, custodial, administration, lending, index calculation and/or maintenance and other se rvices.  
+ 
+ 
+Options and Futures related research:  If the information contained herein regards options - or futures -related research, such information is available 
+only to persons who have received the proper options or futures risk disclosure documents. Please contact your J.P. Morgan Re presentative or visit 
+https://www.theocc.com/components/docs/riskstoc.pdf for a copy of the Option Clearing Corporation's Characteristics and Risks of Standardized Options 
+or http://www.finra.org/sites/default/files/Security_Futures_Risk_Disclosure_Statement_2018.pdf  for a copy of the Security Futures Risk Disclosure 
+Statement.  
+ 
+Changes to Interbank Offer ed Rates (IBORs) and other benchmark rates:  Certain interest rate benchmarks are, or may in the future become, subject 
+to ongoing international, national and other regulatory guidance, reform and proposals for reform. For more information, plea se consult: 
+https://www.jpmorgan.com/global/disclosures/interbank_offered_rates  
+ 
+Private Bank Clients: Where you are receiving research as a client of  the private banking businesses offered by JPMorgan Chase & Co. and its 
+subsidiaries (“J.P. Morgan Private Bank”), research is provided to you by J.P. Morgan Private Bank and not by any other divis ion of J.P. Morgan, 
+including, but not limited to, the J.P.  Morgan Corporate and Investment Bank and its Global Research division.  
+ 
+Legal entity responsible for the production and distribution of research:  The legal entity identified below the name of the Reg AC Research Analyst 
+who authored this material is the legal entity responsible for the production of this research. Where multiple Reg AC Researc h Analysts authored this 
+material with different legal e ntities identified below their names, these legal entities are jointly responsible for the production of this research. Resea rch 
+Analysts from various J.P. Morgan affiliates may have contributed to the production of this material but may not be licensed to carry out regulated 
+activities in your jurisdiction (and do not hold themselves out as being able to do so). Unless otherwise stated below, this material has been distributed by 
+the legal entity responsible for production. If you have any queries, please contact the relevant Research Analyst in your jurisdiction or the entity in your 
+jurisdiction that has distributed this research material.  
+ 
+Legal Entities Disclosures and Country -/Region -Specific Disclosures:  
+Argentina:  JPMorgan Chase Bank N.A Sucursal Bue nos Aires is regulated by Banco Central de la República Argentina (“BCRA” - Central Bank of 
+Argentina) and Comisión Nacional de Valores (“CNV” - Argentinian Securities Commission - ALYC y AN Integral N°51). Australia:  J.P. Morgan 
+Securities Australia Limited  (“JPMSAL”) (ABN 61 003 245 234/AFS Licence No: 238066) is regulated by the Australian Securities and Investments 
+Commission and is a Market, Clearing and Settlement Participant of ASX Limited and CHI -X. This material is issued and distributed in Australia  by or 
+on behalf of JPMSAL only to "wholesale clients" (as defined in section 761G of the Corporations Act 2001). A list of all fina ncial products covered can 
+be found by visiting https://www.jpmm.com /research/disclosures . J.P. Morgan seeks to cover companies of relevance to the domestic and international 
+investor base across all Global Industry Classification Standard (GICS) sectors, as well as across a range of mar ket capitalisation sizes. If applicable, in 
+the course of conducting public side due diligence on the subject company(ies), the Research Analyst team may at times perfor m such diligence through 
+corporate engagements such as site visits, discussions with co mpany representatives, management presentations, etc. Research issued by JPMSAL has 
+been prepared in accordance with J.P. Morgan Australia’s Research Independence Policy which can be found at the following lin k: J.P. Morgan Australia 
+- Research Independence Policy . Brazil : Banco J.P. Morgan S.A. is regulated by the Comissao de Valores Mobiliarios (CVM) and by the Central Bank 
+of Brazil. Ombudsman J.P. Morgan: 0800 -7700847 / 0800 -7700810 (For Hearing Impaired) / ouvidori a.jp.morgan@jpmorgan.com . Canada : J.P. 
+Morgan Securities Canada Inc. is a registered investment dealer, regulated by the Canadian Investment Regulatory Organization  and the Ontario 
+Securities Commission and is the partici pating member on Canadian exchanges. This material is distributed in Canada by or on behalf of J.P.Morgan 
+Securities Canada Inc. Chile:  Inversiones J.P. Morgan Limitada is an unregulated entity incorporated in Chile. China:  J.P. Morgan Securities (China) 
+Company Limited has been approved by CSRC to conduct the securities investment consultancy business. Dubai International Financial Centre 
+ 
+ (DIFC) : JPMorgan Chase Bank, N.A., Dubai Branch is regulated by the Dubai Financial Services Authority (DFSA) and its r egistered address is Dubai 
+International Financial Centre - The Gate, West Wing, Level 3 and 9 PO Box 506551, Dubai, UAE. This material has been distributed by JP Morgan 
+Chase Bank, N.A., Dubai Branch to persons regarded as professional clients or market c ounterparties as defined under the DFSA rules. European 
+Economic Area (EEA):  Unless specified to the contrary, research is distributed in the EEA by J.P. Morgan SE (“JPM SE”), which is authorised as a 
+credit institution by the Federal Financial Supervisory  Authority (Bundesanstalt für Finanzdienstleistungsaufsicht, BaFin) and jointly supervised by the 
+BaFin, the German Central Bank (Deutsche Bundesbank) and the European Central Bank (ECB). JPM SE is a company headquartered i n Frankfurt with 
+registered addre ss at TaunusTurm, Taunustor 1, Frankfurt am Main, 60310, Germany. The material has been distributed in the EEA to persons reg arded 
+as professional investors (or equivalent) pursuant to Art. 4 para. 1 no. 10 and Annex II of MiFID II and its respective imple mentation in their home 
+jurisdictions (“EEA professional investors”). This material must not be acted on or relied on by persons who are not EEA prof essional investors. Any 
+investment or investment activity to which this material relates is only available to EEA relevant persons and will be engaged in only with EEA relevant 
+persons. Hong Kong : J.P. Morgan Securities (Asia Pacific) Limited (CE number AAJ321) is regulated by the Hong Kong Monetary Authority and the 
+Securities and Futures Commission in Hong Ko ng, and J.P. Morgan Broking (Hong Kong) Limited (CE number AAB027) is regulated by the Securities 
+and Futures Commission in Hong Kong. JP Morgan Chase Bank, N.A., Hong Kong Branch (CE Number AAL996) is regulated by the Hong  Kong 
+Monetary Authority and the Securities and Futures Commission, is organized under the laws of the United States with limited liability. Where the 
+distribution of this material is a regulated activity in Hong Kong, the material is distributed in Hong Kong by or through J. P. Morgan Sec urities (Asia 
+Pacific) Limited and/or J.P. Morgan Broking (Hong Kong) Limited. India : J.P. Morgan India Private Limited (Corporate Identity Number - 
+U67120MH1992FTC068724), having its registered office at J.P. Morgan Tower, Off. C.S.T. Road, Kalina, Santac ruz - East, Mumbai – 400098, is 
+registered with the Securities and Exchange Board of India (SEBI) as a ‘Research Analyst’ having registration number INH00000 1873. J.P. Morgan 
+India Private Limited is also registered with SEBI as a member of the National St ock Exchange of India Limited and the Bombay Stock Exchange 
+Limited (SEBI Registration Number – INZ000239730) and as a Merchant Banker (SEBI Registration Number - MB/INM000002970). Telephone: 91 -22-
+6157 3000, Facsimile: 91 -22-6157 3990 and Website: http://www.jpmipl.com . JPMorgan Chase Bank, N.A. - Mumbai Branch is licensed by the Reserve 
+Bank of India (RBI) (Licence No. 53/ Licence No. BY.4/94; SEBI - IN/CUS/014/ CDSL : IN -DP-CDSL -444-2008/ IN -DP-NSDL -285-2008/ 
+INBI00000984/ INE231311239) as a Scheduled Commercial Bank in India, which is its primary license allowing it to carry on Ban king business in India 
+and other activities, which a Bank branch in India are permitted to undertake. For  non-local research material, this material is not distributed in India by 
+J.P. Morgan India Private Limited. Compliance Officer: Spurthi Gadamsetty; spurthi.gadamsetty@jpmchase.com ; +912261573225. Grievance Officer: 
+Ramprasadh K, jpmipl.research.feedback@jpmorgan.com ; +912261573000.  
+Investment in securities market are subject  to market risks. Read all the related documents carefully before investing. Registration granted 
+by SEBI and certification from NISM in no way guarantee performance of the intermediary or provide any assurance of returns t o 
+investors.  
+Indonesia : PT J.P. M organ Sekuritas Indonesia is a member of the Indonesia Stock Exchange and is registered and supervised by the Otoritas Jasa 
+Keuangan (OJK). Korea : J.P. Morgan Securities (Far East) Limited, Seoul Branch, is a member of the Korea Exchange (KRX). JPMorgan Ch ase Bank, 
+N.A., Seoul Branch, is licensed as a branch office of foreign bank (JPMorgan Chase Bank, N.A.) in Korea. Both entities are re gulated by the Financial 
+Services Commission (FSC) and the Financial Supervisory Service (FSS). For non -macro research ma terial, the material is distributed in Korea by or 
+through J.P. Morgan Securities (Far East) Limited, Seoul Branch. Japan : JPMorgan Securities Japan Co., Ltd. and JPMorgan Chase Bank, N.A., Tokyo 
+Branch are regulated by the Financial Services Agency in Jap an. Malaysia : This material is issued and distributed in Malaysia by JPMorgan Securities 
+(Malaysia) Sdn Bhd (18146 -X), which is a Participating Organization of Bursa Malaysia Berhad and holds a Capital Markets Services License issued by 
+the Securities Comm ission in Malaysia. Mexico : J.P. Morgan Casa de Bolsa, S.A. de C.V. and J.P. Morgan Grupo Financiero are members of the 
+Mexican Stock Exchange and are authorized to act as a broker dealer by the National Banking and Securities Exchange Commissio n. New Zeal and: This 
+material is issued and distributed by JPMSAL in New Zealand only to "wholesale clients" (as defined in the Financial Markets Conduct Act 2013). 
+JPMSAL is registered as a Financial Service Provider under the Financial Service providers (Registrati on and Dispute Resolution) Act of 2008. 
+Philippines : J.P. Morgan Securities Philippines Inc. is a Trading Participant of the Philippine Stock Exchange and a member of the Secur ities Clearing 
+Corporation of the Philippines and the Securities Investor Protec tion Fund. It is regulated by the Securities and Exchange Commission. Singapore : This 
+material is issued and distributed in Singapore by or through J.P. Morgan Securities Singapore Private Limited (JPMSS) [MCI ( P) 030/08/2023 and Co. 
+Reg. No.: 199405335R],  which is a member of the Singapore Exchange Securities Trading Limited, and/or JPMorgan Chase Bank, N.A., Singapore 
+branch (JPMCB Singapore), both of which are regulated by the Monetary Authority of Singapore. This material is issued and dis tributed in Si ngapore 
+only to accredited investors, expert investors and institutional investors, as defined in Section 4A of the Securities and Fu tures Act, Cap. 289 (SFA). This 
+material is not intended to be issued or distributed to any retail investors or any other i nvestors that do not fall into the classes of “accredited investors,” 
+“expert investors” or “institutional investors,” as defined under Section 4A of the SFA. Recipients of this material in Singa pore are to contact JPMSS or 
+JPMCB Singapore in respect of an y matters arising from, or in connection with, the material. South Africa : J.P. Morgan Equities South Africa 
+Proprietary Limited and JPMorgan Chase Bank, N.A., Johannesburg Branch are members of the Johannesburg Securities Exchange an d are regulated by 
+the Financial Services Conduct Authority (FSCA). Taiwan : J.P. Morgan Securit ies (Taiwan) Limited is a participant of the Taiwan Stock Exchange 
+(company -type) and regulated by the Taiwan Securities and Futures Bureau. Material relating to equity securities is issued and distrib uted in Taiwan by 
+J.P. Morgan Securities (Taiwan) Limit ed, subject to the license scope and the applicable laws and the regulations in Taiwan. According to Paragraph 2, 
+Article 7 -1 of Operational Regulations Governing Securities Firms Recommending Trades in Securities to Customers (as amended or supplem ented) 
+and/or other applicable laws or regulations, please note that the recipient of this material is not permitted to engage in an y activities in connection with 
+the material that may give rise to conflicts of interests, unless otherwise disclosed in the “Impor tant Disclosures” in this material. Thailand : This material 
+is issued and distributed in Thailand by JPMorgan Securities (Thailand) Ltd., which is a member of the Stock Exchange of Thai land and is regulated by 
+the Ministry of Finance and the Securities and  Exchange Commission, and its registered address is 3rd Floor, 20 North Sathorn Road, Silom, Bangrak, 
+Bangkok 10500. UK: Unless specified to the contrary, research is distributed in the UK by J.P. Morgan Securities plc (“JPMS plc”) which is a mem ber 
+of the  London Stock Exchange and is authorised by the Prudential Regulation Authority and regulated by the Financial Conduct Authori ty and the 
+Prudential Regulation Authority. JPMS plc is registered in England & Wales No. 2711006, Registered Office 25 Bank Stree t, London, E14 5JP. This 
+material is directed in the UK only to: (a) persons having professional experience in matters relating to investments falling  within article 19(5) of the 
+Financial Services and Markets Act 2000 (Financial Promotion) (Order) 2005 (“ the FPO”); (b) persons outlined in article 49 of the FPO (high net worth 
+companies, unincorporated associations or partnerships, the trustees of high value trusts, etc.); or (c) any persons to whom this communication may 
+otherwise lawfully be made; all suc h persons being referred to as "UK relevant persons". This material must not be acted on or relied on by persons who 
+are not UK relevant persons. Any investment or investment activity to which this material relates is only available to UK rel evant persons and will be 
+ 
+ engaged in only with UK relevant persons. Research issued by JPMS plc has been prepared in accordance with JPMS plc's policy for prevention and 
+avoidance of conflicts of interest related to the production of Research which can be found at the f ollowing link: J.P. Morgan EMEA - Research 
+Independence Policy . U.S.: J.P. Morgan Securities LLC (“JPMS”) is a member of the NYSE, FINRA, SIPC, and the NFA. JPMorgan Chase Bank, N.A. 
+is a member of the FDIC. Material published by non -U.S. affiliates is distributed in the U.S. by JPMS who accepts responsibility for its content.  
+ 
+General: Additional information is available upon request . The information in this material has been obtained from sources believed to be reliable. 
+While all reasonable care has been taken to ensure that the facts stated in this material are accurate and that the forecasts , opinions and expectations 
+contained he rein are fair and reasonable, JPMorgan Chase & Co. or its affiliates and/or subsidiaries (collectively J.P. Morgan) make no r epresentations or 
+warranties whatsoever to the completeness or accuracy of the material provided, except with respect to any disclo sures relative to J.P. Morgan and the 
+Research Analyst's involvement with the issuer that is the subject of the material. Accordingly, no reliance should be placed  on the accuracy, fairness or 
+completeness of the information contained in this material. The re may be certain discrepancies with data and/or limited content in this material as a result 
+of calculations, adjustments, translations to different languages, and/or local regulatory restrictions, as applicable. These  discrepancies should not impact 
+the overall investment analysis, views and/or recommendations of the subject company(ies) that may be discussed in the material. J.P. Morgan accepts no 
+liability whatsoever for any loss arising from any use of this material or its contents, and neither J.P. Mo rgan nor any of its respective directors, officers 
+or employees, shall be in any way responsible for the contents hereof, apart from the liabilities and responsibilities that m ay be imposed on them by the 
+relevant regulatory authority in the jurisdiction i n question, or the regulatory regime thereunder. Opinions, forecasts or projections contained in this 
+material represent J.P. Morgan's current opinions or judgment as of the date of the material only and are therefore subject t o change without notice. 
+Periodic updates may be provided on companies/industries based on company -specific developments or announcements, market conditions or any other 
+publicly available information. There can be no assurance that future results or events will be consistent with any  such opinions, forecasts or projections, 
+which represent only one possible outcome. Furthermore, such opinions, forecasts or projections are subject to certain risks,  uncertainties and 
+assumptions that have not been verified, and future actual results or events could differ materially. The value of, or income from, any investments 
+referred to in this material may fluctuate and/or be affected by changes in exchange rates. All pricing is indicative as of t he close of market for the 
+securities discussed, unle ss otherwise stated. Past performance is not indicative of future results. Accordingly, investors may receive back less than 
+originally invested. This material is not intended as an offer or solicitation for the purchase or sale of any financial inst rument . The opinions and 
+recommendations herein do not take into account individual client circumstances, objectives, or needs and are not intended as  recommendations of 
+particular securities, financial instruments or strategies to particular clients. This mater ial may include views on structured securities, options, futures and 
+other derivatives. These are complex instruments, may involve a high degree of risk and may be appropriate investments only f or sophisticated investors 
+who are capable of understanding an d assuming the risks involved. The recipients of this material must make their own independent decisions regarding 
+any securities or financial instruments mentioned herein and should seek advice from such independent financial, legal, tax o r other adviser as they deem 
+necessary. J.P. Morgan may trade as a principal on the basis of the Research Analysts’ views and research, and it may also en gage in transactions for its 
+own account or for its clients’ accounts in a manner inconsistent with the views taken in  this material, and J.P. Morgan is under no obligation to ensure 
+that such other communication is brought to the attention of any recipient of this material. Others within J.P. Morgan, inclu ding Strategists, Sales staff 
+and other Research Analysts, may tak e views that are inconsistent with those taken in this material. Employees of J.P. Morgan not involved in the 
+preparation of this material may have investments in the securities (or derivatives of such securities) mentioned in this mat erial and may trade t hem in 
+ways different from those discussed in this material. This material is not an advertisement for or marketing of any issuer, i ts products or services, or its 
+securities in any jurisdiction.  
+ 
+ 
+Confidentiality and Security Notice : This transmission may  contain information that is privileged, confidential, legally privileged, and/or exempt from 
+disclosure under applicable law. If you are not the intended recipient, you are hereby notified that any disclosure, copying,  distribution, or use of the 
+informat ion contained herein (including any reliance thereon) is STRICTLY PROHIBITED. Although this transmission and any attachments are believed 
+to be free of any virus or other defect that might affect any computer system into which it is received and opened, it  is the responsibility of the recipient 
+to ensure that it is virus free and no responsibility is accepted by JPMorgan Chase & Co., its subsidiaries and affiliates, a s applicable, for any loss or 
+damage arising in any way from its use. If you received this transmission in error, please immediately contact the sender and destroy the material in its 
+entirety, whether in electronic or hard copy format. This message is subject to electronic monitoring: https://www.jpmorgan.com/disclosures/email   
+ 
+MSCI: Certain information herein (“Information”) is reproduced by permission of MSCI Inc., its affiliates and information providers  (“MSCI”) ©2024. 
+No reproduction or disseminati on of the Information is permitted without an appropriate license. MSCI MAKES NO EXPRESS OR IMPLIED 
+WARRANTIES (INCLUDING MERCHANTABILITY OR FITNESS) AS TO THE INFORMATION AND DISCLAIMS ALL LIABILITY TO THE 
+EXTENT PERMITTED BY LAW. No Information constitut es investment advice, except for any applicable Information from MSCI ESG Research. 
+Subject also to msci.com/disclaimer   
+ 
+"Other Disclosures" last revised January 01, 2024.   
+Copyright 2024 JPMorgan Chase & Co. All rights reserved. This material or any portion hereof may not be reprinted, sold or redistribute d 
+without the written consent of J.P. Morgan. It is strictly prohibited to use or share without prior written consent from J.P.  Mor gan any research 
+material received from J.P. Morgan or an authorized third -party (“J.P. Morgan Data”) in any third -party artificial intelligence (“AI”) systems 
+or models when such J.P. Morgan Data is accessible by a third -party. It is permissible to use J. P. Morgan Data for internal business purposes 
+only in an AI system or model that protects the confidentiality of J.P. Morgan Data so as to prevent any and all access to or  use of such J.P. 
+Morgan Data by any third -party. #$J&098$#*P   
+ 
+ 

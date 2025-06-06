@@ -1,0 +1,109 @@
+# Production domain configurations
+# This file contains domain-specific configurations for production environment
+
+domains:
+  crypto_derivatives:
+    enabled: true
+    priority: 1
+    min_papers: 100
+    target_ratio: 0.2
+    quality_threshold: 0.8
+    search_terms:
+      - "cryptocurrency derivatives"
+      - "bitcoin futures"
+      - "crypto options"
+      - "perpetual swap"
+      - "funding rate"
+      - "basis trading"
+      - "crypto derivatives pricing"
+
+  high_frequency_trading:
+    enabled: true
+    priority: 1
+    min_papers: 100
+    target_ratio: 0.2
+    quality_threshold: 0.8
+    search_terms:
+      - "high frequency trading"
+      - "algorithmic trading"
+      - "market making"
+      - "execution algorithms"
+      - "latency arbitrage"
+
+  market_microstructure:
+    enabled: true
+    priority: 2
+    min_papers: 80
+    target_ratio: 0.15
+    quality_threshold: 0.75
+    search_terms:
+      - "market microstructure"
+      - "order book dynamics"
+      - "price discovery"
+      - "market liquidity"
+      - "trading costs"
+
+  risk_management:
+    enabled: true
+    priority: 2
+    min_papers: 80
+    target_ratio: 0.15
+    quality_threshold: 0.75
+    search_terms:
+      - "risk management"
+      - "value at risk"
+      - "portfolio risk"
+      - "hedging strategies"
+      - "volatility management"
+
+  decentralized_finance:
+    enabled: true
+    priority: 2
+    min_papers: 80
+    target_ratio: 0.15
+    quality_threshold: 0.75
+    search_terms:
+      - "decentralized finance"
+      - "defi protocols"
+      - "automated market makers"
+      - "liquidity pools"
+      - "yield farming"
+
+  portfolio_construction:
+    enabled: true
+    priority: 3
+    min_papers: 60
+    target_ratio: 0.1
+    quality_threshold: 0.7
+    search_terms:
+      - "portfolio construction"
+      - "asset allocation"
+      - "factor investing"
+      - "risk parity"
+      - "portfolio optimization"
+
+  valuation_models:
+    enabled: true
+    priority: 3
+    min_papers: 60
+    target_ratio: 0.1
+    quality_threshold: 0.7
+    search_terms:
+      - "valuation models"
+      - "pricing models"
+      - "token economics"
+      - "asset pricing"
+      - "market efficiency"
+
+  regulation_compliance:
+    enabled: true
+    priority: 3
+    min_papers: 60
+    target_ratio: 0.1
+    quality_threshold: 0.7
+    search_terms:
+      - "regulation"
+      - "compliance"
+      - "legal framework"
+      - "regulatory requirements"
+      - "compliance procedures" 
