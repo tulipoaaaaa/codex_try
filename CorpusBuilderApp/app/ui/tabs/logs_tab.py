@@ -1,9 +1,24 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGroupBox,
-                             QLabel, QPushButton, QTextEdit, QComboBox,
-                             QLineEdit, QCheckBox, QFileDialog, QSplitter,
-                             QTableWidget, QTableWidgetItem, QHeaderView)
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QTextEdit,
+    QComboBox,
+    QLineEdit,
+    QCheckBox,
+    QFileDialog,
+    QSplitter,
+    QTableWidget,
+    QTableWidgetItem,
+    QHeaderView,
+)
 from PySide6.QtCore import Qt, QTimer, Slot as pyqtSlot
 from PySide6.QtGui import QColor, QTextCharFormat, QBrush
+from app.ui.widgets.card_wrapper import CardWrapper
+from app.ui.widgets.section_header import SectionHeader
+from app.ui.widgets.status_dot import StatusDot
 
 import os
 import re
@@ -22,7 +37,10 @@ class LogsTab(QWidget):
         
     def setup_ui(self):
         main_layout = QVBoxLayout(self)
-        
+
+        header = SectionHeader("Logs")
+        main_layout.addWidget(header)
+
         # Log navigation and filtering controls
         controls_layout = QHBoxLayout()
         
@@ -56,7 +74,7 @@ class LogsTab(QWidget):
         
         # Create a splitter for log table and details
         splitter = QSplitter(Qt.Orientation.Vertical)
-        
+
         # Log entries table
         self.log_table = QTableWidget()
         self.log_table.setColumnCount(5)
@@ -68,12 +86,16 @@ class LogsTab(QWidget):
         self.log_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.log_table.clicked.connect(self.on_log_entry_selected)
         
-        splitter.addWidget(self.log_table)
+        table_card = CardWrapper(title="Entries")
+        table_card.body_layout.addWidget(self.log_table)
+        splitter.addWidget(table_card)
         
         # Log detail view
         self.log_detail = QTextEdit()
         self.log_detail.setReadOnly(True)
-        splitter.addWidget(self.log_detail)
+        detail_card = CardWrapper(title="Details")
+        detail_card.body_layout.addWidget(self.log_detail)
+        splitter.addWidget(detail_card)
         
         # Set initial splitter sizes (70% table, 30% details)
         splitter.setSizes([700, 300])
@@ -115,10 +137,7 @@ class LogsTab(QWidget):
         """Scan for log files in the configured log directory"""
         # In a real implementation, this would use project_config to get the log directory
         # For now, use a placeholder path
-        try:
-            log_dir = self.project_config.get_logs_dir()
-        except:
-            log_dir = os.path.expanduser("~/.cryptofinance/logs")
+        log_dir = self.project_config.get_logs_dir()
         
         # Placeholder - in a real implementation this would scan the actual directory
         # For demonstration, populate with sample log files
@@ -383,13 +402,9 @@ class LogsTab(QWidget):
             # Time
             time_item = QTableWidgetItem(entry.get("time", ""))
             self.log_table.setItem(i, 0, time_item)
-            # Level
-            level_item = QTableWidgetItem(entry.get("level", ""))
-            if entry.get("level") == "ERROR":
-                level_item.setForeground(QColor("red"))
-            elif entry.get("level") == "WARNING":
-                level_item.setForeground(QColor("orange"))
-            self.log_table.setItem(i, 1, level_item)
+            # Level with status dot
+            level_widget = StatusDot(entry.get("level", ""), entry.get("level", "").lower())
+            self.log_table.setCellWidget(i, 1, level_widget)
             # Component
             component_item = QTableWidgetItem(entry.get("component", ""))
             self.log_table.setItem(i, 2, component_item)
