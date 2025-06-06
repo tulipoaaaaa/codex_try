@@ -71,13 +71,12 @@ class CollectorsTab(QWidget):
     # --------------------------------------------------------------- Slots ----
     def _handle_progress(self, name: str, value: int) -> None:
         if name in self.cards:
-            self.cards[name].set_progress(value)
+            self.cards[name].update_progress(value)
         self.update_progress(value)
 
     def _handle_status(self, name: str, message: str) -> None:
         if name in self.cards:
-            running = "running" in message.lower()
-            self.cards[name].set_running(running)
+            self.cards[name].update_status(message)
         self.update_status(message)
 
     def start_collection(self, name: str) -> None:
@@ -85,7 +84,7 @@ class CollectorsTab(QWidget):
         if not wrapper:
             return
         wrapper.start()
-        self.cards[name].set_running(True)
+        self.cards[name].update_status("running")
         self.project_config.set(f"collectors.{name}.running", True)
         self.project_config.save()
         self.collection_started.emit(name)
@@ -95,7 +94,7 @@ class CollectorsTab(QWidget):
         if not wrapper:
             return
         wrapper.stop()
-        self.cards[name].set_running(False)
+        self.cards[name].update_status("stopped")
         self.project_config.set(f"collectors.{name}.running", False)
         self.project_config.save()
 
@@ -109,7 +108,7 @@ class CollectorsTab(QWidget):
         for name, wrapper in self.collector_wrappers.items():
             wrapper.stop()
             if name in self.cards:
-                self.cards[name].set_running(False)
+                self.cards[name].update_status("stopped")
             self.project_config.set(f"collectors.{name}.running", False)
             self.collection_finished.emit(name, False)
         self.collection_status_label.setText("All collectors stopped")
@@ -123,14 +122,14 @@ class CollectorsTab(QWidget):
         self.collection_status_label.setText(message)
 
     def on_collection_completed(self, collector_name: str, results: dict) -> None:
-        self.cards[collector_name].set_running(False)
+        self.cards[collector_name].update_status("stopped")
         self.project_config.set(f"collectors.{collector_name}.running", False)
         self.project_config.save()
         self.collection_finished.emit(collector_name, True)
         self.collection_status_label.setText(f"{collector_name} collection completed")
 
     def on_wrapper_error(self, collector_name: str, message: str) -> None:
-        self.cards[collector_name].set_running(False)
+        self.cards[collector_name].update_status("error")
         self.project_config.set(f"collectors.{collector_name}.running", False)
         self.project_config.save()
         self.collector_error.emit(collector_name, message)
