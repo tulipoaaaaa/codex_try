@@ -37,7 +37,8 @@ def sync_domains(force_sync=False):
             # Add all properties from reference, add placeholder for search_terms if missing
             new_domains[domain] = dict(ref_cfg)
             if 'search_terms' not in new_domains[domain]:
-                new_domains[domain]['search_terms'] = [f"TODO: add search terms for {domain}"]
+                # Placeholder until proper search terms are defined
+                new_domains[domain]['search_terms'] = ["undefined"]
         else:
             # Sync allocations and additional properties
             for key, value in ref_cfg.items():
@@ -72,7 +73,8 @@ def sync_domains(force_sync=False):
     for domain, props in new_domains.items():
         if 'search_terms' not in props:
             LOG.append(f"[ADD] search_terms placeholder added to domain '{domain}'")
-            props['search_terms'] = [f"TODO: add search terms for {domain}"]
+            # Placeholder until proper search terms are defined
+            props['search_terms'] = ["undefined"]
     # Remove domains not in balancer_config (optional: comment out to keep extras)
     for domain in list(new_domains.keys()):
         if domain not in REFERENCE_DOMAINS:
