@@ -1,7 +1,10 @@
 import pytest
 from unittest.mock import MagicMock, patch
-from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QApplication
+try:
+    from PySide6.QtCore import Qt
+    from PySide6.QtWidgets import QApplication
+except Exception:  # pragma: no cover - PySide6 unavailable
+    pytest.skip("Qt bindings not available", allow_module_level=True)
 
 from app.ui.tabs.collectors_tab import CollectorsTab
 
