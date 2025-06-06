@@ -26,6 +26,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QAction, QStandardItemModel, QStandardItem, QDragEnterEvent, QDropEvent, QIcon
 from PySide6.QtCore import Qt, QDir, QSortFilterProxyModel, QModelIndex, Slot as pyqtSlot, QPoint, QThread, Signal as pyqtSignal, QMimeData, QTimer, QMutex
+from shared_tools.storage.corpus_manager import CorpusManager
 import os
 import json
 import shutil
@@ -129,270 +130,12 @@ class BatchMetadataEditor(QDialog):
     def should_overwrite(self) -> bool:
         return self.overwrite_cb.isChecked()
 
-class BatchOperationWorker(QThread):
-    """Worker thread for batch operations on corpus files"""
-    
-    progress_updated = pyqtSignal(int, str, dict)  # progress, message, stats
-    file_processed = pyqtSignal(str, str, bool, str)  # operation, file_path, success, message
-    operation_completed = pyqtSignal(str, dict)  # operation_type, final_stats
-    error_occurred = pyqtSignal(str, str)  # error_type, error_message
-    
-    def __init__(self, operation: str, files: List[str], target_path: str = "", options: Dict[str, Any] = None):
-        super().__init__()
-        self.operation = operation
-        self.files = files
-        self.target_path = target_path
-        self.options = options or {}
-        self._is_cancelled = False
-        self._mutex = QMutex()
-        self.stats = {
-            'total_files': len(files),
-            'processed_files': 0,
-            'successful_files': 0,
-            'failed_files': 0,
-            'skipped_files': 0,
-            'total_size': 0,
-            'processed_size': 0
-        }
-    
-    def run(self):
-        """Execute the batch operation"""
-        try:
-            if self.operation == "copy":
-                self._copy_files()
-            elif self.operation == "move":
-                self._move_files()
-            elif self.operation == "delete":
-                self._delete_files()
-            elif self.operation == "rename":
-                self._rename_files()
-            elif self.operation == "update_metadata":
-                self._update_metadata()
-            elif self.operation == "organize":
-                self._organize_files()
-        except Exception as e:
-            self.error_occurred.emit("Operation Error", str(e))
-    
-    def _copy_files(self):
-        """Copy files to target directory"""
-        if not os.path.exists(self.target_path):
-            os.makedirs(self.target_path)
-        
-        for i, file_path in enumerate(self.files):
-            if self._is_cancelled:
-                break
-            
-            try:
-                filename = os.path.basename(file_path)
-                target_file = os.path.join(self.target_path, filename)
-                
-                # Handle name conflicts
-                if os.path.exists(target_file):
-                    if self.options.get('overwrite', False):
-                        pass  # Will overwrite
-                    elif self.options.get('rename_conflicts', True):
-                        base, ext = os.path.splitext(filename)
-                        counter = 1
-                        while os.path.exists(target_file):
-                            target_file = os.path.join(self.target_path, f"{base}_{counter}{ext}")
-                            counter += 1
-                    else:
-                        self.stats['skipped_files'] += 1
-                        self.file_processed.emit("copy", file_path, False, "File already exists")
-                        continue
-                
-                # Copy file
-                shutil.copy2(file_path, target_file)
-                
-                # Update statistics
-                file_size = os.path.getsize(file_path)
-                self.stats['successful_files'] += 1
-                self.stats['processed_size'] += file_size
-                
-                self.file_processed.emit("copy", file_path, True, f"Copied to {target_file}")
-            
-            except Exception as e:
-                self.stats['failed_files'] += 1
-                self.file_processed.emit("copy", file_path, False, str(e))
-            
-            finally:
-                self.stats['processed_files'] += 1
-                progress = int((self.stats['processed_files'] / self.stats['total_files']) * 100)
-                self.progress_updated.emit(progress, f"Copying: {filename}", self.stats.copy())
-        
-        self.operation_completed.emit("copy", self.stats)
-    
-    def _move_files(self):
-        """Move files to target directory"""
-        if not os.path.exists(self.target_path):
-            os.makedirs(self.target_path)
-        
-        for i, file_path in enumerate(self.files):
-            if self._is_cancelled:
-                break
-            
-            try:
-                filename = os.path.basename(file_path)
-                target_file = os.path.join(self.target_path, filename)
-                
-                # Handle name conflicts
-                if os.path.exists(target_file):
-                    if self.options.get('overwrite', False):
-                        os.remove(target_file)
-                    elif self.options.get('rename_conflicts', True):
-                        base, ext = os.path.splitext(filename)
-                        counter = 1
-                        while os.path.exists(target_file):
-                            target_file = os.path.join(self.target_path, f"{base}_{counter}{ext}")
-                            counter += 1
-                    else:
-                        self.stats['skipped_files'] += 1
-                        self.file_processed.emit("move", file_path, False, "File already exists")
-                        continue
-                
-                # Move file
-                shutil.move(file_path, target_file)
-                
-                # Update statistics
-                self.stats['successful_files'] += 1
-                self.file_processed.emit("move", file_path, True, f"Moved to {target_file}")
-            
-            except Exception as e:
-                self.stats['failed_files'] += 1
-                self.file_processed.emit("move", file_path, False, str(e))
-            
-            finally:
-                self.stats['processed_files'] += 1
-                progress = int((self.stats['processed_files'] / self.stats['total_files']) * 100)
-                self.progress_updated.emit(progress, f"Moving: {filename}", self.stats.copy())
-        
-        self.operation_completed.emit("move", self.stats)
-    
-    def _rename_files(self):
-        """Rename files according to pattern"""
-        pattern = self.options.get('pattern', '')
-        for i, file_path in enumerate(self.files):
-            if self._is_cancelled:
-                break
-            
-            try:
-                filename = os.path.basename(file_path)
-                dir_path = os.path.dirname(file_path)
-                base, ext = os.path.splitext(filename)
-                
-                # Apply rename pattern
-                new_name = pattern.format(
-                    index=i+1,
-                    original=base,
-                    extension=ext[1:],
-                    date=time.strftime("%Y%m%d")
-                )
-                new_path = os.path.join(dir_path, new_name)
-                
-                # Handle name conflicts
-                if os.path.exists(new_path):
-                    if self.options.get('overwrite', False):
-                        os.remove(new_path)
-                    elif self.options.get('rename_conflicts', True):
-                        counter = 1
-                        while os.path.exists(new_path):
-                            new_path = os.path.join(dir_path, f"{new_name}_{counter}{ext}")
-                            counter += 1
-                    else:
-                        self.stats['skipped_files'] += 1
-                        self.file_processed.emit("rename", file_path, False, "File already exists")
-                        continue
-                
-                # Rename file
-                os.rename(file_path, new_path)
-                
-                # Update statistics
-                self.stats['successful_files'] += 1
-                self.file_processed.emit("rename", file_path, True, f"Renamed to {new_name}")
-            
-            except Exception as e:
-                self.stats['failed_files'] += 1
-                self.file_processed.emit("rename", file_path, False, str(e))
-            
-            finally:
-                self.stats['processed_files'] += 1
-                progress = int((self.stats['processed_files'] / self.stats['total_files']) * 100)
-                self.progress_updated.emit(progress, f"Renaming: {filename}", self.stats.copy())
-        
-        self.operation_completed.emit("rename", self.stats)
-    
-    def _organize_files(self):
-        """Organize files into subdirectories based on criteria"""
-        criteria = self.options.get('criteria', 'extension')
-        
-        for i, file_path in enumerate(self.files):
-            if self._is_cancelled:
-                break
-            
-            try:
-                filename = os.path.basename(file_path)
-                dir_path = os.path.dirname(file_path)
-                
-                # Determine target subdirectory based on criteria
-                if criteria == 'extension':
-                    _, ext = os.path.splitext(filename)
-                    subdir = ext[1:].upper() if ext else 'NO_EXTENSION'
-                elif criteria == 'date':
-                    mtime = os.path.getmtime(file_path)
-                    subdir = time.strftime("%Y-%m", time.localtime(mtime))
-                else:
-                    subdir = 'OTHER'
-                
-                # Create subdirectory if needed
-                target_dir = os.path.join(dir_path, subdir)
-                if not os.path.exists(target_dir):
-                    os.makedirs(target_dir)
-                
-                # Move file to subdirectory
-                target_file = os.path.join(target_dir, filename)
-                if os.path.exists(target_file):
-                    if self.options.get('overwrite', False):
-                        os.remove(target_file)
-                    elif self.options.get('rename_conflicts', True):
-                        base, ext = os.path.splitext(filename)
-                        counter = 1
-                        while os.path.exists(target_file):
-                            target_file = os.path.join(target_dir, f"{base}_{counter}{ext}")
-                            counter += 1
-                    else:
-                        self.stats['skipped_files'] += 1
-                        self.file_processed.emit("organize", file_path, False, "File already exists")
-                        continue
-                
-                shutil.move(file_path, target_file)
-                
-                # Update statistics
-                self.stats['successful_files'] += 1
-                self.file_processed.emit("organize", file_path, True, f"Organized into {subdir}")
-            
-            except Exception as e:
-                self.stats['failed_files'] += 1
-                self.file_processed.emit("organize", file_path, False, str(e))
-            
-            finally:
-                self.stats['processed_files'] += 1
-                progress = int((self.stats['processed_files'] / self.stats['total_files']) * 100)
-                self.progress_updated.emit(progress, f"Organizing: {filename}", self.stats.copy())
-        
-        self.operation_completed.emit("organize", self.stats)
-    
-    def cancel(self):
-        """Cancel the current operation"""
-        self._mutex.lock()
-        self._is_cancelled = True
-        self._mutex.unlock()
-
 class CorpusManagerTab(QWidget):
     def __init__(self, project_config, parent=None):
         super().__init__(parent)
         self.notification_manager = NotificationManager(self)  # Initialize first
         self.project_config = project_config
-        self.manager = CorpusManager(self)
+        self.corpus_manager = CorpusManager()
         self.setup_ui()
         self.selected_files = []
         self.batch_metadata_editor = None
@@ -935,17 +678,10 @@ class CorpusManagerTab(QWidget):
         
         if confirm == QMessageBox.StandardButton.Yes:
             try:
-                if os.path.isdir(file_path):
-                    import shutil
-                    shutil.rmtree(file_path)
-                else:
-                    os.remove(file_path)
-                    
-                # Also remove metadata if it exists
+                self.corpus_manager.delete_files([file_path])
                 metadata_path = self.get_metadata_path(file_path)
                 if os.path.exists(metadata_path):
                     os.remove(metadata_path)
-                    
                 self.refresh_file_view()
             except Exception as e:
                 QMessageBox.critical(
@@ -985,8 +721,16 @@ class CorpusManagerTab(QWidget):
             return
         confirm = QMessageBox.question(self, "Confirm Delete", f"Delete {len(selected_files)} files?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if confirm == QMessageBox.StandardButton.Yes:
-            self.batch_status_layout.addWidget(StatusDot("Starting delete", "info"))
-            self.manager.batch_delete_files(selected_files)
+            try:
+                self.corpus_manager.delete_files(selected_files)
+                self.notification_manager.add_notification("batch_delete", "Batch Delete", f"Deleted {len(selected_files)} files.", "success", auto_hide=True)
+                if self.sound_enabled:
+                    Notifier.notify("Batch Delete", f"Deleted {len(selected_files)} files.", level="success")
+                self.refresh_file_view()
+            except Exception as e:
+                self.notification_manager.add_notification("batch_delete_error", "Delete Error", str(e), "error", auto_hide=True)
+                if self.sound_enabled:
+                    Notifier.notify("Delete Error", str(e), level="error")
 
     def get_selected_files(self):
         """Return the list of selected files from the file browser."""
@@ -1044,22 +788,30 @@ class CorpusManagerTab(QWidget):
         if not selected_files:
             QMessageBox.warning(self, "No files selected", "Please select files to copy.")
             return
-        target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
-        if not target_dir:
-            return
-        self.batch_status_layout.addWidget(StatusDot("Starting copy", "info"))
-        self.manager.batch_copy_files(selected_files, target_dir)
+        try:
+            target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
+            if not target_dir:
+                return
+            self.corpus_manager.copy_files(selected_files, target_dir)
+            self.notification_manager.add_notification("batch_copy", "Batch Copy", f"Copied {len(selected_files)} files.", "success", auto_hide=True)
+            self.refresh_file_view()
+        except Exception as e:
+            QMessageBox.critical(self, "Batch Copy Error", str(e))
 
     def batch_move_files(self):
         selected_files = self.get_selected_files()
         if not selected_files:
             QMessageBox.warning(self, "No files selected", "Please select files to move.")
             return
-        target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
-        if not target_dir:
-            return
-        self.batch_status_layout.addWidget(StatusDot("Starting move", "info"))
-        self.manager.batch_move_files(selected_files, target_dir)
+        try:
+            target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
+            if not target_dir:
+                return
+            self.corpus_manager.move_files(selected_files, target_dir)
+            self.notification_manager.add_notification("batch_move", "Batch Move", f"Moved {len(selected_files)} files.", "success", auto_hide=True)
+            self.refresh_file_view()
+        except Exception as e:
+            QMessageBox.critical(self, "Batch Move Error", str(e))
 
     def batch_rename_files(self):
         selected_files = self.get_selected_files()
@@ -1070,17 +822,7 @@ class CorpusManagerTab(QWidget):
         if not ok or not pattern:
             return
         try:
-            for i, file_path in enumerate(selected_files):
-                try:
-                    dir_path = os.path.dirname(file_path)
-                    base, ext = os.path.splitext(os.path.basename(file_path))
-                    new_name = pattern.format(index=i+1, original=base, extension=ext[1:], date=time.strftime("%Y%m%d"))
-                    new_path = os.path.join(dir_path, new_name)
-                    if os.path.exists(new_path):
-                        raise FileExistsError(f"File {new_name} already exists.")
-                    os.rename(file_path, new_path)
-                except Exception as e:
-                    self.notification_manager.add_notification(f"rename_{file_path}", "Rename Error", str(e), "error", auto_hide=True)
+            self.corpus_manager.rename_files(selected_files, pattern)
             self.notification_manager.add_notification("batch_rename", "Batch Rename", f"Renamed {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
@@ -1095,26 +837,7 @@ class CorpusManagerTab(QWidget):
         if not ok:
             return
         try:
-            for file_path in selected_files:
-                try:
-                    dir_path = os.path.dirname(file_path)
-                    filename = os.path.basename(file_path)
-                    if criteria == 'extension':
-                        _, ext = os.path.splitext(filename)
-                        subdir = ext[1:].upper() if ext else 'NO_EXTENSION'
-                    elif criteria == 'date':
-                        mtime = os.path.getmtime(file_path)
-                        subdir = time.strftime("%Y-%m", time.localtime(mtime))
-                    else:
-                        subdir = 'OTHER'
-                    target_dir = os.path.join(dir_path, subdir)
-                    os.makedirs(target_dir, exist_ok=True)
-                    target_file = os.path.join(target_dir, filename)
-                    if os.path.exists(target_file):
-                        raise FileExistsError(f"File {filename} already exists in {subdir}.")
-                    shutil.move(file_path, target_file)
-                except Exception as e:
-                    self.notification_manager.add_notification(f"organize_{file_path}", "Organize Error", str(e), "error", auto_hide=True)
+            self.corpus_manager.organize_files(selected_files, criteria)
             self.notification_manager.add_notification("batch_organize", "Batch Organize", f"Organized {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
