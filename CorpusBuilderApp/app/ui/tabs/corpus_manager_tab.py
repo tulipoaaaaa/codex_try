@@ -1,10 +1,29 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QSplitter,
-                             QTreeView, QGroupBox, QTextEdit, QPushButton,
-                             QLabel, QLineEdit, QFileDialog, QComboBox,
-                             QTableView, QHeaderView, QMenu, QMessageBox,
-                             QDialog, QFormLayout, QCheckBox, QDialogButtonBox,
-                             QProgressBar, QInputDialog, QFileSystemModel,
-                             QScrollArea, QFrame)
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QSplitter,
+    QTreeView,
+    QTextEdit,
+    QPushButton,
+    QLabel,
+    QLineEdit,
+    QFileDialog,
+    QComboBox,
+    QTableView,
+    QHeaderView,
+    QMenu,
+    QMessageBox,
+    QDialog,
+    QFormLayout,
+    QCheckBox,
+    QDialogButtonBox,
+    QProgressBar,
+    QInputDialog,
+    QFileSystemModel,
+    QScrollArea,
+    QFrame,
+)
 from PySide6.QtGui import QAction, QStandardItemModel, QStandardItem, QDragEnterEvent, QDropEvent, QIcon
 from PySide6.QtCore import Qt, QDir, QSortFilterProxyModel, QModelIndex, Slot as pyqtSlot, QPoint, QThread, Signal as pyqtSignal, QMimeData, QTimer, QMutex
 from shared_tools.storage.corpus_manager import CorpusManager
@@ -15,6 +34,10 @@ import time
 from typing import List, Dict, Any
 from app.helpers.icon_manager import IconManager
 from app.helpers.notifier import Notifier
+from app.ui.widgets.card_wrapper import CardWrapper
+from app.ui.widgets.section_header import SectionHeader
+from app.ui.widgets.status_dot import StatusDot
+from shared_tools.storage.corpus_manager import CorpusManager
 
 class NotificationManager(QWidget):
     def __init__(self, parent=None):
@@ -107,264 +130,6 @@ class BatchMetadataEditor(QDialog):
     def should_overwrite(self) -> bool:
         return self.overwrite_cb.isChecked()
 
-class BatchOperationWorker(QThread):
-    """Worker thread for batch operations on corpus files"""
-    
-    progress_updated = pyqtSignal(int, str, dict)  # progress, message, stats
-    file_processed = pyqtSignal(str, str, bool, str)  # operation, file_path, success, message
-    operation_completed = pyqtSignal(str, dict)  # operation_type, final_stats
-    error_occurred = pyqtSignal(str, str)  # error_type, error_message
-    
-    def __init__(self, operation: str, files: List[str], target_path: str = "", options: Dict[str, Any] = None):
-        super().__init__()
-        self.operation = operation
-        self.files = files
-        self.target_path = target_path
-        self.options = options or {}
-        self._is_cancelled = False
-        self._mutex = QMutex()
-        self.stats = {
-            'total_files': len(files),
-            'processed_files': 0,
-            'successful_files': 0,
-            'failed_files': 0,
-            'skipped_files': 0,
-            'total_size': 0,
-            'processed_size': 0
-        }
-    
-    def run(self):
-        """Execute the batch operation"""
-        try:
-            if self.operation == "copy":
-                self._copy_files()
-            elif self.operation == "move":
-                self._move_files()
-            elif self.operation == "delete":
-                self._delete_files()
-            elif self.operation == "rename":
-                self._rename_files()
-            elif self.operation == "update_metadata":
-                self._update_metadata()
-            elif self.operation == "organize":
-                self._organize_files()
-        except Exception as e:
-            self.error_occurred.emit("Operation Error", str(e))
-    
-    def _copy_files(self):
-        """Copy files to target directory"""
-        if not os.path.exists(self.target_path):
-            os.makedirs(self.target_path)
-        
-        for i, file_path in enumerate(self.files):
-            if self._is_cancelled:
-                break
-            
-            try:
-                filename = os.path.basename(file_path)
-                target_file = os.path.join(self.target_path, filename)
-                
-                # Handle name conflicts
-                if os.path.exists(target_file):
-                    if self.options.get('overwrite', False):
-                        pass  # Will overwrite
-                    elif self.options.get('rename_conflicts', True):
-                        base, ext = os.path.splitext(filename)
-                        counter = 1
-                        while os.path.exists(target_file):
-                            target_file = os.path.join(self.target_path, f"{base}_{counter}{ext}")
-                            counter += 1
-                    else:
-                        self.stats['skipped_files'] += 1
-                        self.file_processed.emit("copy", file_path, False, "File already exists")
-                        continue
-                
-                # Copy file
-                shutil.copy2(file_path, target_file)
-                
-                # Update statistics
-                file_size = os.path.getsize(file_path)
-                self.stats['successful_files'] += 1
-                self.stats['processed_size'] += file_size
-                
-                self.file_processed.emit("copy", file_path, True, f"Copied to {target_file}")
-            
-            except Exception as e:
-                self.stats['failed_files'] += 1
-                self.file_processed.emit("copy", file_path, False, str(e))
-            
-            finally:
-                self.stats['processed_files'] += 1
-                progress = int((self.stats['processed_files'] / self.stats['total_files']) * 100)
-                self.progress_updated.emit(progress, f"Copying: {filename}", self.stats.copy())
-        
-        self.operation_completed.emit("copy", self.stats)
-    
-    def _move_files(self):
-        """Move files to target directory"""
-        if not os.path.exists(self.target_path):
-            os.makedirs(self.target_path)
-        
-        for i, file_path in enumerate(self.files):
-            if self._is_cancelled:
-                break
-            
-            try:
-                filename = os.path.basename(file_path)
-                target_file = os.path.join(self.target_path, filename)
-                
-                # Handle name conflicts
-                if os.path.exists(target_file):
-                    if self.options.get('overwrite', False):
-                        os.remove(target_file)
-                    elif self.options.get('rename_conflicts', True):
-                        base, ext = os.path.splitext(filename)
-                        counter = 1
-                        while os.path.exists(target_file):
-                            target_file = os.path.join(self.target_path, f"{base}_{counter}{ext}")
-                            counter += 1
-                    else:
-                        self.stats['skipped_files'] += 1
-                        self.file_processed.emit("move", file_path, False, "File already exists")
-                        continue
-                
-                # Move file
-                shutil.move(file_path, target_file)
-                
-                # Update statistics
-                self.stats['successful_files'] += 1
-                self.file_processed.emit("move", file_path, True, f"Moved to {target_file}")
-            
-            except Exception as e:
-                self.stats['failed_files'] += 1
-                self.file_processed.emit("move", file_path, False, str(e))
-            
-            finally:
-                self.stats['processed_files'] += 1
-                progress = int((self.stats['processed_files'] / self.stats['total_files']) * 100)
-                self.progress_updated.emit(progress, f"Moving: {filename}", self.stats.copy())
-        
-        self.operation_completed.emit("move", self.stats)
-    
-    def _rename_files(self):
-        """Rename files according to pattern"""
-        pattern = self.options.get('pattern', '')
-        for i, file_path in enumerate(self.files):
-            if self._is_cancelled:
-                break
-            
-            try:
-                filename = os.path.basename(file_path)
-                dir_path = os.path.dirname(file_path)
-                base, ext = os.path.splitext(filename)
-                
-                # Apply rename pattern
-                new_name = pattern.format(
-                    index=i+1,
-                    original=base,
-                    extension=ext[1:],
-                    date=time.strftime("%Y%m%d")
-                )
-                new_path = os.path.join(dir_path, new_name)
-                
-                # Handle name conflicts
-                if os.path.exists(new_path):
-                    if self.options.get('overwrite', False):
-                        os.remove(new_path)
-                    elif self.options.get('rename_conflicts', True):
-                        counter = 1
-                        while os.path.exists(new_path):
-                            new_path = os.path.join(dir_path, f"{new_name}_{counter}{ext}")
-                            counter += 1
-                    else:
-                        self.stats['skipped_files'] += 1
-                        self.file_processed.emit("rename", file_path, False, "File already exists")
-                        continue
-                
-                # Rename file
-                os.rename(file_path, new_path)
-                
-                # Update statistics
-                self.stats['successful_files'] += 1
-                self.file_processed.emit("rename", file_path, True, f"Renamed to {new_name}")
-            
-            except Exception as e:
-                self.stats['failed_files'] += 1
-                self.file_processed.emit("rename", file_path, False, str(e))
-            
-            finally:
-                self.stats['processed_files'] += 1
-                progress = int((self.stats['processed_files'] / self.stats['total_files']) * 100)
-                self.progress_updated.emit(progress, f"Renaming: {filename}", self.stats.copy())
-        
-        self.operation_completed.emit("rename", self.stats)
-    
-    def _organize_files(self):
-        """Organize files into subdirectories based on criteria"""
-        criteria = self.options.get('criteria', 'extension')
-        
-        for i, file_path in enumerate(self.files):
-            if self._is_cancelled:
-                break
-            
-            try:
-                filename = os.path.basename(file_path)
-                dir_path = os.path.dirname(file_path)
-                
-                # Determine target subdirectory based on criteria
-                if criteria == 'extension':
-                    _, ext = os.path.splitext(filename)
-                    subdir = ext[1:].upper() if ext else 'NO_EXTENSION'
-                elif criteria == 'date':
-                    mtime = os.path.getmtime(file_path)
-                    subdir = time.strftime("%Y-%m", time.localtime(mtime))
-                else:
-                    subdir = 'OTHER'
-                
-                # Create subdirectory if needed
-                target_dir = os.path.join(dir_path, subdir)
-                if not os.path.exists(target_dir):
-                    os.makedirs(target_dir)
-                
-                # Move file to subdirectory
-                target_file = os.path.join(target_dir, filename)
-                if os.path.exists(target_file):
-                    if self.options.get('overwrite', False):
-                        os.remove(target_file)
-                    elif self.options.get('rename_conflicts', True):
-                        base, ext = os.path.splitext(filename)
-                        counter = 1
-                        while os.path.exists(target_file):
-                            target_file = os.path.join(target_dir, f"{base}_{counter}{ext}")
-                            counter += 1
-                    else:
-                        self.stats['skipped_files'] += 1
-                        self.file_processed.emit("organize", file_path, False, "File already exists")
-                        continue
-                
-                shutil.move(file_path, target_file)
-                
-                # Update statistics
-                self.stats['successful_files'] += 1
-                self.file_processed.emit("organize", file_path, True, f"Organized into {subdir}")
-            
-            except Exception as e:
-                self.stats['failed_files'] += 1
-                self.file_processed.emit("organize", file_path, False, str(e))
-            
-            finally:
-                self.stats['processed_files'] += 1
-                progress = int((self.stats['processed_files'] / self.stats['total_files']) * 100)
-                self.progress_updated.emit(progress, f"Organizing: {filename}", self.stats.copy())
-        
-        self.operation_completed.emit("organize", self.stats)
-    
-    def cancel(self):
-        """Cancel the current operation"""
-        self._mutex.lock()
-        self._is_cancelled = True
-        self._mutex.unlock()
-
 class CorpusManagerTab(QWidget):
     def __init__(self, project_config, parent=None):
         super().__init__(parent)
@@ -395,8 +160,7 @@ class CorpusManagerTab(QWidget):
 
         header_layout = QHBoxLayout()
         header_layout.setSpacing(8)
-        header_label = QLabel("Corpus Manager")
-        header_label.setObjectName("dashboard-section-header")
+        header_label = SectionHeader("Corpus Manager")
         header_layout.addWidget(header_label)
         header_layout.addStretch()
         main_layout.addLayout(header_layout)
@@ -493,9 +257,8 @@ class CorpusManagerTab(QWidget):
         metadata_layout = QVBoxLayout(metadata_widget)
         
         # File info
-        file_info_group = QGroupBox("File Information")
-        file_info_group.setObjectName("card")
-        file_info_layout = QVBoxLayout(file_info_group)
+        file_info_group = CardWrapper(title="File Information")
+        file_info_layout = file_info_group.body_layout
         
         self.file_name_label = QLabel("No file selected")
         self.file_path_label = QLabel("")
@@ -510,8 +273,8 @@ class CorpusManagerTab(QWidget):
         metadata_layout.addWidget(file_info_group)
         
         # Metadata viewer/editor
-        metadata_group = QGroupBox("Metadata")
-        metadata_inner_layout = QVBoxLayout(metadata_group)
+        metadata_group = CardWrapper(title="Metadata")
+        metadata_inner_layout = metadata_group.body_layout
         
         # Use a table view for structured metadata display and editing
         self.metadata_table = QTableView()
@@ -542,8 +305,8 @@ class CorpusManagerTab(QWidget):
         metadata_layout.addWidget(metadata_group)
         
         # Content preview
-        preview_group = QGroupBox("Content Preview")
-        preview_layout = QVBoxLayout(preview_group)
+        preview_group = CardWrapper(title="Content Preview")
+        preview_layout = preview_group.body_layout
         
         self.content_preview = QTextEdit()
         self.content_preview.setReadOnly(True)
@@ -561,9 +324,8 @@ class CorpusManagerTab(QWidget):
         main_layout.addWidget(splitter)
         
         # Add batch operations panel with progress
-        batch_ops_group = QGroupBox("Batch Operations")
-        batch_ops_group.setObjectName("card")
-        batch_ops_layout = QVBoxLayout(batch_ops_group)
+        batch_ops_group = CardWrapper(title="Batch Operations")
+        batch_ops_layout = batch_ops_group.body_layout
 
         actions_layout = QHBoxLayout()
         self.batch_copy_btn = QPushButton("Copy")
@@ -597,16 +359,24 @@ class CorpusManagerTab(QWidget):
         
         # Progress area
         progress_layout = QVBoxLayout()
-        
+
         self.batch_progress = QProgressBar()
         self.batch_progress.setRange(0, 100)
         progress_layout.addWidget(self.batch_progress)
-        
+
+        self.batch_status_layout = QVBoxLayout()
+        progress_layout.addLayout(self.batch_status_layout)
+
         self.batch_status = QLabel("Ready")
         self.batch_status.setObjectName("status-info")
         progress_layout.addWidget(self.batch_status)
-        
+
         batch_ops_layout.addLayout(progress_layout)
+
+        # Connect corpus manager signals
+        self.manager.progress_updated.connect(lambda p, _op: self.batch_progress.setValue(p))
+        self.manager.status_updated.connect(self._handle_batch_status)
+        self.manager.operation_completed.connect(self._handle_operation_completed)
 
         main_layout.addWidget(batch_ops_group)
 
@@ -1087,6 +857,14 @@ class CorpusManagerTab(QWidget):
         path = self.path_input.text()
         ready = os.path.isdir(path) and bool(os.listdir(path))
         self.rebalance_btn.setEnabled(ready)
+
+    def _handle_batch_status(self, file_path: str, status: str) -> None:
+        dot = StatusDot(os.path.basename(file_path), status)
+        self.batch_status_layout.addWidget(dot)
+
+    def _handle_operation_completed(self, op: str) -> None:
+        self.batch_status.setText(f"{op.title()} completed")
+        self.refresh_file_view()
 
     def create_action_card(self, title: str, callback, button: QPushButton) -> QFrame:
         card = QFrame()
