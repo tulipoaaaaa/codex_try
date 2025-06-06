@@ -1,55 +1,91 @@
-# Testing Guide
 
-This document explains how to run the automated tests for the **CryptoFinance Corpus Builder** desktop application. Tests are designed for real usage scenarios, so most require actual network access and real files rather than mocks.
+# Test Execution Guide
 
-## 1. Installation Requirements
+This guide explains how to run the project's full test suite locally.
 
-The following dependencies are required to execute the entire test suite:
+## 1. Install Requirements
+
+Create and activate a Python 3.10+ virtual environment and install the base dependencies:
 
 ```bash
-# Application and library dependencies
 pip install -r CorpusBuilderApp/requirements.txt
-
-# Testing utilities and extras
-pip install pytest pytest-qt pytest-mock pytest-xdist coverage nbformat pytesseract PyPDF2 selenium
 ```
 
-System packages:
+Additional packages are required for running the tests, including Qt bindings and common pytest plugins:
 
-- `tesseract-ocr` – required for OCR tests (install via your package manager, e.g. `sudo apt install tesseract-ocr` on Debian/Ubuntu)
-- Any shared libraries needed by PySide6 (e.g. `libEGL.so.1` on Linux)
+```bash
+pip install PySide6 pytest pytest-qt pytest-mock pytest-xdist pytest-cov nbformat pytesseract PyPDF2 selenium
+```
 
-## 2. Test Folder Requirements (Per Test Group)
+## 2. Folder Requirements Per Test File
 
-| Test File | Folder or Setup Required | Purpose |
-|-----------|-------------------------|---------|
-| `test_pdf_extractor.py` | Directory containing non-password-protected `.pdf` files | Validates real PDF text extraction |
-| `test_nonpdf_extractor_projectconfig.py` | Folder with `.txt`, `.html`, `.md`, `.json`, etc. | Verifies plain text and metadata extraction |
-| `test_github_collector.py` | GitHub access token via config along with a search keyword | Requires internet, fetches real repositories |
-| `test_arxiv_collector.py` | A search term in `project_config.yaml` | Downloads academic PDFs from arXiv |
-| `test_annas_scidb_collector.py` | None | Real web scraper query |
-| `test_corpus_manager.py` | Temporary or existing corpus folder containing documents | Exercises file copy/move/rename/delete |
-| `test_corpus_balance.py` | Corpus folder with diverse `.meta` files | Measures balancing effectiveness |
-| `test_cli_consolidate.py` | One or more `input_dir/` folders with `.jsonl` or `.txt` files | Validates CLI‑based merging logic |
-| `test_logs_tab.py` | Log directory with `.log` or `.txt` files in the app logger format | Simulates real application logging |
+The table below lists all test modules and the directories or inputs they expect. Temporary folders are created automatically unless noted.
 
-Many tests recursively traverse directories, so deep folder structures are acceptable. Avoid using mock data unless the test explicitly indicates otherwise. If PySide6 is not available on your system, UI tests that rely on Qt should be skipped automatically (`pytest.skip`).
+| Test File | Required Folder or Input | Description |
+|-----------|-------------------------|-------------|
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_annas_library_collector.py | AA_ACCOUNT_COOKIE env var, config/test_config.yaml | Downloads PDFs from Anna's Archive |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_api_collector.py | None (uses temp dirs) | Exercises generic API collector |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_arxiv_collector.py | Internet access, config/test_config.yaml | Collects papers from arXiv |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_arxiv_collector_projectconfig.py | config/master_config.yaml | Arxiv collector with ProjectConfig |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_bitmex_collector.py | mock_bitmex_research.html file | Parses BitMEX research posts |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_chunking_behavior.py | data/test_collect/chunking_tests/* | Chunking of CSV/py/ipynb/JSON files |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_domain_config_wrapper.py | None | Domain config wrapper logic |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_fred_collector.py | FRED_API_KEY env var, config/test_config.yaml | Downloads data from FRED |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_general_web_collector.py | None | Web scraping collector |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_github_collector.py | GitHub token env var, output dir | Clones GitHub repos |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_github_collector_projectconfig.py | master_config.yaml | GitHub collector with ProjectConfig |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_isda_collector.py | None | ISDA website collector |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_pdf_extractor.py | tests/pdf_extraction/test_pdfs/ | Runs real PDF extraction |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_processors.py | None | Processor integration tests |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_quantopian_collector.py | None | Quantopian data collector |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_repo_collector.py | config/test_config.yaml | Repository collector downloads |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_scidb_collector.py | SciDB credentials | SciDB data fetch |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_scidb_collector_projectconfig.py | master_config.yaml | SciDB collector with ProjectConfig |
+| CryptoFinanceCorpusBuilder/tests/deprecated/test_web_collector.py | None | Generic website scraping |
+| CryptoFinanceCorpusBuilder/tests/test_base_extractor.py | temp input/output dirs with sample text | Base extractor pipeline |
+| CryptoFinanceCorpusBuilder/tests/test_bitmex_collector.py | mock_bitmex_research.html | Old BitMEX collector |
+| CryptoFinanceCorpusBuilder/tests/test_collectors.py | temp dirs | Basic collector behaviours |
+| CryptoFinanceCorpusBuilder/tests/test_corpus_balance.py | temp corpus with _extracted & low_quality | Corpus balancing analysis |
+| CryptoFinanceCorpusBuilder/tests/test_extractor_utils.py | temp files | Utility functions |
+| CryptoFinanceCorpusBuilder/tests/test_quality_config.py | config/quality_control_config.json | Model config validation |
+| CryptoFinanceCorpusBuilder/tests/test_quality_control_config.py | config/quality_control_config.json | Quality control config validation |
+| tests/deprecated/test_corpus_management.py | temp corpus directories with sample file | Corpus manager UI integration |
+| tests/deprecated/test_data_collectors.py | API keys env vars; network access | Collector behaviours across services |
+| tests/deprecated/test_ui_integration.py | PySide6 installed | Basic UI widget integration |
+| tests/integration/test_end_to_end_workflows.py | temp_workspace with downloads/processed/config subdirs | Full workflow simulation |
+| tests/integration/test_error_handling.py | temp files | Error handling scenarios |
+| tests/integration/test_multi_collector_flow.py | FRED & GitHub API tokens | Placeholder multi-collector flow |
+| tests/integration/test_performance.py | none | Performance benchmarks |
+| tests/integration/test_project_config_edges.py | project_config.yaml with edge cases | Placeholder config tests |
+| tests/integration/test_security_critical.py | env vars for API keys, temp files | Credential and input validation |
+| tests/test_domain_classifier_wrapper.py | none | Domain classifier wrapper logic |
+| tests/test_file_browser.py | temp_dir with sample_files | File browser widget |
+| tests/ui/test_collectors_tab.py | none (Qt required) | Collectors tab signals |
+| tests/ui/test_collectors_tab_integration.py | Qt environment | Placeholder collectors tab integration |
+| tests/ui/test_dashboard_tab.py | none (Qt required) | Dashboard tab widgets |
+| tests/ui/test_full_activity_tab.py | none (Qt required) | Card widgets and styles |
+| tests/unit/test_cli_consolidate.py | project config, CLI args | Placeholder consolidation CLI |
+| tests/unit/test_corpus_manager.py | corpus folder | Placeholder corpus manager |
+| tests/unit/test_quality_control_wrapper.py | none | Wrapper start/stop logic |
 
 ## 3. Running Tests
 
-Basic run:
+Execute the whole suite with:
 
 ```bash
-pytest tests/ --maxfail=3 --disable-warnings -q
+pytest tests/ --maxfail=2 --disable-warnings
 ```
 
-With coverage:
+Generate coverage information:
+
 
 ```bash
 coverage run -m pytest && coverage report -m
 ```
 
-On headless systems you can skip the Qt UI tests:
+
+Skip Qt based tests on headless systems:
+
 
 ```bash
 pytest -k "not qtbot"
@@ -57,10 +93,12 @@ pytest -k "not qtbot"
 
 ## 4. Troubleshooting
 
-| Issue | Fix |
-|-------|-----|
-| `ImportError: libEGL.so.1 not found` | Install the missing system library required for PySide6 rendering |
-| `ModuleNotFoundError: pytesseract` | `pip install pytesseract` |
-| `TesseractNotFoundError` | Install the `tesseract-ocr` package (e.g. `sudo apt install tesseract-ocr`) |
 
-For further questions about the testing workflow see the [Developer Guide](./DEVELOPER_GUIDE.md).
+| Issue | Resolution |
+|-------|-----------|
+| `ModuleNotFoundError: PySide6` | Ensure PySide6 is installed or run tests with the `-k "not qtbot"` flag. |
+| `libEGL` or display errors | Use a virtual framebuffer (e.g. Xvfb) or skip UI tests. |
+| `TesseractNotFoundError` | Install the Tesseract OCR engine and ensure `pytesseract` can locate it. |
+| Selenium `WebDriverException` | Confirm the correct browser driver is installed and on your `PATH`. |
+| Network timeouts during collector tests | Verify internet access or set the necessary API keys. |
+
