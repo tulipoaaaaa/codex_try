@@ -1,7 +1,13 @@
-from PyQt6.QtWidgets import (
-    QFrame, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QProgressBar, QWidget
+from PySide6.QtWidgets import (
+    QFrame,
+    QVBoxLayout,
+    QHBoxLayout,
+    QLabel,
+    QPushButton,
+    QProgressBar,
+    QWidget,
 )
-from PyQt6.QtCore import Qt, pyqtSignal
+from PySide6.QtCore import Qt, Signal as pyqtSignal
 
 
 class CollectorCard(QFrame):
@@ -14,7 +20,7 @@ class CollectorCard(QFrame):
 
     def __init__(self, name: str, description: str = "", tags: list[str] | None = None, parent: QWidget | None = None):
         super().__init__(parent)
-        self.setObjectName("card")
+        self.setObjectName("collector-card")
         self._name = name
         self.tags = tags or []
         self._setup_ui(name, description)
@@ -31,6 +37,7 @@ class CollectorCard(QFrame):
         header_layout.addWidget(title)
         header_layout.addStretch()
         self.status_indicator = QLabel()
+        self.status_indicator.setObjectName("status-dot")
         self.status_indicator.setFixedSize(10, 10)
         self.status_indicator.setStyleSheet("border-radius:5px;background:#6b7280;")
         header_layout.addWidget(self.status_indicator)
@@ -55,6 +62,11 @@ class CollectorCard(QFrame):
                 tags_layout.addWidget(tag_label)
             tags_layout.addStretch()
             layout.addLayout(tags_layout)
+
+
+        # Metrics placeholder
+        self.metrics_label = QLabel("Files collected: 0")
+        layout.addWidget(self.metrics_label)
 
         # Progress bar
         self.progress_bar = QProgressBar()
@@ -82,15 +94,28 @@ class CollectorCard(QFrame):
         self.configure_btn.clicked.connect(self.configure_requested)
         self.logs_btn.clicked.connect(self.logs_requested)
 
-    def set_status_color(self, color: str) -> None:
+    def update_status(self, status: str) -> None:
+        """Update the card's status indicator and button states."""
+        status = status.lower()
+        color = "#6b7280"
+        running = False
+        if "running" in status:
+            color = "#10b981"
+            running = True
+        elif "error" in status:
+            color = "#ef4444"
+        self.setProperty("status", "running" if running else ("error" if "error" in status else "stopped"))
         self.status_indicator.setStyleSheet(f"border-radius:5px;background:{color};")
-
-    def set_running(self, running: bool) -> None:
         self.start_btn.setEnabled(not running)
         self.stop_btn.setEnabled(running)
-        color = "#10b981" if running else "#6b7280"
-        self.set_status_color(color)
 
-    def set_progress(self, value: int) -> None:
+    def update_progress(self, value: int) -> None:
         self.progress_bar.setValue(value)
+
+    def update_metrics(self, **kwargs) -> None:
+        """Update metrics display using provided keyword arguments."""
+        if not kwargs:
+            return
+        parts = [f"{k.replace('_', ' ').title()}: {v}" for k, v in kwargs.items()]
+        self.metrics_label.setText(" • ".join(parts))
 

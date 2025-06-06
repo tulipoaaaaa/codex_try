@@ -87,6 +87,20 @@ QFrame[objectName="card"], QWidget[objectName="card"] {
     padding: 16px;
     margin-bottom: 16px;
 }
+QFrame[objectName="collector-card"][status="running"] {
+    border: 2px solid #10b981;
+}
+QFrame[objectName="collector-card"][status="stopped"] {
+    border: 2px solid #6b7280;
+}
+QFrame[objectName="collector-card"][status="error"] {
+    border: 2px solid #ef4444;
+}
+QLabel[objectName="status-dot"] {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+}
 
 /* Labels */
 QLabel[objectName="status-info"] {
