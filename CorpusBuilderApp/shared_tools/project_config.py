@@ -2,9 +2,8 @@ import os
 from pathlib import Path
 from typing import Optional, Dict, Any, List
 import yaml
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field
 from dotenv import load_dotenv
-from app.helpers.crypto_utils import encrypt_value, decrypt_value
 
 class EnvironmentConfig(BaseModel):
     """Schema for environment-specific configuration."""
