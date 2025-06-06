@@ -7,9 +7,7 @@
 # CryptoFinance Corpus Builder Dependencies
 
 # Core UI Framework
-PyQt6>=6.6.0
-PyQt6-Charts>=6.6.0
-PyQt6-tools>=6.6.0
+PySide6>=6.5,<7
 
 # Project Configuration
 pydantic>=2.5.0
@@ -433,7 +431,7 @@ CryptoFinanceCorpusBuilder/
 ### 1. Model-View-Controller (MVC)
 
 - **Model**: Data collectors and processors
-- **View**: PyQt6 UI components
+- **View**: PySide6 UI components
 - **Controller**: UI wrappers and signal/slot connections
 
 ### 2. Observer Pattern

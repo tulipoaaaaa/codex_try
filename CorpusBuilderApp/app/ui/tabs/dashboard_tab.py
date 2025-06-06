@@ -10,6 +10,9 @@ from PySide6.QtWidgets import (
     QPushButton,
 )
 from PySide6.QtCore import Qt, Signal
+from app.ui.widgets.card_wrapper import CardWrapper
+from app.ui.widgets.section_header import SectionHeader
+from app.ui.widgets.status_dot import StatusDot
 class DashboardTab(QWidget):
     """Dashboard displaying high level metrics for the corpus."""
 
@@ -56,26 +59,20 @@ class DashboardTab(QWidget):
         main_layout.addLayout(stats_layout)
 
         # Corpus metrics section
-        corpus_card = QFrame()
-        corpus_card.setObjectName("card")
-        corpus_layout = QVBoxLayout(corpus_card)
+        corpus_card = CardWrapper()
+        corpus_layout = corpus_card.body_layout
         corpus_layout.setSpacing(16)
 
-        self.total_docs_label = QLabel(f"Total Documents: {self.total_documents}")
-        self.total_docs_label.setObjectName("card__header")
+        self.total_docs_label = SectionHeader(f"Total Documents: {self.total_documents}")
         corpus_layout.addWidget(self.total_docs_label)
 
-        distribution_header = QLabel("Domain Distribution")
-        distribution_header.setObjectName("card__header")
+        distribution_header = SectionHeader("Domain Distribution")
         corpus_layout.addWidget(distribution_header)
 
         for domain, perc in self.domain_distribution.items():
             row = QHBoxLayout()
-            dot = QLabel()
-            dot.setObjectName("status-dot-active")
-            row.addWidget(dot)
-            label = QLabel(f"{domain}: {perc}%")
-            row.addWidget(label)
+            status = StatusDot(f"{domain}: {perc}%", "info")
+            row.addWidget(status)
             row.addStretch()
             corpus_layout.addLayout(row)
 
