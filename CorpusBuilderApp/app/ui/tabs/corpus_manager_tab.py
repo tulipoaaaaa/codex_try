@@ -1,10 +1,29 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QSplitter,
-                             QTreeView, QGroupBox, QTextEdit, QPushButton,
-                             QLabel, QLineEdit, QFileDialog, QComboBox,
-                             QTableView, QHeaderView, QMenu, QMessageBox,
-                             QDialog, QFormLayout, QCheckBox, QDialogButtonBox,
-                             QProgressBar, QInputDialog, QFileSystemModel,
-                             QScrollArea, QFrame)
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QSplitter,
+    QTreeView,
+    QTextEdit,
+    QPushButton,
+    QLabel,
+    QLineEdit,
+    QFileDialog,
+    QComboBox,
+    QTableView,
+    QHeaderView,
+    QMenu,
+    QMessageBox,
+    QDialog,
+    QFormLayout,
+    QCheckBox,
+    QDialogButtonBox,
+    QProgressBar,
+    QInputDialog,
+    QFileSystemModel,
+    QScrollArea,
+    QFrame,
+)
 from PySide6.QtGui import QAction, QStandardItemModel, QStandardItem, QDragEnterEvent, QDropEvent, QIcon
 from PySide6.QtCore import Qt, QDir, QSortFilterProxyModel, QModelIndex, Slot as pyqtSlot, QPoint, QThread, Signal as pyqtSignal, QMimeData, QTimer, QMutex
 import os
@@ -14,6 +33,10 @@ import time
 from typing import List, Dict, Any
 from app.helpers.icon_manager import IconManager
 from app.helpers.notifier import Notifier
+from app.ui.widgets.card_wrapper import CardWrapper
+from app.ui.widgets.section_header import SectionHeader
+from app.ui.widgets.status_dot import StatusDot
+from shared_tools.storage.corpus_manager import CorpusManager
 
 class NotificationManager(QWidget):
     def __init__(self, parent=None):
@@ -369,6 +392,7 @@ class CorpusManagerTab(QWidget):
         super().__init__(parent)
         self.notification_manager = NotificationManager(self)  # Initialize first
         self.project_config = project_config
+        self.manager = CorpusManager(self)
         self.setup_ui()
         self.selected_files = []
         self.batch_metadata_editor = None
@@ -393,8 +417,7 @@ class CorpusManagerTab(QWidget):
 
         header_layout = QHBoxLayout()
         header_layout.setSpacing(8)
-        header_label = QLabel("Corpus Manager")
-        header_label.setObjectName("dashboard-section-header")
+        header_label = SectionHeader("Corpus Manager")
         header_layout.addWidget(header_label)
         header_layout.addStretch()
         main_layout.addLayout(header_layout)
@@ -491,9 +514,8 @@ class CorpusManagerTab(QWidget):
         metadata_layout = QVBoxLayout(metadata_widget)
         
         # File info
-        file_info_group = QGroupBox("File Information")
-        file_info_group.setObjectName("card")
-        file_info_layout = QVBoxLayout(file_info_group)
+        file_info_group = CardWrapper(title="File Information")
+        file_info_layout = file_info_group.body_layout
         
         self.file_name_label = QLabel("No file selected")
         self.file_path_label = QLabel("")
@@ -508,8 +530,8 @@ class CorpusManagerTab(QWidget):
         metadata_layout.addWidget(file_info_group)
         
         # Metadata viewer/editor
-        metadata_group = QGroupBox("Metadata")
-        metadata_inner_layout = QVBoxLayout(metadata_group)
+        metadata_group = CardWrapper(title="Metadata")
+        metadata_inner_layout = metadata_group.body_layout
         
         # Use a table view for structured metadata display and editing
         self.metadata_table = QTableView()
@@ -540,8 +562,8 @@ class CorpusManagerTab(QWidget):
         metadata_layout.addWidget(metadata_group)
         
         # Content preview
-        preview_group = QGroupBox("Content Preview")
-        preview_layout = QVBoxLayout(preview_group)
+        preview_group = CardWrapper(title="Content Preview")
+        preview_layout = preview_group.body_layout
         
         self.content_preview = QTextEdit()
         self.content_preview.setReadOnly(True)
@@ -559,9 +581,8 @@ class CorpusManagerTab(QWidget):
         main_layout.addWidget(splitter)
         
         # Add batch operations panel with progress
-        batch_ops_group = QGroupBox("Batch Operations")
-        batch_ops_group.setObjectName("card")
-        batch_ops_layout = QVBoxLayout(batch_ops_group)
+        batch_ops_group = CardWrapper(title="Batch Operations")
+        batch_ops_layout = batch_ops_group.body_layout
 
         actions_layout = QHBoxLayout()
         self.batch_copy_btn = QPushButton("Copy")
@@ -595,16 +616,24 @@ class CorpusManagerTab(QWidget):
         
         # Progress area
         progress_layout = QVBoxLayout()
-        
+
         self.batch_progress = QProgressBar()
         self.batch_progress.setRange(0, 100)
         progress_layout.addWidget(self.batch_progress)
-        
+
+        self.batch_status_layout = QVBoxLayout()
+        progress_layout.addLayout(self.batch_status_layout)
+
         self.batch_status = QLabel("Ready")
         self.batch_status.setObjectName("status-info")
         progress_layout.addWidget(self.batch_status)
-        
+
         batch_ops_layout.addLayout(progress_layout)
+
+        # Connect corpus manager signals
+        self.manager.progress_updated.connect(lambda p, _op: self.batch_progress.setValue(p))
+        self.manager.status_updated.connect(self._handle_batch_status)
+        self.manager.operation_completed.connect(self._handle_operation_completed)
 
         main_layout.addWidget(batch_ops_group)
 
@@ -956,17 +985,8 @@ class CorpusManagerTab(QWidget):
             return
         confirm = QMessageBox.question(self, "Confirm Delete", f"Delete {len(selected_files)} files?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if confirm == QMessageBox.StandardButton.Yes:
-            for file_path in selected_files:
-                try:
-                    os.remove(file_path)
-                except Exception as e:
-                    self.notification_manager.add_notification(f"delete_{file_path}", "Delete Error", str(e), "error", auto_hide=True)
-                    if self.sound_enabled:
-                        Notifier.notify("Delete Error", str(e), level="error")
-            self.notification_manager.add_notification("batch_delete", "Batch Delete", f"Deleted {len(selected_files)} files.", "success", auto_hide=True)
-            if self.sound_enabled:
-                Notifier.notify("Batch Delete", f"Deleted {len(selected_files)} files.", level="success")
-            self.refresh_file_view()
+            self.batch_status_layout.addWidget(StatusDot("Starting delete", "info"))
+            self.manager.batch_delete_files(selected_files)
 
     def get_selected_files(self):
         """Return the list of selected files from the file browser."""
@@ -1024,38 +1044,22 @@ class CorpusManagerTab(QWidget):
         if not selected_files:
             QMessageBox.warning(self, "No files selected", "Please select files to copy.")
             return
-        try:
-            target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
-            if not target_dir:
-                return
-            for file_path in selected_files:
-                try:
-                    shutil.copy2(file_path, target_dir)
-                except Exception as e:
-                    self.notification_manager.add_notification(f"copy_{file_path}", "Copy Error", str(e), "error", auto_hide=True)
-            self.notification_manager.add_notification("batch_copy", "Batch Copy", f"Copied {len(selected_files)} files.", "success", auto_hide=True)
-            self.refresh_file_view()
-        except Exception as e:
-            QMessageBox.critical(self, "Batch Copy Error", str(e))
+        target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
+        if not target_dir:
+            return
+        self.batch_status_layout.addWidget(StatusDot("Starting copy", "info"))
+        self.manager.batch_copy_files(selected_files, target_dir)
 
     def batch_move_files(self):
         selected_files = self.get_selected_files()
         if not selected_files:
             QMessageBox.warning(self, "No files selected", "Please select files to move.")
             return
-        try:
-            target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
-            if not target_dir:
-                return
-            for file_path in selected_files:
-                try:
-                    shutil.move(file_path, target_dir)
-                except Exception as e:
-                    self.notification_manager.add_notification(f"move_{file_path}", "Move Error", str(e), "error", auto_hide=True)
-            self.notification_manager.add_notification("batch_move", "Batch Move", f"Moved {len(selected_files)} files.", "success", auto_hide=True)
-            self.refresh_file_view()
-        except Exception as e:
-            QMessageBox.critical(self, "Batch Move Error", str(e))
+        target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
+        if not target_dir:
+            return
+        self.batch_status_layout.addWidget(StatusDot("Starting move", "info"))
+        self.manager.batch_move_files(selected_files, target_dir)
 
     def batch_rename_files(self):
         selected_files = self.get_selected_files()
@@ -1130,6 +1134,14 @@ class CorpusManagerTab(QWidget):
         path = self.path_input.text()
         ready = os.path.isdir(path) and bool(os.listdir(path))
         self.rebalance_btn.setEnabled(ready)
+
+    def _handle_batch_status(self, file_path: str, status: str) -> None:
+        dot = StatusDot(os.path.basename(file_path), status)
+        self.batch_status_layout.addWidget(dot)
+
+    def _handle_operation_completed(self, op: str) -> None:
+        self.batch_status.setText(f"{op.title()} completed")
+        self.refresh_file_view()
 
     def create_action_card(self, title: str, callback, button: QPushButton) -> QFrame:
         card = QFrame()

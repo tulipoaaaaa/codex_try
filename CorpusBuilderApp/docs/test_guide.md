@@ -1,3 +1,4 @@
+
 # Test Execution Guide
 
 This guide explains how to run the project's full test suite locally.
@@ -77,17 +78,21 @@ pytest tests/ --maxfail=2 --disable-warnings
 
 Generate coverage information:
 
+
 ```bash
 coverage run -m pytest && coverage report -m
 ```
 
+
 Skip Qt based tests on headless systems:
+
 
 ```bash
 pytest -k "not qtbot"
 ```
 
 ## 4. Troubleshooting
+
 
 | Issue | Resolution |
 |-------|-----------|
@@ -96,3 +101,4 @@ pytest -k "not qtbot"
 | `TesseractNotFoundError` | Install the Tesseract OCR engine and ensure `pytesseract` can locate it. |
 | Selenium `WebDriverException` | Confirm the correct browser driver is installed and on your `PATH`. |
 | Network timeouts during collector tests | Verify internet access or set the necessary API keys. |
+
