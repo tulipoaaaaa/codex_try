@@ -3,11 +3,7 @@ from pathlib import Path
 import sys
 import os
 
-try:
-    from CryptoFinanceCorpusBuilder.storage.corpus_manager import CorpusManager
-except ImportError:
-    sys.path.append(str(Path(__file__).resolve().parent.parent))
-    from CryptoFinanceCorpusBuilder.storage.corpus_manager import CorpusManager
+from shared_tools.storage.corpus_manager import CorpusManager
 
 def check_orphaned_txts_vs_pdfs(corpus_dir, metadata_path=None):
     corpus_dir = Path(corpus_dir)

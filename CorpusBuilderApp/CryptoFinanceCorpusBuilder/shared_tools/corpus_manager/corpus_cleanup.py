@@ -4,11 +4,7 @@ from pathlib import Path
 import sys
 import os
 
-try:
-    from CryptoFinanceCorpusBuilder.storage.corpus_manager import CorpusManager
-except ImportError:
-    sys.path.append(str(Path(__file__).resolve().parent.parent))
-    from CryptoFinanceCorpusBuilder.storage.corpus_manager import CorpusManager
+from shared_tools.storage.corpus_manager import CorpusManager
 
 def cleanup_corpus(corpus_dir, metadata_path=None, dry_run=False):
     corpus_dir = Path(corpus_dir)
