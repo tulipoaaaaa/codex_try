@@ -1,6 +1,9 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QPushButton, QMessageBox
 from PySide6.QtCore import QThread, Signal as pyqtSignal
+from app.ui.widgets.card_wrapper import CardWrapper
+from app.ui.widgets.section_header import SectionHeader
 import subprocess
+
 
 class DependencyUpgradeWorker(QThread):
     finished = pyqtSignal(str)
@@ -10,19 +13,26 @@ class DependencyUpgradeWorker(QThread):
         try:
             result = subprocess.run(
                 ["python", "upgrade_dependencies.py"],
-                capture_output=True, text=True, check=True
+                capture_output=True,
+                text=True,
+                check=True,
             )
             self.finished.emit(result.stdout)
         except subprocess.CalledProcessError as e:
             self.error.emit(e.stderr or str(e))
 
+
 class MaintenanceTab(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         layout = QVBoxLayout(self)
+        card = CardWrapper()
+        layout.addWidget(card)
+        card_layout = card.body_layout
+        card_layout.addWidget(SectionHeader("Maintenance"))
         self.upgrade_btn = QPushButton("Update Dependencies")
         self.upgrade_btn.clicked.connect(self.run_upgrade)
-        layout.addWidget(self.upgrade_btn)
+        card_layout.addWidget(self.upgrade_btn)
 
     def run_upgrade(self):
         self.upgrade_btn.setEnabled(False)
@@ -32,9 +42,13 @@ class MaintenanceTab(QWidget):
         self.worker.start()
 
     def on_upgrade_finished(self, output):
-        QMessageBox.information(self, "Upgrade Complete", "Dependencies updated successfully!\n\n" + output)
+        QMessageBox.information(
+            self, "Upgrade Complete", "Dependencies updated successfully!\n\n" + output
+        )
         self.upgrade_btn.setEnabled(True)
 
     def on_upgrade_error(self, error):
-        QMessageBox.critical(self, "Upgrade Failed", "An error occurred during upgrade:\n\n" + error)
-        self.upgrade_btn.setEnabled(True) 
+        QMessageBox.critical(
+            self, "Upgrade Failed", "An error occurred during upgrade:\n\n" + error
+        )
+        self.upgrade_btn.setEnabled(True)
