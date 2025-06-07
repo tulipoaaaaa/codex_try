@@ -3,11 +3,7 @@ import json
 from pathlib import Path
 import sys
 
-try:
-    from CryptoFinanceCorpusBuilder.storage.corpus_manager import CorpusManager
-except ImportError:
-    sys.path.append(str(Path(__file__).resolve().parent.parent))
-    from CryptoFinanceCorpusBuilder.storage.corpus_manager import CorpusManager
+from shared_tools.storage.corpus_manager import CorpusManager
 
 def tag_priority_high(corpus_dir, metadata_path, stems=None, titles=None, get_doc_stem=None):
     stems = set(stems or [])
