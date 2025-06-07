@@ -826,9 +826,9 @@ Here’s a log entry you can use to document the **Config Sync Phase** progress.
 - Created and used a test corpus with both PDF and non-PDF files.
 - Ran extractors to generate metadata and normalized outputs.
 
-#### **2. Domain Config Wrapper**
-- Implemented a `DomainConfig` wrapper in `domain_utils.py` for robust, backward-compatible config loading.
-- Ensured all extractors use the wrapper for domain info.
+#### **2. Domain Keyword Helper**
+- Implemented a `DomainKeywordHelper` utility in `domain_utils.py` for robust, backward-compatible config loading.
+- Ensured all extractors use the helper for domain info.
 
 #### **3. Balancer Test**
 - Ran the corpus balancer on both PDF and non-PDF test corpora.
@@ -867,7 +867,7 @@ Here’s a log entry you can use to document the **Config Sync Phase** progress.
 - `utils/config_validator.py` — New config validation script.
 - `cli/crypto_corpus_cli.py` — Added `validate-config` CLI command.
 - `config/balancer_config.py` — Updated domain weights to match project targets.
-- `utils/domain_utils.py` — Added/updated `DomainConfig` wrapper.
+- `utils/domain_utils.py` — Added/updated `DomainKeywordHelper` utility.
 - `config/domain_config.py` — (No changes needed; already matched intended allocations.)
 
 ---
@@ -1001,7 +1001,7 @@ Here is a **comprehensive, triple-checked list** of all files that need their im
   - `from CryptoFinanceCorpusBuilder.utils.extractor_utils import ...` → `from shared_tools.utils.extractor_utils import ...`
 - `test_quality_control_config.py`
   - `from CryptoFinanceCorpusBuilder.utils.extractor_utils import ...` → `from shared_tools.utils.extractor_utils import ...`
-- `test_domain_config_wrapper.py`
+ - `test_domain_keyword_helper.py`
   - `from CryptoFinanceCorpusBuilder.utils.domain_utils import ...` → `from shared_tools.utils.domain_utils import ...`
 
 ---
