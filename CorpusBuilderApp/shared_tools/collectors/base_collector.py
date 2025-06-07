@@ -51,6 +51,13 @@ class BaseCollector:
         self.config = config
         self.raw_data_dir = Path(self._get_path_attr(config, "raw_data_dir", "get_raw_dir"))
         self.delay_range = delay_range
+
+        if hasattr(config, "domain_configs"):
+            self.domain_configs = config.domain_configs
+        else:
+            self.domain_configs = (
+                config.get_processor_config("domain").get("domain_configs", {})
+            )
         
         # Configure logging
         self.logger = logging.getLogger(self.__class__.__name__)
@@ -81,7 +88,7 @@ class BaseCollector:
         self.logger.info("Setting up domain-based directory structure...")
         
         # Get domains from config
-        domains = list(self.config.domain_configs.keys())
+        domains = list(self.domain_configs.keys())
         if not domains:
             # Fallback to default domains if none configured
             domains = [
@@ -113,7 +120,7 @@ class BaseCollector:
     def _get_output_path(self, domain: str, content_type: str, filename: str) -> Path:
         """Get the correct output path based on domain and content type."""
         # Get valid domains from config
-        valid_domains = list(self.config.domain_configs.keys())
+        valid_domains = list(self.domain_configs.keys())
         
         if domain not in valid_domains:
             domain = 'other'
