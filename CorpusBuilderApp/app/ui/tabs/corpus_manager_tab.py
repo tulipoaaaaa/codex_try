@@ -374,9 +374,13 @@ class CorpusManagerTab(QWidget):
         batch_ops_layout.addLayout(progress_layout)
 
         # Connect corpus manager signals
-        self.manager.progress_updated.connect(lambda p, _op: self.batch_progress.setValue(p))
-        self.manager.status_updated.connect(self._handle_batch_status)
-        self.manager.operation_completed.connect(self._handle_operation_completed)
+        self.corpus_manager.progress_updated.connect(
+            lambda p, _op: self.batch_progress.setValue(p)
+        )
+        self.corpus_manager.status_updated.connect(self._handle_batch_status)
+        self.corpus_manager.operation_completed.connect(
+            self._handle_operation_completed
+        )
 
         main_layout.addWidget(batch_ops_group)
 
