@@ -232,7 +232,7 @@ def add_corpus_balancer_commands(subparsers):
 
 def handle_analyze_balance(args):
     """Handle analyze-balance command."""
-    from CryptoFinanceCorpusBuilder.processors.corpus_balancer import CorpusBalancerCLI
+    from shared_tools.processors.corpus_balancer import CorpusBalancerCLI
     balancer_cli = CorpusBalancerCLI()
     return balancer_cli.analyze_command(
         corpus_dir=args.corpus_dir,
@@ -244,7 +244,7 @@ def handle_analyze_balance(args):
 
 def handle_rebalance(args):
     """Handle rebalance command."""
-    from CryptoFinanceCorpusBuilder.processors.corpus_balancer import CorpusBalancerCLI
+    from shared_tools.processors.corpus_balancer import CorpusBalancerCLI
     balancer_cli = CorpusBalancerCLI()
     return balancer_cli.rebalance_command(
         corpus_dir=args.corpus_dir,
@@ -265,7 +265,7 @@ def handle_auto_rebalance(args):
     Supports --max-results and --domains filters. Prints estimated collection time in dry-run.
     """
     import logging
-    from CryptoFinanceCorpusBuilder.processors.corpus_balancer import CorpusAnalyzer
+    from shared_tools.processors.corpus_balancer import CorpusAnalyzer
     from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
     import json
     import sys
