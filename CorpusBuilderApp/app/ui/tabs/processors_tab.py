@@ -431,11 +431,11 @@ class ProcessorsTab(QWidget):
             print(f"DEBUG: Using config_path: {config_path}")
             
             # Wrappers that expect config_path (string)
+
             path_wrappers = [
                 ('pdf', PDFExtractorWrapper),
                 ('text', TextExtractorWrapper),
                 ('balancer', CorpusBalancerWrapper),
-                ('deduplicator', DeduplicatorWrapper),
                 ('domain', DomainClassifierWrapper),
                 ('formula', FormulaExtractorWrapper),
                 ('chart', ChartImageExtractorWrapper)
@@ -446,7 +446,8 @@ class ProcessorsTab(QWidget):
                 ('quality', QualityControlWrapper),
                 ('language', LanguageConfidenceDetectorWrapper),
                 ('mt_detector', MachineTranslationDetectorWrapper),
-                ('financial', FinancialSymbolProcessorWrapper)
+                ('financial', FinancialSymbolProcessorWrapper),
+                ('deduplicator', DeduplicatorWrapper)
             ]
             
             # Initialize path-based wrappers
