@@ -9,6 +9,8 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, Signal as pyqtSignal
 
+from app.ui.widgets.status_dot import StatusDot
+
 
 class CollectorCard(QFrame):
     """Card widget representing a single collector."""
@@ -36,11 +38,8 @@ class CollectorCard(QFrame):
         title.setObjectName("card__header")
         header_layout.addWidget(title)
         header_layout.addStretch()
-        self.status_indicator = QLabel()
-        self.status_indicator.setObjectName("status-dot")
-        self.status_indicator.setFixedSize(10, 10)
-        self.status_indicator.setStyleSheet("border-radius:5px;background:#6b7280;")
-        header_layout.addWidget(self.status_indicator)
+        self.status_dot = StatusDot("Stopped", "info")
+        header_layout.addWidget(self.status_dot)
         layout.addLayout(header_layout)
 
         # Description
@@ -97,15 +96,13 @@ class CollectorCard(QFrame):
     def update_status(self, status: str) -> None:
         """Update the card's status indicator and button states."""
         status = status.lower()
-        color = "#6b7280"
-        running = False
-        if "running" in status:
-            color = "#10b981"
-            running = True
-        elif "error" in status:
-            color = "#ef4444"
-        self.setProperty("status", "running" if running else ("error" if "error" in status else "stopped"))
-        self.status_indicator.setStyleSheet(f"border-radius:5px;background:{color};")
+        running = "running" in status
+        level = "error" if "error" in status else ("success" if running else "info")
+        self.setProperty("status", level)
+        self.status_dot.label.setText(status.title())
+        self.status_dot.dot.setStyleSheet(
+            f"border-radius:4px;background:{StatusDot.COLOR_MAP.get(level, StatusDot.COLOR_MAP['info'])};"
+        )
         self.start_btn.setEnabled(not running)
         self.stop_btn.setEnabled(running)
 
