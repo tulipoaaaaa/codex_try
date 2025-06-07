@@ -4,6 +4,7 @@ Synchronizes domain_config.py allocations and properties with balancer_config.py
 Backs up the original domain_config.py before modifying.
 Supports safe (default) and force modes.
 """
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 import sys
 import shutil
 from pathlib import Path

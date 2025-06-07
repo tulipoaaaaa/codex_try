@@ -1,3 +1,4 @@
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 # combine_corpora.py
 """
 Script to combine multiple corpus directories into a unified structure,

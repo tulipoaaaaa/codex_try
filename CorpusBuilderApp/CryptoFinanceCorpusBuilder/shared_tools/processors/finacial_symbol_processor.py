@@ -1,3 +1,4 @@
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 # processors/financial_symbol_processor.py
 """
 Financial symbol dictionary and preservation system for crypto/finance documents.

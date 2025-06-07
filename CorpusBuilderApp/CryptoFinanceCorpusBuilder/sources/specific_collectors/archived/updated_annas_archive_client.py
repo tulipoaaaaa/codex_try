@@ -1,3 +1,4 @@
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 # annas_archive_client.py
 import requests
 from bs4 import BeautifulSoup

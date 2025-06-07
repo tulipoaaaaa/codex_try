@@ -1,3 +1,4 @@
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 # tests/test_corpus_balancer.py
 """
 Comprehensive tests for corpus balancer module.
