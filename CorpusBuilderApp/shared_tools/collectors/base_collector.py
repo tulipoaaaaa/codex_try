@@ -6,17 +6,35 @@ import time
 import requests
 from urllib.parse import urlparse
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional, Union, Any
 
 class BaseCollector:
     """Base class for all data collectors"""
-    
+
     USER_AGENTS = [
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36',
         'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1.1 Safari/605.1.15',
         'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:89.0) Gecko/20100101 Firefox/89.0',
         'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.101 Safari/537.36'
     ]
+
+    @staticmethod
+    def _get_path_attr(cfg: Any, attr_name: str, getter_name: str) -> Any:
+        """Return a path-like attribute from cfg using attr or getter method."""
+        if hasattr(cfg, attr_name):
+            value = getattr(cfg, attr_name)
+            if callable(value):
+                try:
+                    return value()
+                except TypeError:
+                    return value
+            return value
+        getter = getattr(cfg, getter_name, None)
+        if callable(getter):
+            return getter()
+        elif getter is not None:
+            return getter
+        raise AttributeError(f"{cfg!r} has neither {attr_name!r} nor {getter_name!r}")
     
     def __init__(self, config: Union[str, 'ProjectConfig'], delay_range: tuple = (2, 5)):
         """
@@ -31,7 +49,7 @@ class BaseCollector:
             config = ProjectConfig(config, environment='test')
         
         self.config = config
-        self.raw_data_dir = Path(config.raw_data_dir)
+        self.raw_data_dir = Path(self._get_path_attr(config, "raw_data_dir", "get_raw_dir"))
         self.delay_range = delay_range
         
         # Configure logging
@@ -45,7 +63,7 @@ class BaseCollector:
             self.logger.addHandler(handler)
             
             # Add file handler with UTF-8 encoding
-            log_dir = Path(config.log_dir)
+            log_dir = Path(self._get_path_attr(config, "log_dir", "get_logs_dir"))
             log_dir.mkdir(parents=True, exist_ok=True)
             file_handler = logging.FileHandler(log_dir / f"{self.__class__.__name__.lower()}.log", encoding="utf-8")
             file_handler.setFormatter(formatter)
