@@ -26,6 +26,8 @@ from shared_tools.ui_wrappers.collectors.scidb_wrapper import SciDBWrapper
 from shared_tools.ui_wrappers.collectors.web_wrapper import WebWrapper
 
 from app.ui.widgets.collector_card import CollectorCard
+from app.ui.widgets.card_wrapper import CardWrapper
+from app.ui.widgets.section_header import SectionHeader
 from app.helpers.notifier import Notifier
 from app.ui.theme.theme_constants import (
     DEFAULT_FONT_SIZE,
@@ -46,6 +48,24 @@ class CollectorsTab(QWidget):
     def __init__(self, project_config, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.project_config = project_config
+
+        # Initialize collector wrappers
+        self.collector_wrappers = {
+            "isda": ISDAWrapper(),
+            "github": GitHubWrapper(),
+            "anna": AnnasArchiveWrapper(),
+            "arxiv": ArxivWrapper(),
+            "fred": FREDWrapper(),
+            "bitmex": BitMEXWrapper(),
+            "quantopian": QuantopianWrapper(),
+            "scidb": SciDBWrapper(),
+            "web": WebWrapper(),
+        }
+
+        self.cards: dict[str, CollectorCard] = {}
+
+        self._init_ui()
+
         for name, wrapper in self.collector_wrappers.items():
             params = self.project_config.get(f"collectors.{name}", {})
             if isinstance(params, dict):
@@ -56,6 +76,52 @@ class CollectorsTab(QWidget):
                             getattr(wrapper, method)(value)
                         except Exception:
                             pass
+
+        self.connect_signals()
+
+    def _init_ui(self) -> None:
+        main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        main_layout.addWidget(scroll)
+
+        container = QWidget()
+        scroll.setWidget(container)
+
+        layout = QVBoxLayout(container)
+        layout.setSpacing(32)
+        layout.setContentsMargins(32, 32, 32, 32)
+
+        header = SectionHeader("Collectors")
+        layout.addWidget(header)
+
+        for name, wrapper in self.collector_wrappers.items():
+            card_wrap = CardWrapper()
+            card_layout = card_wrap.body_layout
+            card = CollectorCard(name.title())
+            running = bool(self.project_config.get(f"collectors.{name}.running", False))
+            card.update_status("running" if running else "stopped")
+            card.start_requested.connect(lambda n=name: self.start_collection(n))
+            card.stop_requested.connect(lambda n=name: self.stop_collection(n))
+            card.configure_requested.connect(lambda n=name: self.configure_collector(n))
+            card.logs_requested.connect(lambda n=name: self.show_logs(n))
+            self.cards[name] = card
+            card_layout.addWidget(card)
+            layout.addWidget(card_wrap)
+
+        status_card = CardWrapper()
+        status_layout = status_card.body_layout
+        self.collection_status_label = QLabel("Ready")
+        status_layout.addWidget(self.collection_status_label)
+        self.overall_progress = QProgressBar()
+        self.overall_progress.setRange(0, 100)
+        status_layout.addWidget(self.overall_progress)
+        stop_all_btn = QPushButton("Stop All Collectors")
+        stop_all_btn.clicked.connect(self.stop_all_collectors)
+        status_layout.addWidget(stop_all_btn)
+        layout.addWidget(status_card)
 
     def connect_signals(self) -> None:
         for name, wrapper in self.collector_wrappers.items():
