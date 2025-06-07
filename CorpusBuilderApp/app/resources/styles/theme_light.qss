@@ -96,11 +96,6 @@ QFrame[objectName="collector-card"][status="stopped"] {
 QFrame[objectName="collector-card"][status="error"] {
     border: 2px solid #ef4444;
 }
-QLabel[objectName="status-dot"] {
-    width: 10px;
-    height: 10px;
-    border-radius: 5px;
-}
 
 /* Labels */
 QLabel[objectName="status-info"] {
@@ -361,7 +356,66 @@ QLabel[objectName="card__header"] {
     color: #111827;
 }
 
+/* Status dot component */
+QLabel[objectName^="status-dot-"] {
+    border-radius: 4px;
+    width: 8px;
+    height: 8px;
+    min-width: 8px;
+    min-height: 8px;
+    max-width: 8px;
+    max-height: 8px;
+    margin: 0 4px;
+    display: inline-block;
+}
+
 QLabel[objectName="status-dot-success"] { background-color: #10b981; }
 QLabel[objectName="status-dot-error"]   { background-color: #ef4444; }
 QLabel[objectName="status-dot-warning"] { background-color: #f59e0b; }
 QLabel[objectName="status-dot-info"]    { background-color: #3b82f6; }
+
+/* Status label colors */
+QLabel[objectName="status--success"] {
+    background: rgba(16,185,129,0.10);
+    color: #10b981;
+    border: 1px solid rgba(16,185,129,0.20);
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+QLabel[objectName="status--error"] {
+    background: rgba(239,68,68,0.10);
+    color: #ef4444;
+    border: 1px solid rgba(239,68,68,0.20);
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+QLabel[objectName="status--warning"] {
+    background: rgba(245,158,11,0.10);
+    color: #f59e0b;
+    border: 1px solid rgba(245,158,11,0.20);
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+QLabel[objectName="status--info"] {
+    background: rgba(6,182,212,0.10);
+    color: #06b6d4;
+    border: 1px solid rgba(6,182,212,0.20);
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}

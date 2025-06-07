@@ -146,11 +146,6 @@ QFrame[objectName="collector-card"][status="stopped"] {
 QFrame[objectName="collector-card"][status="error"] {
     border: 2px solid #ef4444;
 }
-QLabel[objectName="status-dot"] {
-    width: 10px;
-    height: 10px;
-    border-radius: 5px;
-}
 QFrame[objectName="card"]:hover, QWidget[objectName="card"]:hover {
     border-color: #374151;
     box-shadow: 0 8px 25px -5px rgba(0,0,0,0.25), 0 12px 40px -8px rgba(6,182,212,0.10);
