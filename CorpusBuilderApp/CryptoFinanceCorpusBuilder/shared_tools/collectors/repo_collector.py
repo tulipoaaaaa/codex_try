@@ -1,3 +1,4 @@
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 # sources/repo_collector.py
 from shared_tools.collectors.base_collector import BaseCollector
 import subprocess

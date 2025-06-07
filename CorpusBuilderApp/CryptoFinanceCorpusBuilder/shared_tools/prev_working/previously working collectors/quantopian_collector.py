@@ -1,3 +1,4 @@
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 # DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # sources/specific_collectors/quantopian_collector.py
 from shared_tools.collectors.repo_collector import RepoCollector

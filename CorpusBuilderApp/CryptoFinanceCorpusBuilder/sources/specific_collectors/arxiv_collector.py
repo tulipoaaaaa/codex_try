@@ -1,3 +1,4 @@
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 # sources/specific_collectors/arxiv_collector.py (API based)
 import xml.etree.ElementTree as ET
 import urllib.parse

@@ -1,3 +1,4 @@
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 # processors/formula_extractor.py
 """
 Enhanced LaTeX formula extraction and preservation for PDF documents.
