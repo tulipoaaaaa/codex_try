@@ -464,7 +464,7 @@ class ProcessorsTab(QWidget):
             for name, wrapper_class in object_wrappers:
                 try:
                     print(f"DEBUG: Initializing {wrapper_class.__name__} with config_object...")
-                    self.processor_wrappers[name] = wrapper_class(config_object)
+                    self.processor_wrappers[name] = wrapper_class(self.project_config)
                     print(f"DEBUG: {wrapper_class.__name__} initialized successfully")
                 except Exception as e:
                     print(f"ERROR: Failed to initialize {wrapper_class.__name__}: {e}")
