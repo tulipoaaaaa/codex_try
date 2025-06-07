@@ -3,14 +3,15 @@
 
 import pytest
 import asyncio
-import aiohttp
+
+aiohttp = pytest.importorskip("aiohttp")
 import json
 import tempfile
 import os
 from unittest.mock import Mock, patch, AsyncMock, MagicMock
 from pathlib import Path
 from datetime import datetime
-import requests
+requests = pytest.importorskip("requests")
 
 # Import collectors to test
 try:
