@@ -4,7 +4,7 @@ import json
 import time
 import pandas as pd
 from pathlib import Path
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.api_collector import ApiCollector
+from shared_tools.collectors.api_collector import ApiCollector
 from dotenv import load_dotenv
 
 class FREDCollector(ApiCollector):

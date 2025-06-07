@@ -6,8 +6,8 @@ import sys
 import importlib
 import concurrent.futures
 import time
-from CryptoFinanceCorpusBuilder.shared_tools.storage.corpus_manager import CorpusManager
-from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+from shared_tools.storage.corpus_manager import CorpusManager
+from shared_tools.project_config import ProjectConfig
 import os
 import requests
 import zipfile
@@ -20,10 +20,10 @@ import json as _json
 from dotenv import load_dotenv
 import traceback
 from pathlib import Path
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.collect_isda import run_isda_collector
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.collect_bitmex import run_bitmex_collector
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.collect_annas_main_library import run_annas_main_library_collector
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.collect_general_web_corpus import run_general_web_corpus_collector
+from shared_tools.collectors.collect_isda import run_isda_collector
+from shared_tools.collectors.collect_bitmex import run_bitmex_collector
+from shared_tools.collectors.collect_annas_main_library import run_annas_main_library_collector
+from shared_tools.collectors.collect_general_web_corpus import run_general_web_corpus_collector
 
 # Set up basic logging
 logging.basicConfig(

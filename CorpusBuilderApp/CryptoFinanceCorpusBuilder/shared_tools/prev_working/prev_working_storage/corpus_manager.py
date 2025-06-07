@@ -6,7 +6,7 @@ import logging
 import datetime
 from pathlib import Path
 import uuid
-from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
+from shared_tools.config.domain_config import DOMAINS
 
 class CorpusManager:
     """Manage the crypto-finance corpus structure"""
@@ -18,7 +18,7 @@ class CorpusManager:
         # Load domain configuration if not provided
         if domain_config is None:
             try:
-                from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
+                from shared_tools.config.domain_config import DOMAINS
                 self.domain_config = DOMAINS
             except ImportError:
                 self.domain_config = {}

@@ -3,8 +3,8 @@ import sys
 import pytest
 from pathlib import Path
 from dotenv import load_dotenv
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.fred_collector import FREDCollector
-from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+from shared_tools.collectors.fred_collector import FREDCollector
+from shared_tools.project_config import ProjectConfig
 
 # Load environment variables from .env file
 load_dotenv()

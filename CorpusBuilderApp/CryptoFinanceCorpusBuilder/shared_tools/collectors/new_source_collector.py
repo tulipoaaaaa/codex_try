@@ -1,5 +1,5 @@
 # sources/specific_collectors/new_source_collector.py
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.web_collector import WebCollector
+from shared_tools.collectors.web_collector import WebCollector
 
 class NewSourceCollector(WebCollector):
     def __init__(self, output_dir, delay_range=(3, 7)):

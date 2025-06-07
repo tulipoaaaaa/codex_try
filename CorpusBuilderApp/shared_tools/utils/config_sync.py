@@ -11,7 +11,7 @@ import pprint
 import argparse
 import datetime
 
-from CryptoFinanceCorpusBuilder.config import balancer_config, domain_config
+from shared_tools.config import balancer_config, domain_config
 
 REFERENCE_DOMAINS = balancer_config.DOMAIN_BALANCE_CONFIG
 EXTRACTOR_DOMAINS = domain_config.DOMAINS

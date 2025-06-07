@@ -9,9 +9,9 @@ import importlib.util
 from datetime import date
 import logging
 import argparse
-from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
-from CryptoFinanceCorpusBuilder.shared_tools.processors.domain_classifier import DomainClassifier
-from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+from shared_tools.config.domain_config import DOMAINS
+from shared_tools.processors.domain_classifier import DomainClassifier
+from shared_tools.project_config import ProjectConfig
 
 def setup_logging(config: ProjectConfig = None) -> None:
     """Set up logging configuration."""
