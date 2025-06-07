@@ -443,10 +443,44 @@ class CorpusAnalyzer:
 
 class CorpusRebalancer:
     """Handles corpus rebalancing operations."""
-    
+
     def __init__(self, corpus_analyzer: CorpusAnalyzer):
         self.analyzer = corpus_analyzer
         self.logger = logging.getLogger(self.__class__.__name__)
+
+    def should_rebalance(self) -> bool:
+        """Determine if rebalancing is recommended based on corpus_stats.json."""
+        stats_path = Path(self.analyzer.corpus_dir) / "corpus_stats.json"
+        if not stats_path.exists():
+            return True
+
+        try:
+            with open(stats_path, "r", encoding="utf-8") as f:
+                stats = json.load(f)
+        except Exception:
+            return True
+
+        dist = stats.get("domain_distribution") or {}
+        if not dist and "domains" in stats:
+            dist = {k: v.get("document_count", 0) for k, v in stats["domains"].items()}
+        total = stats.get("total_documents", sum(dist.values()))
+
+        cfg_domains = {}
+        if isinstance(self.analyzer.project_config, dict):
+            cfg_domains = self.analyzer.project_config.get("domains", {})
+
+        for domain, cfg in cfg_domains.items():
+            count = dist.get(domain, 0)
+            min_docs = cfg.get("min_documents")
+            if isinstance(min_docs, int) and count < min_docs:
+                return True
+            target = cfg.get("target_weight")
+            if target is not None and total:
+                actual = count / total
+                if abs(actual - target) > 0.1:
+                    return True
+
+        return False
     
     def create_rebalancing_plan(self, analysis_results: Dict[str, Any], 
                               strategy: str = 'quality_weighted') -> Dict[str, Any]:
@@ -853,6 +887,10 @@ class CorpusBalancerCLI:
             # Initialize components
             analyzer = CorpusAnalyzer(corpus_dir, recursive=recursive)
             rebalancer = CorpusRebalancer(analyzer)
+
+            if not rebalancer.should_rebalance():
+                self.logger.info("No rebalancing needed.")
+                return 0
             
             # Analyze current state
             self.logger.info("Analyzing current corpus state...")

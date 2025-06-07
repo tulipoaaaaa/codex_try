@@ -271,6 +271,11 @@ class ProjectConfig:
             self.get("directories.logs_dir", os.path.expanduser("~/.cryptofinance/logs"))
         ).expanduser()
 
+    def get_stats_dir(self) -> Path:
+        """Return directory where corpus statistics are stored."""
+        default = self.get_logs_dir() / "stats"
+        return Path(self.get("directories.stats_dir", str(default))).expanduser()
+
     @classmethod
     def from_yaml(cls, yaml_path: str, environment: Optional[str] = None) -> 'ProjectConfig':
         """Load config from YAML file with schema validation."""
