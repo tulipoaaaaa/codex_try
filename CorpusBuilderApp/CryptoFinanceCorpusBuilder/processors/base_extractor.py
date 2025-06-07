@@ -7,7 +7,7 @@ import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 from shared_tools.models.quality_config import QualityConfig
-from CryptoFinanceCorpusBuilder.utils.extractor_utils import (
+from shared_tools.utils.extractor_utils import (
     safe_filename,
     count_tokens,
     extract_metadata,
