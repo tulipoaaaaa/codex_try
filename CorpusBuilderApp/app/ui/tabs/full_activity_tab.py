@@ -62,10 +62,7 @@ class FullActivityTab(QWidget):
         # Header with title and controls
         header_layout = QHBoxLayout()
         
-        title_label = QLabel("📊 Full Activity Dashboard")
-        title_label.setObjectName("dashboard-section-header")
-        title_label.setStyleSheet("font-size: 20px; font-weight: 700; color: #32B8C6;")
-        header_layout.addWidget(title_label)
+        header_layout.addWidget(SectionHeader("Full Activity"))
         
         header_layout.addStretch()
         
@@ -623,14 +620,8 @@ class FullActivityTab(QWidget):
             self.activity_table.setItem(row, 1, task_item)
             
             # Status
-            status_item = QTableWidgetItem(activity['status'].title())
-            if activity['status'] == 'success':
-                status_item.setBackground(QColor(80, 200, 120, 50))
-            elif activity['status'] == 'error':
-                status_item.setBackground(QColor(255, 84, 89, 50))
-            elif activity['status'] == 'running':
-                status_item.setBackground(QColor(50, 184, 198, 50))
-            self.activity_table.setItem(row, 2, status_item)
+            dot = StatusDot(activity['status'], activity['status'])
+            self.activity_table.setCellWidget(row, 2, dot)
             
             # Duration
             duration = activity.get('duration_seconds', 0)
