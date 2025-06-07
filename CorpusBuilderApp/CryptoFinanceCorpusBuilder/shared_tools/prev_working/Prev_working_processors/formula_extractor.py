@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # processors/formula_extractor.py
 """
 Enhanced LaTeX formula extraction and preservation for PDF documents.

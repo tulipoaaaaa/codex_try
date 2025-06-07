@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 import json
 import os
 from typing import Dict, Any, Optional

@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # CookieAuthClient.py - Balanced quality and PDF focus
 import re
 import os
