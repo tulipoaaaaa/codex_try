@@ -42,7 +42,11 @@ class LogsTab(QWidget):
         main_layout.addWidget(header)
 
         # Log navigation and filtering controls
+        controls_card = CardWrapper()
         controls_layout = QHBoxLayout()
+        controls_layout.setContentsMargins(0, 0, 0, 0)
+        controls_layout.setSpacing(8)
+        controls_card.body_layout.addLayout(controls_layout)
         
         # Log selector
         controls_layout.addWidget(QLabel("Log:"))
@@ -70,7 +74,7 @@ class LogsTab(QWidget):
         self.today_only.stateChanged.connect(self.apply_filters)
         controls_layout.addWidget(self.today_only)
         
-        main_layout.addLayout(controls_layout)
+        main_layout.addWidget(controls_card)
         
         # Create a splitter for log table and details
         splitter = QSplitter(Qt.Orientation.Vertical)
