@@ -5,6 +5,8 @@ import os
 import tempfile
 import json
 from unittest.mock import MagicMock
+
+pytest.importorskip("PySide6")
 from PySide6.QtWidgets import QApplication
 
 from app.ui.tabs.corpus_manager_tab import CorpusManagerTab

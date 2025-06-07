@@ -1,8 +1,9 @@
 # tests/test_error_handling.py
 import pytest
 import asyncio
-import aiohttp
-import requests
+
+aiohttp = pytest.importorskip("aiohttp")
+requests = pytest.importorskip("requests")
 from unittest.mock import Mock, patch, AsyncMock
 import tempfile
 import os
