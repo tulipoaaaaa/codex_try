@@ -1,6 +1,6 @@
 """
 Test suite for domain configuration wrapper.
-Tests both the DomainConfig class and backward compatibility functions.
+Tests both the DomainKeywordHelper class and backward compatibility functions.
 """
 
 import os
@@ -13,7 +13,7 @@ project_root = str(Path(__file__).parent.parent)
 sys.path.append(project_root)
 
 from CryptoFinanceCorpusBuilder.utils.domain_utils import (
-    DomainConfig,
+    DomainKeywordHelper,
     get_valid_domains,
     get_domain_for_file
 )
@@ -46,7 +46,7 @@ class TestDomainConfigWrapper(unittest.TestCase):
 
     def test_default_config(self):
         """Test default configuration loading."""
-        config = DomainConfig()
+        config = DomainKeywordHelper()
         domains = config.get_valid_domains()
         self.assertIsInstance(domains, list)
         self.assertTrue(len(domains) > 0)
@@ -71,7 +71,7 @@ class TestDomainConfigWrapper(unittest.TestCase):
 
     def test_domain_keywords(self):
         """Test domain keyword functionality."""
-        config = DomainConfig()
+        config = DomainKeywordHelper()
         keywords = config.get_domain_keywords()
         self.assertIsInstance(keywords, dict)
         self.assertTrue(len(keywords) > 0)
