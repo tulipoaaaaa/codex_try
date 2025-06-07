@@ -348,7 +348,7 @@ pytest tests/ui/ --qt-api pyqt6
 ## Directory Structure
 
 ```
-CryptoFinanceCorpusBuilder/
+corpusbuilder/
 ├── app/                          # Main application code
 │   ├── main.py                   # Application entry point
 │   ├── main_window.py            # Main window class

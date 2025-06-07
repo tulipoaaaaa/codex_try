@@ -3,7 +3,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="CryptoFinanceCorpusBuilder",
+    name="corpusbuilder",
     version="3.0.0",
     description="A desktop application for building and managing a crypto-finance corpus",
     author="Your Name",

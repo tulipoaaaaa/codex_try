@@ -40,7 +40,7 @@ Required packages include:
 
 ## Project Structure
 ```
-CryptoFinanceCorpusBuilder/
+corpusbuilder/
 ├── config/
 │   ├── master_config.yaml           # Main configuration file
 │   ├── domain_config.py             # Domain definitions
@@ -61,15 +61,15 @@ CryptoFinanceCorpusBuilder/
 
 ### 1. Configuration System
 The system uses a centralized configuration management through `ProjectConfig`:
-- Located in: `CryptoFinanceCorpusBuilder/shared_tools/project_config.py`
-- Main config file: `CryptoFinanceCorpusBuilder/config/master_config.yaml`
+- Located in: `corpusbuilder/shared_tools/project_config.py`
+- Main config file: `corpusbuilder/config/master_config.yaml`
 - Environment-specific settings for production and test environments
 - Domain-specific configurations for different crypto-finance topics
 
 ### 2. Collection Pipeline
 
 #### 2.1 Collectors
-Located in: `CryptoFinanceCorpusBuilder/shared_tools/collectors/`
+Located in: `corpusbuilder/shared_tools/collectors/`
 
 ##### a) SciDB Collector (`enhanced_scidb_collector.py`)
 - **Purpose**: Collects academic papers from SciDB
@@ -129,7 +129,7 @@ Located in: `CryptoFinanceCorpusBuilder/shared_tools/collectors/`
 ### 3. Processing Pipeline
 
 #### 3.1 Extractors
-Located in: `CryptoFinanceCorpusBuilder/shared_tools/processors/`
+Located in: `corpusbuilder/shared_tools/processors/`
 
 ##### a) PDF Extractor
 - **Purpose**: Extracts text from PDF documents
@@ -256,7 +256,7 @@ Located in: `CryptoFinanceCorpusBuilder/shared_tools/processors/`
 ### 4. Storage and Management
 
 #### 4.1 Corpus Manager (`corpus_manager.py`)
-Located in: `CryptoFinanceCorpusBuilder/shared_tools/storage/`
+Located in: `corpusbuilder/shared_tools/storage/`
 
 - **Purpose**: Manages corpus structure and metadata
 - **Features**:
@@ -283,7 +283,7 @@ Located in: `CryptoFinanceCorpusBuilder/shared_tools/storage/`
 1. **Clone and Install**:
    ```bash
    git clone [repository_url]
-   cd CryptoFinanceCorpusBuilder
+   cd corpusbuilder
    pip install -r requirements.txt
    ```
 

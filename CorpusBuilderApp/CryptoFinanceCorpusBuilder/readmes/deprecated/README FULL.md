@@ -341,7 +341,7 @@ For more details, see the CLI help or the relevant section above. If you add a n
 
 **As of the latest refactor, all collector logic is now fully modularized.**
 
-- Each collector (ISDA, BitMEX, Anna's Archive, General Web Corpus, etc.) has its own file in `CryptoFinanceCorpusBuilder/cli/` (e.g., `collect_isda.py`, `collect_bitmex.py`, etc.).
+- Each collector (ISDA, BitMEX, Anna's Archive, General Web Corpus, etc.) has its own file in `corpusbuilder/cli/` (e.g., `collect_isda.py`, `collect_bitmex.py`, etc.).
 - The main CLI (`crypto_corpus_cli.py`) only dispatches to these per-collector modules. No collector logic lives in the CLI itself.
 - All logic, imports, config, and CLI flag parsing for each collector is self-contained in its own file.
 - No shared logic or base classes are used for collectors. All changes are per-collector and isolated.
@@ -356,7 +356,7 @@ For more details, see the CLI help or the relevant section above. If you add a n
 
 **Example File Structure:**
 ```
-CryptoFinanceCorpusBuilder/
+corpusbuilder/
   cli/
     crypto_corpus_cli.py
     collect_isda.py
@@ -419,7 +419,7 @@ python -m CryptoFinanceCorpusBuilder.cli.crypto_corpus_cli collect --help
 ```
 
 ## Modular Collector Logic
-- All collector logic is now in `CryptoFinanceCorpusBuilder/cli/collectors/` as `collect_<name>.py` files.
+- All collector logic is now in `corpusbuilder/cli/collectors/` as `collect_<name>.py` files.
 - The CLI only dispatches to these per-collector modules.
 - No collector logic lives in the CLI itself.
 - All logic, imports, config, and CLI flag parsing for each collector is self-contained in its own file.
@@ -434,7 +434,7 @@ python -m CryptoFinanceCorpusBuilder.cli.crypto_corpus_cli collect --help
 Currently, **text extraction from PDFs (to populate the `_extracted` folders for monitoring and downstream tasks) is NOT automated as part of the corpus collection workflow**. After collecting PDFs, you must run the extraction manually using the batch extraction script:
 
 ```sh
-python CryptoFinanceCorpusBuilder/processors/batch_text_extractor.py
+python corpusbuilder/processors/batch_text_extractor.py
 ```
 
 - By default, this script processes `data/corpus_1`. To use it with test folders, modify the `corpus_dir` variable at the top of the script to point to your test directory (e.g., `data/test_collect`).
@@ -643,7 +643,7 @@ python -m CryptoFinanceCorpusBuilder.cli.crypto_corpus_cli collect_annas --batch
 - **Title cache:** `data/title_cache_<YYYYMMDD>.txt`
 - **Main corpus:** `data/corpus_1/corpus_all.csv`
 - **Extraction script:** `scripts/extract_title_cache.py`
-- **Collector logic:** `CryptoFinanceCorpusBuilder/cli/collectors/collect_annas_main_library.py` (and similar for other collectors)
+- **Collector logic:** `corpusbuilder/cli/collectors/collect_annas_main_library.py` (and similar for other collectors)
 
 ---
 
@@ -1421,14 +1421,14 @@ $env:PYTHONPATH="G:\ai_trading_dev"
 
 ## 5. Ensure All Folders Have `__init__.py`
 Place an (even empty) `__init__.py` file in:
-- `CryptoFinanceCorpusBuilder/`
-- `CryptoFinanceCorpusBuilder/processors/`
-- `CryptoFinanceCorpusBuilder/tests/`
-- `CryptoFinanceCorpusBuilder/tests/pdf_extraction/`
+- `corpusbuilder/`
+- `corpusbuilder/processors/`
+- `corpusbuilder/tests/`
+- `corpusbuilder/tests/pdf_extraction/`
 
 ## 6. Run All Tests End-to-End
 ```bash
-pytest -s CryptoFinanceCorpusBuilder/tests/
+pytest -s corpusbuilder/tests/
 ```
 
 ---
@@ -1649,11 +1649,11 @@ To run the test suites:
 
 ```bash
 # Run all tests
-python -m unittest discover CryptoFinanceCorpusBuilder/tests
+python -m unittest discover corpusbuilder/tests
 
 # Run specific test suite
-python -m unittest CryptoFinanceCorpusBuilder/tests/test_processors.py
-python -m unittest CryptoFinanceCorpusBuilder/tests/test_collectors.py
+python -m unittest corpusbuilder/tests/test_processors.py
+python -m unittest corpusbuilder/tests/test_collectors.py
 ```
 
 ## Test Data Requirements
@@ -1672,7 +1672,7 @@ When adding new test files:
 
 The project includes several test suites organized by functionality and scope:
 
-### 1. Core Test Suites (CryptoFinanceCorpusBuilder/tests/)
+### 1. Core Test Suites (corpusbuilder/tests/)
 - **test_processors.py**
   - Tests text extraction from various file types (text, markdown, notebooks)
   - Tests domain classification functionality
@@ -1730,12 +1730,12 @@ The project includes several test suites organized by functionality and scope:
     - GitHub collector
 
 ### 4. Test Data
-- **integration_pdfs/** (CryptoFinanceCorpusBuilder/tests/)
+- **integration_pdfs/** (corpusbuilder/tests/)
   - Large collection of real-world PDFs
   - Used for integration testing
   - Contains various document types
 
-- **integration_pdfs_small/** (CryptoFinanceCorpusBuilder/tests/)
+- **integration_pdfs_small/** (corpusbuilder/tests/)
   - Smaller subset for quick testing
   - Representative samples of different types
   - Ideal for development and verification
@@ -1754,11 +1754,11 @@ The project includes several test suites organized by functionality and scope:
 ### Run All Tests
 ```bash
 # Run all test suites
-python -m unittest discover CryptoFinanceCorpusBuilder/tests
+python -m unittest discover corpusbuilder/tests
 
 # Run specific test suite
-python -m unittest CryptoFinanceCorpusBuilder/tests/test_processors.py
-python -m unittest CryptoFinanceCorpusBuilder/tests/test_collectors.py
+python -m unittest corpusbuilder/tests/test_processors.py
+python -m unittest corpusbuilder/tests/test_collectors.py
 ```
 
 ### Run Integration Tests

@@ -805,7 +805,7 @@ Would you like me to provide more details about any specific component of this i
 
 
 
-Ran tool Read file: CryptoFinanceCorpusBuilder/processors/batch_nonpdf_extractor.py Read file: CryptoFinanceCorpusBuilder/processors/batch_nonpdf_extractor.py Read file: CryptoFinanceCorpusBuilder/processors/batch_nonpdf_extractor.py Ran tool Read file: CryptoFinanceCorpusBuilder/processors/ba
+Ran tool Read file: corpusbuilder/processors/batch_nonpdf_extractor.py Read file: corpusbuilder/processors/batch_nonpdf_extractor.py Read file: corpusbuilder/processors/batch_nonpdf_extractor.py Ran tool Read file: corpusbuilder/processors/ba
 
 pasted
 
@@ -1109,7 +1109,7 @@ Flag machine-translated content which often has lower quality signal
 
 
 
-This approach preserves valuable non-English resources while preventing excessive token budget allocation to non-core materials.RetrySRead file: CryptoFinanceCorpusBuilder/cli/collectors/collect_annas_main_library.py
+This approach preserves valuable non-English resources while preventing excessive token budget allocation to non-core materials.RetrySRead file: corpusbuilder/cli/collectors/collect_annas_main_library.py
 Here’s what’s happening in the filtering and quality logic for "The Black Swan":
 ---
 ### Current Filtering/Quality Logic
@@ -1187,7 +1187,7 @@ This fix will immediately improve our ability to reach the 60/40 target distribu
 System-Level Quality Control Architecture
 
 Create a centralized QualityControlService:
-/workspace/CryptoFinanceCorpusBuilder/processors/quality_control.py
+/workspace/corpusbuilder/processors/quality_control.py
 
 Design a configurable content evaluator:
 
@@ -1211,7 +1211,7 @@ Pass document context (domain, source) to the quality controller
 
 
 
-This system-level approach gives you consistent quality control across all collectors while adapting criteria based on domain context - ensuring both crypto and traditional finance materials are evaluated appropriately for the 60/40 split.RetrySregarding non pdf extractionA new script, batch_nonpdf_extractor.py, has been created in CryptoFinanceCorpusBuilder/processors/ with the following features:
+This system-level approach gives you consistent quality control across all collectors while adapting criteria based on domain context - ensuring both crypto and traditional finance materials are evaluated appropriately for the 60/40 split.RetrySregarding non pdf extractionA new script, batch_nonpdf_extractor.py, has been created in corpusbuilder/processors/ with the following features:
 - Automatic file type detection for .py, .ipynb, .md, .html, .htm, .json, and .csv.
 - Extraction logic for each type:
   - Python: code, comments, docstrings
@@ -1224,7 +1224,7 @@ This system-level approach gives you consistent quality control across all colle
 - Metadata: Language, quality flag, file type, original path, extraction date, token count
 - CLI usage:  
   
-  python CryptoFinanceCorpusBuilder/processors/batch_nonpdf_extractor.py --input-dir <input> --output-dir <output>
+  python corpusbuilder/processors/batch_nonpdf_extractor.py --input-dir <input> --output-dir <output>
   
 You can now test this script on your sample data in data/test_collect/.  
 Would you like a sample command or further customization (e.g., advanced quality scoring, duplicate detection)?please rreview and reply > do we want more customization? brief and to the point without missing critical elementsEditReview: Non-PDF Extraction Script
@@ -1270,7 +1270,7 @@ Add domain-aware scoring immediately after validation
 Implement chunking next
 Add duplicate detection last
 
-This prioritizes the features most essential for maintaining corpus quality while allowing for immediate testing. Full alignment with PDF extraction can be achieved through these targeted enhancements without delaying progress.Retry(dedup_venv) PS G:\ai_trading_dev> python CryptoFinanceCorpusBuilder/processors/batch_nonpdf_extractor.py --input-dir data/test_collect/bitmex/bitmex_research --output-dir data/test_collect/bitmex/bitmex_research
+This prioritizes the features most essential for maintaining corpus quality while allowing for immediate testing. Full alignment with PDF extraction can be achieved through these targeted enhancements without delaying progress.Retry(dedup_venv) PS G:\ai_trading_dev> python corpusbuilder/processors/batch_nonpdf_extractor.py --input-dir data/test_collect/bitmex/bitmex_research --output-dir data/test_collect/bitmex/bitmex_research
 Processing: bitmex_research.html
 G:\ai_trading_dev\CryptoFinanceCorpusBuilder\processpastedSDISREGARD THE PICTUREmessage from dev below I will begin preparing the domain relevance scoring enhancement for the extractor, as discussed.
 Would you like to prioritize any specific file type for the next copy, or proceed with all types in parallel?
@@ -1299,7 +1299,7 @@ Proceed with implementation while building out the test suite in parallel for ef
 Design & Implementation Plan
 1. Domain Keyword Source
 * Use the same logic as DomainClassifier:
-* Load domain config from CryptoFinanceCorpusBuilder/config/domain_config.py (or inline if not present).
+* Load domain config from corpusbuilder/config/domain_config.py (or inline if not present).
 * Extract keywords for each domain from the search_terms field.
 2. CLI & Inference
 * Add a --domain parameter to the extractor script.
@@ -1339,12 +1339,12 @@ Add domain relevance data without changing existing metadata format
 
 
 This gives us the fastest path to implementation while maintaining alignment with the PDF pipeline. Focus on getting a working version that we can test with real files.RetrySRan tool
-Read file: CryptoFinanceCorpusBuilder/config/domain_config.py
+Read file: corpusbuilder/config/domain_config.py
 Perfect. Here’s how I’ll proceed for domain relevance scoring in the extractor:
 ---
 ## Implementation Plan (Direct Approach)
 ### 1. Source Keywords
-- Import DOMAINS from CryptoFinanceCorpusBuilder/config/domain_config.py.
+- Import DOMAINS from corpusbuilder/config/domain_config.py.
 - For each domain, use the search_terms list as the canonical keyword set.
 ### 2. CLI & Inference
 - Add a --domain parameter (accepts any of the 8 domains).
@@ -1724,13 +1724,13 @@ Ran tool
 Ran tool
 Ran tool
 Ran tool
-Read file: CryptoFinanceCorpusBuilder/processors/deduplicator.py
+Read file: corpusbuilder/processors/deduplicator.py
 Summary of Findings and Next Actions:
 ### 1. Familiarization & Project Rules
 - The project README and chunking test README have been thoroughly reviewed.
 - Key rules: All logic must be modular, test-driven, and collector-specific. No global/shared logic changes unless absolutely necessary. All new features must be testable and documented.
 ### 2. Existing Deduplication Logic
-- There is a robust, modular deduplication system in CryptoFinanceCorpusBuilder/processors/deduplicator.py:
+- There is a robust, modular deduplication system in corpusbuilder/processors/deduplicator.py:
   - Exact duplicate detection via file hash (MD5).
   - Near-duplicate detection via MinHash/LSH (configurable threshold, default 0.8).
   - Title-based duplicate detection (normalized titles).
@@ -1765,7 +1765,7 @@ Next Step Actions:
 2. If approved, integrate the deduplication system as a post-extraction step for non-PDFs, updating metadata as needed.
 3. Add/extend tests in the chunking pipeline to cover deduplication for all supported file types and edge cases.
 Ready to proceed as soon as you confirm or clarify the above points!please reply briefly and to the point without missing critical elementsthe technical summary of current deduplicator (its good as it is) I think Certainly! Here’s a concise technical summary of the deduplication system for your reference:---## Technical Summary: Deduplication SystemLocation:  
-CryptoFinanceCorpusBuilder/processors/deduplicator.py### Core FeaturesExact Duplicate Detection
+corpusbuilder/processors/deduplicator.py### Core FeaturesExact Duplicate Detection
 Uses MD5 hash of file contents to identify files with identical content.Maintains a mapping of file hashes to file paths.Groups all files with the same hash as exact duplicates.Near-Duplicate Detection (MinHash/LSH)
 Uses the datasketch library’s MinHash and LSH (Locality Sensitive Hashing) to detect files with high content similarity (default threshold: 0.8).Shingles (substrings) are created from file text, and MinHash signatures are computed.LSH is used to efficiently find groups of files with similar content, even if not byte-for-byte identical (e.g., minor edits, formatting changes).Title-Based Duplicate Detection
 Extracts and normalizes document titles (from metadata or filenames).Groups files with the same normalized title but different content hashes as potential duplicates.Indexing & Reporting
@@ -1895,7 +1895,7 @@ token_loss: Number of tokens "lost" if this file is a duplicate
 
 
 The token loss calculation is particularly important for corpus balance tracking. Implement using the same logic as the PDF pipeline.RetrySRan tool
-Read file: CryptoFinanceCorpusBuilder/processors/deduplicator.py
+Read file: corpusbuilder/processors/deduplicator.py
 Analysis of PDF Deduplicator Alignment:
 ### What the PDF Deduplicator Does:
 - Token Loss Reporting:  
@@ -3123,7 +3123,7 @@ Final review and launch
 
 Key Files and Directories
 
-Main code: CryptoFinanceCorpusBuilder/
+Main code: corpusbuilder/
 Extraction: processors/batch_pdf_extractor.py and processors/batch_nonpdf_extractor.py
 Analytics: analytics/corpus_balance_analyzer.py
 Config: config/enhanced_sources.json
@@ -3315,10 +3315,10 @@ Path format issues (Windows vs Unix paths)
 Case sensitivity issues (e.g., "Crypto_Derivatives" vs "crypto_derivatives")
 Directory structure not matching expectations
 
-Let me know the debug output, and I can provide a more targeted fix if needed.RetrySRead file: CryptoFinanceCorpusBuilder/README FULL.md
-Read file: CryptoFinanceCorpusBuilder/utils/domain_utils.py
-Read file: CryptoFinanceCorpusBuilder/processors/batch_text_extractor.py
-Read file: CryptoFinanceCorpusBuilder/processors/batch_text_extractor.py
+Let me know the debug output, and I can provide a more targeted fix if needed.RetrySRead file: corpusbuilder/README FULL.md
+Read file: corpusbuilder/utils/domain_utils.py
+Read file: corpusbuilder/processors/batch_text_extractor.py
+Read file: corpusbuilder/processors/batch_text_extractor.py
 ### Deep Audit: Domain Assignment Issue
 #### 1. README & Boss Guidance
 - The README and boss both require robust, multi-strategy domain assignment:
@@ -3503,7 +3503,7 @@ Once verified, continue to the remaining integration tasks
 
 Files to Modify
 
-CryptoFinanceCorpusBuilder/utils/domain_utils.py (primary fix)
-CryptoFinanceCorpusBuilder/processors/batch_text_extractor.py (update calls with debug flag)
+corpusbuilder/utils/domain_utils.py (primary fix)
+corpusbuilder/processors/batch_text_extractor.py (update calls with debug flag)
 
 The current focus is at Step 1 (Integration Testing & Validation) of our 5-step launch plan. Once the domain assignment is fixed, we'll complete integration testing and move to downstream integration.

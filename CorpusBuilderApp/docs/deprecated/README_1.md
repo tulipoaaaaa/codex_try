@@ -205,7 +205,7 @@ pytest tests/ui/ --qt-api pyqt6
 ## 📁 Project Structure
 
 ```
-CryptoFinanceCorpusBuilder/
+corpusbuilder/
 ├── app/                          # Main application
 │   ├── main.py                   # Entry point
 │   ├── main_window.py            # Main window
