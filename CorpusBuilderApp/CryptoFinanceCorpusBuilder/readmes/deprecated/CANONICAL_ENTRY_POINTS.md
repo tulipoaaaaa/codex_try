@@ -94,7 +94,7 @@ python -m CryptoFinanceCorpusBuilder.utils.verify_install
 ## Notes
 
 1. All paths should be absolute or relative to the project root
-2. Configuration files should be placed in `CryptoFinanceCorpusBuilder/config/`
-3. Logs are automatically written to `CryptoFinanceCorpusBuilder/logs/`
-4. Temporary files are stored in `CryptoFinanceCorpusBuilder/temp_workers/`
+2. Configuration files should be placed in `corpusbuilder/config/`
+3. Logs are automatically written to `corpusbuilder/logs/`
+4. Temporary files are stored in `corpusbuilder/temp_workers/`
 5. All scripts support `--help` for detailed usage information 
