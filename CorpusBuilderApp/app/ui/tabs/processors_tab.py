@@ -435,7 +435,6 @@ class ProcessorsTab(QWidget):
             path_wrappers = [
                 ('pdf', PDFExtractorWrapper),
                 ('text', TextExtractorWrapper),
-                ('balancer', CorpusBalancerWrapper),
                 ('domain', DomainClassifierWrapper),
                 ('formula', FormulaExtractorWrapper),
                 ('chart', ChartImageExtractorWrapper)
@@ -447,7 +446,8 @@ class ProcessorsTab(QWidget):
                 ('language', LanguageConfidenceDetectorWrapper),
                 ('mt_detector', MachineTranslationDetectorWrapper),
                 ('financial', FinancialSymbolProcessorWrapper),
-                ('deduplicator', DeduplicatorWrapper)
+                ('deduplicator', DeduplicatorWrapper),
+                ('balancer', CorpusBalancerWrapper)
             ]
             
             # Initialize path-based wrappers
