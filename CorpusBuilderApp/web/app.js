@@ -908,12 +908,12 @@ function initBalancerTab() {
   }
 }
 
-// Initialize domain configuration
-function initDomainConfig() {
-  const domainConfigList = document.querySelector('.domain-config-list');
-  
-  if (domainConfigList) {
-    domainConfigList.innerHTML = '';
+// Initialize domain configuration for the frontend UI
+function initDomainUIConfig() {
+  const domainUIConfigList = document.querySelector('.domain-config-list');
+
+  if (domainUIConfigList) {
+    domainUIConfigList.innerHTML = '';
     
     appData.domains.forEach(domain => {
       const domainItem = document.createElement('div');
@@ -925,7 +925,7 @@ function initDomainConfig() {
         <button class="btn btn--sm btn--secondary">Edit</button>
       `;
       
-      domainConfigList.appendChild(domainItem);
+      domainUIConfigList.appendChild(domainItem);
       
       // Add edit button handler
       const editButton = domainItem.querySelector('button');
@@ -1089,7 +1089,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initBalancerTab();
   
   // Initialize domain configuration
-  initDomainConfig();
+  initDomainUIConfig();
   
   // Initialize logs tab
   initLogsTab();
