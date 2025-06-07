@@ -1,3 +1,4 @@
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 # sources/specific_collectors/bitmex_collector.py
 from CryptoFinanceCorpusBuilder.sources.web_collector import WebCollector
 from bs4 import BeautifulSoup

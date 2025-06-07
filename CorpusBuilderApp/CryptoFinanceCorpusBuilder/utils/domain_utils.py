@@ -6,6 +6,7 @@ Used by: PDF and Non-PDF extractors
 This module provides a wrapper around domain configuration with fallback mechanisms.
 It maintains backward compatibility while allowing for future configuration improvements.
 """
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 
 import os
 import re

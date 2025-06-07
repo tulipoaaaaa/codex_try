@@ -1,3 +1,4 @@
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 # processors/chart_image_extractor.py
 """
 Extract and analyze charts, graphs, and images from PDF documents.

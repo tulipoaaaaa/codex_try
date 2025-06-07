@@ -2,6 +2,7 @@
 Test suite for domain configuration wrapper.
 Tests both the DomainConfig class and backward compatibility functions.
 """
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 
 import os
 import sys

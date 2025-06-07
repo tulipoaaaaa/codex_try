@@ -3,6 +3,7 @@ Config Validator Script
 Checks consistency between balancer_config.py (reference) and domain_config.py.
 Outputs both human-readable and machine-readable (JSON) reports.
 """
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 import sys
 import json
 import re

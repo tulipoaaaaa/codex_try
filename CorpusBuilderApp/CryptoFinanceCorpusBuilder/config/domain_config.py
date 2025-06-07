@@ -11,6 +11,7 @@ This file contains:
 IMPORTANT: This file is used by extractors through domain_utils.py
 DO NOT modify without updating domain_utils.py wrapper
 """
+# DEPRECATED: This file belongs to the legacy CryptoFinanceCorpusBuilder package and should not be used in new modules.
 
 # config/domain_config.py
 
