@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # processors/chart_image_extractor.py
 """
 Extract and analyze charts, graphs, and images from PDF documents.

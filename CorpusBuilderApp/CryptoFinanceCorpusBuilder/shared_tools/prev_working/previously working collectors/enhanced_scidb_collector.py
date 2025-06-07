@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # sources/specific_collectors/scidb_collector.py
 """
 Collector for SciDB academic papers

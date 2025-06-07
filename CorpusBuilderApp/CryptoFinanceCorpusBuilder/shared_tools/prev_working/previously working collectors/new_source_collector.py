@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # sources/specific_collectors/new_source_collector.py
 from shared_tools.collectors.web_collector import WebCollector
 

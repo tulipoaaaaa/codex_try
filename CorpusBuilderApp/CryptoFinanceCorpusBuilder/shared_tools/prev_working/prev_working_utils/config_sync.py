@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 """
 Config Sync Script
 Synchronizes domain_config.py allocations and properties with balancer_config.py target_weights and fields.

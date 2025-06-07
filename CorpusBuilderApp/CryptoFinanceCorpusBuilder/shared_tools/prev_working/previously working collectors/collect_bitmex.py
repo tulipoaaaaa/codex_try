@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 import os
 import requests
 from bs4 import BeautifulSoup

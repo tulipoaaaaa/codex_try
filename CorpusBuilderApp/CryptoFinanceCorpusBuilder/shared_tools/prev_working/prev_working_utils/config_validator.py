@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 """
 Config Validator Script
 Checks consistency between balancer_config.py (reference) and domain_config.py.

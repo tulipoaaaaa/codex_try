@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # processors/financial_symbol_processor.py
 """
 Financial symbol dictionary and preservation system for crypto/finance documents.
