@@ -433,15 +433,15 @@ class ProcessorsTab(QWidget):
             # Wrappers that expect config_path (string)
 
             path_wrappers = [
+            ]
+
+            # Wrappers that expect config object
+            object_wrappers = [
                 ('pdf', PDFExtractorWrapper),
                 ('text', TextExtractorWrapper),
                 ('domain', DomainClassifierWrapper),
                 ('formula', FormulaExtractorWrapper),
-                ('chart', ChartImageExtractorWrapper)
-            ]
-            
-            # Wrappers that expect config object
-            object_wrappers = [
+                ('chart', ChartImageExtractorWrapper),
                 ('quality', QualityControlWrapper),
                 ('language', LanguageConfidenceDetectorWrapper),
                 ('mt_detector', MachineTranslationDetectorWrapper),
