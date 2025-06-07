@@ -74,15 +74,20 @@ class CorpusBalancerWrapper(BaseWrapper, ProcessorWrapperMixin):
     def __init__(self, config: ProjectConfig):
         super().__init__(config)
         self.config = config
+        self.corpus_dir = self.config.get_corpus_dir()
+        self.logs_dir = self.config.get_logs_dir()
         self.balancer = None
         self.target_allocations = {}
         
     def _create_target_object(self):
         """Create Corpus Balancer instance"""
         if not self.balancer:
+            corpus_dir = self.config.get_corpus_dir()
+            logs_dir = self.config.get_logs_dir()
+            balancer_cfg = self.config.get_processor_config("corpus_balancer")
             self.balancer = CorpusBalancer(
-                corpus_dir=self.config.get_input_dir(),
-                config=self.config
+                corpus_dir=corpus_dir,
+                config=balancer_cfg,
             )
         return self.balancer
         
