@@ -43,7 +43,11 @@ class Deduplicator:
         self.logger.setLevel(logging.INFO)
         handler = logging.FileHandler(self.log_path)
         handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s: %(message)s"))
-        self.logger.addHandler(handler)
+        if not any(
+            isinstance(h, logging.FileHandler) and getattr(h, "baseFilename", None) == str(self.log_path)
+            for h in self.logger.handlers
+        ):
+            self.logger.addHandler(handler)
 
         self.logger.info("Deduplicator initialized")
 
@@ -150,8 +154,37 @@ class Deduplicator:
         self.logger.info('scan_corpus called')
         return True
     
-    def find_duplicates(self):
-        """Find duplicate content in the corpus"""
+    def find_duplicates(self, file_paths: Optional[List[str]] = None, threshold: Optional[float] = None):
+        """Find duplicate content.
+
+        If ``file_paths`` is provided, only those files are analyzed using simple
+        hash comparison. Otherwise the entire corpus index is scanned.
+        """
+        if file_paths:
+            seen: Dict[str, str] = {}
+            duplicates = []
+            for path in file_paths:
+                if self.should_skip(path):
+                    self.logger.info(f"Skipping already processed file: {path}")
+                    continue
+                try:
+                    with open(path, "rb") as f:
+                        data = f.read()
+                    digest = hashlib.md5(data).hexdigest()
+                except Exception as e:
+                    self.logger.error(f"Error reading {path}: {e}")
+                    continue
+                if digest in seen:
+                    duplicates.append({
+                        "type": "identical_hash",
+                        "files": [seen[digest], path],
+                        "similarity": 1.0,
+                    })
+                else:
+                    seen[digest] = path
+            self.logger.info("find_duplicates called on file list")
+            return duplicates
+
         if not self.file_hashes and not self.title_index:
             success = self.scan_corpus()
             if not success:
@@ -190,10 +223,11 @@ class Deduplicator:
         self.logger.info('find_duplicates called')
         return duplicates
     
-    def deduplicate(self, strategy='keep_first', output_file=None, token_loss_report=None):
-        """Remove duplicate content based on strategy
-        
+    def deduplicate(self, file_paths: Optional[List[str]] = None, strategy: str = 'keep_first', output_file: Optional[str] = None, token_loss_report: Optional[str] = None):
+        """Remove duplicate content based on strategy.
+
         Args:
+            file_paths (List[str], optional): Specific files to process. If ``None`` the entire corpus is scanned.
             strategy (str): Deduplication strategy:
                 - 'keep_first': Keep first file in each duplicate group
                 - 'keep_largest': Keep largest file in each duplicate group
@@ -207,11 +241,11 @@ class Deduplicator:
         # --- Token count before deduplication ---
         domain_token_counts_before = self._get_domain_token_counts()
         total_tokens_before = sum(domain_token_counts_before.values())
-        
+
         self.logger.info(f"Token count before deduplication: {domain_token_counts_before}")
-        
+
         # Find duplicates
-        duplicates = self.find_duplicates()
+        duplicates = self.find_duplicates(file_paths)
         if not duplicates:
             self.logger.info("No duplicates found")
             return []
@@ -533,6 +567,14 @@ class Deduplicator:
         }
         with open(self.log_path, "a") as lf:
             lf.write(json.dumps(entry) + "\n")
+
+    def should_skip(self, file_path: str) -> bool:
+        """Return True if the file has already been processed."""
+        return str(file_path) in self.processed_files
+
+    def get_statistics(self) -> dict:
+        """Return simple processing statistics."""
+        return {"processed": len(self.processed_files)}
 
 def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     """Run deduplicator with project configuration
