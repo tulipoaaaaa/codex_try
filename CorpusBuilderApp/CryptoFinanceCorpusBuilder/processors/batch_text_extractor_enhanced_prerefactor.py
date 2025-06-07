@@ -114,15 +114,15 @@ from langdetect import detect, LangDetectException
 import yaml
 from tqdm import tqdm
 
-from CryptoFinanceCorpusBuilder.processors.corruption_detector import detect_corruption
-from CryptoFinanceCorpusBuilder.processors.language_confidence_detector import detect_language_confidence
-from CryptoFinanceCorpusBuilder.processors.machine_translation_detector import detect_machine_translation
-from CryptoFinanceCorpusBuilder.utils.domain_utils import get_domain_for_file
-from CryptoFinanceCorpusBuilder.processors.domain_classifier import DomainClassifier
-from CryptoFinanceCorpusBuilder.utils.pdf_safe_open import safe_open_pdf
-from CryptoFinanceCorpusBuilder.processors.formula_extractor import FormulaExtractor
-from CryptoFinanceCorpusBuilder.processors.chart_image_extractor import ChartImageExtractor
-from CryptoFinanceCorpusBuilder.processors.finacial_symbol_processor import FinancialSymbolProcessor, AcademicPaperProcessor, MemoryOptimizer
+from shared_tools.processors.corruption_detector import detect_corruption
+from shared_tools.processors.language_confidence_detector import detect_language_confidence
+from shared_tools.processors.machine_translation_detector import detect_machine_translation
+from shared_tools.utils.domain_utils import get_domain_for_file
+from shared_tools.processors.domain_classifier import DomainClassifier
+from shared_tools.utils.pdf_safe_open import safe_open_pdf
+from shared_tools.processors.formula_extractor import FormulaExtractor
+from shared_tools.processors.chart_image_extractor import ChartImageExtractor
+from shared_tools.processors.finacial_symbol_processor import FinancialSymbolProcessor, AcademicPaperProcessor, MemoryOptimizer
 
 # --- Config ---
 MIN_TOKEN_THRESHOLD = 100
@@ -687,7 +687,7 @@ def main():
     # Auto-normalize metadata if enabled
     if getattr(args, 'auto_normalize', False):
         print("[INFO] Running metadata normalization on output directory...")
-        from CryptoFinanceCorpusBuilder.utils.metadata_normalizer import main as normalize_directory
+        from shared_tools.utils.metadata_normalizer import main as normalize_directory
         normalize_directory(args.output_dir)
 
     # Ensure all file handles are closed before temp file deletion (handled by context managers in extraction code)
