@@ -38,7 +38,7 @@ except ImportError:
 
 # Import ProjectConfig if available
 try:
-    from shared_tools.config.project_config import ProjectConfig  # type: ignore
+    from shared_tools.project_config import ProjectConfig  # type: ignore
     logger.info("Successfully imported ProjectConfig")
 except ImportError:
     logger.warning("ProjectConfig not found. Legacy mode will be used if --project-config is not provided.")
