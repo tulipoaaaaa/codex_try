@@ -2,7 +2,7 @@ import argparse
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).resolve().parent.parent))
-from CryptoFinanceCorpusBuilder.storage.corpus_manager import CorpusManager
+from shared_tools.storage.corpus_manager import CorpusManager
 
 def clean_stale_metadata(corpus_dir, metadata_path=None):
     cm = CorpusManager(corpus_dir)
