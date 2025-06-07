@@ -36,7 +36,7 @@ DOMAIN_KEYWORDS = {
     # Add more as needed
 }
 
-class DomainConfig:
+class DomainKeywordHelper:
     """Configuration wrapper for domain settings with fallback mechanisms."""
     
     def __init__(self, config_path: Optional[Union[str, Any]] = None):
@@ -95,12 +95,12 @@ class DomainConfig:
         return self.keywords
 
 # Initialize default config
-_domain_config = DomainConfig()
+_domain_helper = DomainKeywordHelper()
 
 # Keep existing functions as wrappers for backward compatibility
 def get_valid_domains():
     """Get list of valid domains (backward compatible)."""
-    return _domain_config.get_valid_domains()
+    return _domain_helper.get_valid_domains()
 
 def get_domain_for_file(file_path, text=None, debug=False):
     """
@@ -164,7 +164,7 @@ def get_domain_for_file(file_path, text=None, debug=False):
                 return assigned_domain
     # 4. Keyword matching (filename/text)
     fname = os.path.basename(file_path_str).lower()
-    for dom, keywords in _domain_config.get_domain_keywords().items():
+    for dom, keywords in _domain_helper.get_domain_keywords().items():
         for kw in keywords:
             if kw in fname:
                 if debug:
@@ -176,7 +176,7 @@ def get_domain_for_file(file_path, text=None, debug=False):
                 return assigned_domain
     if text:
         text_lower = text.lower()
-        for dom, keywords in _domain_config.get_domain_keywords().items():
+        for dom, keywords in _domain_helper.get_domain_keywords().items():
             for kw in keywords:
                 if kw in text_lower:
                     if debug:
