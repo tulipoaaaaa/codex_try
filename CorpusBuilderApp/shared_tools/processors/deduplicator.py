@@ -9,38 +9,29 @@ import re
 import numpy as np
 from collections import defaultdict
 from typing import Dict, List, Optional, Any, Union
+from datetime import datetime
+
 # Third-party imports above
 # Now add project directory to sys.path for sibling module imports
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
-from CryptoFinanceCorpusBuilder.shared_tools.storage.corpus_manager import CorpusManager
-
-# Set up file-based logging
-logging.basicConfig(filename='deduplication.log', level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
-print('Deduplicator script starting...')
+from shared_tools.storage.corpus_manager import CorpusManager
+from shared_tools.project_config import ProjectConfig
 
 class Deduplicator:
     """Identify and remove duplicate content in the corpus"""
     
-    def __init__(self, corpus_dir=None, similarity_threshold=0.8, use_minhash=True, project_config=None):
-        """Initialize deduplicator
-        
-        Args:
-            corpus_dir (str): Directory containing the corpus
-            similarity_threshold (float): Threshold for content similarity (0-1)
-            use_minhash (bool): Whether to use MinHash/LSH for near-duplicate detection
-            project_config (dict): Optional project configuration
-        """
-        self.corpus_dir = Path(corpus_dir) if corpus_dir else None
-        
-        # Use project config if provided, otherwise use defaults
-        if project_config and 'deduplicator' in project_config:
-            config = project_config['deduplicator']
-            self.similarity_threshold = config.get('similarity_threshold', similarity_threshold)
-            self.use_minhash = config.get('use_minhash', use_minhash)
-        else:
-            self.similarity_threshold = similarity_threshold
-            self.use_minhash = use_minhash
+    def __init__(self, project_config: ProjectConfig, similarity_threshold: float = 0.8, use_minhash: bool = True):
+        """Initialize the deduplicator with project configuration."""
+
+        self.project_config = project_config
+        self.corpus_dir = Path(project_config.get_input_dir())
+        self.similarity_threshold = similarity_threshold
+        self.use_minhash = use_minhash
+
+        # Log file setup
+        self.log_path = project_config.get_logs_dir() / "dedup_log.jsonl"
+        self.log_path.parent.mkdir(parents=True, exist_ok=True)
         
         # Indexes for duplicate detection
         self.file_hashes = {}  # Maps file hash to file paths
@@ -48,17 +39,24 @@ class Deduplicator:
         self.minhash_index = {}  # Maps MinHash signatures to document info
         
         # Configure logging
-        self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger = logging.getLogger("deduplicator")
         self.logger.setLevel(logging.INFO)
-        
-        if not self.logger.handlers:
-            handler = logging.StreamHandler()
-            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-            handler.setFormatter(formatter)
-            self.logger.addHandler(handler)
-        
-        print('Deduplicator __init__ called')
-        self.logger.info('Deduplicator initialized')
+        handler = logging.FileHandler(self.log_path)
+        handler.setFormatter(logging.Formatter("%(asctime)s %(levelname)s: %(message)s"))
+        self.logger.addHandler(handler)
+
+        self.logger.info("Deduplicator initialized")
+
+        # Load processed files from log if available
+        self.processed_files = set()
+        if self.log_path.exists():
+            with open(self.log_path, "r") as f:
+                for line in f:
+                    try:
+                        data = json.loads(line)
+                        self.processed_files.add(data.get("file"))
+                    except Exception:
+                        continue
     
     def scan_corpus(self, rebuild_index=False):
         """Scan corpus directory to build duplicate indexes"""
@@ -149,7 +147,7 @@ class Deduplicator:
         except Exception as e:
             self.logger.error(f"Error saving deduplication index: {e}")
         
-        print('scan_corpus called')
+        self.logger.info('scan_corpus called')
         return True
     
     def find_duplicates(self):
@@ -189,7 +187,7 @@ class Deduplicator:
             content_duplicates = self._find_content_duplicates()
             duplicates.extend(content_duplicates)
         
-        print('find_duplicates called')
+        self.logger.info('find_duplicates called')
         return duplicates
     
     def deduplicate(self, strategy='keep_first', output_file=None, token_loss_report=None):
@@ -210,7 +208,7 @@ class Deduplicator:
         domain_token_counts_before = self._get_domain_token_counts()
         total_tokens_before = sum(domain_token_counts_before.values())
         
-        print('Token count before deduplication:', domain_token_counts_before)
+        self.logger.info(f"Token count before deduplication: {domain_token_counts_before}")
         
         # Find duplicates
         duplicates = self.find_duplicates()
@@ -242,11 +240,17 @@ class Deduplicator:
         duplicates_dir.mkdir(exist_ok=True)
         for f in files_to_remove:
             src = Path(f)
+            if str(src) in self.processed_files:
+                self.logger.info(f"Skipping already processed file: {src}")
+                self._append_log(str(src), "skipped")
+                continue
             if strategy == 'move_duplicates':
                 dst = duplicates_dir / src.name
                 try:
                     src.rename(dst)
                     self.logger.info(f"Moved duplicate: {src} -> {dst}")
+                    self._append_log(str(src), "deduplicated")
+                    self.processed_files.add(str(src))
                 except Exception as e:
                     self.logger.error(f"Error moving {src}: {e}")
             else:
@@ -255,6 +259,8 @@ class Deduplicator:
                     try:
                         src.unlink()
                         self.logger.info(f"Deleted duplicate: {src}")
+                        self._append_log(str(src), "deduplicated")
+                        self.processed_files.add(str(src))
                     except Exception as e:
                         self.logger.error(f"Error deleting {src}: {e}")
                 else:
@@ -264,7 +270,7 @@ class Deduplicator:
         domain_token_counts_after = self._get_domain_token_counts()
         total_tokens_after = sum(domain_token_counts_after.values())
         
-        print('Token count after deduplication:', domain_token_counts_after)
+        self.logger.info(f"Token count after deduplication: {domain_token_counts_after}")
         
         # --- Token loss report ---
         token_loss_stats = {}
@@ -285,7 +291,7 @@ class Deduplicator:
             'tokens_lost': total_tokens_before - total_tokens_after,
             'percent_loss': ((total_tokens_before - total_tokens_after) / total_tokens_before * 100) if total_tokens_before > 0 else 0
         }
-        print('Token loss stats:', token_loss_stats)
+        self.logger.info(f"Token loss stats: {token_loss_stats}")
         if token_loss_report:
             with open(token_loss_report, 'w') as f:
                 json.dump(token_loss_stats, f, indent=2)
@@ -296,7 +302,7 @@ class Deduplicator:
                 json.dump({'deduplicated': list(files_to_remove)}, f, indent=2)
             self.logger.info(f"Deduplication report saved to {output_file}")
         
-        print('deduplicate called')
+        self.logger.info('Deduplicate completed')
         return list(files_to_remove)
     
     def _compute_file_hash(self, file_path):
@@ -347,7 +353,7 @@ class Deduplicator:
     
     def _find_content_duplicates(self, min_text_length=1000):
         """Find files with similar content using datasketch MinHash and LSH (scalable version)."""
-        print('_find_content_duplicates (LSH) called')
+        self.logger.info('_find_content_duplicates (LSH) called')
         try:
             import sys
             from pathlib import Path
@@ -358,8 +364,8 @@ class Deduplicator:
             import hashlib
             
             corpus_manager = CorpusManager(self.corpus_dir)
-            print(f"[DEBUG] CorpusManager loading from: {corpus_manager.metadata_file}")
-            print(f"[DEBUG] Documents loaded: {len(corpus_manager.metadata.get('documents', {}))}")
+            self.logger.info(f"[DEBUG] CorpusManager loading from: {corpus_manager.metadata_file}")
+            self.logger.info(f"[DEBUG] Documents loaded: {len(corpus_manager.metadata.get('documents', {}))}")
             extractor = TextExtractor()
             documents = corpus_manager.metadata.get("documents", {})
             if not documents:
@@ -410,7 +416,7 @@ class Deduplicator:
                     self.logger.error(f"Error processing {doc_id}: {e}")
                     skipped += 1
 
-            print(f"[MinHashLSH] Valid docs: {valid}, Skipped: {skipped}")
+            self.logger.info(f"[MinHashLSH] Valid docs: {valid}, Skipped: {skipped}")
             if valid == 0:
                 self.logger.warning("All documents skipped — no MinHash input. Check extraction and metadata.")
                 return []
@@ -436,15 +442,15 @@ class Deduplicator:
                             "similarity_threshold": self.similarity_threshold
                         })
             self.logger.info(f"Found {len(groups)} content similarity duplicate groups (MinHashLSH)")
-            print(f"✅ MinHashLSH duplicate groups: {len(groups)}")
+            self.logger.info(f"✅ MinHashLSH duplicate groups: {len(groups)}")
             return groups
         except ImportError as e:
             self.logger.error(f"Error importing required modules for content similarity: {e}")
-            print(f"Error importing required modules for content similarity: {e}")
+            self.logger.info(f"Error importing required modules for content similarity: {e}")
             return []
         except Exception as e:
             self.logger.error(f"Error finding content duplicates: {e}")
-            print(f"Error finding content duplicates: {e}")
+            self.logger.info(f"Error finding content duplicates: {e}")
             return []
     
     def _get_domain_token_counts(self):
@@ -519,6 +525,15 @@ class Deduplicator:
                 pass
         return 0
 
+    def _append_log(self, file_path: str, result: str) -> None:
+        entry = {
+            "file": file_path,
+            "timestamp": datetime.utcnow().isoformat(),
+            "result": result,
+        }
+        with open(self.log_path, "a") as lf:
+            lf.write(json.dumps(entry) + "\n")
+
 def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     """Run deduplicator with project configuration
     
@@ -529,17 +544,19 @@ def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     Returns:
         dict: Deduplication results
     """
+    cfg = project.get_processor_config('deduplicator')
     deduplicator = Deduplicator(
-        corpus_dir=project.get_input_dir(),
-        project_config=project.get_processor_config('deduplicator')
+        project_config=project,
+        similarity_threshold=cfg.get('similarity_threshold', 0.8),
+        use_minhash=cfg.get('use_minhash', True),
     )
     
     # Run deduplication
     deduplicator.scan_corpus()
     duplicates = deduplicator.find_duplicates()
-    
+
     if verbose:
-        print(f"Found {len(duplicates)} duplicate groups")
+        deduplicator.logger.info(f"Found {len(duplicates)} duplicate groups")
     
     return {
         'duplicates': duplicates,
@@ -551,31 +568,23 @@ def main():
     import argparse
     
     parser = argparse.ArgumentParser(description='Deduplicate corpus content')
-    parser.add_argument('--corpus-dir', required=True, help='Corpus directory')
-    parser.add_argument('--project-config', help='Path to project config file')
+    parser.add_argument('--project-config', required=True, help='Path to project config file')
     parser.add_argument('--verbose', action='store_true', help='Enable verbose output')
     args = parser.parse_args()
 
-    if args.project_config:
-        # Use project config
-        from CryptoFinanceCorpusBuilder.shared_tools.config.project_config import ProjectConfig
-        project = ProjectConfig.load(args.project_config)
-        results = run_with_project_config(project, args.verbose)
-    else:
-        # Use default configuration
-        deduplicator = Deduplicator(corpus_dir=args.corpus_dir)
-        deduplicator.scan_corpus()
-        results = deduplicator.find_duplicates()
+    from shared_tools.project_config import ProjectConfig
+    project = ProjectConfig.load(args.project_config)
+    results = run_with_project_config(project, args.verbose)
     
-    # Print results
-    print(f"\nDeduplication Results:")
-    print(f"Found {len(results.get('duplicates', []))} duplicate groups")
+    logger = logging.getLogger("deduplicator")
+    logger.info("\nDeduplication Results:")
+    logger.info(f"Found {len(results.get('duplicates', []))} duplicate groups")
     
     if args.verbose:
         for dup in results.get('duplicates', []):
-            print(f"\nDuplicate Group:")
+            logger.info("\nDuplicate Group:")
             for file in dup.get('files', []):
-                print(f"  - {file}")
+                logger.info(f"  - {file}")
 
 if __name__ == "__main__":
     main()
