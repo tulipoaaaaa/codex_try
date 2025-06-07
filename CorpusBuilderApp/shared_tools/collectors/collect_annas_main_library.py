@@ -42,7 +42,7 @@ except ImportError:
 
 # Import ProjectConfig if available
 try:
-    from shared_tools.config.project_config import ProjectConfig  # type: ignore
+    from shared_tools.project_config import ProjectConfig  # type: ignore
     logger.info("Successfully imported ProjectConfig")
 except ImportError:
     logger.warning("ProjectConfig not found. Legacy mode will be used if --project-config is not provided.")
@@ -62,7 +62,7 @@ def load_existing_titles(existing_titles_path):
 class AnnasMainLibraryCollector(BaseCollector):
     def __init__(self, config, account_cookie=None):
         if isinstance(config, str):
-            from shared_tools.config.project_config import ProjectConfig
+            from shared_tools.project_config import ProjectConfig
             config = ProjectConfig(config, environment='test')
         super().__init__(config)
 
