@@ -15,7 +15,7 @@ import numpy as np
 from CryptoFinanceCorpusBuilder.processors.corpus_balancer import (
     CorpusAnalyzer, CorpusRebalancer, CorpusVisualizer, CorpusBalancerCLI
 )
-from CryptoFinanceCorpusBuilder.config.balancer_config import BalancerConfig
+from shared_tools.config.balancer_config import BalancerConfig
 
 class TestCorpusAnalyzer(unittest.TestCase):
     """Test cases for CorpusAnalyzer class."""

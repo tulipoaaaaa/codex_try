@@ -3,8 +3,8 @@ import json
 import shutil
 import re
 from pathlib import Path
-from CryptoFinanceCorpusBuilder.shared_tools.processors.domain_classifier import DomainClassifier
-from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
+from shared_tools.processors.domain_classifier import DomainClassifier
+from shared_tools.config.domain_config import DOMAINS
 
 # Set up paths
 corpus_dir = Path("/workspace/data/corpus_1")

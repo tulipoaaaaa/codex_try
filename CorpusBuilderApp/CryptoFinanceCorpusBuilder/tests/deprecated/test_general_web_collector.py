@@ -2,8 +2,8 @@ import os
 import sys
 import pytest
 from pathlib import Path
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.general_web_collector import GeneralWebCollector
-from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+from shared_tools.collectors.general_web_collector import GeneralWebCollector
+from shared_tools.project_config import ProjectConfig
 
 @pytest.fixture
 def config():

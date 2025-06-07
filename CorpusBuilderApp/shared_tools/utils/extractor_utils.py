@@ -7,7 +7,7 @@ from datetime import datetime
 import os
 
 try:
-    from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+    from shared_tools.project_config import ProjectConfig
 except ImportError:
     ProjectConfig = None
 

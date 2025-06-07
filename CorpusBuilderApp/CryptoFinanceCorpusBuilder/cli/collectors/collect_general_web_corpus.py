@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 def run_general_web_corpus_collector(args, source_config, base_dir):
     print("[DEBUG] Entered general_web_corpus collector block")
     from CryptoFinanceCorpusBuilder.sources.specific_collectors.enhanced_client import CookieAuthClient
-    from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
+    from shared_tools.config.domain_config import DOMAINS
     print("\nStarting General Web Corpus Collector...")
     # Set up test-safe output directory
     output_dir = Path(args.output_dir) if hasattr(args, 'output_dir') else Path("data/test_collect/general_web_corpus")

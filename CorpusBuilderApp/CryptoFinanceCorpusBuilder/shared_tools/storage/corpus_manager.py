@@ -9,7 +9,7 @@ import uuid
 import numpy as np
 from collections import Counter
 from math import log2
-from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
+from shared_tools.config.domain_config import DOMAINS
 
 class CorpusManager:
     """Manage the crypto-finance corpus structure"""

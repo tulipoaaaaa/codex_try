@@ -4,8 +4,8 @@ import pytest
 import json
 from pathlib import Path
 from dotenv import load_dotenv
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.api_collector import ApiCollector
-from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+from shared_tools.collectors.api_collector import ApiCollector
+from shared_tools.project_config import ProjectConfig
 
 # Load environment variables
 load_dotenv()

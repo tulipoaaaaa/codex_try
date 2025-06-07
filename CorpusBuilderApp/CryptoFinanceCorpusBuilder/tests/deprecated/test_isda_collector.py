@@ -2,8 +2,8 @@ import pytest
 from pathlib import Path
 import json
 import os
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.collect_isda import ISDADocumentationCollector
-from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+from shared_tools.collectors.collect_isda import ISDADocumentationCollector
+from shared_tools.project_config import ProjectConfig
 
 @pytest.fixture
 def config():

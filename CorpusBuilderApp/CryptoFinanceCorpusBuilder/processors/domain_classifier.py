@@ -27,7 +27,7 @@ class DomainClassifier:
         elif config_path:
             self._load_config(config_path)
         else:
-            from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
+            from shared_tools.config.domain_config import DOMAINS
             self.domain_config = DOMAINS
         
         # Extract keywords for each domain

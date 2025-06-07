@@ -1,7 +1,7 @@
 import unittest
 from pathlib import Path
 import json
-from CryptoFinanceCorpusBuilder.models.quality_config import (
+from shared_tools.models.quality_config import (
     QualityConfig,
     LanguageDetectionConfig,
     CorruptionDetectionConfig,
