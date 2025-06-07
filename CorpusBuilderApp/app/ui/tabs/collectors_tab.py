@@ -46,6 +46,22 @@ class CollectorsTab(QWidget):
     def __init__(self, project_config, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.project_config = project_config
+        self.cards: dict[str, CollectorCard] = {}
+        
+        # Initialize collector wrappers
+        self.collector_wrappers = {
+            'isda': ISDAWrapper(self.project_config),
+            'github': GitHubWrapper(self.project_config),
+            'annas_archive': AnnasArchiveWrapper(self.project_config),
+            'arxiv': ArxivWrapper(self.project_config),
+            'fred': FREDWrapper(self.project_config),
+            'bitmex': BitMEXWrapper(self.project_config),
+            'quantopian': QuantopianWrapper(self.project_config),
+            'scidb': SciDBWrapper(self.project_config),
+            'web': WebWrapper(self.project_config)
+        }
+        
+        # Configure wrappers from project config
         for name, wrapper in self.collector_wrappers.items():
             params = self.project_config.get(f"collectors.{name}", {})
             if isinstance(params, dict):
@@ -56,6 +72,71 @@ class CollectorsTab(QWidget):
                             getattr(wrapper, method)(value)
                         except Exception:
                             pass
+        
+        # Setup UI
+        self.setup_ui()
+        self.connect_signals()
+
+    def setup_ui(self) -> None:
+        """Initialize the user interface."""
+        layout = QVBoxLayout(self)
+        
+        # Status section
+        status_group = QGroupBox("Collection Status")
+        status_layout = QVBoxLayout(status_group)
+        
+        self.collection_status_label = QLabel("Ready")
+        self.collection_status_label.setFont(QFont("Arial", DEFAULT_FONT_SIZE))
+        status_layout.addWidget(self.collection_status_label)
+        
+        self.overall_progress = QProgressBar()
+        self.overall_progress.setRange(0, 100)
+        self.overall_progress.setValue(0)
+        status_layout.addWidget(self.overall_progress)
+        
+        layout.addWidget(status_group)
+        
+        # Collectors section
+        collectors_group = QGroupBox("Collectors")
+        collectors_layout = QVBoxLayout(collectors_group)
+        
+        # Create scroll area for collector cards
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        
+        # Container widget for cards
+        cards_container = QWidget()
+        cards_layout = QVBoxLayout(cards_container)
+        cards_layout.setSpacing(CARD_MARGIN)
+        
+        # Create cards for each collector
+        for name, wrapper in self.collector_wrappers.items():
+            description = getattr(wrapper, 'description', f'Collect data from {name.replace("_", " ").title()}')
+            card = CollectorCard(
+                name=name,
+                description=description
+            )
+            card.start_requested.connect(lambda n=name: self.start_collection(n))
+            card.stop_requested.connect(lambda n=name: self.stop_collection(n))
+            card.configure_requested.connect(lambda n=name: self.configure_collector(n))
+            card.logs_requested.connect(lambda n=name: self.show_logs(n))
+            self.cards[name] = card
+            cards_layout.addWidget(card)
+        
+        scroll_area.setWidget(cards_container)
+        collectors_layout.addWidget(scroll_area)
+        layout.addWidget(collectors_group)
+        
+        # Control buttons
+        control_layout = QHBoxLayout()
+        
+        stop_all_btn = QPushButton("Stop All Collectors")
+        stop_all_btn.setStyleSheet(f"background-color: {BUTTON_COLOR_DANGER};")
+        stop_all_btn.clicked.connect(self.stop_all_collectors)
+        control_layout.addWidget(stop_all_btn)
+        
+        layout.addLayout(control_layout)
 
     def connect_signals(self) -> None:
         for name, wrapper in self.collector_wrappers.items():

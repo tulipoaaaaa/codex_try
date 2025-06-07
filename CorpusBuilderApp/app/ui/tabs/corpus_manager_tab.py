@@ -135,7 +135,7 @@ class CorpusManagerTab(QWidget):
         super().__init__(parent)
         self.notification_manager = NotificationManager(self)  # Initialize first
         self.project_config = project_config
-        self.corpus_manager = CorpusManager()
+        self.manager = CorpusManager()
         self.setup_ui()
         self.selected_files = []
         self.batch_metadata_editor = None
@@ -678,7 +678,7 @@ class CorpusManagerTab(QWidget):
         
         if confirm == QMessageBox.StandardButton.Yes:
             try:
-                self.corpus_manager.delete_files([file_path])
+                self.manager.delete_files([file_path])
                 metadata_path = self.get_metadata_path(file_path)
                 if os.path.exists(metadata_path):
                     os.remove(metadata_path)
@@ -722,7 +722,7 @@ class CorpusManagerTab(QWidget):
         confirm = QMessageBox.question(self, "Confirm Delete", f"Delete {len(selected_files)} files?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if confirm == QMessageBox.StandardButton.Yes:
             try:
-                self.corpus_manager.delete_files(selected_files)
+                self.manager.delete_files(selected_files)
                 self.notification_manager.add_notification("batch_delete", "Batch Delete", f"Deleted {len(selected_files)} files.", "success", auto_hide=True)
                 if self.sound_enabled:
                     Notifier.notify("Batch Delete", f"Deleted {len(selected_files)} files.", level="success")
@@ -792,7 +792,7 @@ class CorpusManagerTab(QWidget):
             target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
             if not target_dir:
                 return
-            self.corpus_manager.copy_files(selected_files, target_dir)
+            self.manager.copy_files(selected_files, target_dir)
             self.notification_manager.add_notification("batch_copy", "Batch Copy", f"Copied {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
@@ -807,7 +807,7 @@ class CorpusManagerTab(QWidget):
             target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
             if not target_dir:
                 return
-            self.corpus_manager.move_files(selected_files, target_dir)
+            self.manager.move_files(selected_files, target_dir)
             self.notification_manager.add_notification("batch_move", "Batch Move", f"Moved {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
@@ -822,7 +822,7 @@ class CorpusManagerTab(QWidget):
         if not ok or not pattern:
             return
         try:
-            self.corpus_manager.rename_files(selected_files, pattern)
+            self.manager.rename_files(selected_files, pattern)
             self.notification_manager.add_notification("batch_rename", "Batch Rename", f"Renamed {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
@@ -837,7 +837,7 @@ class CorpusManagerTab(QWidget):
         if not ok:
             return
         try:
-            self.corpus_manager.organize_files(selected_files, criteria)
+            self.manager.organize_files(selected_files, criteria)
             self.notification_manager.add_notification("batch_organize", "Batch Organize", f"Organized {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
