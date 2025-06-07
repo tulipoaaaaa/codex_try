@@ -1,5 +1,5 @@
 # sources/api_collector.py
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.base_collector import BaseCollector
+from shared_tools.collectors.base_collector import BaseCollector
 import json
 import requests
 import time

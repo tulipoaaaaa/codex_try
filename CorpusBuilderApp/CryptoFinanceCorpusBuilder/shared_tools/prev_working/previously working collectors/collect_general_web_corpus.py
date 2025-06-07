@@ -5,8 +5,8 @@ import logging
 import datetime
 from pathlib import Path
 from dotenv import load_dotenv
-from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.enhanced_client import CookieAuthClient
+from shared_tools.config.domain_config import DOMAINS
+from shared_tools.collectors.enhanced_client import CookieAuthClient
 import importlib.util
 
 def run_general_web_corpus_collector(args, source_config, base_dir):
@@ -79,6 +79,6 @@ if __name__ == "__main__":
         spec.loader.exec_module(domain_config)
         DOMAINS = domain_config.DOMAINS
     else:
-        from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
+        from shared_tools.config.domain_config import DOMAINS
 
     run_general_web_corpus_collector(args, None, args.output_dir) 

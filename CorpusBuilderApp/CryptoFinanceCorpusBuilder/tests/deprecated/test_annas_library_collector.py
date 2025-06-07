@@ -4,8 +4,8 @@ import pytest
 import logging
 from pathlib import Path
 from dotenv import load_dotenv
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.collect_annas_main_library import AnnasMainLibraryCollector
-from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+from shared_tools.collectors.collect_annas_main_library import AnnasMainLibraryCollector
+from shared_tools.project_config import ProjectConfig
 
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)

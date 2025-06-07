@@ -1,5 +1,5 @@
 # sources/specific_collectors/quantopian_collector.py
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.repo_collector import RepoCollector
+from shared_tools.collectors.repo_collector import RepoCollector
 import os
 import re
 import json

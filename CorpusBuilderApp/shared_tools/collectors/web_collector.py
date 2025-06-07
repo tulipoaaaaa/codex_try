@@ -1,5 +1,5 @@
 # sources/web_collector.py
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.base_collector import BaseCollector
+from shared_tools.collectors.base_collector import BaseCollector
 import requests
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse

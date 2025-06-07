@@ -7,7 +7,7 @@ import time
 import pandas as pd
 from pathlib import Path
 from typing import List, Dict, Optional, Union, Any
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.base_collector import BaseCollector
+from shared_tools.collectors.base_collector import BaseCollector
 from dotenv import load_dotenv
 import requests
 

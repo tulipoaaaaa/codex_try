@@ -4,7 +4,7 @@ import tempfile
 import json
 import shutil
 from CryptoFinanceCorpusBuilder.processors.pdf_extractor import PDFExtractor
-from CryptoFinanceCorpusBuilder.models.quality_config import QualityConfig
+from shared_tools.models.quality_config import QualityConfig
 
 class TestPDFExtractor(unittest.TestCase):
     def setUp(self):

@@ -6,7 +6,7 @@ import sys
 import importlib
 import concurrent.futures
 import time
-from CryptoFinanceCorpusBuilder.shared_tools.storage.corpus_manager import CorpusManager
+from shared_tools.storage.corpus_manager import CorpusManager
 import os
 import requests
 import zipfile
@@ -266,7 +266,7 @@ def handle_auto_rebalance(args):
     """
     import logging
     from shared_tools.processors.corpus_balancer import CorpusAnalyzer
-    from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
+    from shared_tools.config.domain_config import DOMAINS
     import json
     import sys
     import math

@@ -10,7 +10,7 @@ from pathlib import Path
 from typing import Dict, Any
 
 try:
-    from CryptoFinanceCorpusBuilder.config import balancer_config, domain_config
+    from shared_tools.config import balancer_config, domain_config
 except ImportError:
     # Fallback for direct script execution (not as a module)
     import sys

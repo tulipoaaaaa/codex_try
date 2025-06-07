@@ -1,5 +1,5 @@
 import pytest
-from CryptoFinanceCorpusBuilder.shared_tools.cli import consolidate_corpus
+from shared_tools.cli import consolidate_corpus
 
 @pytest.mark.skip("Audit stub – implement later")
 def test_cli_argument_parsing(monkeypatch):

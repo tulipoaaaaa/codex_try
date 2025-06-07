@@ -6,7 +6,7 @@ import os
 import re
 from pathlib import Path
 from typing import List, Dict, Optional, Union
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.api_collector import ApiCollector
+from shared_tools.collectors.api_collector import ApiCollector
 import logging
 import argparse
 import requests

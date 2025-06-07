@@ -15,7 +15,7 @@ from typing import Dict, List, Optional, Union, Any
 
 # Try to load domains from config, else fallback
 try:
-    from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS as _CONFIG_DOMAINS
+    from shared_tools.config.domain_config import DOMAINS as _CONFIG_DOMAINS
 except ImportError:
     _CONFIG_DOMAINS: Optional[Dict[str, Dict[str, Any]]] = None
 
