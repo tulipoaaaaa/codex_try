@@ -14,7 +14,7 @@ def dashboard_tab(qapp, mock_project_config, qtbot):
 
 def test_stat_cards_exist(dashboard_tab):
     cards = dashboard_tab.findChildren(QFrame, "stat-card")
-    assert len(cards) == 3
+    assert len(cards) == 4
 
 
 def test_view_all_activity_signal(dashboard_tab, qtbot):
