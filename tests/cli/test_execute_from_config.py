@@ -48,8 +48,9 @@ class DummyBalancer:
         self.log = log
         self.worker = types.SimpleNamespace(wait=lambda: None)
 
-    def start_balancing(self):
+    def rebalance(self):
         self.log.append("balancer")
+        return {}
 
 
 @pytest.fixture()

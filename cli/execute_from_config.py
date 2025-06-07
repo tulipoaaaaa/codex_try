@@ -1,4 +1,5 @@
 import argparse
+import json
 import logging
 from typing import List
 
@@ -86,10 +87,24 @@ def run_balancer(config: ProjectConfig, preview: bool = False):
         print("balancer:corpus_balancer")
         return
     logger.info("Running corpus balancer")
+    logs_dir = config.get_logs_dir()
+    logs_dir.mkdir(parents=True, exist_ok=True)
     balancer = CorpusBalancerWrapper(config)
-    balancer.start_balancing()
-    if getattr(balancer, "worker", None):
-        balancer.worker.wait()
+    try:
+        stats = balancer.rebalance()
+    except AttributeError:
+        from shared_tools.processors.corpus_balancer import CorpusBalancer
+        stats = CorpusBalancer(config).rebalance()
+
+    if isinstance(stats, dict):
+        try:
+            json_path = logs_dir / "corpus_balance.json"
+            with open(json_path, "w") as f:
+                json.dump(stats, f, indent=2)
+            print(json.dumps(stats, indent=2))
+        except Exception as e:  # pragma: no cover - disk write issues
+            logger.error("Failed to save balance results: %s", e)
+
     logger.info("Corpus balancer completed")
 
 
