@@ -3,6 +3,37 @@
 import pytest
 import sys
 import os
+import types
+
+# Provide lightweight PySide6 stubs for headless test environments
+if 'PySide6' not in sys.modules:
+    class _Signal:
+        def __init__(self):
+            self._slots = []
+        def connect(self, slot):
+            self._slots.append(slot)
+        def emit(self, *args, **kwargs):
+            for s in list(self._slots):
+                s(*args, **kwargs)
+
+    qtcore = types.SimpleNamespace(
+        QObject=object,
+        QDir=type('QDir', (), {'homePath': staticmethod(lambda: "/tmp")}),
+        Signal=lambda *a, **k: _Signal()
+    )
+    qtwidgets = types.SimpleNamespace(
+        QApplication=type('QApplication', (), {
+            'instance': classmethod(lambda cls: None),
+            '__init__': lambda self, *a, **k: None,
+            'quit': lambda self: None,
+        })
+    )
+    qtgui = types.SimpleNamespace(QGuiApplication=type('QGuiApplication', (), {}))
+    sys.modules.setdefault('PySide6', types.SimpleNamespace(QtCore=qtcore, QtWidgets=qtwidgets, QtGui=qtgui))
+    sys.modules.setdefault('PySide6.QtCore', qtcore)
+    sys.modules.setdefault('PySide6.QtWidgets', qtwidgets)
+    sys.modules.setdefault('PySide6.QtGui', qtgui)
+
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QDir
 import tempfile
@@ -10,7 +41,7 @@ import shutil
 
 # Add the app directory to the Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'app'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'shared_tools'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..'))
 
 @pytest.fixture(scope="session")
 def qapp():
