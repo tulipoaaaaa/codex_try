@@ -27,10 +27,10 @@ Each collector has been wrapped with a UI-compatible interface providing start()
 
 ### 3. Stable Processor Integration
 
-The most stable, feature-complete versions of all processors have been integrated:
-- PDF Extractor (from prev_working)
-- Text Extractor (from prev_working)
-- Corpus Balancer (from prev_working)
+Processors located in the `prev_working` directory are **deprecated** and scheduled for removal:
+- PDF Extractor
+- Text Extractor
+- Corpus Balancer
 
 All processors have been wrapped with thread-safe interfaces that support batch processing, error handling, and progress reporting.
 
