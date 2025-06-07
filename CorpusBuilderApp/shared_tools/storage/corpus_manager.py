@@ -7,9 +7,10 @@ from typing import List
 from PySide6.QtCore import QObject, Signal as pyqtSignal
 
 class SignalEmitter(QObject):
-    """Base class providing progress and status signals."""
+    """Base class providing progress, status and completion signals."""
     progress_updated = pyqtSignal(int, str, dict)
     status_updated = pyqtSignal(str)
+    operation_completed = pyqtSignal(str)
 
 class CorpusManager(SignalEmitter):
     """Backend class for common corpus file operations."""
@@ -66,6 +67,7 @@ class CorpusManager(SignalEmitter):
             progress = int((idx / total) * 100)
             self.progress_updated.emit(progress, f"Copying: {src.name}", {})
         self.status_updated.emit("Copy completed")
+        self.operation_completed.emit("copy")
         return results
 
     def move_files(self, files: List[str | Path], target_dir: str | Path,
@@ -84,6 +86,7 @@ class CorpusManager(SignalEmitter):
             progress = int((idx / total) * 100)
             self.progress_updated.emit(progress, f"Moving: {src.name}", {})
         self.status_updated.emit("Move completed")
+        self.operation_completed.emit("move")
         return results
 
     def rename_files(self, files: List[str | Path], pattern: str,
@@ -104,6 +107,7 @@ class CorpusManager(SignalEmitter):
             progress = int((idx / total) * 100)
             self.progress_updated.emit(progress, f"Renaming: {src.name}", {})
         self.status_updated.emit("Rename completed")
+        self.operation_completed.emit("rename")
         return results
 
     def delete_files(self, files: List[str | Path]) -> int:
@@ -117,6 +121,7 @@ class CorpusManager(SignalEmitter):
             count += 1
             self.log_action(f"Deleted {path}")
         self.status_updated.emit("Delete completed")
+        self.operation_completed.emit("delete")
         return count
 
     def organize_files(self, files: List[str | Path], criteria: str = "extension",
@@ -143,4 +148,5 @@ class CorpusManager(SignalEmitter):
             progress = int((idx / total) * 100)
             self.progress_updated.emit(progress, f"Organizing: {src.name}", {})
         self.status_updated.emit("Organize completed")
+        self.operation_completed.emit("organize")
         return results
