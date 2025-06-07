@@ -30,8 +30,16 @@ python cli/execute_from_config.py --help
 
 ## Running Tests
 
-Tests are written with `pytest`. After installing the dependencies, run:
-```bash
-pytest
-```
-Some UI tests require `PySide6`; without it they will be skipped.
+The primary test suite lives in the tests/ directory and can be executed with:
+
+bash
+Copy
+Edit
+pytest -q
+Some integration tests under CorpusBuilderApp/tests rely on optional packages
+such as requests, PyMuPDF (for the fitz module), PySide6, and aiohttp.
+
+These tests are skipped automatically when dependencies are missing.
+To run the full suite with all optional tests, install the extras:
+
+pip install requests PyMuPDF PySide6 aiohttp
