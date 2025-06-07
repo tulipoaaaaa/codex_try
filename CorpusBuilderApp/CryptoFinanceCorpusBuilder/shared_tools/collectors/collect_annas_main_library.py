@@ -227,8 +227,15 @@ def run_annas_main_library_collector(args, source_config, base_dir, batch_json=N
                 'unknown': {'path': 'unknown'}
             }
         }
-        
-        collector = AnnasMainLibraryCollector(config)
+
+        # Initialize ProjectConfig if available, otherwise fall back to dict
+        try:
+            from shared_tools.project_config import ProjectConfig  # type: ignore
+            project_config = ProjectConfig.from_dict(config)  # type: ignore[attr-defined]
+            collector = AnnasMainLibraryCollector(project_config)
+        except Exception as e:  # ImportError or missing from_dict
+            logger.debug(f"ProjectConfig unavailable ({e}), using legacy dict config")
+            collector = AnnasMainLibraryCollector(config)
         
         # Handle batch mode
         if batch_json:
