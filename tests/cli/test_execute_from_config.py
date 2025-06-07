@@ -27,6 +27,9 @@ sys.modules.setdefault("PySide6.QtCore", qtcore)
 sys.modules.setdefault("dotenv", types.SimpleNamespace(load_dotenv=lambda *a, **k: None))
 
 import pytest
+
+pytestmark = pytest.mark.filterwarnings("ignore::DeprecationWarning")
+
 import cli.execute_from_config as efc
 
 
@@ -62,7 +65,8 @@ def sample_config(tmp_path: Path) -> Path:
     return path
 
 
-def test_run_all_sequence(monkeypatch, sample_config):
+@pytest.mark.skipif("PySide6" not in sys.modules, reason="PySide6 not installed")
+def test_run_all_minimal(monkeypatch, sample_config):
     log: List[str] = []
     monkeypatch.setattr(efc, "create_collector_wrapper", lambda name, cfg: DummyWrapper(f"collector-{name}", log))
     monkeypatch.setattr(efc, "create_processor_wrapper", lambda name, cfg: DummyWrapper(f"processor-{name}", log))
