@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # sources/api_collector.py
 from shared_tools.collectors.base_collector import BaseCollector
 import json

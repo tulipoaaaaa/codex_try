@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # sources/specific_collectors/fred_collector.py
 import os
 import json

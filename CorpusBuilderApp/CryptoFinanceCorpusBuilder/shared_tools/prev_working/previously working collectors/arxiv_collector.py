@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # sources/specific_collectors/arxiv_collector.py (API based)
 import xml.etree.ElementTree as ET
 import urllib.parse

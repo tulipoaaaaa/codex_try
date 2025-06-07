@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 """
 Domain Utilities Module
 Purpose: Provides domain classification and validation for extractors

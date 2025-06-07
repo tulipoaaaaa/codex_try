@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 from abc import ABC, abstractmethod
 from pathlib import Path
 import logging

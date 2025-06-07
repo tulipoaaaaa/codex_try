@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # enhanced_client.py - COMPLETE FINAL FIXED VERSION
 import re
 import os
