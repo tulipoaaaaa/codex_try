@@ -333,7 +333,7 @@ Located in: `corpusbuilder/shared_tools/storage/`
 2. **Run Collection**:
    ```python
    from CryptoFinanceCorpusBuilder.shared_tools.collectors import SciDBCollector
-   from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+   from shared_tools.project_config import ProjectConfig
    import json
 
    # Load configuration
