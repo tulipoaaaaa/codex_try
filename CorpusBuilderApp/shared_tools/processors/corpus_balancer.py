@@ -26,6 +26,7 @@ from plotly.subplots import make_subplots
 from ..utils.domain_utils import get_valid_domains, get_domain_for_file
 from ..utils.extractor_utils import safe_filename
 from shared_tools.project_config import ProjectConfig
+from shared_tools.storage.corpus_manager import CorpusManager
 
 class CorpusAnalyzer:
     """Analyzes corpus composition and identifies imbalances."""
@@ -611,6 +612,50 @@ class CorpusRebalancer:
             'message': f"Downsampled {action['domain']}",
             'files_affected': [],
             'files_moved': action['current_count'] - action['target_count']
+        }
+
+
+class CorpusBalancer:
+    """High level interface combining analyzer and rebalancer."""
+
+    def __init__(self, project_config: ProjectConfig):
+        self.project_config = project_config
+        balancer_cfg = project_config.get_processor_config('corpus_balancer')
+        self.analyzer = CorpusAnalyzer(
+            corpus_dir=project_config.get_input_dir(),
+            project_config=balancer_cfg,
+        )
+        self.rebalancer = CorpusRebalancer(self.analyzer)
+        self.corpus_manager = CorpusManager()
+
+    def rebalance(
+        self,
+        strategy: str = 'quality_weighted',
+        dry_run: bool = True,
+    ) -> Dict[str, Any]:
+        """Analyze corpus and perform rebalancing."""
+        analysis = self.analyzer.analyze_corpus_balance()
+        if 'error' in analysis:
+            return analysis
+
+        plan = self.rebalancer.create_rebalancing_plan(analysis, strategy)
+        results = self.rebalancer.execute_rebalancing_plan(plan, dry_run)
+
+        if not dry_run:
+            for action in results.get('actions_completed', []):
+                files = action.get('files_affected', [])
+                if not files:
+                    continue
+                target_dir = self.project_config.get_input_dir() / action.get('domain', '')
+                if action.get('type') == 'upsample':
+                    self.corpus_manager.copy_files(files, target_dir)
+                elif action.get('type') == 'downsample':
+                    self.corpus_manager.move_files(files, target_dir)
+
+        return {
+            'analysis': analysis,
+            'plan': plan,
+            'results': results,
         }
 
 class CorpusVisualizer:
