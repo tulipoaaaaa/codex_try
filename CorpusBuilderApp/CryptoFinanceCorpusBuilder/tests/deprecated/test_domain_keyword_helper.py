@@ -19,7 +19,7 @@ from CryptoFinanceCorpusBuilder.utils.domain_utils import (
     get_domain_for_file
 )
 
-class TestDomainConfigWrapper(unittest.TestCase):
+class TestDomainKeywordHelper(unittest.TestCase):
     def setUp(self):
         """Set up test environment."""
         self.test_corpus_dir = Path(project_root) / "data" / "test_corpus_sample"

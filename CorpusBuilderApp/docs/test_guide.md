@@ -29,7 +29,7 @@ The table below lists all test modules and the directories or inputs they expect
 | corpusbuilder/tests/deprecated/test_arxiv_collector_projectconfig.py | config/master_config.yaml | Arxiv collector with ProjectConfig |
 | corpusbuilder/tests/deprecated/test_bitmex_collector.py | mock_bitmex_research.html file | Parses BitMEX research posts |
 | corpusbuilder/tests/deprecated/test_chunking_behavior.py | data/test_collect/chunking_tests/* | Chunking of CSV/py/ipynb/JSON files |
-| corpusbuilder/tests/deprecated/test_domain_config_wrapper.py | None | Domain config wrapper logic |
+| corpusbuilder/tests/deprecated/test_domain_keyword_helper.py | None | Domain keyword helper logic |
 | corpusbuilder/tests/deprecated/test_fred_collector.py | FRED_API_KEY env var, config/test_config.yaml | Downloads data from FRED |
 | corpusbuilder/tests/deprecated/test_general_web_collector.py | None | Web scraping collector |
 | corpusbuilder/tests/deprecated/test_github_collector.py | GitHub token env var, output dir | Clones GitHub repos |
