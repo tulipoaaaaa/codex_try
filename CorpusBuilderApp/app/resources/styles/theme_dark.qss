@@ -678,6 +678,12 @@ QLabel, QChartLegend, QChartView {
 }
 
 /* === STAT CARDS === */
+QFrame[objectName="stat-card"] {
+    background-color: #262828;
+    border: 1px solid #232525;
+    border-radius: 12px;
+    padding: 16px;
+}
 QWidget[objectName="stat-card"] QLabel[objectName="stat-value"] {
     font-size: 32px;
     font-weight: 700;
