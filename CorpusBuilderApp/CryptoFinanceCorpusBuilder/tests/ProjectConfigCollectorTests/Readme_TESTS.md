@@ -62,7 +62,7 @@ Before running the tests, ensure you have:
 
 ### Directory Structure
 ```
-CryptoFinanceCorpusBuilder/
+corpusbuilder/
 ├── tests/
 │   └── ProjectConfigCollectorTests/
 │       ├── test_arxiv_collector.py
@@ -75,7 +75,7 @@ CryptoFinanceCorpusBuilder/
 The simplest way to run all tests is using the test runner. First, navigate to the test directory:
 
 ```powershell
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 ```
 
 Then run:
@@ -90,7 +90,7 @@ You have two options to run individual tests:
 1. **From the test directory** (recommended):
    ```powershell
    # First, change to the test directory
-   cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+   cd corpusbuilder/tests/ProjectConfigCollectorTests
    
    # Then run the test
    pytest test_arxiv_collector.py -v
@@ -98,7 +98,7 @@ You have two options to run individual tests:
 
 2. **From the project root** (using full path):
    ```powershell
-   pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_arxiv_collector.py -v
+   pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_arxiv_collector.py -v
    ```
 
 ### Running All Tests
@@ -106,7 +106,7 @@ You have two options to run individual tests:
 To run all collector tests, first ensure you're in the test directory:
 
 ```powershell
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 pytest *.py -v
 ```
 
@@ -137,7 +137,7 @@ Tests use the `test_config.yaml` file, which specifies:
 Common issues and solutions:
 
 1. **Test Not Found Error**:
-   - Ensure you're in the correct directory (`CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests`)
+   - Ensure you're in the correct directory (`corpusbuilder/tests/ProjectConfigCollectorTests`)
    - Or use the full path to the test file
    - Check that the test file exists in the directory
 

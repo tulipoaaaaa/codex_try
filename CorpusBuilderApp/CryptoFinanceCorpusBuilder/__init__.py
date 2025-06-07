@@ -1,5 +1,5 @@
 """
-CryptoFinanceCorpusBuilder application package.
+CorpusBuilder — modern crypto corpus suite.
 """
 
-# CryptoFinanceCorpusBuilder package root 
+# corpusbuilder package root

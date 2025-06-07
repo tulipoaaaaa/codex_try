@@ -52,8 +52,8 @@ The CryptoFinance Corpus Builder is a PyQt6-based desktop application designed t
 ### Setup
 
 1. Clone the repository:
-git clone https://github.com/your-username/CryptoFinanceCorpusBuilder.git
-cd CryptoFinanceCorpusBuilder
+git clone https://github.com/your-username/corpusbuilder.git
+cd corpusbuilder
 
 
 2. Install dependencies:
@@ -110,7 +110,7 @@ python app/main.py
 
 ## Project Structure
 
-CryptoFinanceCorpusBuilder/
+corpusbuilder/
 ├── app/ # Application code
 │ ├── main.py # Entry point
 │ ├── ui/ # User interface components
