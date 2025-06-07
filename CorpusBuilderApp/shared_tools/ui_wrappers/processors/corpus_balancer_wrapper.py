@@ -1,6 +1,7 @@
 from PySide6.QtCore import Signal as pyqtSignal, QThread
 from ..base_wrapper import BaseWrapper, ProcessorWrapperMixin
 from shared_tools.processors.corpus_balancer import CorpusAnalyzer as CorpusBalancer
+from shared_tools.project_config import ProjectConfig
 from typing import Dict, Any, List
 
 class CorpusBalancerWorker(QThread):
@@ -70,8 +71,9 @@ class CorpusBalancerWrapper(BaseWrapper, ProcessorWrapperMixin):
     domain_processed = pyqtSignal(str, int, int)  # domain, current, target
     balance_completed = pyqtSignal(dict)  # Balance results
     
-    def __init__(self, config):
+    def __init__(self, config: ProjectConfig):
         super().__init__(config)
+        self.config = config
         self.balancer = None
         self.target_allocations = {}
         
@@ -79,7 +81,7 @@ class CorpusBalancerWrapper(BaseWrapper, ProcessorWrapperMixin):
         """Create Corpus Balancer instance"""
         if not self.balancer:
             self.balancer = CorpusBalancer(
-                corpus_dir=self.config.corpus_dir,
+                corpus_dir=self.config.get_input_dir(),
                 config=self.config
             )
         return self.balancer
