@@ -51,15 +51,15 @@ class CollectorsTab(QWidget):
 
         # Initialize collector wrappers
         self.collector_wrappers = {
-            "isda": ISDAWrapper(),
-            "github": GitHubWrapper(),
-            "anna": AnnasArchiveWrapper(),
-            "arxiv": ArxivWrapper(),
-            "fred": FREDWrapper(),
-            "bitmex": BitMEXWrapper(),
-            "quantopian": QuantopianWrapper(),
-            "scidb": SciDBWrapper(),
-            "web": WebWrapper(),
+            "isda": ISDAWrapper(self.project_config),
+            "github": GitHubWrapper(self.project_config),
+            "anna": AnnasArchiveWrapper(self.project_config),
+            "arxiv": ArxivWrapper(self.project_config),
+            "fred": FREDWrapper(self.project_config),
+            "bitmex": BitMEXWrapper(self.project_config),
+            "quantopian": QuantopianWrapper(self.project_config),
+            "scidb": SciDBWrapper(self.project_config),
+            "web": WebWrapper(self.project_config),
         }
 
         self.cards: dict[str, CollectorCard] = {}
