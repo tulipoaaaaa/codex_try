@@ -376,7 +376,7 @@ corpusbuilder/
 ├── shared_tools/                 # Core functionality
 │   ├── collectors/               # Data collectors
 │   ├── processors/               # Data processors
-│   ├── prev_working/             # Stable processor versions
+│   ├── prev_working/             # Deprecated processor versions (scheduled for removal)
 │   ├── ui_wrappers/              # UI integration wrappers
 │   │   ├── base_wrapper.py
 │   │   ├── collectors/           # Collector wrappers
