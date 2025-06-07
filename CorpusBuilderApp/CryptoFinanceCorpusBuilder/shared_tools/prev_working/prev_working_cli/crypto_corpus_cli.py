@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # cli/crypto_corpus_cli.py
 import argparse
 import logging

@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 # sources/specific_collectors/quantopian_collector.py
 from shared_tools.collectors.repo_collector import RepoCollector
 import os

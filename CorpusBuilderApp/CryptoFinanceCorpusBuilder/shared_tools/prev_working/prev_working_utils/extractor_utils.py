@@ -1,3 +1,4 @@
+# DEPRECATED: This module is no longer in active use. Safe for deletion after import validation.
 import re
 from pathlib import Path
 from typing import Dict, List, Optional, Union
