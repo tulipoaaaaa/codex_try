@@ -15,7 +15,7 @@
 ## Project Structure
 
 ```
-CryptoFinanceCorpusBuilder/
+corpusbuilder/
 ├── app/                  # Main application code
 │   ├── main.py
 │   ├── main_window.py

@@ -513,7 +513,7 @@ AA_ACCOUNT_COOKIE=your_annas_archive_cookie
 
 
 Directory Structure
-CryptoFinanceCorpusBuilder/
+corpusbuilder/
 ├── sources/                   # Source collectors
 │   ├── __init__.py            # Package init (IMPORTANT!)
 │   ├── base_collector.py      # Base collector class

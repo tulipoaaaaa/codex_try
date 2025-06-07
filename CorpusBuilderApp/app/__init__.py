@@ -1,3 +1,3 @@
 """
-CryptoFinanceCorpusBuilder application package.
-""" 
+CorpusBuilder — modern crypto corpus suite.
+"""

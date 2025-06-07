@@ -7,7 +7,7 @@ This project provides a modular, extensible framework for building, managing, an
 ## Directory Structure
 
 ```
-CryptoFinanceCorpusBuilder/
+corpusbuilder/
 │
 ├── cli/                           # Command-line interface (CLI) entry point
 ├── config/                        # Configuration files and settings
@@ -53,7 +53,7 @@ CryptoFinanceCorpusBuilder/
 ### Collecting Data from a Source
 
 ```bash
-python -m CryptoFinanceCorpusBuilder.cli.crypto_corpus_cli collect --sources arxiv github --config CryptoFinanceCorpusBuilder/config/enhanced_sources.json --output-dir data/corpus_1
+python -m CryptoFinanceCorpusBuilder.cli.crypto_corpus_cli collect --sources arxiv github --config corpusbuilder/config/enhanced_sources.json --output-dir data/corpus_1
 ```
 
 Or, since enhanced_sources.json is now the default:

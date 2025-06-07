@@ -19,7 +19,7 @@ The Corpus Balancer integrates with your existing architecture at several key po
 ### Directory Structure
 
 ```
-CryptoFinanceCorpusBuilder/
+corpusbuilder/
 ├── processors/
 │   ├── corpus_balancer.py          # Core balancer module
 │   ├── base_extractor.py           # Existing - unchanged

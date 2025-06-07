@@ -26,8 +26,8 @@ A professional-grade PyQt6 desktop application for building, managing, and analy
 ### Installation
 
 ```bash
-git clone https://github.com/your-org/CryptoFinanceCorpusBuilder.git
-cd CryptoFinanceCorpusBuilder
+git clone https://github.com/your-org/corpusbuilder.git
+cd corpusbuilder
 python -m venv venv  # or python3 -m venv venv
 venv\Scripts\activate  # Windows
 # or

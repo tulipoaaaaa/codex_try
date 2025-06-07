@@ -5,110 +5,110 @@
 ### SciDB Collector >tested
 ```powershell
 # From project root
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_scidb_collector.py -v
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_scidb_collector.py -v
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 pytest test_scidb_collector.py -v
 ```
 
 ### Arxiv Collector >tested 
 ```powershell
 # From project root
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_arxiv_collector.py -v
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_arxiv_collector.py -v
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 pytest test_arxiv_collector.py -v
 ```
 
 ### GitHub Collector
 ```powershell
 # From project root
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_github_collector.py -v
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_github_collector.py -v
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_github_collector.py -v
+cd corpusbuilder/tests/ProjectConfigCollectorTests
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_github_collector.py -v
 ```
 
 ### API Collector
 ```powershell
 # From project root
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_api_collector.py -v
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_api_collector.py -v
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 pytest test_api_collector.py -v
 ```
 
 ### BitMEX Collector
 ```powershell
 # From project root
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_bitmex_collector.py -v
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_bitmex_collector.py -v
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 pytest test_bitmex_collector.py -v
 ```
 
 ### General Web Collector
 ```powershell
 # From project root
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_general_web_collector.py -v
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_general_web_collector.py -v
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 pytest test_general_web_collector.py -v
 ```
 
 ### ISDA Collector
 ```powershell
 # From project root
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_isda_collector.py -v
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_isda_collector.py -v
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 pytest test_isda_collector.py -v
 ```
 
 ### FRED Collector
 ```powershell
 # From project root
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_fred_collector.py -v
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_fred_collector.py -v
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 pytest test_fred_collector.py -v
 ```
 
 ### Quantopian Collector
 ```powershell
 # From project root
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_quantopian_collector.py -v
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_quantopian_collector.py -v
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 pytest test_quantopian_collector.py -v
 ```
 
 ### Repo Collector
 ```powershell
 # From project root
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_repo_collector.py -v
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_repo_collector.py -v
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 pytest test_repo_collector.py -v
 ```
 
 ### Web Collector
 ```powershell
 # From project root
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/test_web_collector.py -v
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/test_web_collector.py -v
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 pytest test_web_collector.py -v
 ```
 
@@ -129,20 +129,20 @@ pytest test_web_collector.py -v
 ### Using Test Runner
 ```powershell
 # From project root
-python CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/run_collector_tests.py
+python corpusbuilder/tests/ProjectConfigCollectorTests/run_collector_tests.py
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 python run_collector_tests.py
 ```
 
 ### Using Pytest Directly
 ```powershell
 # From project root
-pytest CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests/*.py -v
+pytest corpusbuilder/tests/ProjectConfigCollectorTests/*.py -v
 
 # From test directory
-cd CryptoFinanceCorpusBuilder/tests/ProjectConfigCollectorTests
+cd corpusbuilder/tests/ProjectConfigCollectorTests
 pytest *.py -v
 ```
 
