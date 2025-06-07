@@ -5,6 +5,7 @@ from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
+    QGridLayout,
     QFrame,
     QLabel,
     QPushButton,
@@ -38,23 +39,27 @@ class DashboardTab(QWidget):
         main_layout.setContentsMargins(16, 16, 16, 16)
         main_layout.setSpacing(16)
 
-        # Top statistics row
-        stats_layout = QHBoxLayout()
+        # Top statistics grid
+        stats_layout = QGridLayout()
         stats_layout.setSpacing(16)
 
         self.collectors_card = self._create_stat_card(
             "Active Collectors", str(self.active_collectors)
         )
-        stats_layout.addWidget(self.collectors_card)
+        stats_layout.addWidget(self.collectors_card, 0, 0)
 
         self.processors_card = self._create_stat_card(
             "Active Processors", str(self.active_processors)
         )
-        stats_layout.addWidget(self.processors_card)
+        stats_layout.addWidget(self.processors_card, 0, 1)
 
         self.errors_card = self._create_stat_card("Errors", str(self.error_count))
-        stats_layout.addWidget(self.errors_card)
-        stats_layout.addStretch()
+        stats_layout.addWidget(self.errors_card, 1, 0)
+
+        self.documents_card = self._create_stat_card(
+            "Total Documents", str(self.total_documents)
+        )
+        stats_layout.addWidget(self.documents_card, 1, 1)
 
         main_layout.addLayout(stats_layout)
 
@@ -146,6 +151,9 @@ class DashboardTab(QWidget):
             self.total_docs_label.setText(
                 f"Total Documents: {self.total_documents}"
             )
+            value_label = self.documents_card.findChild(QLabel, "stat-value")
+            if value_label:
+                value_label.setText(str(self.total_documents))
 
             distribution = (
                 stats.get("domain_metrics", {}).get("domain_distribution")
