@@ -2,8 +2,8 @@ import os
 import sys
 import pytest
 from pathlib import Path
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.quantopian_collector import QuantopianCollector
-from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+from shared_tools.collectors.quantopian_collector import QuantopianCollector
+from shared_tools.project_config import ProjectConfig
 
 @pytest.fixture
 def config():

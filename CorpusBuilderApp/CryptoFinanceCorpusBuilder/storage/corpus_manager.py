@@ -6,7 +6,7 @@ import logging
 import datetime
 from pathlib import Path
 import uuid
-from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+from shared_tools.project_config import ProjectConfig
 
 class CorpusManager:
     """Manage the crypto-finance corpus structure"""

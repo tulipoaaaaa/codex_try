@@ -136,7 +136,7 @@ class DashboardTab(QWidget):
             pass
 
         try:
-            from CryptoFinanceCorpusBuilder.shared_tools.storage.corpus_manager import (
+            from shared_tools.storage.corpus_manager import (
                 CorpusManager,
             )
 

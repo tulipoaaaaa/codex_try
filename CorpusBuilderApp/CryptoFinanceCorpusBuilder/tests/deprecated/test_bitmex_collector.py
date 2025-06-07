@@ -5,8 +5,8 @@ import json
 import shutil
 from pathlib import Path
 from dotenv import load_dotenv
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.collect_bitmex import UpdatedBitMEXCollector
-from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+from shared_tools.collectors.collect_bitmex import UpdatedBitMEXCollector
+from shared_tools.project_config import ProjectConfig
 
 # Load environment variables from .env file
 load_dotenv()

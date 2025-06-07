@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Optional, Union, Dict, List, Any
 
 try:
-    from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+    from shared_tools.project_config import ProjectConfig
 except ImportError:
     ProjectConfig = None
 

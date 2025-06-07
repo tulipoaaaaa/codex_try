@@ -3,7 +3,7 @@ import os
 import json
 from pathlib import Path
 import logging
-from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
+from shared_tools.config.domain_config import DOMAINS
 
 class DomainManager:
     """Manager for crypto-finance corpus domains"""

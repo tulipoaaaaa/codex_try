@@ -4,7 +4,7 @@ import json
 import time
 from pathlib import Path
 from urllib.parse import quote
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.api_collector import ApiCollector
+from shared_tools.collectors.api_collector import ApiCollector
 import re
 
 def ascii_safe(s):

@@ -4,7 +4,7 @@ import tempfile
 import json
 from typing import Dict, Any, Tuple
 from CryptoFinanceCorpusBuilder.processors.base_extractor import BaseExtractor, ExtractionError
-from CryptoFinanceCorpusBuilder.models.quality_config import QualityConfig
+from shared_tools.models.quality_config import QualityConfig
 
 class TestExtractor(BaseExtractor):
     """Test implementation of BaseExtractor."""
