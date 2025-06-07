@@ -65,6 +65,13 @@ class AnnasMainLibraryCollector(BaseCollector):
             from shared_tools.config.project_config import ProjectConfig
             config = ProjectConfig(config, environment='test')
         super().__init__(config)
+
+        # Support both legacy dict configs and ProjectConfig objects
+        if hasattr(config, 'domain_configs'):
+            self.domain_configs = config.domain_configs
+        else:
+            self.domain_configs = config.get('domains', {}) if isinstance(config, dict) else {}
+
         self.account_cookie = account_cookie
         if not self.account_cookie:
             load_dotenv()
@@ -75,7 +82,7 @@ class AnnasMainLibraryCollector(BaseCollector):
 
         # Initialize domain mapping based on ProjectConfig domains
         self.domain_mapping = {}
-        for domain, config in self.config.domain_configs.items():
+        for domain, config in self.domain_configs.items():
             # Add domain's search terms to mapping
             for term in config.search_terms:
                 self.domain_mapping[term.lower()] = domain
@@ -113,7 +120,7 @@ class AnnasMainLibraryCollector(BaseCollector):
         # This ensures important papers go to domains with higher standards
         best_domain = None
         highest_threshold = -1
-        for domain, config in self.config.domain_configs.items():
+        for domain, config in self.domain_configs.items():
             if config.quality_threshold > highest_threshold:
                 highest_threshold = config.quality_threshold
                 best_domain = domain
