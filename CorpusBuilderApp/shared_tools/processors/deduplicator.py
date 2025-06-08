@@ -13,7 +13,8 @@ from typing import Dict, List, Optional, Any, Union
 # Now add project directory to sys.path for sibling module imports
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
-from CryptoFinanceCorpusBuilder.shared_tools.storage.corpus_manager import CorpusManager
+from shared_tools.storage.corpus_manager import CorpusManager
+from shared_tools.config.project_config import ProjectConfig
 
 # Set up file-based logging
 logging.basicConfig(filename='deduplication.log', level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
@@ -558,7 +559,6 @@ def main():
 
     if args.project_config:
         # Use project config
-        from CryptoFinanceCorpusBuilder.shared_tools.config.project_config import ProjectConfig
         project = ProjectConfig.load(args.project_config)
         results = run_with_project_config(project, args.verbose)
     else:

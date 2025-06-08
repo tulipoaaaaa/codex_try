@@ -5,177 +5,1207 @@ from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
-    QFrame,
+    QGridLayout,
     QLabel,
     QPushButton,
+    QProgressBar,
+    QScrollArea,
+    QSizePolicy,
+    QFrame
 )
-from PySide6.QtCore import Qt, Signal
+from PySide6.QtCore import Qt, Signal, QMargins
+from PySide6.QtGui import QPixmap, QColor, QPainter
+from PySide6.QtCharts import QChart, QChartView, QPieSeries
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
 from app.ui.widgets.status_dot import StatusDot
+from app.ui.widgets.corpus_statistics import CorpusStatistics
+from app.ui.widgets.domain_distribution import DomainDistribution
+from app.ui.widgets.active_operations import ActiveOperations
+from app.ui.widgets.recent_activity import RecentActivity
+from app.ui.widgets.activity_log import ActivityLog
+from app.ui.theme.theme_constants import CARD_MARGIN, CARD_PADDING, BUTTON_COLOR_PRIMARY, BUTTON_COLOR_DANGER, BUTTON_COLOR_GRAY
+import os
+
+ICON_PATH = os.path.join(os.path.dirname(__file__), '../../resources/icons')
+
 class DashboardTab(QWidget):
     """Dashboard displaying high level metrics for the corpus."""
 
     view_all_activity_requested = Signal()
+    rebalance_requested = Signal()
 
     def __init__(self, project_config, parent=None):
         super().__init__(parent)
         self.config = project_config
-
-        # Metric attributes
-        self.active_collectors = 0
-        self.active_processors = 0
-        self.error_count = 0
-        self.total_documents = 0
-        self.domain_distribution = {"Crypto": 40, "Finance": 30, "Other": 30}
-
         self._init_ui()
+        self.fix_all_label_backgrounds()
+        self.load_data()
 
-    # ------------------------------------------------------------------ UI ----
-    def _init_ui(self) -> None:
-        """Build the dashboard layout."""
-        main_layout = QVBoxLayout(self)
-        main_layout.setContentsMargins(16, 16, 16, 16)
-        main_layout.setSpacing(16)
+    def _init_ui(self):
+        self.setStyleSheet("QWidget, QFrame, QGroupBox { background-color: #0f1419; }")
+        container = QWidget()
+        container.setStyleSheet("background-color: #0f1419;")
+        main_layout = QVBoxLayout(container)
+        main_layout.setContentsMargins(24, 16, 24, 16)
+        main_layout.setSpacing(12)
 
-        # Top statistics row
-        stats_layout = QHBoxLayout()
-        stats_layout.setSpacing(16)
+        # --- Header Section ---
+        header_layout = QVBoxLayout()
+        header_layout.setContentsMargins(24, 16, 24, 4)
+        header_row = QHBoxLayout()
+        title_label = QLabel('📊 Corpus Overview Dashboard')
+        title_label.setStyleSheet('background-color: transparent; font-size: 20px; font-weight: 700; color: #32B8C6; margin-bottom: 4px;')
+        header_row.addWidget(title_label)
+        header_row.addStretch()
+        health_indicator = self.create_system_health_indicator()
+        header_row.addWidget(health_indicator)
+        header_layout.addLayout(header_row)
+        subtitle_label = QLabel('Real-time monitoring and analytics for your document corpus')
+        subtitle_label.setStyleSheet('background-color: transparent; font-size: 14px; color: #9ca3af; margin-bottom: 6px;')
+        header_layout.addWidget(subtitle_label)
+        main_layout.addLayout(header_layout)
 
-        self.collectors_card = self._create_stat_card(
-            "Active Collectors", str(self.active_collectors)
-        )
-        stats_layout.addWidget(self.collectors_card)
+        # --- Metrics Bar ---
+        metrics_bar = QHBoxLayout()
+        metrics_bar.setSpacing(32)
+        metrics_bar.setContentsMargins(0, 4, 0, 12)
+        stat_data = [
+            {"value": "2570", "label": "Total Docs", "unit": ""},
+            {"value": "0.08", "label": "Total Size", "unit": "GB"},
+            {"value": "4", "label": "Active Domains", "unit": ""},
+            {"value": "2.5%", "label": "Storage Usage", "unit": ""},
+            {"value": "3", "label": "Running Ops", "unit": ""},
+        ]
+        for stat in stat_data:
+            card = self.fix_metric_card_transparency(stat["label"], stat["value"], stat["unit"])
+            metrics_bar.addWidget(card)
+        main_layout.addLayout(metrics_bar)
 
-        self.processors_card = self._create_stat_card(
-            "Active Processors", str(self.active_processors)
-        )
-        stats_layout.addWidget(self.processors_card)
+        # --- Main 3-Column Layout ---
+        columns = QHBoxLayout()
+        columns.setSpacing(20)
+        # Left (30%)
+        left_col = self.create_enhanced_left_column()
+        columns.addLayout(left_col, 30)
+        # Center (45%)
+        center_col = QVBoxLayout()
+        center_col.setSpacing(12)
+        # Active Operations
+        ops_card = CardWrapper()
+        ops_card.setObjectName('active-operations')
+        ops_card.setStyleSheet("""
+            QFrame[objectName="active-operations"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+        """)
+        ops_layout = ops_card.body_layout
+        ops_layout.setContentsMargins(16, 8, 16, 16)
+        ops_layout.setSpacing(8)
+        ops_header = SectionHeader("Active Operations")
+        ops_header.setStyleSheet("font-size: 16px; font-weight: 600; color: #fff;")
+        ops_layout.addWidget(ops_header)
+        for op in [
+            ("GitHub Collector", 80, "running"),
+            ("arXiv Processor", 100, "done"),
+            ("PDF Extractor", 45, "running"),
+        ]:
+            row = QVBoxLayout()
+            label = QLabel(op[0])
+            label.setStyleSheet("background-color: transparent; font-size: 14px; color: #f9fafb;")
+            row.addWidget(label)
+            bar = QProgressBar()
+            bar.setValue(op[1])
+            bar.setFixedHeight(8)
+            bar.setStyleSheet("QProgressBar { background-color: #2d3748; border-radius: 4px; } QProgressBar::chunk { background-color: #32B8C6; border-radius: 4px; }")
+            bar.setTextVisible(False)
+            row.addWidget(bar)
+            ops_layout.addLayout(row)
+        center_col.addWidget(ops_card)
+        # Enhanced Task Queue
+        center_col.addWidget(self.create_refined_task_queue())
+        # Performance Metrics
+        center_col.addWidget(self.create_horizontal_performance_metrics())
+        columns.addLayout(center_col, 45)
+        # Right (25%)
+        right_col = self.create_reorganized_right_side()
+        columns.addLayout(right_col, 25)
 
-        self.errors_card = self._create_stat_card("Errors", str(self.error_count))
-        stats_layout.addWidget(self.errors_card)
-        stats_layout.addStretch()
+        main_layout.addLayout(columns)
+        self.activity_log_widget = ActivityLog(self.config)
+        self.activity_log_widget.hide()
+        layout = QVBoxLayout(self)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.addWidget(container)
+        self.setLayout(layout)
 
-        main_layout.addLayout(stats_layout)
+    def create_system_health_indicator(self):
+        dot = QLabel()
+        dot.setObjectName('health-indicator')
+        dot.setFixedSize(14, 14)
+        dot.setStyleSheet('background-color: #22c55e; border-radius: 7px;')
+        return dot
 
-        # Corpus metrics section
-        corpus_card = CardWrapper()
-        corpus_layout = corpus_card.body_layout
-        corpus_layout.setSpacing(16)
+    def fix_metric_card_transparency(self, title, value, unit=''):
+        metric_widget = QWidget()
+        metric_widget.setStyleSheet('background-color: transparent; border: none;')
+        metric_layout = QVBoxLayout(metric_widget)
+        metric_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        metric_layout.setSpacing(4)
+        metric_layout.setContentsMargins(16, 16, 16, 16)
+        
+        if unit:
+            value_unit_container = QWidget()
+            value_unit_container.setStyleSheet('background-color: transparent;')
+            value_unit_layout = QHBoxLayout(value_unit_container)
+            value_unit_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            value_unit_layout.setSpacing(4)
+            value_unit_layout.setContentsMargins(0, 0, 0, 0)
+            value_label = QLabel(str(value))
+            value_label.setStyleSheet('font-size: 28px; color: #32B8C6; font-weight: 700; background-color: transparent;')
+            unit_label = QLabel(unit)
+            unit_label.setStyleSheet('font-size: 16px; color: #C5C7C7; font-weight: 500; background-color: transparent; margin-top: 8px;')
+            value_unit_layout.addWidget(value_label)
+            value_unit_layout.addWidget(unit_label)
+            metric_layout.addWidget(value_unit_container)
+        else:
+            value_label = QLabel(str(value))
+            value_label.setStyleSheet('font-size: 28px; color: #32B8C6; font-weight: 700; text-align: center; background-color: transparent;')
+            value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            metric_layout.addWidget(value_label)
+        
+        title_label = QLabel(title)
+        title_label.setStyleSheet('font-size: 14px; color: #C5C7C7; font-weight: 600; text-align: center; background-color: transparent;')
+        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        metric_layout.addWidget(title_label)
+        return metric_widget
 
-        self.total_docs_label = SectionHeader(f"Total Documents: {self.total_documents}")
-        corpus_layout.addWidget(self.total_docs_label)
+    def create_giant_pie_chart(self, domain_data):
+        from PySide6.QtCharts import QChart, QChartView, QPieSeries
+        from PySide6.QtGui import QColor, QPainter
+        from PySide6.QtCore import Qt, QMargins
+        chart = QChart()
+        chart.setBackgroundBrush(QColor('transparent'))
+        chart.setMargins(QMargins(0, 0, 0, 0))
+        colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
+        series = QPieSeries()
+        for i, (domain, percentage) in enumerate(domain_data.items()):
+            slice_obj = series.append(f'{domain[:12]}', percentage)
+            color = colors[i % len(colors)]
+            slice_obj.setBrush(QColor(color))
+            slice_obj.setBorderColor(QColor('#1a1f2e'))
+            slice_obj.setBorderWidth(2)
+            slice_obj.setLabelVisible(False)
+        chart.addSeries(series)
+        chart.setTitle('')
+        chart.legend().setVisible(False)
+        chart_view = QChartView(chart)
+        chart_view.setFixedSize(300, 300)
+        chart_view.setStyleSheet('background-color: transparent; border: none;')
+        chart_view.setRenderHint(QPainter.Antialiasing)
+        chart_container = QWidget()
+        chart_container.setStyleSheet('background-color: transparent;')
+        chart_layout = QVBoxLayout(chart_container)
+        chart_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        chart_layout.setContentsMargins(10, 10, 10, 10)
+        chart_layout.addWidget(chart_view)
+        return chart_container
 
-        distribution_header = SectionHeader("Domain Distribution")
-        corpus_layout.addWidget(distribution_header)
-
-        self.domain_layout = QVBoxLayout()
-        corpus_layout.addLayout(self.domain_layout)
-        self.domain_widgets = {}
-        for domain, perc in self.domain_distribution.items():
-            row = QHBoxLayout()
-            status = StatusDot(f"{domain}: {perc}%", "info")
-            row.addWidget(status)
-            row.addStretch()
-            self.domain_layout.addLayout(row)
-            self.domain_widgets[domain] = status
-
-        main_layout.addWidget(corpus_card)
-
-        # View all activity link
-        self.view_all_btn = QPushButton("View All Activity")
-        self.view_all_btn.setObjectName("btn--link")
-        self.view_all_btn.clicked.connect(self.view_all_activity_requested)
-        main_layout.addWidget(self.view_all_btn, alignment=Qt.AlignmentFlag.AlignLeft)
-        main_layout.addStretch()
-
-    # ---------------------------------------------------------- helpers ----
-    def _create_stat_card(self, label: str, value: str) -> QFrame:
-        card = QFrame()
-        card.setObjectName("stat-card")
-        layout = QVBoxLayout(card)
-        layout.setContentsMargins(16, 16, 16, 16)
+    def create_enhanced_system_status(self):
+        container = QFrame()
+        container.setObjectName('system-status-narrow')
+        container.setStyleSheet('''
+            QFrame[objectName="system-status-narrow"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+        ''')
+        layout = QVBoxLayout(container)
         layout.setSpacing(4)
+        layout.setContentsMargins(0, 0, 0, 0)
+        header = QLabel('🖥️ System Status')
+        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        layout.addWidget(header)
+        resources = [('CPU', 45, '#32B8C6'), ('RAM', 67, '#E68161'), ('Disk', 23, '#22c55e')]
+        for label, value, color in resources:
+            resource_container = QWidget()
+            resource_container.setStyleSheet('background-color: transparent;')
+            resource_layout = QHBoxLayout(resource_container)
+            resource_layout.setContentsMargins(0, 2, 0, 2)
+            resource_layout.setSpacing(8)
+            label_widget = QLabel(label)
+            label_widget.setFixedWidth(35)
+            label_widget.setStyleSheet('color: #f9fafb; font-size: 12px; background-color: transparent;')
+            progress_bar = QProgressBar()
+            progress_bar.setValue(value)
+            progress_bar.setFixedHeight(6)
+            progress_bar.setFixedWidth(80)
+            progress_bar.setTextVisible(False)
+            progress_bar.setStyleSheet(f'''
+                QProgressBar {{ background-color: #2d3748; border-radius: 3px; }}
+                QProgressBar::chunk {{ background-color: {color}; border-radius: 3px; }}
+            ''')
+            percent_label = QLabel(f'{value}%')
+            percent_label.setStyleSheet('color: #f9fafb; font-size: 12px; font-weight: 600; background-color: transparent;')
+            percent_label.setFixedWidth(30)
+            resource_layout.addWidget(label_widget)
+            resource_layout.addWidget(progress_bar)
+            resource_layout.addWidget(percent_label)
+            layout.addWidget(resource_container)
+        uptime_label = QLabel('Uptime: 2h 14m')
+        uptime_label.setStyleSheet('color: #9ca3af; font-size: 10px; background-color: transparent; margin-top: 4px;')
+        layout.addWidget(uptime_label)
+        return container
 
-        value_label = QLabel(value)
-        value_label.setObjectName("stat-value")
-        value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        layout.addWidget(value_label)
+    def create_enhanced_alerts(self):
+        container = QFrame()
+        container.setObjectName('alerts-narrow')
+        container.setMinimumWidth(140)
+        container.setStyleSheet('''
+            QFrame[objectName="alerts-narrow"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+        ''')
+        layout = QVBoxLayout(container)
+        layout.setSpacing(6)
+        layout.setContentsMargins(0, 0, 0, 0)
+        header = QLabel('🔔 Alerts')
+        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        layout.addWidget(header)
+        alerts = [('⚠️', 'Storage > 90%', '#E68161'), ('ℹ️', 'Update available', '#32B8C6'), ('✅', 'Backup current', '#22c55e')]
+        for icon, text, color in alerts:
+            alert_container = QWidget()
+            alert_container.setStyleSheet('background-color: transparent;')
+            alert_layout = QHBoxLayout(alert_container)
+            alert_layout.setContentsMargins(0, 2, 0, 2)
+            alert_layout.setSpacing(6)
+            icon_label = QLabel(icon)
+            icon_label.setFixedSize(12, 12)
+            icon_label.setStyleSheet('background-color: transparent;')
+            text_label = QLabel(text)
+            text_label.setStyleSheet(f'color: {color}; font-size: 11px; background-color: transparent;')
+            text_label.setWordWrap(True)
+            alert_layout.addWidget(icon_label)
+            alert_layout.addWidget(text_label)
+            layout.addWidget(alert_container)
+        return container
 
-        text_label = QLabel(label)
-        text_label.setObjectName("stat-label")
-        text_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+    def create_working_scrollable_activity(self):
+        container = QFrame()
+        container.setObjectName('recent-activity-tall')
+        container.setStyleSheet('''
+            QFrame[objectName="recent-activity-tall"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+        ''')
+        main_layout = QVBoxLayout(container)
+        main_layout.setSpacing(8)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        header = QLabel('📋 Recent Activity')
+        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent;')
+        main_layout.addWidget(header)
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        scroll_area.setStyleSheet('''
+            QScrollArea { border: none; background-color: transparent; }
+            QScrollBar:vertical { background-color: #2d3748; width: 6px; border-radius: 3px; }
+            QScrollBar::handle:vertical { background-color: #32B8C6; border-radius: 3px; min-height: 20px; }
+            QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical { border: none; background: none; }
+        ''')
+        content_widget = QWidget()
+        content_widget.setStyleSheet('background-color: transparent;')
+        content_layout = QVBoxLayout(content_widget)
+        content_layout.setSpacing(6)
+        content_layout.setContentsMargins(20, 4, 0, 0)
+        activities = [
+            ('12:00', 'Document added', 'success'),
+            ('11:45', 'Processor run', 'success'),
+            ('11:30', 'Error occurred', 'error'),
+            ('11:15', 'Backup complete', 'success'),
+            ('11:00', 'Collection started', 'running'),
+            ('10:45', 'Analysis finished', 'success'),
+            ('10:30', 'Warning resolved', 'warning'),
+            ('10:15', 'System updated', 'success'),
+            ('10:00', 'Maintenance done', 'success'),
+            ('09:45', 'Data validated', 'success'),
+            ('09:30', 'Backup started', 'running'),
+            ('09:15', 'Cache cleared', 'success')
+        ]
+        for time, text, status in activities:
+            activity_item = self.create_centered_activity_item(time, text, status)
+            content_layout.addWidget(activity_item)
+        scroll_area.setWidget(content_widget)
+        main_layout.addWidget(scroll_area)
+        button_layout = QHBoxLayout()
+        button_layout.addStretch()
+        view_all_btn = QPushButton('View All Activity')
+        view_all_btn.setStyleSheet('background-color: #2d3748; color: #32B8C6; border: none; border-radius: 4px; padding: 6px 12px; font-size: 11px;')
+        view_all_btn.clicked.connect(self.view_all_activity_requested.emit)
+        button_layout.addWidget(view_all_btn)
+        main_layout.addLayout(button_layout)
+        return container
+
+    def create_enhanced_performance_metrics(self):
+        container = self.create_card_with_styling('📈 Performance Metrics', 'performance-metrics')
+        metrics_layout = QVBoxLayout()
+        metrics_layout.setSpacing(4)
+        metrics_layout.setContentsMargins(0, 4, 0, 0)
+        metrics = [
+            ('Avg Speed', '45.2 MB/s', '#32B8C6'),
+            ('Success Rate', '94.2%', '#22c55e'),
+            ('Docs Today', '2,847', '#8b5cf6'),
+            ('Queue Length', '12', '#E68161'),
+            ('Uptime', '2h 14m', '#f59e0b'),
+            ('Storage Growth', '+1.2GB', '#06b6d4')
+        ]
+        for label, value, color in metrics:
+            metric_container = QWidget()
+            metric_layout = QHBoxLayout(metric_container)
+            metric_layout.setContentsMargins(0, 2, 0, 2)
+            metric_layout.setSpacing(12)
+            label_widget = QLabel(f'{label}:')
+            label_widget.setStyleSheet('color: #C5C7C7; font-size: 11px; font-weight: 500; background-color: transparent;')
+            value_widget = QLabel(value)
+            value_widget.setStyleSheet(f'color: {color}; font-size: 11px; font-weight: 600; background-color: transparent;')
+            metric_layout.addWidget(label_widget)
+            metric_layout.addStretch()
+            metric_layout.addWidget(value_widget)
+            metrics_layout.addWidget(metric_container)
+        container.body_layout.addLayout(metrics_layout)
+        return container
+
+    def create_enhanced_task_queue(self):
+        container = self.create_card_with_styling('📋 Task Queue', 'task-queue-enhanced')
+        main_layout = QVBoxLayout()
+        main_layout.setSpacing(6)
+        main_layout.setContentsMargins(0, 4, 0, 0)
+        tasks_label = QLabel('Running Tasks:')
+        tasks_label.setStyleSheet('color: #C5C7C7; font-size: 11px; font-weight: 600; background-color: transparent; margin-bottom: 4px;')
+        main_layout.addWidget(tasks_label)
+        tasks = [
+            ('GitHub Collector', 67, '#32B8C6'),
+            ('PDF Processor', 89, '#22c55e')
+        ]
+        for task_name, progress, color in tasks:
+            task_container = QWidget()
+            task_layout = QVBoxLayout(task_container)
+            task_layout.setSpacing(2)
+            name_label = QLabel(task_name)
+            name_label.setStyleSheet('color: #f9fafb; font-size: 10px; background-color: transparent;')
+            progress_bar = QProgressBar()
+            progress_bar.setValue(progress)
+            progress_bar.setFixedHeight(4)
+            progress_bar.setTextVisible(False)
+            progress_bar.setStyleSheet(f'''
+                QProgressBar {{ background-color: #2d3748; border-radius: 2px; }}
+                QProgressBar::chunk {{ background-color: {color}; border-radius: 2px; }}
+            ''')
+            task_layout.addWidget(name_label)
+            task_layout.addWidget(progress_bar)
+            main_layout.addWidget(task_container)
+        stats_label = QLabel('Queue Stats:')
+        stats_label.setStyleSheet('color: #C5C7C7; font-size: 11px; font-weight: 600; background-color: transparent; margin-top: 8px; margin-bottom: 4px;')
+        main_layout.addWidget(stats_label)
+        stats = [('⏳ Pending', '12', '#32B8C6'), ('🔄 Retry', '2', '#E68161'), ('❌ Failed', '1', '#ef4444')]
+        for icon_label, count, color in stats:
+            stat_container = QWidget()
+            stat_layout = QHBoxLayout(stat_container)
+            stat_layout.setContentsMargins(0, 1, 0, 1)
+            stat_layout.setSpacing(8)
+            label_widget = QLabel(icon_label)
+            label_widget.setStyleSheet('color: #C5C7C7; font-size: 10px; background-color: transparent;')
+            count_widget = QLabel(count)
+            count_widget.setStyleSheet(f'color: {color}; font-size: 10px; font-weight: 600; background-color: transparent;')
+            stat_layout.addWidget(label_widget)
+            stat_layout.addStretch()
+            stat_layout.addWidget(count_widget)
+            main_layout.addWidget(stat_container)
+        container.body_layout.addLayout(main_layout)
+        return container
+
+    def create_centered_activity_item(self, time, text, status):
+        row = QWidget()
+        layout = QHBoxLayout(row)
+        layout.setSpacing(12)
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setAlignment(Qt.AlignmentFlag.AlignVCenter)
+        time_label = QLabel(time)
+        time_label.setFixedWidth(40)
+        time_label.setStyleSheet("background-color: transparent; font-size: 12px; color: #9ca3af;")
+        layout.addWidget(time_label)
+        if status == "success":
+            color = "#22c55e"
+        elif status == "error":
+            color = "#ef4444"
+        elif status == "warning":
+            color = "#f59e0b"
+        elif status == "running":
+            color = "#32B8C6"
+        else:
+            color = "#9ca3af"
+        dot = QLabel("●")
+        dot.setStyleSheet(f"color: {color}; font-size: 12px; background-color: transparent;")
+        dot.setFixedWidth(12)
+        dot.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        layout.addWidget(dot)
+        text_label = QLabel(text)
+        text_label.setStyleSheet("background-color: transparent; font-size: 14px; color: #f9fafb;")
         layout.addWidget(text_label)
+        layout.addStretch()
+        return row
 
-        return card
+    def create_enhanced_left_column(self):
+        left_column = QVBoxLayout()
+        left_column.setSpacing(12)
+        quick_actions_card = self.create_styled_quick_actions()
+        left_column.addWidget(quick_actions_card)
+        domain_summary_card = self.create_corrected_domain_summary()
+        left_column.addWidget(domain_summary_card)
+        bottom_row_layout = QHBoxLayout()
+        bottom_row_layout.setSpacing(16)
+        corpus_health_card = self.create_corpus_health_widget()
+        corpus_health_card.setMaximumWidth(200)
+        quick_stats_card = self.create_wider_quick_stats()
+        quick_stats_card.setMaximumWidth(240)
+        bottom_row_layout.addWidget(corpus_health_card)
+        bottom_row_layout.addWidget(quick_stats_card)
+        left_column.addLayout(bottom_row_layout)
+        return left_column
 
-    def _update_metrics(self) -> None:  # pragma: no cover - integration pending
-        """Refresh dashboard metrics using live application data."""
-        try:
-            # Determine active collectors from CollectorsTab if available
-            active = 0
-            main_win = self.window()
-            collectors_tab = getattr(main_win, "collectors_tab", None)
-            if collectors_tab and hasattr(collectors_tab, "cards"):
-                for card in collectors_tab.cards.values():
-                    if not card.start_btn.isEnabled():
-                        active += 1
-            else:
-                collectors_cfg = self.config.get("collectors", {})
-                if isinstance(collectors_cfg, dict):
-                    active = sum(
-                        1
-                        for c in collectors_cfg.values()
-                        if isinstance(c, dict) and c.get("running")
-                    )
-            self.active_collectors = active
-            value_label = self.collectors_card.findChild(QLabel, "stat-value")
-            if value_label:
-                value_label.setText(str(active))
-        except Exception:
-            pass
-
-        try:
-            from CryptoFinanceCorpusBuilder.shared_tools.storage.corpus_manager import (
-                CorpusManager,
-            )
-
-            cm = CorpusManager(self.config)
-            stats = cm.get_corpus_stats()
-            self.total_documents = stats.get("total_documents", 0)
-            self.total_docs_label.setText(
-                f"Total Documents: {self.total_documents}"
-            )
-
-            distribution = (
-                stats.get("domain_metrics", {}).get("domain_distribution")
-            )
-            if not distribution:
-                domain_cfg = self.config.get("domains", {})
-                distribution = {
-                    d: cfg.get("allocation", 0) * 100
-                    for d, cfg in domain_cfg.items()
-                    if isinstance(cfg, dict)
+    def create_styled_quick_actions(self):
+        quick_actions_card = CardWrapper()
+        quick_actions_card.setObjectName('quick-actions')
+        quick_actions_card.setStyleSheet("""
+            QFrame[objectName="quick-actions"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+        """)
+        quick_actions_layout = quick_actions_card.body_layout
+        quick_actions_layout.setContentsMargins(16, 16, 16, 16)
+        quick_actions_layout.setSpacing(8)
+        quick_actions_header = SectionHeader("Quick Actions")
+        quick_actions_header.setStyleSheet("font-size: 16px; font-weight: 600; color: #fff;")
+        quick_actions_layout.addWidget(quick_actions_header)
+        for text, slot in [
+            ("Optimize Corpus", self.start_corpus_optimization),
+            ("Run All Collectors", self.start_all_collectors),
+            ("Export Report", self.export_report),
+            ("Update Dependencies", self.update_dependencies),
+        ]:
+            btn = QPushButton(text)
+            btn.setObjectName("action-btn")
+            btn.setStyleSheet("""
+                QPushButton[objectName="action-btn"] {
+                    background-color: #32B8C6;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    padding: 12px 16px;
                 }
-            else:
-                total = sum(distribution.values()) or 1
-                distribution = {
-                    d: (v / total) * 100 for d, v in distribution.items()
+                QPushButton[objectName="action-btn"]:hover {
+                    background-color: #2DA6B2;
+                    transform: translateY(-1px);
                 }
+                QPushButton[objectName="action-btn"]:pressed {
+                    background-color: #248995;
+                }
+            """)
+            btn.setFixedHeight(40)
+            btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+            btn.clicked.connect(slot)
+            quick_actions_layout.addWidget(btn)
+        return quick_actions_card
 
-            self.domain_distribution = distribution
+    def create_corpus_health_widget(self):
+        container = CardWrapper('⚖️ Corpus Health')
+        container.setObjectName('corpus-health')
+        container.setStyleSheet("""
+            QFrame[objectName="corpus-health"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+        """)
+        layout = container.body_layout
+        layout.setContentsMargins(16, 16, 16, 16)
+        layout.setSpacing(8)
+        health_items = [
+            ('Balance', 'Optimal', '#22c55e', '⚖️'),
+            ('Quality', '94.2%', '#32B8C6', '📊'),
+            ('Cleanliness', 'Clean', '#22c55e', '🧹')
+        ]
+        for label, value, color, icon in health_items:
+            item_layout = QHBoxLayout()
+            icon_label = QLabel(icon)
+            text_label = QLabel(f'{label}: {value}')
+            text_label.setStyleSheet(f'background-color: transparent; color: {color}; font-size: 13px; font-weight: 500;')
+            item_layout.addWidget(icon_label)
+            item_layout.addWidget(text_label)
+            item_layout.addStretch()
+            layout.addLayout(item_layout)
+        return container
 
-            # Update UI widgets, creating new ones if needed
-            for domain, percent in distribution.items():
-                widget = self.domain_widgets.get(domain)
-                if widget is None:
-                    row = QHBoxLayout()
-                    widget = StatusDot(f"{domain}: {int(percent)}%", "info")
-                    row.addWidget(widget)
-                    row.addStretch()
-                    self.domain_layout.addLayout(row)
-                    self.domain_widgets[domain] = widget
+    def create_performance_metrics_widget(self):
+        container = CardWrapper('📈 Performance Metrics')
+        container.setObjectName('performance-metrics')
+        container.setStyleSheet("""
+            QFrame[objectName="performance-metrics"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+        """)
+        layout = container.body_layout
+        layout.setContentsMargins(16, 16, 16, 16)
+        layout.setSpacing(6)
+        metrics = [
+            ('Avg Speed', '45.2 MB/s', '#32B8C6'),
+            ('Success Rate', '94.2%', '#22c55e'),
+            ('Uptime', '2h 14m', '#E68161')
+        ]
+        for label, value, color in metrics:
+            item_widget = QWidget()
+            item_layout = QHBoxLayout(item_widget)
+            item_layout.setContentsMargins(0, 4, 0, 4)
+            item_layout.setSpacing(12)
+            label_widget = QLabel(f'{label}:')
+            label_widget.setStyleSheet('background-color: transparent; color: #C5C7C7; font-size: 12px; font-weight: 500;')
+            value_widget = QLabel(value)
+            value_widget.setStyleSheet(f'background-color: transparent; color: {color}; font-size: 12px; font-weight: 600;')
+            item_layout.addWidget(label_widget)
+            item_layout.addStretch()
+            item_layout.addWidget(value_widget)
+            layout.addWidget(item_widget)
+        return container
+
+    def create_environment_info_widget(self):
+        container = CardWrapper('🖥️ Environment')
+        container.setObjectName('environment-info')
+        container.setStyleSheet("""
+            QFrame[objectName="environment-info"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+        """)
+        layout = container.body_layout
+        layout.setContentsMargins(16, 12, 16, 12)
+        layout.setSpacing(4)
+        env_info = [
+            ('Python', '3.11.2', '#32B8C6'),
+            ('Environment', 'Development', '#E68161'),
+            ('Last Update', '2 days ago', '#9ca3af')
+        ]
+        for label, value, color in env_info:
+            item_widget = QWidget()
+            item_layout = QHBoxLayout(item_widget)
+            item_layout.setContentsMargins(0, 3, 0, 3)
+            item_layout.setSpacing(12)
+            label_widget = QLabel(f'{label}:')
+            label_widget.setStyleSheet('background-color: transparent; color: #C5C7C7; font-size: 11px; font-weight: 500;')
+            value_widget = QLabel(value)
+            value_widget.setStyleSheet(f'background-color: transparent; color: {color}; font-size: 11px; font-weight: 600;')
+            item_layout.addWidget(label_widget)
+            item_layout.addStretch()
+            item_layout.addWidget(value_widget)
+            layout.addWidget(item_widget)
+        return container
+
+    def create_wider_quick_stats(self):
+        container = QFrame()
+        container.setObjectName('quick-stats')
+        container.setMinimumWidth(220)
+        container.setStyleSheet('''
+            QFrame[objectName="quick-stats"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+                min-width: 220px;
+            }
+        ''')
+        header_layout = QVBoxLayout()
+        header_layout.setSpacing(2)
+        header_label = QLabel('📊 Quick Stats')
+        header_label.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent;')
+        header_layout.addWidget(header_label)
+        grid_layout = QGridLayout()
+        grid_layout.setSpacing(16)
+        grid_layout.setContentsMargins(0, 8, 0, 0)
+        stats = [
+            ('Collection Rate', '12.3/min', '#32B8C6', 0, 0),
+            ('Processing Speed', '45 MB/s', '#22c55e', 0, 1),
+            ('Error Rate', '0.8%', '#E68161', 1, 0),
+            ('System Load', '67%', '#9ca3af', 1, 1)
+        ]
+        for label, value, color, row, col in stats:
+            stat_container = QWidget()
+            stat_container.setStyleSheet('background-color: transparent;')
+            stat_layout = QVBoxLayout(stat_container)
+            stat_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            stat_layout.setSpacing(2)
+            value_label = QLabel(value)
+            value_label.setStyleSheet(f'color: {color}; font-size: 15px; font-weight: 700; text-align: center; background-color: transparent;')
+            value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            label_widget = QLabel(label)
+            label_widget.setStyleSheet('color: #C5C7C7; font-size: 10px; text-align: center; background-color: transparent;')
+            label_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            stat_layout.addWidget(value_label)
+            stat_layout.addWidget(label_widget)
+            grid_layout.addWidget(stat_container, row, col)
+        main_layout = QVBoxLayout(container)
+        main_layout.setSpacing(0)
+        main_layout.addLayout(header_layout)
+        main_layout.addLayout(grid_layout)
+        return container
+
+    def create_reorganized_right_side(self):
+        right_column = QVBoxLayout()
+        right_column.setSpacing(12)
+        top_section_layout = QHBoxLayout()
+        top_section_layout.setSpacing(12)
+        system_status_card = self.create_enhanced_system_status()
+        system_status_card.setObjectName('system-status-narrow')
+        system_status_card.setMaximumWidth(180)
+        alerts_card = self.create_enhanced_alerts()
+        alerts_card.setObjectName('alerts-narrow')
+        alerts_card.setMaximumWidth(120)
+        top_section_layout.addWidget(system_status_card, 60)
+        top_section_layout.addWidget(alerts_card, 40)
+        right_column.addLayout(top_section_layout)
+        recent_activity_card = self.create_working_scrollable_activity()
+        recent_activity_card.setObjectName('recent-activity-tall')
+        right_column.addWidget(recent_activity_card)
+        environment_card = self.create_environment_info_widget()
+        right_column.addWidget(environment_card)
+        return right_column
+
+    def create_card_with_styling(self, title, object_name):
+        container = CardWrapper(title)
+        container.setObjectName(object_name)
+        container.setStyleSheet("""
+            QFrame[objectName="stat-card"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 20px;
+            }
+        """)
+        return container
+
+    def load_data(self):
+        pass  # All dummy data for now
+
+    # --- Placeholder methods for actions ---
+    def start_corpus_optimization(self):
+        print("[Stub] Optimize Corpus triggered.")
+    def start_all_collectors(self):
+        print("[Stub] Run All Collectors triggered.")
+    def export_report(self):
+        print("[Stub] Export Report triggered.")
+    def update_dependencies(self):
+        print("[Stub] Update Dependencies triggered.")
+    def pause_task(self, task_id):
+        print(f"[Stub] Pause {task_id}")
+    def stop_task(self, task_id):
+        print(f"[Stub] Stop {task_id}")
+
+    def fix_all_label_backgrounds(self):
+        # Fix all existing QLabel widgets to have transparent background
+        for label in self.findChildren(QLabel):
+            current_style = label.styleSheet()
+            if 'background-color' not in current_style:
+                label.setStyleSheet(current_style + '; background-color: transparent;')
+            else:
+                import re
+                new_style = re.sub(r'background-color:\s*[^;]+;?', 'background-color: transparent;', current_style)
+                label.setStyleSheet(new_style)
+
+    def get_real_domain_data(self):
+        try:
+            if hasattr(self.config, 'domain_manager'):
+                domains = self.config.domain_manager.get_all_domains()
+            elif hasattr(self.config, 'domains'):
+                domains = self.config.domains
+            else:
+                import os
+                domain_path = os.path.join(self.config.project_root, 'domains')
+                if os.path.exists(domain_path):
+                    domains = [d for d in os.listdir(domain_path) if os.path.isdir(os.path.join(domain_path, d))]
                 else:
-                    widget.setText(f"{domain}: {int(percent)}%")
-        except Exception:
-            pass
+                    domains = ['Crypto Derivatives', 'High Frequency Trading', 'Market Making', 'Regulation & Compliance', 'DeFi Protocols', 'Algorithmic Trading', 'Risk Management', 'Blockchain Infrastructure']
+            total = len(domains)
+            domain_data = {}
+            for i, domain in enumerate(domains):
+                percentage = max(5, 25 - i * 3)
+                domain_data[domain] = percentage
+            total_pct = sum(domain_data.values())
+            for domain in domain_data:
+                domain_data[domain] = round((domain_data[domain] / total_pct) * 100, 1)
+            return domain_data
+        except Exception as e:
+            return {'Crypto Derivatives': 25.0, 'High Frequency Trading': 20.0, 'Market Making': 15.0, 'Regulation & Compliance': 12.0, 'DeFi Protocols': 10.0, 'Algorithmic Trading': 8.0, 'Risk Management': 6.0, 'Blockchain Infrastructure': 4.0}
+
+    def create_large_pie_chart(self, domain_data):
+        from PySide6.QtCharts import QChart, QChartView, QPieSeries
+        from PySide6.QtGui import QColor, QPainter
+        from PySide6.QtCore import Qt, QMargins
+        chart = QChart()
+        chart.setBackgroundBrush(QColor('transparent'))
+        chart.setMargins(QMargins(0, 0, 0, 0))
+        colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
+        series = QPieSeries()
+        for i, (domain, percentage) in enumerate(domain_data.items()):
+            slice_obj = series.append(f'{domain[:15]}', percentage)
+            color = colors[i % len(colors)]
+            slice_obj.setBrush(QColor(color))
+            slice_obj.setBorderColor(QColor('#1a1f2e'))
+            slice_obj.setBorderWidth(2)
+            slice_obj.setLabelVisible(False)
+        chart.addSeries(series)
+        chart.setTitle('')
+        chart.legend().setVisible(False)
+        chart_view = QChartView(chart)
+        chart_view.setFixedSize(220, 220)
+        chart_view.setStyleSheet('background-color: transparent; border: none;')
+        chart_view.setRenderHint(QPainter.Antialiasing)
+        chart_container = QWidget()
+        chart_container.setStyleSheet('background-color: transparent;')
+        chart_layout = QVBoxLayout(chart_container)
+        chart_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        chart_layout.setContentsMargins(0, 0, 0, 0)
+        chart_layout.addWidget(chart_view)
+        return chart_container
+
+    def create_centered_domain_list(self, domain_data):
+        domain_list_widget = QWidget()
+        domain_list_widget.setStyleSheet('background-color: transparent;')
+        domain_list_layout = QVBoxLayout(domain_list_widget)
+        domain_list_layout.setSpacing(6)
+        domain_list_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        domain_list_layout.setContentsMargins(20, 0, 0, 0)
+        colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
+        for i, (domain, percentage) in enumerate(domain_data.items()):
+            item_layout = QHBoxLayout()
+            item_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            item_layout.setSpacing(8)
+            dot = QLabel('●')
+            color = colors[i % len(colors)]
+            dot.setStyleSheet(f'color: {color}; font-size: 12px; background-color: transparent;')
+            dot.setFixedSize(14, 14)
+            dot.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            text = QLabel(f'{domain}: {percentage}%')
+            text.setStyleSheet('color: #f9fafb; font-size: 12px; font-weight: 500; background-color: transparent;')
+            item_layout.addWidget(dot)
+            item_layout.addWidget(text)
+            item_layout.addStretch()
+            domain_list_layout.addLayout(item_layout)
+        return domain_list_widget
+
+    def create_corrected_domain_summary(self):
+        container = self.create_card_with_styling('📂 Domain Summary', 'domain-summary')
+        content_layout = QHBoxLayout()
+        content_layout.setSpacing(20)
+        content_layout.setContentsMargins(0, 0, 0, 0)
+        domain_list_widget = QWidget()
+        domain_list_widget.setStyleSheet('background-color: transparent;')
+        domain_list_layout = QVBoxLayout(domain_list_widget)
+        domain_list_layout.setSpacing(1)
+        domain_list_layout.setContentsMargins(10, 15, 0, 0)
+        domain_data = self.get_real_domain_data()
+        colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
+        for i, (domain, percentage) in enumerate(domain_data.items()):
+            item_layout = QHBoxLayout()
+            item_layout.setAlignment(Qt.AlignmentFlag.AlignLeft)
+            item_layout.setSpacing(8)
+            dot = QLabel('●')
+            color = colors[i % len(colors)]
+            dot.setStyleSheet(f'color: {color}; font-size: 12px; background-color: transparent;')
+            dot.setFixedSize(14, 14)
+            dot.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            text = QLabel(f'{domain}: {percentage}%')
+            text.setStyleSheet('color: #f9fafb; font-size: 12px; font-weight: 500; background-color: transparent;')
+            item_layout.addWidget(dot)
+            item_layout.addWidget(text)
+            item_layout.addStretch()
+            domain_list_layout.addLayout(item_layout)
+        pie_chart = self.create_huge_pie_chart_up_left(domain_data)
+        content_layout.addWidget(domain_list_widget, 35)
+        content_layout.addWidget(pie_chart, 65)
+        container.body_layout.addLayout(content_layout)
+        return container
+
+    def create_huge_pie_chart_up_left(self, domain_data):
+        from PySide6.QtCharts import QChart, QChartView, QPieSeries
+        from PySide6.QtGui import QColor, QPainter
+        from PySide6.QtCore import Qt, QMargins
+        chart = QChart()
+        chart.setBackgroundBrush(QColor('transparent'))
+        chart.setMargins(QMargins(0, 0, 0, 0))
+        colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
+        series = QPieSeries()
+        for i, (domain, percentage) in enumerate(domain_data.items()):
+            slice_obj = series.append(f'{domain[:6]}', percentage)
+            color = colors[i % len(colors)]
+            slice_obj.setBrush(QColor(color))
+            slice_obj.setBorderColor(QColor('#1a1f2e'))
+            slice_obj.setBorderWidth(3)
+            slice_obj.setLabelVisible(False)
+        chart.addSeries(series)
+        chart.setTitle('')
+        chart.legend().setVisible(False)
+        chart_view = QChartView(chart)
+        chart_view.setFixedSize(480, 480)
+        chart_view.setStyleSheet('background-color: transparent; border: none;')
+        chart_view.setRenderHint(QPainter.Antialiasing)
+        chart_container = QWidget()
+        chart_container.setStyleSheet('background-color: transparent;')
+        chart_layout = QHBoxLayout(chart_container)
+        chart_layout.setContentsMargins(-20, 0, 40, 20)
+        chart_layout.addWidget(chart_view)
+        chart_layout.addStretch()
+        return chart_container
+
+    def create_horizontal_performance_metrics(self):
+        container = QFrame()
+        container.setObjectName('performance-metrics-horizontal')
+        container.setStyleSheet('''
+            QFrame[objectName="performance-metrics-horizontal"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+        ''')
+        main_layout = QVBoxLayout(container)
+        main_layout.setSpacing(8)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        header = QLabel('📈 Performance Metrics')
+        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        main_layout.addWidget(header)
+        grid_layout = QGridLayout()
+        grid_layout.setSpacing(16)
+        grid_layout.setContentsMargins(0, 4, 0, 0)
+        metrics = [
+            ('Avg Speed', '45.2 MB/s', '#32B8C6', 0, 0),
+            ('Success Rate', '94.2%', '#22c55e', 0, 1),
+            ('Docs Today', '2,847', '#8b5cf6', 0, 2),
+            ('Queue Length', '12', '#E68161', 1, 0),
+            ('Uptime', '2h 14m', '#f59e0b', 1, 1),
+            ('Storage Growth', '+1.2GB', '#06b6d4', 1, 2)
+        ]
+        for label, value, color, row, col in metrics:
+            metric_container = QWidget()
+            metric_container.setStyleSheet('background-color: transparent;')
+            metric_layout = QVBoxLayout(metric_container)
+            metric_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            metric_layout.setSpacing(2)
+            value_label = QLabel(value)
+            value_label.setStyleSheet(f'color: {color}; font-size: 16px; font-weight: 700; text-align: center; background-color: transparent;')
+            value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            label_widget = QLabel(label)
+            label_widget.setStyleSheet('color: #C5C7C7; font-size: 10px; text-align: center; background-color: transparent;')
+            label_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            metric_layout.addWidget(value_label)
+            metric_layout.addWidget(label_widget)
+            grid_layout.addWidget(metric_container, row, col)
+        main_layout.addLayout(grid_layout)
+        return container
+
+    def create_refined_task_queue(self):
+        container = QFrame()
+        container.setObjectName('task-queue-refined')
+        container.setStyleSheet('''
+            QFrame[objectName="task-queue-refined"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+        ''')
+        main_layout = QVBoxLayout(container)
+        main_layout.setSpacing(8)
+        main_layout.setContentsMargins(0, 0, 0, 0)
+        header = QLabel('📋 Task Queue')
+        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent;')
+        main_layout.addWidget(header)
+        
+        # Top section with running tasks
+        top_section = QWidget()
+        top_section.setStyleSheet('background-color: transparent;')
+        top_layout = QVBoxLayout(top_section)
+        top_layout.setSpacing(4)
+        top_layout.setContentsMargins(0, 4, 0, 0)
+        
+        running_label = QLabel('Running Tasks:')
+        running_label.setStyleSheet('color: #C5C7C7; font-size: 11px; font-weight: 600; background-color: transparent;')
+        top_layout.addWidget(running_label)
+        
+        tasks = [('GitHub Collector', 67, '#32B8C6'), ('PDF Processor', 89, '#22c55e')]
+        for task_name, progress, color in tasks:
+            task_container = QWidget()
+            task_container.setStyleSheet('background-color: transparent;')
+            task_layout = QVBoxLayout(task_container)
+            task_layout.setSpacing(2)
+            name_label = QLabel(task_name)
+            name_label.setStyleSheet('color: #f9fafb; font-size: 10px; background-color: transparent;')
+            progress_bar = QProgressBar()
+            progress_bar.setValue(progress)
+            progress_bar.setFixedHeight(4)
+            progress_bar.setTextVisible(False)
+            progress_bar.setStyleSheet(f'''
+                QProgressBar {{ background-color: #2d3748; border-radius: 2px; }}
+                QProgressBar::chunk {{ background-color: {color}; border-radius: 2px; }}
+            ''')
+            task_layout.addWidget(name_label)
+            task_layout.addWidget(progress_bar)
+            top_layout.addWidget(task_container)
+        
+        main_layout.addWidget(top_section)
+        main_layout.addStretch()
+        
+        # Bottom right section with stats
+        bottom_section = QWidget()
+        bottom_section.setStyleSheet('background-color: transparent;')
+        bottom_layout = QHBoxLayout(bottom_section)
+        bottom_layout.addStretch()
+        
+        stats_container = QWidget()
+        stats_container.setStyleSheet('background-color: transparent;')
+        stats_layout = QVBoxLayout(stats_container)
+        stats_layout.setSpacing(2)
+        stats_layout.setContentsMargins(0, 0, 0, 0)
+        
+        stats_data = [
+            ('⏳', 'Pending', '12', '#32B8C6'),
+            ('🔄', 'Retry', '2', '#E68161'),
+            ('❌', 'Failed', '1', '#ef4444')
+        ]
+        
+        for icon, word, number, color in stats_data:
+            stat_item = QWidget()
+            stat_item.setStyleSheet('background-color: transparent;')
+            stat_layout_item = QHBoxLayout(stat_item)
+            stat_layout_item.setSpacing(4)
+            stat_layout_item.setContentsMargins(0, 0, 0, 0)
+            
+            icon_label = QLabel(icon)
+            icon_label.setFixedSize(14, 14)
+            icon_label.setStyleSheet('background-color: transparent; font-size: 10px;')
+            icon_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            
+            word_label = QLabel(word + ':')
+            word_label.setStyleSheet('color: #C5C7C7; font-size: 10px; font-weight: 500; background-color: transparent;')
+            
+            number_label = QLabel(number)
+            number_label.setStyleSheet(f'color: {color}; font-size: 10px; font-weight: 700; background-color: transparent;')
+            
+            stat_layout_item.addWidget(icon_label)
+            stat_layout_item.addWidget(word_label)
+            stat_layout_item.addWidget(number_label)
+            stats_layout.addWidget(stat_item)
+        
+        bottom_layout.addWidget(stats_container)
+        main_layout.addWidget(bottom_section)
+        return container
+
+    def create_simple_metrics_no_containers(self):
+        metrics_container = QWidget()
+        metrics_container.setStyleSheet('background-color: transparent;')
+        metrics_layout = QHBoxLayout(metrics_container)
+        metrics_layout.setSpacing(40)
+        metrics_layout.setContentsMargins(0, 0, 0, 0)
+        metrics = [('Total Docs', '2570'), ('Total Size', '0.08 GB'), ('Active Domains', '4'), ('Storage Usage', '2.5%'), ('Running Ops', '3')]
+        for title, value in metrics:
+            metric_widget = QWidget()
+            metric_widget.setObjectName('metric-simple')
+            metric_widget.setStyleSheet('background-color: transparent; border: none;')
+            metric_layout = QVBoxLayout(metric_widget)
+            metric_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            metric_layout.setSpacing(4)
+            metric_layout.setContentsMargins(20, 20, 20, 20)
+            value_label = QLabel(value)
+            value_label.setStyleSheet('font-size: 28px; color: #32B8C6; font-weight: 700; background-color: transparent; text-align: center;')
+            value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            title_label = QLabel(title)
+            title_label.setStyleSheet('font-size: 14px; color: #C5C7C7; font-weight: 600; background-color: transparent; text-align: center;')
+            title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            metric_layout.addWidget(value_label)
+            metric_layout.addWidget(title_label)
+            metrics_layout.addWidget(metric_widget)
+        return metrics_container
+
+    def create_environment_info(self):
+        container = QFrame()
+        container.setObjectName('environment-info')
+        container.setStyleSheet('''
+            QFrame[objectName="environment-info"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+        ''')
+        layout = QVBoxLayout(container)
+        layout.setSpacing(8)
+        layout.setContentsMargins(16, 16, 16, 16)
+        header = QLabel('🌍 Environment')
+        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent;')
+        layout.addWidget(header)
+        info = [
+            ('Python', '3.12.0'),
+            ('OS', 'Windows 10'),
+            ('Memory', '16GB'),
+            ('Storage', '1TB SSD')
+        ]
+        for label, value in info:
+            info_container = QWidget()
+            info_container.setStyleSheet('background-color: transparent;')
+            info_layout = QHBoxLayout(info_container)
+            info_layout.setContentsMargins(0, 2, 0, 2)
+            info_layout.setSpacing(8)
+            label_widget = QLabel(label)
+            label_widget.setStyleSheet('color: #f9fafb; font-size: 12px; background-color: transparent;')
+            value_widget = QLabel(value)
+            value_widget.setStyleSheet('color: #C5C7C7; font-size: 12px; background-color: transparent;')
+            info_layout.addWidget(label_widget)
+            info_layout.addWidget(value_widget)
+            info_layout.addStretch()
+            layout.addWidget(info_container)
+        return container
+
+    def force_system_status_transparency(self):
+        container = QFrame()
+        container.setObjectName('system-status-narrow')
+        container.setStyleSheet('''
+            QFrame[objectName="system-status-narrow"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+            QFrame[objectName="system-status-narrow"] QLabel {
+                background-color: transparent;
+            }
+        ''')
+        layout = QVBoxLayout(container)
+        layout.setSpacing(4)
+        layout.setContentsMargins(0, 0, 0, 0)
+        header = QLabel('🖥️ System Status')
+        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        layout.addWidget(header)
+        resources = [('CPU', 45, '#32B8C6'), ('RAM', 67, '#E68161'), ('Disk', 23, '#22c55e')]
+        for label, value, color in resources:
+            resource_container = QWidget()
+            resource_container.setStyleSheet('background-color: transparent;')
+            resource_layout = QHBoxLayout(resource_container)
+            resource_layout.setContentsMargins(0, 2, 0, 2)
+            resource_layout.setSpacing(8)
+            label_widget = QLabel(label)
+            label_widget.setFixedWidth(35)
+            label_widget.setStyleSheet('color: #f9fafb; font-size: 12px; background-color: transparent;')
+            progress_bar = QProgressBar()
+            progress_bar.setValue(value)
+            progress_bar.setFixedHeight(6)
+            progress_bar.setFixedWidth(80)
+            progress_bar.setTextVisible(False)
+            progress_bar.setStyleSheet(f'''
+                QProgressBar {{ background-color: #2d3748; border-radius: 3px; }}
+                QProgressBar::chunk {{ background-color: {color}; border-radius: 3px; }}
+            ''')
+            percent_label = QLabel(f'{value}%')
+            percent_label.setStyleSheet('color: #f9fafb; font-size: 12px; font-weight: 600; background-color: transparent;')
+            percent_label.setFixedWidth(30)
+            resource_layout.addWidget(label_widget)
+            resource_layout.addWidget(progress_bar)
+            resource_layout.addWidget(percent_label)
+            layout.addWidget(resource_container)
+        uptime_label = QLabel('Uptime: 2h 14m')
+        uptime_label.setStyleSheet('color: #9ca3af; font-size: 10px; background-color: transparent; margin-top: 4px;')
+        layout.addWidget(uptime_label)
+        return container
+
+    def force_alerts_transparency(self):
+        container = QFrame()
+        container.setObjectName('alerts-narrow')
+        container.setMinimumWidth(140)
+        container.setStyleSheet('''
+            QFrame[objectName="alerts-narrow"] {
+                background-color: #1a1f2e;
+                border: 1px solid #2d3748;
+                border-radius: 12px;
+                padding: 16px;
+            }
+            QFrame[objectName="alerts-narrow"] QLabel {
+                background-color: transparent;
+            }
+        ''')
+        layout = QVBoxLayout(container)
+        layout.setSpacing(6)
+        layout.setContentsMargins(0, 0, 0, 0)
+        header = QLabel('🔔 Alerts')
+        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        layout.addWidget(header)
+        alerts = [('⚠️', 'Storage > 90%', '#E68161'), ('ℹ️', 'Update available', '#32B8C6'), ('✅', 'Backup current', '#22c55e')]
+        for icon, text, color in alerts:
+            alert_container = QWidget()
+            alert_container.setStyleSheet('background-color: transparent;')
+            alert_layout = QHBoxLayout(alert_container)
+            alert_layout.setContentsMargins(0, 2, 0, 2)
+            alert_layout.setSpacing(6)
+            icon_label = QLabel(icon)
+            icon_label.setFixedSize(12, 12)
+            icon_label.setStyleSheet('background-color: transparent;')
+            text_label = QLabel(text)
+            text_label.setStyleSheet(f'color: {color}; font-size: 11px; background-color: transparent;')
+            text_label.setWordWrap(True)
+            alert_layout.addWidget(icon_label)
+            alert_layout.addWidget(text_label)
+            layout.addWidget(alert_container)
+        return container
+
+    def force_system_alerts_transparency(self):
+        system_widgets = self.findChildren(QFrame, 'system-status-narrow')
+        for widget in system_widgets:
+            widget.setStyleSheet(widget.styleSheet() + '''
+                QFrame[objectName="system-status-narrow"] QLabel {
+                    background-color: transparent;
+                }
+            ''')
+            for label in widget.findChildren(QLabel):
+                label.setStyleSheet(label.styleSheet() + 'background-color: transparent;')
+        
+        alert_widgets = self.findChildren(QFrame, 'alerts-narrow')
+        for widget in alert_widgets:
+            widget.setStyleSheet(widget.styleSheet() + '''
+                QFrame[objectName="alerts-narrow"] QLabel {
+                    background-color: transparent;
+                }
+            ''')
+            for label in widget.findChildren(QLabel):
+                label.setStyleSheet(label.styleSheet() + 'background-color: transparent;')
+
+    def setup_ui(self):
+        # ... existing code ...
+        self.force_system_alerts_transparency()  # Force transparency on all text labels

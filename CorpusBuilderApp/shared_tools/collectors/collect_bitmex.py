@@ -8,7 +8,7 @@ import shutil
 import logging
 from pathlib import Path
 from .base_collector import BaseCollector
-from CryptoFinanceCorpusBuilder.shared_tools.utils.domain_utils import get_domain_for_file
+from shared_tools.utils.domain_utils import get_domain_for_file
 from typing import Union
 
 class UpdatedBitMEXCollector(BaseCollector):

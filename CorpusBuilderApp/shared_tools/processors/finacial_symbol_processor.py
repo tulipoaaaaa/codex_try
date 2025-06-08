@@ -13,6 +13,7 @@ import logging
 from collections import defaultdict, Counter
 from .formula_extractor import FormulaExtractor
 from .chart_image_extractor import ChartImageExtractor
+from shared_tools.config.project_config import ProjectConfig
 
 class FinancialSymbolProcessor:
     """Process and preserve financial symbols, tickers, and mathematical notation."""
@@ -791,7 +792,6 @@ def main():
     
     if args.project_config:
         # Use project config
-        from CryptoFinanceCorpusBuilder.shared_tools.config.project_config import ProjectConfig
         project = ProjectConfig.load(args.project_config)
         results = run_with_project_config(project, args.verbose)
     else:

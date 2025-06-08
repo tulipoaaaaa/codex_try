@@ -13,6 +13,7 @@ import logging
 import pytesseract
 from PIL import Image
 from io import BytesIO
+from shared_tools.config.project_config import ProjectConfig
 
 class FormulaExtractor:
     """Extract and preserve mathematical formulas from PDFs."""
@@ -477,7 +478,6 @@ def main():
     
     if args.project_config:
         # Use project config
-        from CryptoFinanceCorpusBuilder.shared_tools.config.project_config import ProjectConfig
         project = ProjectConfig.load(args.project_config)
         results = run_with_project_config(project, args.verbose)
     else:
