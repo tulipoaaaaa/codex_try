@@ -5,7 +5,7 @@ from collections import defaultdict
 from typing import Optional, Union, List, Dict
 
 try:
-    from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+    from shared_tools.project_config import ProjectConfig
 except ImportError:
     ProjectConfig = None
 

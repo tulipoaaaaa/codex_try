@@ -3,7 +3,7 @@ import os
 import json
 from pathlib import Path
 import logging
-from CryptoFinanceCorpusBuilder.config.domain_config import DOMAINS
+from shared_tools.config.domain_config import DOMAINS
 from typing import Dict, List, Optional, Any
 
 class DomainsManager:

@@ -19,6 +19,7 @@ import hashlib
 import base64
 from io import BytesIO
 import re
+from shared_tools.config.project_config import ProjectConfig
 
 class ChartImageExtractor:
     """Extract and analyze charts, graphs, and images from PDFs."""
@@ -682,7 +683,6 @@ def main():
     
     if args.project_config:
         # Use project config
-        from CryptoFinanceCorpusBuilder.shared_tools.config.project_config import ProjectConfig
         project = ProjectConfig.load(args.project_config)
         results = run_with_project_config(project, args.verbose)
     else:

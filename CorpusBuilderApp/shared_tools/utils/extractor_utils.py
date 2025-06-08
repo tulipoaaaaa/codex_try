@@ -5,11 +5,7 @@ import json
 import hashlib
 from datetime import datetime
 import os
-
-try:
-    from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
-except ImportError:
-    ProjectConfig = None
+from shared_tools.project_config import ProjectConfig
 
 def safe_filename(filename: str, max_length: int = 128) -> str:
     """Convert a string to a safe filename, truncated to max_length chars."""

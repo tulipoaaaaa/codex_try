@@ -13,7 +13,7 @@ import undetected_chromedriver as uc  # type: ignore
 from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 import shutil
-from CryptoFinanceCorpusBuilder.utils.extractor_utils import safe_filename  # type: ignore
+from shared_tools.utils.extractor_utils import safe_filename  # type: ignore
 
 # Replace load_dotenv("/workspace/notebooks/.env") with project root .env
 load_dotenv(os.path.join(os.path.dirname(__file__), '../../.env'))
