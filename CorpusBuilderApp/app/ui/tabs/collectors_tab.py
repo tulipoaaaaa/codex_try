@@ -43,9 +43,11 @@ class CollectorsTab(QWidget):
     collection_finished = pyqtSignal(str, bool)
     collector_error = pyqtSignal(str, str)
 
-    def __init__(self, project_config, parent: QWidget | None = None) -> None:
+    def __init__(self, project_config, task_history_service=None, parent: QWidget | None = None) -> None:
         super().__init__(parent)
         self.project_config = project_config
+        self.task_history_service = task_history_service
+        self._task_ids: dict[str, str] = {}
         self.cards: dict[str, CollectorCard] = {}
         
         # Initialize collector wrappers
@@ -165,6 +167,10 @@ class CollectorsTab(QWidget):
         if not wrapper:
             return
         wrapper.start()
+        if self.task_history_service:
+            tid = f"collector_{name}_{int(time.time()*1000)}"
+            self._task_ids[name] = tid
+            self.task_history_service.start_task(tid, name, {"type": "collection", "domain": name})
         self.cards[name].update_status("running")
         self.project_config.set(f"collectors.{name}.running", True)
         self.project_config.save()
@@ -175,6 +181,8 @@ class CollectorsTab(QWidget):
         if not wrapper:
             return
         wrapper.stop()
+        if self.task_history_service and name in self._task_ids:
+            self.task_history_service.fail_task(self._task_ids.pop(name), "stopped")
         self.cards[name].update_status("stopped")
         self.project_config.set(f"collectors.{name}.running", False)
         self.project_config.save()
@@ -206,6 +214,8 @@ class CollectorsTab(QWidget):
         self.cards[collector_name].update_status("stopped")
         self.project_config.set(f"collectors.{collector_name}.running", False)
         self.project_config.save()
+        if self.task_history_service and collector_name in self._task_ids:
+            self.task_history_service.complete_task(self._task_ids.pop(collector_name))
         self.collection_finished.emit(collector_name, True)
         self.collection_status_label.setText(f"{collector_name} collection completed")
 
@@ -213,6 +223,8 @@ class CollectorsTab(QWidget):
         self.cards[collector_name].update_status("error")
         self.project_config.set(f"collectors.{collector_name}.running", False)
         self.project_config.save()
+        if self.task_history_service and collector_name in self._task_ids:
+            self.task_history_service.fail_task(self._task_ids.pop(collector_name), message)
         self.collector_error.emit(collector_name, message)
         self.collection_status_label.setText(f"{collector_name} error: {message}")
 
