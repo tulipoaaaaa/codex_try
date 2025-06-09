@@ -1,3 +1,2 @@
-"""
-CryptoFinanceCorpusBuilder application package.
-""" 
+"""CorpusBuilderApp application package."""
+

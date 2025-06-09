@@ -1,5 +1,5 @@
 import pytest
-from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
+from CorpusBuilderApp.shared_tools.project_config import ProjectConfig
 
 @pytest.mark.skip("Audit stub – implement later")
 def test_load_minimal_config(tmp_path):

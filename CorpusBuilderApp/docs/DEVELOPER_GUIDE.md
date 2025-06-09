@@ -1,4 +1,4 @@
-# Developer Guide: CryptoFinance Corpus Builder
+# Developer Guide: Crypto Corpus Builder
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@
 ## Project Structure
 
 ```
-CryptoFinanceCorpusBuilder/
+CryptoCorpusBuilder/
 ├── app/                  # Main application code
 │   ├── main.py
 │   ├── main_window.py

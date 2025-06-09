@@ -1,7 +1,7 @@
 import pytest
-from CryptoFinanceCorpusBuilder.shared_tools.project_config import ProjectConfig
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.fred_collector import FREDCollector
-from CryptoFinanceCorpusBuilder.shared_tools.collectors.github_collector import GitHubCollector
+from CorpusBuilderApp.shared_tools.project_config import ProjectConfig
+from CorpusBuilderApp.shared_tools.collectors.fred_collector import FREDCollector
+from CorpusBuilderApp.shared_tools.collectors.github_collector import GitHubCollector
 
 @pytest.mark.skip("Audit stub – implement later")
 def test_run_fred_and_github_collectors(monkeypatch, tmp_path):

@@ -1,5 +1,5 @@
 """
-Main window for CryptoFinance Corpus Builder
+Main window for Crypto Corpus Builder
 """
 
 from PySide6.QtWidgets import (QMainWindow, QTabWidget, QVBoxLayout, QWidget, 
@@ -78,7 +78,7 @@ class CryptoCorpusMainWindow(QMainWindow):
     def init_ui(self):
         """Initialize the user interface"""
         # Set window properties
-        self.setWindowTitle("CryptoFinance Corpus Builder v3")
+        self.setWindowTitle("Crypto Corpus Builder v3")
         self.setMinimumSize(1200, 800)
         self.resize(1400, 900)
         
@@ -209,7 +209,7 @@ class CryptoCorpusMainWindow(QMainWindow):
         
         # About action
         about_action = QAction('&About', self)
-        about_action.setStatusTip('About CryptoFinance Corpus Builder')
+        about_action.setStatusTip('About Crypto Corpus Builder')
         about_action.triggered.connect(self.show_about)
         help_menu.addAction(about_action)
     
@@ -344,7 +344,7 @@ class CryptoCorpusMainWindow(QMainWindow):
     def show_about(self):
         """Show about dialog"""
         about_text = """
-        <h2>CryptoFinance Corpus Builder v3</h2>
+        <h2>Crypto Corpus Builder v3</h2>
         <p>A comprehensive tool for building and managing cryptocurrency research corpora.</p>
         <p><b>Features:</b></p>
         <ul>
