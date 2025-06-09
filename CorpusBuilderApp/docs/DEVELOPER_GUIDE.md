@@ -1,4 +1,4 @@
-# Developer Guide: CryptoFinance Corpus Builder
+# Developer Guide: Crypto Corpus Builder
 
 ## Table of Contents
 
@@ -15,7 +15,7 @@
 ## Project Structure
 
 ```
-CryptoFinanceCorpusBuilder/
+CryptoCorpusBuilder/
 ├── app/                  # Main application code
 │   ├── main.py
 │   ├── main_window.py
@@ -64,7 +64,11 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for diagrams and data flow.
 
 - Unit tests: `pytest tests/unit/`
 - Integration tests: `pytest tests/integration/`
- - UI tests: `pytest tests/ui/ --qt-api pyside6`
+- Set `PYTEST_QT_STUBS=1` to run tests without PySide6 installed. This uses
+  stubbed Qt classes for headless or CI runs and covers only limited
+  functionality.
+- UI tests: `pytest tests/ui/ --qt-api pyside6`
+  *(should be run locally with PySide6 installed)*
 
 ---
 

@@ -55,12 +55,14 @@ class DashboardTab(QWidget):
         self.stats_service.refresh_stats()
 
         if self.activity_log_service:
-            try:
-                self.activity_log_service.activity_added.connect(
-                    self.recent_activity_widget.add_activity
+            self.activity_log_service.activity_added.connect(
+                self.recent_activity_widget.add_activity
+            )
+            self.activity_log_service.activity_added.connect(
+                lambda e: self.activity_log_widget.add_activity(
+                    e.get("source", "Info"), e.get("message", ""), e.get("details")
                 )
-            except Exception:
-                pass
+            )
 
     def _init_ui(self):
         self.setStyleSheet("QWidget, QFrame, QGroupBox { background-color: #0f1419; }")

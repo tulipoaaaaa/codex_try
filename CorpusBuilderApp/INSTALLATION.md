@@ -1,4 +1,4 @@
-# CryptoFinance Corpus Builder v3 - Installation Guide
+# Crypto Corpus Builder v3 - Installation Guide
 
 ## Prerequisites
 

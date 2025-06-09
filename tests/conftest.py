@@ -10,13 +10,13 @@ base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if base_dir not in sys.path:
     sys.path.insert(0, base_dir)
 
-# Alias for legacy package name used by some tests
+# Alias for compatibility with CryptoCorpusBuilder imports
 sys.modules.setdefault(
-    "CryptoFinanceCorpusBuilder",
-    types.ModuleType("CryptoFinanceCorpusBuilder"),
+    "CryptoCorpusBuilder",
+    types.ModuleType("CryptoCorpusBuilder"),
 )
 sys.modules.setdefault(
-    "CryptoFinanceCorpusBuilder.shared_tools",
+    "CryptoCorpusBuilder.shared_tools",
     __import__("CorpusBuilderApp.shared_tools", fromlist=["dummy"]),
 )
 
@@ -217,6 +217,7 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         QtWidgets=qtwidgets,
         QtGui=qtgui,
         QtTest=qttest,
+        __version__="6.5.0",
     )
     sys.modules['PySide6.QtCore'] = qtcore
     sys.modules['PySide6.QtWidgets'] = qtwidgets
@@ -300,6 +301,9 @@ def mock_project_config(temp_dir):
 
         def get_directory(self, name):
             return self.config["directories"][name]
+
+        def get_logs_dir(self):
+            return self.config["directories"]["logs"]
 
     cfg = DummyConfig(temp_dir)
     for p in cfg.config["directories"].values():

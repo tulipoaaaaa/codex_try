@@ -19,6 +19,8 @@ from PySide6.QtGui import QColor, QTextCharFormat, QBrush
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
 from app.ui.widgets.status_dot import StatusDot
+from shared_tools.services.activity_log_service import ActivityLogService
+from shared_tools.utils.log_file_parser import LogFileParser
 
 import os
 import re
@@ -26,9 +28,11 @@ from datetime import datetime
 
 
 class LogsTab(QWidget):
-    def __init__(self, project_config, parent=None):
+    def __init__(self, project_config, activity_log_service: ActivityLogService | None = None, parent=None):
         super().__init__(parent)
         self.project_config = project_config
+        self.activity_log_service = activity_log_service
+        self.log_parser = LogFileParser()
         self.log_files = {}
         self.current_log = None
         self.update_timer = None
@@ -64,6 +68,13 @@ class LogsTab(QWidget):
         self.level_filter.addItems(["All", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"])
         self.level_filter.currentIndexChanged.connect(self.apply_filters)
         controls_layout.addWidget(self.level_filter)
+
+        # Module/component filter
+        controls_layout.addWidget(QLabel("Module:"))
+        self.module_filter = QComboBox()
+        self.module_filter.addItem("All")
+        self.module_filter.currentIndexChanged.connect(self.apply_filters)
+        controls_layout.addWidget(self.module_filter)
         
         # Date range (simplified for now)
         self.today_only = QCheckBox("Today Only")
@@ -135,19 +146,33 @@ class LogsTab(QWidget):
     
     def scan_log_directory(self):
         """Scan for log files in the configured log directory"""
-        # In a real implementation, this would use project_config to get the log directory
-        # For now, use a placeholder path
         log_dir = self.project_config.get_logs_dir()
+
+        self.log_files = {}
+        if os.path.isdir(log_dir):
+            for fname in sorted(os.listdir(log_dir)):
+                if fname.lower().endswith(".log"):
+                    self.log_files[fname] = {"path": os.path.join(log_dir, fname), "type": "app"}
         
-        # Placeholder - in a real implementation this would scan the actual directory
-        # For demonstration, populate with sample log files
-        self.log_files = {
-            "collectors.log": {"path": f"{log_dir}/collectors.log", "type": "collector"},
-            "processors.log": {"path": f"{log_dir}/processors.log", "type": "processor"},
-            "app.log": {"path": f"{log_dir}/app.log", "type": "app"},
-            "errors.log": {"path": f"{log_dir}/errors.log", "type": "error"}
-        }
-        
+        self.log_files = {}
+
+        if os.path.isdir(log_dir):
+            for name in sorted(os.listdir(log_dir)):
+                if not name.lower().endswith((".log", ".txt")):
+                    continue
+                path = os.path.join(log_dir, name)
+                log_type = "app"
+                if name.startswith("collector"):
+                    log_type = "collector"
+                elif name.startswith("processor"):
+                    log_type = "processor"
+                elif "error" in name:
+                    log_type = "error"
+                self.log_files[name] = {"path": path, "type": log_type}
+
+        if self.activity_log_service:
+            self.activity_log_service.log("LogsTab", f"Found {len(self.log_files)} log files")
+
         # Update the log selector
         self.log_selector.clear()
         for log_name in self.log_files:
@@ -167,204 +192,82 @@ class LogsTab(QWidget):
     def refresh_logs(self):
         """Refresh the current log view"""
         if not self.current_log:
-            print("DEBUG: No current log set, skipping refresh")
             return
-            
-        # Generate sample logs (ensure it returns a list, not None)
-        log_entries = self.generate_sample_logs(self.current_log.get("type", "app"))
-        
-        # Defensive check
-        if log_entries is None:
-            print("DEBUG: generate_sample_logs returned None, using empty list")
-            log_entries = []
-        
-        # Apply filters
+
+        path = self.current_log.get("path")
+        log_entries = self.log_parser.parse_file(path)
+        self.log_entries = log_entries
+        self.update_module_filter(log_entries)
+
         filtered_entries = self.filter_log_entries(log_entries)
-        
-        # Update the table
+        self.filtered_entries = filtered_entries
         self.populate_log_table(filtered_entries)
+
+        if self.activity_log_service:
+            self.activity_log_service.log(
+                "LogsTab",
+                f"Loaded {len(log_entries)} entries from {os.path.basename(path)}",
+            )
+
+    def update_module_filter(self, entries):
+        modules = sorted({e.get("component", "") for e in entries if e.get("component")})
+        current = self.module_filter.currentText()
+        self.module_filter.blockSignals(True)
+        self.module_filter.clear()
+        self.module_filter.addItem("All")
+        for m in modules:
+            self.module_filter.addItem(m)
+        index = self.module_filter.findText(current)
+        if index >= 0:
+            self.module_filter.setCurrentIndex(index)
+        self.module_filter.blockSignals(False)
     
-    def generate_sample_logs(self, log_type):
-        """Generate sample log entries for demonstration"""
+    def parse_log_line(self, line):
+        """Parse a single log line into a dictionary."""
+        m = re.match(r"\[(?P<time>[^\]]+)\]\s+(?P<level>\w+)\s+(?P<component>[^\s]+)\s*-\s*(?P<rest>.*)", line)
+        if not m:
+            return None
+        msg = m.group("rest")
+        details = ""
+        if "|" in msg:
+            msg, details = [part.strip() for part in msg.split("|", 1)]
+        return {
+            "time": m.group("time"),
+            "level": m.group("level"),
+            "component": m.group("component"),
+            "message": msg,
+            "details": details,
+        }
+
+    def parse_log_file(self, path):
+        """Return a list of parsed log entries from the file."""
         entries = []
-        
-        # Current time as base
-        now = datetime.now()
-        
-        # Different log patterns based on log type
-        if log_type == "collector":
-            components = ["ISDACollector", "GitHubCollector", "AnnaArchiveCollector", "ArxivCollector"]
-            messages = [
-                "Started collection process",
-                "Connecting to API",
-                "Retrieved document list",
-                "Downloaded document",
-                "Collection completed",
-                "Error connecting to API",
-                "Rate limit exceeded",
-                "Authentication failed"
-            ]
-            
-            # Generate 20 sample entries
-            for i in range(20):
-                # Randomize time within the last day
-                time_offset = i * 30  # 30 minutes between entries
-                entry_time = now.replace(
-                    hour=(now.hour - (time_offset // 60)) % 24,
-                    minute=(now.minute - (time_offset % 60)) % 60
-                )
-                
-                # Randomly select component and message
-                component = components[i % len(components)]
-                message_index = i % len(messages)
-                message = messages[message_index]
-                
-                # Determine level based on message
-                if "Error" in message or "failed" in message:
-                    level = "ERROR"
-                elif "exceeded" in message:
-                    level = "WARNING"
-                elif "Started" in message:
-                    level = "INFO"
-                else:
-                    level = "DEBUG"
-                
-                # Create details
-                if level == "ERROR":
-                    details = f"Exception occurred: ConnectionError\nTraceback: File \"collector.py\", line 120\nCannot connect to server"
-                else:
-                    details = f"Additional information for {message.lower()}"
-                
-                entries.append({
-                    "time": entry_time.strftime("%Y-%m-%d %H:%M:%S"),
-                    "level": level,
-                    "component": component,
-                    "message": message,
-                    "details": details
-                })
-        
-        elif log_type == "processor":
-            components = ["PDFProcessor", "TextProcessor", "BalancerProcessor", "QualityControl"]
-            messages = [
-                "Processing file",
-                "Extraction complete",
-                "Failed to extract text",
-                "OCR fallback used",
-                "Detected language",
-                "Quality score calculated",
-                "File categorized",
-                "Error processing file"
-            ]
-            
-            # Generate 20 sample entries
-            for i in range(20):
-                # Randomize time within the last day
-                time_offset = i * 15  # 15 minutes between entries
-                entry_time = now.replace(
-                    hour=(now.hour - (time_offset // 60)) % 24,
-                    minute=(now.minute - (time_offset % 60)) % 60
-                )
-                
-                # Randomly select component and message
-                component = components[i % len(components)]
-                message_index = i % len(messages)
-                message = messages[message_index]
-                
-                # Add a file name to the message
-                file_name = f"document_{i+1}.{'pdf' if component == 'PDFProcessor' else 'txt'}"
-                full_message = f"{message}: {file_name}"
-                
-                # Determine level based on message
-                if "Error" in message or "Failed" in message:
-                    level = "ERROR"
-                elif "fallback" in message:
-                    level = "WARNING"
-                elif "Processing" in message:
-                    level = "INFO"
-                else:
-                    level = "DEBUG"
-                
-                # Create details
-                if level == "ERROR":
-                    details = f"Exception occurred: ProcessingError\nTraceback: File \"{component.lower()}.py\", line 87\nCannot process file {file_name}"
-                elif "language" in message.lower():
-                    details = f"Detected language: English\nConfidence: 95%\nAlternatives: None"
-                elif "score" in message.lower():
-                    details = f"Quality score: 87/100\nFactors:\n- Text quality: 90/100\n- Structure: 85/100\n- Content relevance: 88/100"
-                else:
-                    details = f"File: {file_name}\nSize: 1.2MB\nPages: 8"
-                
-                entries.append({
-                    "time": entry_time.strftime("%Y-%m-%d %H:%M:%S"),
-                    "level": level,
-                    "component": component,
-                    "message": full_message,
-                    "details": details
-                })
-        
-        elif log_type == "app":
-            components = ["MainWindow", "CollectorsTab", "ProcessorsTab", "CorpusManager"]
-            messages = [
-                "Application started",
-                "Configuration loaded",
-                "Tab initialized",
-                "User action: start collection",
-                "User action: stop processing",
-                "Dialog opened",
-                "Settings saved",
-                "Application shutdown initiated"
-            ]
-            
-            # Generate 15 sample entries
-            for i in range(15):
-                # Randomize time within the last day
-                time_offset = i * 45  # 45 minutes between entries
-                entry_time = now.replace(
-                    hour=(now.hour - (time_offset // 60)) % 24,
-                    minute=(now.minute - (time_offset % 60)) % 60
-                )
-                
-                # Randomly select component and message
-                component = components[i % len(components)]
-                message_index = i % len(messages)
-                message = messages[message_index]
-                
-                # Determine level
-                level = "INFO"  # Most app logs are INFO level
-                
-                # Create details
-                if "started" in message.lower():
-                    details = f"App version: 3.0.1\nPython version: 3.8.10\nPySide6 version: 6.6.0"
-                elif "configuration" in message.lower():
-                    details = f"Config file: config/test.yaml\nEnvironment: test"
-                elif "user action" in message.lower():
-                    details = f"User: admin\nAction time: {entry_time.strftime('%H:%M:%S')}"
-                else:
-                    details = ""
-                
-                entries.append({
-                    "time": entry_time.strftime("%Y-%m-%d %H:%M:%S"),
-                    "level": level,
-                    "component": component,
-                    "message": message,
-                    "details": details
-                })
-        
-        elif log_type == "error":
-            pass  # No sample error log entries defined
+        if not path or not os.path.exists(path):
+            return entries
+        with open(path, "r", encoding="utf-8", errors="ignore") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                parsed = self.parse_log_line(line)
+                if parsed:
+                    entries.append(parsed)
+        return entries
 
     def apply_filters(self):
         """Apply all current filters to the log entries."""
-        if not self.current_log:
+        if not hasattr(self, "log_entries"):
             return
+          
         # Get current filter values
         level_filter = self.level_filter.currentText()
         # component_filter is not present in your UI, so skip it
-        text_filter = self.filter_input.text()
-        # Generate new sample data (in real implementation, this would filter existing data)
-        log_entries = self.generate_sample_logs(self.current_log["type"])
-        # Apply filters
-        filtered_entries = self.filter_log_entries(log_entries)
+        text_filter = self.filter_input.text().lower()
+        filtered_entries = [
+          entry for entry in self.log_entries
+          if (level_filter == "All" or entry.get("level") == level_filter)
+          and (not text_filter or text_filter in entry.get("message", "").lower())
+        ]
         self.filtered_entries = filtered_entries  # <-- Ensure this is set for export
         # Update the table
         self.populate_log_table(filtered_entries)
@@ -379,18 +282,30 @@ class LogsTab(QWidget):
         if not isinstance(entries, list):
             print(f"DEBUG: filter_log_entries received {type(entries)}, converting to list")
             entries = list(entries) if entries else []
-        
+
         level_filter = self.level_filter.currentText()
+        module_filter = self.module_filter.currentText()
         text_filter = self.filter_input.text().lower()
-        
+        today_only = self.today_only.isChecked()
+
         filtered = []
         for entry in entries:
             # Level filter
             if level_filter != "All" and entry.get("level") != level_filter:
                 continue
+            # Module filter
+            if module_filter != "All" and entry.get("component") != module_filter:
+                continue
             # Text filter
             if text_filter and text_filter not in entry.get("message", "").lower():
                 continue
+            if today_only:
+                try:
+                    entry_date = datetime.strptime(entry.get("time", ""), "%Y-%m-%d %H:%M:%S").date()
+                    if entry_date != datetime.now().date():
+                        continue
+                except Exception:
+                    pass
             filtered.append(entry)
         
         return filtered
@@ -439,9 +354,8 @@ class LogsTab(QWidget):
         """Clear all filters and show all log entries."""
         # Reset filter controls
         self.level_filter.setCurrentText("All")
-        # If you have a component_filter, reset it too
-        if hasattr(self, 'component_filter'):
-            self.component_filter.setCurrentText("All")
+        if hasattr(self, 'module_filter'):
+            self.module_filter.setCurrentText("All")
         self.filter_input.clear()
         # Clear the today only checkbox if you have one
         if hasattr(self, 'today_only'):
@@ -464,6 +378,10 @@ class LogsTab(QWidget):
         """Clear the current log view"""
         self.log_table.setRowCount(0)
         self.log_detail.clear()
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.refresh_logs()
 
     def export_logs(self):
         """Export filtered log entries to a file"""

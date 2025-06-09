@@ -1099,6 +1099,6 @@ document.addEventListener('DOMContentLoaded', () => {
   
   // Show welcome toast
   setTimeout(() => {
-    showToast('Welcome to CryptoFinance Corpus Builder', 'success', 5000);
+    showToast('Welcome to Crypto Corpus Builder', 'success', 5000);
   }, 1000);
 });

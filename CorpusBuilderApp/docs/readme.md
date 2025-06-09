@@ -1,4 +1,4 @@
-# CryptoFinance Corpus Builder
+# Crypto Corpus Builder
 
 A professional-grade PySide6 desktop application for building, managing, and analyzing large-scale cryptocurrency research corpora.
 
@@ -26,8 +26,8 @@ A professional-grade PySide6 desktop application for building, managing, and ana
 ### Installation
 
 ```bash
-git clone https://github.com/your-org/CryptoFinanceCorpusBuilder.git
-cd CryptoFinanceCorpusBuilder
+git clone https://github.com/your-org/CryptoCorpusBuilder.git
+cd CryptoCorpusBuilder
 python -m venv venv  # or python3 -m venv venv
 venv\Scripts\activate  # Windows
 # or
