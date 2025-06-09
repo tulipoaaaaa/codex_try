@@ -10,15 +10,6 @@ base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if base_dir not in sys.path:
     sys.path.insert(0, base_dir)
 
-# Alias for compatibility with CryptoCorpusBuilder imports
-sys.modules.setdefault(
-    "CryptoCorpusBuilder",
-    types.ModuleType("CryptoCorpusBuilder"),
-)
-sys.modules.setdefault(
-    "CryptoCorpusBuilder.shared_tools",
-    __import__("CorpusBuilderApp.shared_tools", fromlist=["dummy"]),
-)
 
 try:
     from dotenv import load_dotenv  # type: ignore
@@ -128,6 +119,19 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         pass
     class QSplitter(QWidget):
         pass
+    class QMenu: pass
+    class QScrollArea(QWidget):
+        pass
+    class QDateEdit(QWidget):
+        def __init__(self, *a, **k):
+            pass
+    class QTableWidgetItem: pass
+    class QInputDialog: pass
+    class QSlider(QWidget): pass
+    class QFont: pass
+    class QSizePolicy: pass
+    class QHeaderView: pass
+    class QFileSystemModel: pass
     class QSpinBox:
         def __init__(self, *a, **k):
             self._value = 0
@@ -205,6 +209,16 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         QTextEdit=QTextEdit,
         QTableWidget=QTableWidget,
         QSplitter=QSplitter,
+        QMenu=QMenu,
+        QScrollArea=QScrollArea,
+        QDateEdit=QDateEdit,
+        QTableWidgetItem=QTableWidgetItem,
+        QInputDialog=QInputDialog,
+        QSlider=QSlider,
+        QFont=QFont,
+        QSizePolicy=QSizePolicy,
+        QHeaderView=QHeaderView,
+        QFileSystemModel=QFileSystemModel,
         QFileDialog=QFileDialog,
         QMessageBox=QMessageBox,
         QSystemTrayIcon=QSystemTrayIcon,
