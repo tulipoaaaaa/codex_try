@@ -24,7 +24,14 @@ from app.ui.widgets.domain_distribution import DomainDistribution
 from app.ui.widgets.active_operations import ActiveOperations
 from app.ui.widgets.recent_activity import RecentActivity
 from app.ui.widgets.activity_log import ActivityLog
-from app.ui.theme.theme_constants import CARD_MARGIN, CARD_PADDING, BUTTON_COLOR_PRIMARY, BUTTON_COLOR_DANGER, BUTTON_COLOR_GRAY
+from app.ui.theme.theme_constants import (
+    CARD_MARGIN,
+    CARD_PADDING,
+    BUTTON_COLOR_PRIMARY,
+    BUTTON_COLOR_DANGER,
+    BUTTON_COLOR_GRAY,
+)
+from shared_tools.services.corpus_stats_service import CorpusStatsService
 import os
 
 ICON_PATH = os.path.join(os.path.dirname(__file__), '../../resources/icons')
@@ -38,9 +45,13 @@ class DashboardTab(QWidget):
     def __init__(self, project_config, parent=None):
         super().__init__(parent)
         self.config = project_config
+        self.metric_labels = {}
+        self.stats_service = CorpusStatsService(project_config)
         self._init_ui()
         self.fix_all_label_backgrounds()
+        self.stats_service.stats_updated.connect(self.update_overview_metrics)
         self.load_data()
+        self.stats_service.refresh_stats()
 
     def _init_ui(self):
         self.setStyleSheet("QWidget, QFrame, QGroupBox { background-color: #0f1419; }")
@@ -78,7 +89,7 @@ class DashboardTab(QWidget):
             {"value": "3", "label": "Running Ops", "unit": ""},
         ]
         for stat in stat_data:
-            card = self.fix_metric_card_transparency(stat["label"], stat["value"], stat["unit"])
+            card, _ = self.fix_metric_card_transparency(stat["label"], stat["value"], stat["unit"])
             metrics_bar.addWidget(card)
         main_layout.addLayout(metrics_bar)
 
@@ -181,7 +192,10 @@ class DashboardTab(QWidget):
         title_label.setStyleSheet('font-size: 14px; color: #C5C7C7; font-weight: 600; text-align: center; background-color: transparent;')
         title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         metric_layout.addWidget(title_label)
-        return metric_widget
+
+        # keep reference to update later
+        self.metric_labels[title] = value_label
+        return metric_widget, value_label
 
     def create_giant_pie_chart(self, domain_data):
         from PySide6.QtCharts import QChart, QChartView, QPieSeries
@@ -730,6 +744,23 @@ class DashboardTab(QWidget):
         print(f"[Stub] Pause {task_id}")
     def stop_task(self, task_id):
         print(f"[Stub] Stop {task_id}")
+
+    def update_overview_metrics(self, stats: dict):
+        """Update metric cards from provided corpus stats."""
+        total_docs = stats.get("total_files") or stats.get("doc_count") or 0
+        total_size = stats.get("total_size_mb") or stats.get("total_size") or 0
+        active_domains = len(stats.get("domains", {}))
+
+        if "Total Docs" in self.metric_labels:
+            self.metric_labels["Total Docs"].setText(str(total_docs))
+        if "Total Size" in self.metric_labels:
+            # display in GB if large
+            size_text = f"{total_size:.2f} MB"
+            if total_size >= 1024:
+                size_text = f"{total_size/1024:.2f} GB"
+            self.metric_labels["Total Size"].setText(size_text)
+        if "Active Domains" in self.metric_labels:
+            self.metric_labels["Active Domains"].setText(str(active_domains))
 
     def fix_all_label_backgrounds(self):
         # Fix all existing QLabel widgets to have transparent background
