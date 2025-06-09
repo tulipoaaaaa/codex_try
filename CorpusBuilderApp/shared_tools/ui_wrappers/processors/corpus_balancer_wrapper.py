@@ -157,3 +157,38 @@ class CorpusBalancerWrapper(BaseWrapper, ProcessorWrapperMixin):
             # TODO: Actually trigger collectors here
         else:
             print("[CorpusBalancerWrapper] No missing domains found for collection.")
+
+    def balance_corpus(self):
+        """Analyze domain imbalance and update collector configurations."""
+
+        # Placeholder target counts per domain
+        domain_targets = {"ai": 300, "finance": 200, "eth": 250}
+
+        # Attempt to get current domain distribution from an attached corpus manager
+        current_counts = {}
+        if hasattr(self, "_corpus_manager") and hasattr(self._corpus_manager, "get_domain_distribution"):
+            try:
+                current_counts = self._corpus_manager.get_domain_distribution()
+            except Exception:
+                current_counts = {}
+
+        # Fallback placeholder distribution if none available
+        if not current_counts:
+            current_counts = {key: 0 for key in domain_targets}
+
+        # Iterate through collectors and adjust search terms for underrepresented domains
+        collectors_cfg = self.config.get("collectors", {}) or {}
+        for domain, target in domain_targets.items():
+            current = current_counts.get(domain, 0)
+            if current < target:
+                for name, cfg in collectors_cfg.items():
+                    terms: List[str] = cfg.get("search_terms", []) or []
+                    if domain not in terms:
+                        terms.append(domain)
+                        self.config.set(f"collectors.{name}.search_terms", terms)
+
+        # Persist configuration changes
+        self.config.save()
+
+        # Notify the UI about updates
+        self.status_updated.emit("Updated collector configs based on imbalance analysis")
