@@ -109,7 +109,7 @@ class CryptoCorpusMainWindow(QMainWindow):
             )
             # Dashboard tab
             self.logger.debug("Initializing DashboardTab...")
-            self.dashboard_tab = DashboardTab(self.config)
+            self.dashboard_tab = DashboardTab(self.config, self.activity_log_service)
             self.logger.debug("DashboardTab initialized successfully")
             self.tab_widget.addTab(self.dashboard_tab, "📊 Dashboard")
             # Collectors tab

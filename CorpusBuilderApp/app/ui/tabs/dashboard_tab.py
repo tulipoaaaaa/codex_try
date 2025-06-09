@@ -42,9 +42,10 @@ class DashboardTab(QWidget):
     view_all_activity_requested = Signal()
     rebalance_requested = Signal()
 
-    def __init__(self, project_config, parent=None):
+    def __init__(self, project_config, activity_log_service=None, parent=None):
         super().__init__(parent)
         self.config = project_config
+        self.activity_log_service = activity_log_service
         self.metric_labels = {}
         self.stats_service = CorpusStatsService(project_config)
         self._init_ui()
@@ -52,6 +53,14 @@ class DashboardTab(QWidget):
         self.stats_service.stats_updated.connect(self.update_overview_metrics)
         self.load_data()
         self.stats_service.refresh_stats()
+
+        if self.activity_log_service:
+            try:
+                self.activity_log_service.activity_added.connect(
+                    self.recent_activity_widget.add_activity
+                )
+            except Exception:
+                pass
 
     def _init_ui(self):
         self.setStyleSheet("QWidget, QFrame, QGroupBox { background-color: #0f1419; }")
@@ -734,9 +743,9 @@ class DashboardTab(QWidget):
         top_section_layout.addWidget(system_status_card, 60)
         top_section_layout.addWidget(alerts_card, 40)
         right_column.addLayout(top_section_layout)
-        recent_activity_card = self.create_working_scrollable_activity()
-        recent_activity_card.setObjectName('recent-activity-tall')
-        right_column.addWidget(recent_activity_card)
+        self.recent_activity_widget = RecentActivity(self.config)
+        self.recent_activity_widget.setObjectName('recent-activity-tall')
+        right_column.addWidget(self.recent_activity_widget)
         environment_card = self.create_environment_info_widget()
         right_column.addWidget(environment_card)
         return right_column
