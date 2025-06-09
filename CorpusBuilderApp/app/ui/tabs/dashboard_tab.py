@@ -374,10 +374,11 @@ class DashboardTab(QWidget):
         main_layout.addWidget(scroll_area)
         button_layout = QHBoxLayout()
         button_layout.addStretch()
-        view_all_btn = QPushButton('View All Activity')
-        view_all_btn.setStyleSheet('background-color: #2d3748; color: #32B8C6; border: none; border-radius: 4px; padding: 6px 12px; font-size: 11px;')
-        view_all_btn.clicked.connect(self.view_all_activity_requested.emit)
-        button_layout.addWidget(view_all_btn)
+        # Expose the button for testing and proper signal emission
+        self.view_all_btn = QPushButton('View All Activity')
+        self.view_all_btn.setStyleSheet('background-color: #2d3748; color: #32B8C6; border: none; border-radius: 4px; padding: 6px 12px; font-size: 11px;')
+        self.view_all_btn.clicked.connect(lambda: self.view_all_activity_requested.emit())
+        button_layout.addWidget(self.view_all_btn)
         main_layout.addLayout(button_layout)
         return container
 

@@ -370,6 +370,7 @@ class CryptoCorpusMainWindow(QMainWindow):
     def show_full_activity_tab(self):
         """Show the full activity tab when View All is clicked"""
         try:
+            print("[DEBUG] show_full_activity_tab called")
             # Check if Full Activity tab already exists
             for i in range(self.tab_widget.count()):
                 if self.tab_widget.tabText(i) == "📊 Full Activity":
