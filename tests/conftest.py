@@ -98,12 +98,31 @@ if 'PySide6' not in sys.modules:
         def decorator(fn):
             return fn
         return decorator
-    qtcore = types.SimpleNamespace(QObject=object, Signal=lambda *a, **k: _Signal(), QThread=object, QTimer=object, QDir=QDir, Qt=Qt, Slot=Slot, QMutex=object, QUrl=QUrl)
+    qtcore = types.SimpleNamespace(
+        QObject=object,
+        Signal=lambda *a, **k: _Signal(),
+        QThread=object,
+        QTimer=object,
+        QDir=QDir,
+        Qt=Qt,
+        Slot=Slot,
+        QMutex=object,
+        QUrl=QUrl,
+        qDebug=lambda *a, **k: None,
+        qWarning=lambda *a, **k: None,
+        qCritical=lambda *a, **k: None,
+        qFatal=lambda *a, **k: None,
+        Property=object,
+        __version__="6.5.0",
+        qVersion=lambda: "6.5.0",
+    )
     qtwidgets = types.SimpleNamespace(QApplication=QApplication, QWidget=QWidget, QVBoxLayout=QVBoxLayout, QHBoxLayout=QVBoxLayout, QTabWidget=QTabWidget, QLabel=QLabel, QProgressBar=QProgressBar, QPushButton=QPushButton, QCheckBox=QCheckBox, QSpinBox=QSpinBox, QListWidget=QListWidget, QGroupBox=QGroupBox, QFileDialog=QFileDialog, QMessageBox=QMessageBox, QSystemTrayIcon=QSystemTrayIcon)
     qtgui = types.SimpleNamespace(QIcon=object)
+    qttest = types.SimpleNamespace(QTest=object)
     qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
-    sys.modules['PySide6'] = types.SimpleNamespace(QtCore=qtcore, QtWidgets=qtwidgets, QtGui=qtgui)
+    sys.modules['PySide6'] = types.SimpleNamespace(QtCore=qtcore, QtWidgets=qtwidgets, QtGui=qtgui, QtTest=qttest)
     sys.modules['PySide6.QtCore'] = qtcore
     sys.modules['PySide6.QtWidgets'] = qtwidgets
     sys.modules['PySide6.QtGui'] = qtgui
+    sys.modules['PySide6.QtTest'] = qttest
     sys.modules['PySide6.QtMultimedia'] = qtmultimedia
