@@ -334,7 +334,7 @@ class LogsTab(QWidget):
                 
                 # Create details
                 if "started" in message.lower():
-                    details = f"App version: 3.0.1\nPython version: 3.8.10\nPyQt version: 6.6.0"
+                    details = f"App version: 3.0.1\nPython version: 3.8.10\nPySide6 version: 6.6.0"
                 elif "configuration" in message.lower():
                     details = f"Config file: config/test.yaml\nEnvironment: test"
                 elif "user action" in message.lower():

@@ -27,7 +27,7 @@ import types
 
 from .base_extractor import BaseExtractor, ExtractionError
 from .formula_extractor import FormulaExtractor
-from .finacial_symbol_processor import FinancialSymbolProcessor, AcademicPaperProcessor, MemoryOptimizer
+from .financial_symbol_processor import FinancialSymbolProcessor, AcademicPaperProcessor, MemoryOptimizer
 from .chart_image_extractor import ChartImageExtractor
 from .domain_classifier import DomainClassifier
 from .quality_control import QualityControl
