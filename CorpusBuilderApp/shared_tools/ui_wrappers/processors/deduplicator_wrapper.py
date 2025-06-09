@@ -18,9 +18,17 @@ class DeduplicatorWrapper(BaseWrapper, ProcessorWrapperMixin):
         self._is_running = False
         self.worker_thread = None
         self.similarity_threshold = 0.85  # Default threshold
+        self._enabled = True
+
+    def set_enabled(self, enabled: bool):
+        """Enable or disable the wrapper."""
+        self._enabled = bool(enabled)
         
     def start(self, file_paths=None, **kwargs):
         """Start deduplication processing on the specified files."""
+        if not self._enabled:
+            self.status_updated.emit("Deduplicator disabled")
+            return False
         if self._is_running:
             self.status_updated.emit("Deduplication already in progress")
             return False

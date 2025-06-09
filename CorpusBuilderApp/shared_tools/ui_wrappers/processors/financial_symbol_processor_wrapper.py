@@ -15,9 +15,17 @@ class FinancialSymbolProcessorWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.processor = FinancialSymbolProcessor(project_config)
         self._is_running = False
         self.worker_thread = None
+        self._enabled = True
+
+    def set_enabled(self, enabled: bool):
+        """Enable or disable the wrapper."""
+        self._enabled = bool(enabled)
         
     def start(self, file_paths=None, **kwargs):
         """Start financial symbol extraction on the specified files."""
+        if not self._enabled:
+            self.status_updated.emit("Financial symbol processor disabled")
+            return False
         if self._is_running:
             self.status_updated.emit("Financial symbol extraction already in progress")
             return False
