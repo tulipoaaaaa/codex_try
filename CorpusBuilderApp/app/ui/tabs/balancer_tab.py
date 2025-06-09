@@ -34,15 +34,26 @@ class AdvancedNotificationManager(QObject):
             self.tray_icon = QSystemTrayIcon()
             self.tray_icon.setToolTip("Corpus Balancer")
             
-    def show_notification(self, title: str, message: str, notification_type: str = "info", duration: int = 5000):
-        """Show system notification"""
+    def show_notification(
+        self,
+        title: str,
+        message: str,
+        notification_type: str = "info",
+        duration: int = 5000,
+    ) -> None:
+        """Emit the ``notification_requested`` signal and optionally show a
+        system tray message."""
+
+        # Emit signal for tests or other listeners
+        self.notification_requested.emit(title, message, notification_type, duration)
+
         if self.tray_icon:
             icon = QSystemTrayIcon.MessageIcon.Information
             if notification_type == "warning":
                 icon = QSystemTrayIcon.MessageIcon.Warning
             elif notification_type == "critical":
                 icon = QSystemTrayIcon.MessageIcon.Critical
-                
+
             self.tray_icon.showMessage(title, message, icon, duration)
 
 
