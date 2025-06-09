@@ -1,4 +1,4 @@
-# User Guide: CryptoFinance Corpus Builder
+# User Guide: Crypto Corpus Builder
 
 ## Table of Contents
 

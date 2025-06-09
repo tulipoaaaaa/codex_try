@@ -31,3 +31,15 @@ def test_refresh_stats(tmp_path):
 
     assert service.stats == stats
     service.stats_updated.emit.assert_called_once_with(stats)
+
+
+def test_get_domain_size_summary():
+    service = CorpusStatsService.__new__(CorpusStatsService)
+    service.stats = {
+        "domains": {
+            "A": {"size_mb": 1.2, "pdf_files": 2},
+            "B": {"total_size_mb": 3.4, "pdf_files": 1},
+        }
+    }
+    summary = service.get_domain_size_summary()
+    assert summary == {"A": 1.2, "B": 3.4}

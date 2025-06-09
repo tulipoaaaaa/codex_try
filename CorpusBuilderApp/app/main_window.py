@@ -1,5 +1,5 @@
 """
-Main window for CryptoFinance Corpus Builder
+Main window for Crypto Corpus Builder
 """
 
 from PySide6.QtWidgets import (QMainWindow, QTabWidget, QVBoxLayout, QWidget, 
@@ -24,6 +24,7 @@ from ui.tabs.full_activity_tab import FullActivityTab
 from ui.dialogs.settings_dialog import SettingsDialog
 from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
 from shared_tools.services.activity_log_service import ActivityLogService
+from shared_tools.services.tab_audit_service import TabAuditService
 
 class CryptoCorpusMainWindow(QMainWindow):
     """Main application window"""
@@ -72,13 +73,20 @@ class CryptoCorpusMainWindow(QMainWindow):
         
         # Setup update timer
         self.setup_update_timer()
-        
+
+        # Run a startup audit of tab connections
+        try:
+            self.tab_audit_service = TabAuditService(self)
+            self.tab_audit_service.audit()
+        except Exception as exc:  # pragma: no cover - defensive
+            self.logger.error("Tab audit failed: %s", exc)
+
         self.logger.info("Main window initialized")
     
     def init_ui(self):
         """Initialize the user interface"""
         # Set window properties
-        self.setWindowTitle("CryptoFinance Corpus Builder v3")
+        self.setWindowTitle("Crypto Corpus Builder v3")
         self.setMinimumSize(1200, 800)
         self.resize(1400, 900)
         
@@ -209,7 +217,7 @@ class CryptoCorpusMainWindow(QMainWindow):
         
         # About action
         about_action = QAction('&About', self)
-        about_action.setStatusTip('About CryptoFinance Corpus Builder')
+        about_action.setStatusTip('About Crypto Corpus Builder')
         about_action.triggered.connect(self.show_about)
         help_menu.addAction(about_action)
     
@@ -344,7 +352,7 @@ class CryptoCorpusMainWindow(QMainWindow):
     def show_about(self):
         """Show about dialog"""
         about_text = """
-        <h2>CryptoFinance Corpus Builder v3</h2>
+        <h2>Crypto Corpus Builder v3</h2>
         <p>A comprehensive tool for building and managing cryptocurrency research corpora.</p>
         <p><b>Features:</b></p>
         <ul>
