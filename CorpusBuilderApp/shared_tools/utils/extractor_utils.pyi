@@ -3,7 +3,8 @@ from pathlib import Path
 from typing import Dict, List, Optional, Union, Any
 
 try:
-    from CorpusBuilderApp.shared_tools.project_config import ProjectConfig  # type: ignore
+    from shared_tools.project_config import ProjectConfig  # type: ignore
+    
 except ImportError:
     ProjectConfig = None
 

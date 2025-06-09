@@ -1,9 +1,18 @@
+import os
+import json
+import yaml
+from pathlib import Path
+
 import pytest
-from CorpusBuilderApp.shared_tools.project_config import ProjectConfig
-from CorpusBuilderApp.shared_tools.collectors.fred_collector import FREDCollector
-from CorpusBuilderApp.shared_tools.collectors.github_collector import GitHubCollector
+from shared_tools.project_config import ProjectConfig
 
-
+def _write_yaml(path: Path, corpus_dir: Path) -> None:
+    data = {
+        "environment": "test",
+        "environments": {"test": {"corpus_dir": str(corpus_dir)}},
+    }
+    with open(path, "w", encoding="utf-8") as fh:
+        yaml.safe_dump(data, fh)
 
 @pytest.mark.integration
 def test_load_minimal_config(tmp_path, monkeypatch):
@@ -38,12 +47,11 @@ def test_env_variable_override(monkeypatch, tmp_path):
 
     assert cfg.get("api_keys.fred_key") == "env"
 
-
 def test_configuration_tab_updates_project_config():
     """Configuration tab integration requires Qt; skip if unavailable."""
     pytest.skip("Qt widgets not available in test environment")
 
-
 def test_settings_dialog_emits_saved_signal():
     """Settings dialog integration requires Qt; skip if unavailable."""
     pytest.skip("Qt widgets not available in test environment")
+
