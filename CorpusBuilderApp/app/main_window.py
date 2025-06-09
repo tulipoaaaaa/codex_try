@@ -29,11 +29,15 @@ class CryptoCorpusMainWindow(QMainWindow):
     
     def __init__(self, config):
         super().__init__()
-        print(f"DEBUG: MainWindow received config type: {type(config)}")
-        print(f"DEBUG: MainWindow received config value: {config}")
-        print(f"DEBUG: Config has 'get' method: {hasattr(config, 'get')}")
-        self.config = config
         self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger.debug(
+            "MainWindow received config type: %s", type(config)
+        )
+        self.logger.debug("MainWindow received config value: %s", config)
+        self.logger.debug(
+            "Config has 'get' method: %s", hasattr(config, "get")
+        )
+        self.config = config
 
         # Services and wrappers
         self.activity_log_service = getattr(self.config, "activity_log_service", None)
@@ -96,52 +100,56 @@ class CryptoCorpusMainWindow(QMainWindow):
     def init_tabs(self):
         """Initialize all application tabs"""
         try:
-            print(f"DEBUG: About to initialize tabs with config type: {type(self.config)}")
-            print(f"DEBUG: About to initialize tabs with config value: {self.config}")
+            self.logger.debug(
+                "About to initialize tabs with config type: %s", type(self.config)
+            )
+            self.logger.debug(
+                "About to initialize tabs with config value: %s", self.config
+            )
             # Dashboard tab
-            print("DEBUG: Initializing DashboardTab...")
+            self.logger.debug("Initializing DashboardTab...")
             self.dashboard_tab = DashboardTab(self.config)
-            print("DEBUG: DashboardTab initialized successfully")
+            self.logger.debug("DashboardTab initialized successfully")
             self.tab_widget.addTab(self.dashboard_tab, "📊 Dashboard")
             # Collectors tab
-            print("DEBUG: Initializing CollectorsTab...")
+            self.logger.debug("Initializing CollectorsTab...")
             self.collectors_tab = CollectorsTab(self.config)
-            print("DEBUG: CollectorsTab initialized successfully")
+            self.logger.debug("CollectorsTab initialized successfully")
             self.tab_widget.addTab(self.collectors_tab, "🔍 Collectors")
             # Processors tab
-            print("DEBUG: Initializing ProcessorsTab...")
+            self.logger.debug("Initializing ProcessorsTab...")
             self.processors_tab = ProcessorsTab(self.config)
-            print("DEBUG: ProcessorsTab initialized successfully")
+            self.logger.debug("ProcessorsTab initialized successfully")
             self.tab_widget.addTab(self.processors_tab, "⚙️ Processors")
             # Corpus Manager tab
-            print("DEBUG: Initializing CorpusManagerTab...")
+            self.logger.debug("Initializing CorpusManagerTab...")
             self.corpus_manager_tab = CorpusManagerTab(self.config)
-            print("DEBUG: CorpusManagerTab initialized successfully")
+            self.logger.debug("CorpusManagerTab initialized successfully")
             self.tab_widget.addTab(self.corpus_manager_tab, "📁 Corpus Manager")
             # Balancer tab
-            print("DEBUG: Initializing BalancerTab...")
+            self.logger.debug("Initializing BalancerTab...")
             self.balancer_tab = BalancerTab(self.config)
-            print("DEBUG: BalancerTab initialized successfully")
+            self.logger.debug("BalancerTab initialized successfully")
             self.tab_widget.addTab(self.balancer_tab, "⚖️ Balancer")
             # Analytics tab
-            print("DEBUG: Initializing AnalyticsTab...")
+            self.logger.debug("Initializing AnalyticsTab...")
             self.analytics_tab = AnalyticsTab(self.config)
-            print("DEBUG: AnalyticsTab initialized successfully")
+            self.logger.debug("AnalyticsTab initialized successfully")
             self.tab_widget.addTab(self.analytics_tab, "📈 Analytics")
             # Configuration tab
-            print("DEBUG: Initializing ConfigurationTab...")
+            self.logger.debug("Initializing ConfigurationTab...")
             self.configuration_tab = ConfigurationTab(self.config)
-            print("DEBUG: ConfigurationTab initialized successfully")
+            self.logger.debug("ConfigurationTab initialized successfully")
             self.tab_widget.addTab(self.configuration_tab, "⚙️ Configuration")
             # Logs tab
-            print("DEBUG: Initializing LogsTab...")
+            self.logger.debug("Initializing LogsTab...")
             self.logs_tab = LogsTab(self.config)
-            print("DEBUG: LogsTab initialized successfully")
+            self.logger.debug("LogsTab initialized successfully")
             self.tab_widget.addTab(self.logs_tab, "📝 Logs")
             # Add Maintenance tab
-            print("DEBUG: Initializing MaintenanceTab...")
+            self.logger.debug("Initializing MaintenanceTab...")
             self.maintenance_tab = MaintenanceTab(parent=self)
-            print("DEBUG: MaintenanceTab initialized successfully")
+            self.logger.debug("MaintenanceTab initialized successfully")
             self.tab_widget.addTab(self.maintenance_tab, "🛠️ Maintenance")
             self.logger.info("All tabs initialized successfully")
         except Exception as e:
