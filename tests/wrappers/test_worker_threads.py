@@ -44,6 +44,13 @@ qtcore = types.SimpleNamespace(
 sys.modules.setdefault("PySide6", types.SimpleNamespace(QtCore=qtcore))
 sys.modules.setdefault("PySide6.QtCore", qtcore)
 
+# Ensure real wrapper modules are loaded even if previous tests inserted stubs
+for m in [
+    "shared_tools.ui_wrappers.processors.pdf_extractor_wrapper",
+    "shared_tools.ui_wrappers.processors.text_extractor_wrapper",
+]:
+    sys.modules.pop(m, None)
+
 from shared_tools.ui_wrappers.processors.pdf_extractor_wrapper import PDFExtractorWrapper
 from shared_tools.ui_wrappers.processors.text_extractor_wrapper import TextExtractorWrapper
 
