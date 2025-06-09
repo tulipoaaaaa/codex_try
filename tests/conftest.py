@@ -44,6 +44,12 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         def emit(self, *a, **k):
             for s in self._slots:
                 s(*a, **k)
+
+    class _DummyModule(types.ModuleType):
+        def __getattr__(self, name):
+            obj = type(name, (), {})
+            setattr(self, name, obj)
+            return obj
     class QApplication:
         _instance = None
         def __init__(self, *a, **k):
@@ -102,10 +108,30 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
             pass
     class QFrame(QWidget):
         pass
+    class QScrollArea(QWidget):
+        def __init__(self, *a, **k):
+            pass
+        def setWidget(self, *a, **k):
+            pass
+    class QMenu(QWidget):
+        def __init__(self, *a, **k):
+            pass
+    class QTableWidgetItem:
+        def __init__(self, *a, **k):
+            pass
+    class QHeaderView:
+        ResizeMode = types.SimpleNamespace(ResizeToContents=1, Stretch=2)
     class QLineEdit(QWidget):
         def text(self):
             return ""
         def setText(self, *a, **k):
+            pass
+    class QDateEdit(QWidget):
+        def __init__(self, *a, **k):
+            pass
+        def setDate(self, *a, **k):
+            pass
+        def setDisplayFormat(self, *a, **k):
             pass
     class QComboBox(QWidget):
         def __init__(self, *a, **k):
@@ -238,6 +264,7 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         __version__="6.5.0",
         qVersion=lambda: "6.5.0",
     )
+    
     qtwidgets = types.SimpleNamespace(
         QApplication=QApplication,
         QWidget=QWidget,
@@ -281,18 +308,21 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         QTextCharFormat=QTextCharFormat,
         QBrush=QBrush,
     )
+
     qttest = types.SimpleNamespace(QTest=object)
     qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
     sys.modules['PySide6'] = types.SimpleNamespace(
         QtCore=qtcore,
         QtWidgets=qtwidgets,
         QtGui=qtgui,
+        QtCharts=qtcharts,
         QtTest=qttest,
         __version__="6.5.0",
     )
     sys.modules['PySide6.QtCore'] = qtcore
     sys.modules['PySide6.QtWidgets'] = qtwidgets
     sys.modules['PySide6.QtGui'] = qtgui
+    sys.modules['PySide6.QtCharts'] = qtcharts
     sys.modules['PySide6.QtTest'] = qttest
     sys.modules['PySide6.QtMultimedia'] = qtmultimedia
     sys.modules['PySide6.QtTest'] = qttest
