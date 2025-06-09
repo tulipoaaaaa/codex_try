@@ -147,6 +147,13 @@ class LogsTab(QWidget):
     def scan_log_directory(self):
         """Scan for log files in the configured log directory"""
         log_dir = self.project_config.get_logs_dir()
+
+        self.log_files = {}
+        if os.path.isdir(log_dir):
+            for fname in sorted(os.listdir(log_dir)):
+                if fname.lower().endswith(".log"):
+                    self.log_files[fname] = {"path": os.path.join(log_dir, fname), "type": "app"}
+        
         self.log_files = {}
 
         if os.path.isdir(log_dir):
@@ -215,182 +222,54 @@ class LogsTab(QWidget):
             self.module_filter.setCurrentIndex(index)
         self.module_filter.blockSignals(False)
     
-    def generate_sample_logs(self, log_type):
-        """Generate sample log entries for demonstration"""
+    def parse_log_line(self, line):
+        """Parse a single log line into a dictionary."""
+        m = re.match(r"\[(?P<time>[^\]]+)\]\s+(?P<level>\w+)\s+(?P<component>[^\s]+)\s*-\s*(?P<rest>.*)", line)
+        if not m:
+            return None
+        msg = m.group("rest")
+        details = ""
+        if "|" in msg:
+            msg, details = [part.strip() for part in msg.split("|", 1)]
+        return {
+            "time": m.group("time"),
+            "level": m.group("level"),
+            "component": m.group("component"),
+            "message": msg,
+            "details": details,
+        }
+
+    def parse_log_file(self, path):
+        """Return a list of parsed log entries from the file."""
         entries = []
-        
-        # Current time as base
-        now = datetime.now()
-        
-        # Different log patterns based on log type
-        if log_type == "collector":
-            components = ["ISDACollector", "GitHubCollector", "AnnaArchiveCollector", "ArxivCollector"]
-            messages = [
-                "Started collection process",
-                "Connecting to API",
-                "Retrieved document list",
-                "Downloaded document",
-                "Collection completed",
-                "Error connecting to API",
-                "Rate limit exceeded",
-                "Authentication failed"
-            ]
-            
-            # Generate 20 sample entries
-            for i in range(20):
-                # Randomize time within the last day
-                time_offset = i * 30  # 30 minutes between entries
-                entry_time = now.replace(
-                    hour=(now.hour - (time_offset // 60)) % 24,
-                    minute=(now.minute - (time_offset % 60)) % 60
-                )
-                
-                # Randomly select component and message
-                component = components[i % len(components)]
-                message_index = i % len(messages)
-                message = messages[message_index]
-                
-                # Determine level based on message
-                if "Error" in message or "failed" in message:
-                    level = "ERROR"
-                elif "exceeded" in message:
-                    level = "WARNING"
-                elif "Started" in message:
-                    level = "INFO"
-                else:
-                    level = "DEBUG"
-                
-                # Create details
-                if level == "ERROR":
-                    details = f"Exception occurred: ConnectionError\nTraceback: File \"collector.py\", line 120\nCannot connect to server"
-                else:
-                    details = f"Additional information for {message.lower()}"
-                
-                entries.append({
-                    "time": entry_time.strftime("%Y-%m-%d %H:%M:%S"),
-                    "level": level,
-                    "component": component,
-                    "message": message,
-                    "details": details
-                })
-        
-        elif log_type == "processor":
-            components = ["PDFProcessor", "TextProcessor", "BalancerProcessor", "QualityControl"]
-            messages = [
-                "Processing file",
-                "Extraction complete",
-                "Failed to extract text",
-                "OCR fallback used",
-                "Detected language",
-                "Quality score calculated",
-                "File categorized",
-                "Error processing file"
-            ]
-            
-            # Generate 20 sample entries
-            for i in range(20):
-                # Randomize time within the last day
-                time_offset = i * 15  # 15 minutes between entries
-                entry_time = now.replace(
-                    hour=(now.hour - (time_offset // 60)) % 24,
-                    minute=(now.minute - (time_offset % 60)) % 60
-                )
-                
-                # Randomly select component and message
-                component = components[i % len(components)]
-                message_index = i % len(messages)
-                message = messages[message_index]
-                
-                # Add a file name to the message
-                file_name = f"document_{i+1}.{'pdf' if component == 'PDFProcessor' else 'txt'}"
-                full_message = f"{message}: {file_name}"
-                
-                # Determine level based on message
-                if "Error" in message or "Failed" in message:
-                    level = "ERROR"
-                elif "fallback" in message:
-                    level = "WARNING"
-                elif "Processing" in message:
-                    level = "INFO"
-                else:
-                    level = "DEBUG"
-                
-                # Create details
-                if level == "ERROR":
-                    details = f"Exception occurred: ProcessingError\nTraceback: File \"{component.lower()}.py\", line 87\nCannot process file {file_name}"
-                elif "language" in message.lower():
-                    details = f"Detected language: English\nConfidence: 95%\nAlternatives: None"
-                elif "score" in message.lower():
-                    details = f"Quality score: 87/100\nFactors:\n- Text quality: 90/100\n- Structure: 85/100\n- Content relevance: 88/100"
-                else:
-                    details = f"File: {file_name}\nSize: 1.2MB\nPages: 8"
-                
-                entries.append({
-                    "time": entry_time.strftime("%Y-%m-%d %H:%M:%S"),
-                    "level": level,
-                    "component": component,
-                    "message": full_message,
-                    "details": details
-                })
-        
-        elif log_type == "app":
-            components = ["MainWindow", "CollectorsTab", "ProcessorsTab", "CorpusManager"]
-            messages = [
-                "Application started",
-                "Configuration loaded",
-                "Tab initialized",
-                "User action: start collection",
-                "User action: stop processing",
-                "Dialog opened",
-                "Settings saved",
-                "Application shutdown initiated"
-            ]
-            
-            # Generate 15 sample entries
-            for i in range(15):
-                # Randomize time within the last day
-                time_offset = i * 45  # 45 minutes between entries
-                entry_time = now.replace(
-                    hour=(now.hour - (time_offset // 60)) % 24,
-                    minute=(now.minute - (time_offset % 60)) % 60
-                )
-                
-                # Randomly select component and message
-                component = components[i % len(components)]
-                message_index = i % len(messages)
-                message = messages[message_index]
-                
-                # Determine level
-                level = "INFO"  # Most app logs are INFO level
-                
-                # Create details
-                if "started" in message.lower():
-                    details = f"App version: 3.0.1\nPython version: 3.8.10\nPySide6 version: 6.6.0"
-                elif "configuration" in message.lower():
-                    details = f"Config file: config/test.yaml\nEnvironment: test"
-                elif "user action" in message.lower():
-                    details = f"User: admin\nAction time: {entry_time.strftime('%H:%M:%S')}"
-                else:
-                    details = ""
-                
-                entries.append({
-                    "time": entry_time.strftime("%Y-%m-%d %H:%M:%S"),
-                    "level": level,
-                    "component": component,
-                    "message": message,
-                    "details": details
-                })
-        
-        elif log_type == "error":
-            pass  # No sample error log entries defined
+        if not path or not os.path.exists(path):
+            return entries
+        with open(path, "r", encoding="utf-8", errors="ignore") as fh:
+            for line in fh:
+                line = line.strip()
+                if not line:
+                    continue
+                parsed = self.parse_log_line(line)
+                if parsed:
+                    entries.append(parsed)
+        return entries
 
     def apply_filters(self):
         """Apply all current filters to the log entries."""
         if not hasattr(self, "log_entries"):
             return
-
-        filtered_entries = self.filter_log_entries(self.log_entries)
-        self.filtered_entries = filtered_entries
+          
+        # Get current filter values
+        level_filter = self.level_filter.currentText()
+        # component_filter is not present in your UI, so skip it
+        text_filter = self.filter_input.text().lower()
+        filtered_entries = [
+          entry for entry in self.log_entries
+          if (level_filter == "All" or entry.get("level") == level_filter)
+          and (not text_filter or text_filter in entry.get("message", "").lower())
+        ]
+        self.filtered_entries = filtered_entries  # <-- Ensure this is set for export
+        # Update the table
         self.populate_log_table(filtered_entries)
 
     def filter_log_entries(self, entries):
