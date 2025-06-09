@@ -245,6 +245,12 @@ class CryptoCorpusMainWindow(QMainWindow):
                 self.dashboard_tab.view_all_activity_requested.connect(self.show_full_activity_tab)
             if hasattr(self.dashboard_tab, 'rebalance_requested'):
                 self.dashboard_tab.rebalance_requested.connect(self.on_rebalance_requested)
+
+        # Refresh collectors when balancing completes
+        if getattr(self, "balancer_tab", None) and hasattr(self.balancer_tab, "balancer"):
+            balancer = self.balancer_tab.balancer
+            if hasattr(balancer, "balance_completed"):
+                balancer.balance_completed.connect(self.on_balance_completed)
     
     def setup_update_timer(self):
         """Setup timer for periodic updates"""
@@ -397,9 +403,21 @@ class CryptoCorpusMainWindow(QMainWindow):
         self.logger.info("Main window closed")
 
     def on_balance_completed(self):
-        """Log completion of corpus rebalancing."""
+        """Refresh collector configs when corpus balancing completes."""
+        if getattr(self, "collectors_tab", None):
+            for wrapper in self.collectors_tab.collector_wrappers.values():
+                if hasattr(wrapper, "refresh_config"):
+                    try:
+                        wrapper.refresh_config()
+                    except Exception as e:  # pragma: no cover - log-only path
+                        self.logger.error(
+                            f"Failed to refresh config for collector {getattr(wrapper, 'name', 'unknown')}: {e}"
+                        )
+
+        message = (
+            "Corpus balancing completed and collector configs updated."
+        )
         if self.activity_log_service:
-            self.activity_log_service.log(
-                "Balancer",
-                "Corpus balancing completed and collector configs updated."
-            )
+            self.activity_log_service.log("Balancer", message)
+        else:
+            self.logger.info(message)
