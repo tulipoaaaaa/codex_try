@@ -1,5 +1,4 @@
 from __future__ import annotations
-
 from datetime import datetime
 from typing import Optional, Dict
 from PySide6.QtCore import QObject, Signal as pyqtSignal
@@ -47,4 +46,3 @@ class TaskHistoryService(QObject):
         tasks = list(self._tasks.values())
         tasks.sort(key=lambda t: t.get("start_time", ""))
         return tasks[-n:]
-

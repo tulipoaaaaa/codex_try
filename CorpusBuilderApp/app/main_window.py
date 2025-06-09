@@ -122,12 +122,12 @@ class CryptoCorpusMainWindow(QMainWindow):
             self.tab_widget.addTab(self.dashboard_tab, "📊 Dashboard")
             # Collectors tab
             self.logger.debug("Initializing CollectorsTab...")
-            self.collectors_tab = CollectorsTab(self.config)
+            self.collectors_tab = CollectorsTab(self.config, task_history_service=self.task_history_service)
             self.logger.debug("CollectorsTab initialized successfully")
             self.tab_widget.addTab(self.collectors_tab, "🔍 Collectors")
             # Processors tab
             self.logger.debug("Initializing ProcessorsTab...")
-            self.processors_tab = ProcessorsTab(self.config)
+            self.processors_tab = ProcessorsTab(self.config, task_history_service=self.task_history_service)
             self.logger.debug("ProcessorsTab initialized successfully")
             self.tab_widget.addTab(self.processors_tab, "⚙️ Processors")
             # Corpus Manager tab

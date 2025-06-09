@@ -1,4 +1,8 @@
 from PySide6.QtCore import QObject, Signal as pyqtSignal, QThread, QTimer
+import time
+from typing import Optional
+
+from shared_tools.services.task_history_service import TaskHistoryService
 from abc import ABC, abstractmethod
 import logging
 from typing import Dict, Any, Optional
@@ -75,7 +79,6 @@ class BaseWrapper(QObject):
 
         self._is_running = True
         self.status_updated.emit("Starting operation...")
-
         self._task_id = str(uuid4())
         if self.task_history_service:
             self.task_history_service.add_task(
@@ -110,6 +113,9 @@ class BaseWrapper(QObject):
                 self.task_history_service.update_task(self._task_id, progress=percentage)
         if message:
             self.status_updated.emit(message)
+        if self.task_history_service and self._current_task_id and total > 0:
+            percentage = min(100, int((current / total) * 100))
+            self.task_history_service.update_progress(self._current_task_id, percentage)
             
     def _on_error(self, error_message: str):
         """Handle errors"""
