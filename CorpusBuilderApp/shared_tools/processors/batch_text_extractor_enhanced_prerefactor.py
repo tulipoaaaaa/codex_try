@@ -134,7 +134,7 @@ from tqdm import tqdm
 
 from .formula_extractor import FormulaExtractor
 from .chart_image_extractor import ChartImageExtractor
-from .finacial_symbol_processor import FinancialSymbolProcessor, AcademicPaperProcessor, MemoryOptimizer
+from .financial_symbol_processor import FinancialSymbolProcessor, AcademicPaperProcessor, MemoryOptimizer
 from ..utils.domain_utils import get_domain_for_file
 from ..utils.pdf_safe_open import safe_open_pdf
 from ..utils.metadata_normalizer import main as normalize_directory
