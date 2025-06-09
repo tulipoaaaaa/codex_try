@@ -5,10 +5,16 @@ import tempfile
 import shutil
 import pytest
 
-# Ensure app and shared_tools packages are importable
+# Ensure project packages are importable
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-sys.path.insert(0, os.path.join(base_dir, 'CorpusBuilderApp'))
-sys.path.insert(0, os.path.join(base_dir, 'CorpusBuilderApp', 'shared_tools'))
+if base_dir not in sys.path:
+    sys.path.insert(0, base_dir)
+project_root = os.path.join(base_dir, 'CorpusBuilderApp')
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+shared_tools_path = os.path.join(project_root, 'shared_tools')
+if shared_tools_path not in sys.path:
+    sys.path.insert(0, shared_tools_path)
 
 if 'PySide6' not in sys.modules:
     class _Signal:
