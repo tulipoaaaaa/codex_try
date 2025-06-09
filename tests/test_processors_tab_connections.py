@@ -1,9 +1,6 @@
 import sys
 import types
 
-# Ensure package path
-sys.path.insert(0, 'CorpusBuilderApp')
-
 from PySide6.QtWidgets import QApplication
 
 # Stub heavy wrapper modules before importing the tab module

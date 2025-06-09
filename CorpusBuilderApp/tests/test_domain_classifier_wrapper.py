@@ -13,9 +13,7 @@ import pytest
 from unittest.mock import Mock, patch, MagicMock
 from pathlib import Path
 
-# Add project root to path
-project_root = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(project_root))
+
 
 from PySide6.QtCore import QObject, Signal as pyqtSignal
 from PySide6.QtWidgets import QApplication
