@@ -89,7 +89,9 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
             self._checked = v
         def isChecked(self):
             return self._checked
-    class QWidget: pass
+    class QWidget:
+        def __init__(self, *a, **k):
+            pass
     class QVBoxLayout:
         def __init__(self, *a, **k):
             pass
@@ -124,8 +126,69 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
             return ""
         def setPlainText(self, *a, **k):
             pass
+    class QScrollArea(QWidget):
+        def setWidgetResizable(self, *a, **k):
+            pass
+        def setWidget(self, *a, **k):
+            pass
+    class QMenu(QWidget):
+        def addAction(self, *a, **k):
+            pass
+        def exec(self, *a, **k):
+            pass
     class QTableWidget(QWidget):
         pass
+    class QTableWidgetItem:
+        def __init__(self, *a, **k):
+            pass
+    class QTableView(QWidget):
+        pass
+    class QHeaderView(QWidget):
+        class ResizeMode:
+            Stretch = 0
+        def setSectionResizeMode(self, *a, **k):
+            pass
+    class QStandardItemModel:
+        def __init__(self, *a, **k):
+            pass
+        def setHorizontalHeaderLabels(self, *a, **k):
+            pass
+        def rowCount(self):
+            return 0
+        def insertRow(self, *a, **k):
+            pass
+        def setItem(self, *a, **k):
+            pass
+    class QStandardItem:
+        def __init__(self, *a, **k):
+            pass
+        def text(self):
+            return ""
+    class QFileSystemModel:
+        def setReadOnly(self, *a, **k):
+            pass
+        def setRootPath(self, *a, **k):
+            pass
+        def index(self, p):
+            return p
+        def filePath(self, index):
+            return index
+    class QSortFilterProxyModel:
+        def setSourceModel(self, *a, **k):
+            pass
+        def setFilterCaseSensitivity(self, *a, **k):
+            pass
+        def setFilterFixedString(self, *a, **k):
+            pass
+        def mapFromSource(self, index):
+            return index
+        def mapToSource(self, index):
+            return index
+    class QDateEdit(QWidget):
+        def setDate(self, *a, **k):
+            pass
+        def date(self):
+            return None
     class QSplitter(QWidget):
         pass
     class QSpinBox:
@@ -153,7 +216,10 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
     class QTabWidget(QWidget):
         def addTab(self, *a, **k):
             pass
-    class QFileDialog: pass
+    class QFileDialog:
+        @staticmethod
+        def getExistingDirectory(*a, **k):
+            return ""
     class QMessageBox: pass
     class QSystemTrayIcon:
         def __init__(self, *a, **k):
@@ -164,7 +230,11 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         def decorator(fn):
             return fn
         return decorator
-    qtcore = types.SimpleNamespace(
+    class _QtCore(types.SimpleNamespace):
+        def __getattr__(self, name):
+            return object
+
+    qtcore = _QtCore(
         QObject=object,
         Signal=lambda *a, **k: _Signal(),
         QThread=object,
@@ -173,6 +243,9 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         Qt=Qt,
         Slot=Slot,
         QMutex=object,
+        QModelIndex=object,
+        QPoint=object,
+        QMimeData=object,
         QUrl=QUrl,
         qDebug=lambda *a, **k: None,
         qWarning=lambda *a, **k: None,
@@ -184,7 +257,12 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         __version__="6.5.0",
         qVersion=lambda: "6.5.0",
     )
-    qtwidgets = types.SimpleNamespace(
+
+    class _QtWidgets(types.SimpleNamespace):
+        def __getattr__(self, name):
+            return object
+
+    qtwidgets = _QtWidgets(
         QApplication=QApplication,
         QWidget=QWidget,
         QVBoxLayout=QVBoxLayout,
@@ -204,12 +282,28 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         QGridLayout=QGridLayout,
         QTextEdit=QTextEdit,
         QTableWidget=QTableWidget,
+        QTableWidgetItem=QTableWidgetItem,
+        QTableView=QTableView,
+        QHeaderView=QHeaderView,
+        QStandardItemModel=QStandardItemModel,
+        QStandardItem=QStandardItem,
+        QFileSystemModel=QFileSystemModel,
+        QSortFilterProxyModel=QSortFilterProxyModel,
+        QScrollArea=QScrollArea,
+        QMenu=QMenu,
+        QDateEdit=QDateEdit,
         QSplitter=QSplitter,
         QFileDialog=QFileDialog,
         QMessageBox=QMessageBox,
         QSystemTrayIcon=QSystemTrayIcon,
     )
-    qtgui = types.SimpleNamespace(QIcon=object)
+    class _QtGui(types.SimpleNamespace):
+        def __getattr__(self, name):
+            return object
+
+    qtgui = _QtGui(QIcon=object, QAction=object, QFont=object, QColor=object,
+                   QTextCharFormat=object, QBrush=object, QDragEnterEvent=object,
+                   QDropEvent=object)
     qttest = types.SimpleNamespace(QTest=object)
     qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
     sys.modules['PySide6'] = types.SimpleNamespace(
@@ -234,8 +328,33 @@ for mod in [
     "matplotlib",
     "matplotlib.pyplot",
     "seaborn",
+    "bs4",
+    "selenium",
+    "selenium.webdriver",
+    "selenium.webdriver.common",
+    "selenium.webdriver.common.by",
+    "undetected_chromedriver",
+    "selenium.common",
+    "selenium.common.exceptions",
 ]:
     sys.modules.setdefault(mod, types.ModuleType(mod))
+
+bs4_mod = sys.modules.setdefault('bs4', types.ModuleType('bs4'))
+setattr(bs4_mod, 'BeautifulSoup', lambda *a, **k: None)
+
+selenium_mod = sys.modules.setdefault('selenium', types.ModuleType('selenium'))
+webdriver_mod = sys.modules.setdefault('selenium.webdriver', types.ModuleType('selenium.webdriver'))
+setattr(selenium_mod, 'webdriver', webdriver_mod)
+chrome_mod = sys.modules.setdefault('selenium.webdriver.chrome', types.ModuleType('selenium.webdriver.chrome'))
+options_mod = sys.modules.setdefault('selenium.webdriver.chrome.options', types.ModuleType('selenium.webdriver.chrome.options'))
+setattr(options_mod, 'Options', object)
+common_mod = sys.modules.setdefault('selenium.webdriver.common', types.ModuleType('selenium.webdriver.common'))
+by_mod = sys.modules.setdefault('selenium.webdriver.common.by', types.ModuleType('selenium.webdriver.common.by'))
+setattr(by_mod, 'By', object)
+selenium_common = sys.modules.setdefault('selenium.common', types.ModuleType('selenium.common'))
+exceptions_mod = sys.modules.setdefault('selenium.common.exceptions', types.ModuleType('selenium.common.exceptions'))
+setattr(selenium_common, 'exceptions', exceptions_mod)
+setattr(exceptions_mod, 'NoSuchElementException', Exception)
 
 if "langdetect" not in sys.modules:
     langdetect = types.ModuleType("langdetect")
