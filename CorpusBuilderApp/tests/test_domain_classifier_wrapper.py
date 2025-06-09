@@ -4,7 +4,7 @@
 Unit tests for Domain Classifier Wrapper
 
 Tests the domain classification functionality and UI integration
-for the CryptoFinance Corpus Builder application.
+for the Crypto Corpus Builder application.
 """
 
 import os

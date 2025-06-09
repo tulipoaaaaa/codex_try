@@ -1,4 +1,4 @@
-CryptoFinance Corpus Builder - Priority Recommendations
+Crypto Corpus Builder - Priority Recommendations
 ============================================================
 
 1. Implement comprehensive input validation and sanitization
