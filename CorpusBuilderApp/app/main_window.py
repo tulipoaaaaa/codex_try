@@ -425,16 +425,16 @@ class CryptoCorpusMainWindow(QMainWindow):
                         wrapper.refresh_config()
                     except Exception as e:  # pragma: no cover
                         self.logger.error(
-                          f"Failed to refresh config for collector {getattr(wrapper, 'name', 'unknown')}: {e}"
+                            f"Failed to refresh config for collector {getattr(wrapper, 'name', 'unknown')}: {e}"
                         )
-         else:
+        else:
             message = "Corpus balancing completed (no collectors tab found)."
-              
-         try:
+
+        try:
             if self.activity_log_service:
-              self.activity_log_service.log("Balancer", message)
+                self.activity_log_service.log("Balancer", message)
             else:
-              self.logger.info(message)
-         except Exception as e:
+                self.logger.info(message)
+        except Exception as e:
             self.logger.error(f"Failed to log activity: {e}") 
      
