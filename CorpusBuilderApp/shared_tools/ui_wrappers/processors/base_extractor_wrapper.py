@@ -537,5 +537,9 @@ class BaseExtractorWrapper(BaseWrapper):
             return False
         if config['memory_limit_mb'] <= 0:
             return False
-            
+
         return True
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass
