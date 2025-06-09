@@ -40,7 +40,7 @@ from ..utils.metadata_normalizer import main as normalize_directory
 from shared_tools.project_config import ProjectConfig
 
 # Configure logging
-log_dir = Path("G:/ai_trading_dev/CryptoFinanceCorpusBuilder/logs")
+log_dir = Path("G:/ai_trading_dev/CryptoCorpusBuilder/logs")
 log_dir.mkdir(parents=True, exist_ok=True)
 log_file = log_dir / "batch_nonpdf_extractor.log"
 logging.basicConfig(
@@ -96,7 +96,7 @@ print('DEBUG: sys.path =', sys.path)
 def get_worker_temp_dir():
     """Get temporary directory for current worker"""
     worker_id = getattr(thread_local, 'worker_id', 'unknown')
-    base_temp = Path("G:/ai_trading_dev/CryptoFinanceCorpusBuilder/temp_workers")
+    base_temp = Path("G:/ai_trading_dev/CryptoCorpusBuilder/temp_workers")
     base_temp.mkdir(parents=True, exist_ok=True)
     temp_dir = base_temp / f"temp_worker_{worker_id}"
     temp_dir.mkdir(exist_ok=True)

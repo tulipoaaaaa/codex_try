@@ -10,13 +10,13 @@ base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if base_dir not in sys.path:
     sys.path.insert(0, base_dir)
 
-# Alias for legacy package name used by some tests
+# Alias for compatibility with CryptoCorpusBuilder imports
 sys.modules.setdefault(
-    "CryptoFinanceCorpusBuilder",
-    types.ModuleType("CryptoFinanceCorpusBuilder"),
+    "CryptoCorpusBuilder",
+    types.ModuleType("CryptoCorpusBuilder"),
 )
 sys.modules.setdefault(
-    "CryptoFinanceCorpusBuilder.shared_tools",
+    "CryptoCorpusBuilder.shared_tools",
     __import__("CorpusBuilderApp.shared_tools", fromlist=["dummy"]),
 )
 

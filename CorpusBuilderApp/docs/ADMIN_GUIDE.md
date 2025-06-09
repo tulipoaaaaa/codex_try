@@ -1,4 +1,4 @@
-# Admin Guide: CryptoFinance Corpus Builder
+# Admin Guide: Crypto Corpus Builder
 
 ## Table of Contents
 

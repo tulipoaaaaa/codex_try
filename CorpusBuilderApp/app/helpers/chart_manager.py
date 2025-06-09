@@ -1,5 +1,5 @@
 """
-Chart Manager for CryptoFinance Corpus Builder
+Chart Manager for Crypto Corpus Builder
 Centralizes chart styling, colors, and creation for consistency across the application.
 """
 

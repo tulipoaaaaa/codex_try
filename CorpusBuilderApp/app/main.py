@@ -1,5 +1,5 @@
 """
-CryptoFinance Corpus Builder v3 - Main Application Entry Point
+Crypto Corpus Builder v3 - Main Application Entry Point
 """
 
 import sys
@@ -58,7 +58,7 @@ class CryptoCorpusApp(QApplication):
     
     def __init__(self, argv):
         super().__init__(argv)
-        self.setApplicationName("CryptoFinance Corpus Builder")
+        self.setApplicationName("Crypto Corpus Builder")
         self.setApplicationVersion("3.0.0")
         
         # Set up logging
