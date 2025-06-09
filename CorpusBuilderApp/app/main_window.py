@@ -22,6 +22,7 @@ from ui.tabs.logs_tab import LogsTab
 from ui.tabs.maintenance_tab import MaintenanceTab
 from ui.tabs.full_activity_tab import FullActivityTab
 from ui.dialogs.settings_dialog import SettingsDialog
+from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
 
 class CryptoCorpusMainWindow(QMainWindow):
     """Main application window"""
@@ -33,6 +34,11 @@ class CryptoCorpusMainWindow(QMainWindow):
         print(f"DEBUG: Config has 'get' method: {hasattr(config, 'get')}")
         self.config = config
         self.logger = logging.getLogger(self.__class__.__name__)
+
+        # Services and wrappers
+        self.activity_log_service = getattr(self.config, "activity_log_service", None)
+        self.balancer_wrapper = CorpusBalancerWrapper(self.config)
+        self.balancer_wrapper.balance_completed.connect(self.on_balance_completed)
         
         # Initialize tab attributes to None
         self.dashboard_tab = None
@@ -233,9 +239,12 @@ class CryptoCorpusMainWindow(QMainWindow):
         if getattr(self, "configuration_tab", None) and hasattr(self.configuration_tab, 'configuration_saved'):
             self.configuration_tab.configuration_saved.connect(lambda _: self.config.save())
 
-        # Connect dashboard View All signal to show full activity tab
-        if getattr(self, "dashboard_tab", None) and hasattr(self.dashboard_tab, 'view_all_activity_requested'):
-            self.dashboard_tab.view_all_activity_requested.connect(self.show_full_activity_tab)
+        # Connect dashboard signals
+        if getattr(self, "dashboard_tab", None):
+            if hasattr(self.dashboard_tab, 'view_all_activity_requested'):
+                self.dashboard_tab.view_all_activity_requested.connect(self.show_full_activity_tab)
+            if hasattr(self.dashboard_tab, 'rebalance_requested'):
+                self.dashboard_tab.rebalance_requested.connect(self.on_rebalance_requested)
     
     def setup_update_timer(self):
         """Setup timer for periodic updates"""
@@ -332,6 +341,12 @@ class CryptoCorpusMainWindow(QMainWindow):
     def show_error(self, title, message):
         """Show error dialog"""
         QMessageBox.critical(self, title, message)
+
+    def on_rebalance_requested(self):
+        """Handle manual rebalance requests from the dashboard."""
+        if self.activity_log_service:
+            self.activity_log_service.log("Balancer", "Manual rebalancing initiated from Dashboard")
+        self.balancer_wrapper.balance_corpus()
     
     def show_full_activity_tab(self):
         """Show the full activity tab when View All is clicked"""
@@ -376,7 +391,15 @@ class CryptoCorpusMainWindow(QMainWindow):
                 self.processors_tab.stop_all()
         except Exception as e:
             self.logger.error(f"Error stopping operations: {e}")
-        
+
         # Accept the close event
         event.accept()
         self.logger.info("Main window closed")
+
+    def on_balance_completed(self):
+        """Log completion of corpus rebalancing."""
+        if self.activity_log_service:
+            self.activity_log_service.log(
+                "Balancer",
+                "Corpus balancing completed and collector configs updated."
+            )
