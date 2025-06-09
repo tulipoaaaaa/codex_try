@@ -23,6 +23,7 @@ from ui.tabs.full_activity_tab import FullActivityTab
 from ui.dialogs.settings_dialog import SettingsDialog
 from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
 from shared_tools.services.activity_log_service import ActivityLogService
+from shared_tools.services.task_history_service import TaskHistoryService
 from shared_tools.services.tab_audit_service import TabAuditService
 
 class CryptoCorpusMainWindow(QMainWindow):
@@ -42,6 +43,7 @@ class CryptoCorpusMainWindow(QMainWindow):
 
         # Services and wrappers
         self.activity_log_service = ActivityLogService()
+        self.task_history_service = TaskHistoryService()
         self.balancer_wrapper = CorpusBalancerWrapper(self.config)
         self.balancer_wrapper.balance_completed.connect(self.on_balance_completed)
         
@@ -120,12 +122,12 @@ class CryptoCorpusMainWindow(QMainWindow):
             self.tab_widget.addTab(self.dashboard_tab, "📊 Dashboard")
             # Collectors tab
             self.logger.debug("Initializing CollectorsTab...")
-            self.collectors_tab = CollectorsTab(self.config)
+            self.collectors_tab = CollectorsTab(self.config, task_history_service=self.task_history_service)
             self.logger.debug("CollectorsTab initialized successfully")
             self.tab_widget.addTab(self.collectors_tab, "🔍 Collectors")
             # Processors tab
             self.logger.debug("Initializing ProcessorsTab...")
-            self.processors_tab = ProcessorsTab(self.config)
+            self.processors_tab = ProcessorsTab(self.config, task_history_service=self.task_history_service)
             self.logger.debug("ProcessorsTab initialized successfully")
             self.tab_widget.addTab(self.processors_tab, "⚙️ Processors")
             # Corpus Manager tab
@@ -381,7 +383,13 @@ class CryptoCorpusMainWindow(QMainWindow):
             
             # Create new Full Activity tab
             if not self.full_activity_tab:
-                self.full_activity_tab = FullActivityTab(self.config)
+                self.full_activity_tab = FullActivityTab(
+                self.config,
+                activity_log_service=self.activity_log_service,
+                task_history_service=self.task_history_service,
+                )
+                self.full_activity_tab.retry_requested.connect(self.on_retry_requested)
+                self.full_activity_tab.stop_requested.connect(self.on_stop_requested)
             
             # Add the tab and switch to it
             tab_index = self.tab_widget.addTab(self.full_activity_tab, "📊 Full Activity")
@@ -392,6 +400,14 @@ class CryptoCorpusMainWindow(QMainWindow):
         except Exception as e:
             self.logger.error(f"Error opening Full Activity tab: {e}")
             self.show_error("Tab Error", f"Failed to open Full Activity tab: {e}")
+
+    def on_retry_requested(self, task_id: str) -> None:
+        """Handle retry requests from the Full Activity tab."""
+        self.logger.info("Retry requested for task %s", task_id)
+
+    def on_stop_requested(self, task_id: str) -> None:
+        """Handle stop requests from the Full Activity tab."""
+        self.logger.info("Stop requested for task %s", task_id)
     
     def center_on_screen(self):
         """Center the window on the screen"""
