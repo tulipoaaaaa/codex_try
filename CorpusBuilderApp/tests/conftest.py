@@ -7,67 +7,101 @@ import tempfile
 import shutil
 import json
 
-# Provide lightweight Qt stubs if PySide6 is unavailable
-class _DummySignal:
-    def emit(self, *a, **k):
+# Ensure repo root is importable when running tests individually
+base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if base_dir not in sys.path:
+    sys.path.insert(0, base_dir)
+
+# Alias for legacy imports
+sys.modules.setdefault(
+    "CryptoFinanceCorpusBuilder",
+    types.ModuleType("CryptoFinanceCorpusBuilder"),
+)
+sys.modules.setdefault(
+    "CryptoFinanceCorpusBuilder.shared_tools",
+    __import__("CorpusBuilderApp.shared_tools", fromlist=["dummy"]),
+)
+
+try:
+    from dotenv import load_dotenv  # type: ignore
+except Exception:  # pragma: no cover
+    def load_dotenv(*args, **kwargs):
         pass
+    stub = types.ModuleType("dotenv")
+    stub.load_dotenv = load_dotenv
+    sys.modules.setdefault("dotenv", stub)
 
-qtcore = types.SimpleNamespace(
-    QObject=object,
-    Signal=lambda *a, **k: _DummySignal(),
-    QThread=object,
-    QTimer=object,
-    Slot=lambda *a, **k: lambda *a, **k: None,
-    QDir=object,
-    Property=object,
-    __version__="6.5.0",
-    qVersion=lambda: "6.5.0",
-    qDebug=lambda *a, **k: None,
-    qWarning=lambda *a, **k: None,
-    qCritical=lambda *a, **k: None,
-    qFatal=lambda *a, **k: None,
-    qInfo=lambda *a, **k: None,
-    qInstallMessageHandler=lambda *a, **k: None,
-)
+# Provide lightweight Qt stubs if requested
+if os.environ.get("PYTEST_QT_STUBS") == "1":
+    print("Loaded PySide6 stub")
 
-qtwidgets = types.SimpleNamespace(
-    QApplication=type("QApplication", (), {
-        "instance": staticmethod(lambda: None),
-        "__init__": lambda self, *a, **k: None,
-        "quit": lambda self: None
-    }),
-    QWidget=object,
-    QVBoxLayout=object,
-    QHBoxLayout=object,
-    QTabWidget=object,
-    QLabel=object,
-    QProgressBar=object,
-    QPushButton=object,
-    QCheckBox=object,
-    QSpinBox=object,
-    QListWidget=object,
-    QTreeView=object,
-    QGroupBox=object,
-    QFileDialog=object,
-    QMessageBox=object,
-    QSystemTrayIcon=object,
-)
+    class _DummySignal:
+        def emit(self, *a, **k):
+            pass
 
-qtgui = types.SimpleNamespace(QIcon=object)
-qttest = types.SimpleNamespace(QTest=object, QSignalSpy=object)
-qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
+    qtcore = types.SimpleNamespace(
+        QObject=object,
+        Signal=lambda *a, **k: _DummySignal(),
+        QThread=object,
+        QTimer=object,
+        Slot=lambda *a, **k: lambda *a, **k: None,
+        QDir=object,
+        Property=object,
+        __version__="6.5.0",
+        qVersion=lambda: "6.5.0",
+        qDebug=lambda *a, **k: None,
+        qWarning=lambda *a, **k: None,
+        qCritical=lambda *a, **k: None,
+        qFatal=lambda *a, **k: None,
+        qInfo=lambda *a, **k: None,
+        qInstallMessageHandler=lambda *a, **k: None,
+    )
 
-sys.modules.setdefault("PySide6", types.SimpleNamespace(
-    QtCore=qtcore,
-    QtWidgets=qtwidgets,
-    QtGui=qtgui,
-    QtTest=qttest
-))
-sys.modules.setdefault("PySide6.QtCore", qtcore)
-sys.modules.setdefault("PySide6.QtWidgets", qtwidgets)
-sys.modules.setdefault("PySide6.QtGui", qtgui)
-sys.modules.setdefault("PySide6.QtTest", qttest)
-sys.modules.setdefault("PySide6.QtMultimedia", qtmultimedia)
+    qtwidgets = types.SimpleNamespace(
+        QApplication=type("QApplication", (), {
+            "instance": staticmethod(lambda: None),
+            "__init__": lambda self, *a, **k: None,
+            "quit": lambda self: None
+        }),
+        QWidget=object,
+        QVBoxLayout=object,
+        QHBoxLayout=object,
+        QTabWidget=object,
+        QLabel=object,
+        QProgressBar=object,
+        QPushButton=object,
+        QCheckBox=object,
+        QSpinBox=object,
+        QListWidget=object,
+        QTreeView=object,
+        QGroupBox=object,
+        QFrame=object,
+        QLineEdit=object,
+        QComboBox=object,
+        QGridLayout=object,
+        QTextEdit=object,
+        QTableWidget=object,
+        QSplitter=object,
+        QFileDialog=object,
+        QMessageBox=object,
+        QSystemTrayIcon=object,
+    )
+
+    qtgui = types.SimpleNamespace(QIcon=object)
+    qttest = types.SimpleNamespace(QTest=object, QSignalSpy=object)
+    qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
+
+    sys.modules.setdefault("PySide6", types.SimpleNamespace(
+        QtCore=qtcore,
+        QtWidgets=qtwidgets,
+        QtGui=qtgui,
+        QtTest=qttest
+    ))
+    sys.modules.setdefault("PySide6.QtCore", qtcore)
+    sys.modules.setdefault("PySide6.QtWidgets", qtwidgets)
+    sys.modules.setdefault("PySide6.QtGui", qtgui)
+    sys.modules.setdefault("PySide6.QtTest", qttest)
+    sys.modules.setdefault("PySide6.QtMultimedia", qtmultimedia)
 
 # Mock external modules
 for mod in [

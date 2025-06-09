@@ -1,7 +1,10 @@
 # tests/test_error_handling.py
 import pytest
 import asyncio
-import aiohttp
+try:
+    import aiohttp
+except ImportError:  # pragma: no cover - optional
+    aiohttp = None
 import requests
 from unittest.mock import Mock, patch, AsyncMock
 import tempfile
