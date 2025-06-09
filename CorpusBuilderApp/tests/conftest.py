@@ -19,10 +19,14 @@ qtcore = types.SimpleNamespace(
     QDir=object,
 )
 qtwidgets = types.SimpleNamespace(QApplication=type("QApplication", (), {"instance": staticmethod(lambda: None), "__init__": lambda self, *a, **k: None, "quit": lambda self: None}))
+qttest = types.SimpleNamespace(QTest=object, QSignalSpy=object)
 
-sys.modules.setdefault("PySide6", types.SimpleNamespace(QtCore=qtcore, QtWidgets=qtwidgets))
+sys.modules.setdefault(
+    "PySide6", types.SimpleNamespace(QtCore=qtcore, QtWidgets=qtwidgets, QtTest=qttest)
+)
 sys.modules.setdefault("PySide6.QtCore", qtcore)
 sys.modules.setdefault("PySide6.QtWidgets", qtwidgets)
+sys.modules.setdefault("PySide6.QtTest", qttest)
 for mod in [
     "fitz",
     "pytesseract",
