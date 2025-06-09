@@ -102,9 +102,10 @@ sys.modules.setdefault("PIL", dummy_pil)
 sys.modules.setdefault("PIL.Image", dummy_image_mod)
 sys.modules.setdefault("PIL.ImageEnhance", dummy_enhance_mod)
 
-# Add the app directory to the Python path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'app'))
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'shared_tools'))
+# Ensure the package root is on the Python path
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
 
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QDir

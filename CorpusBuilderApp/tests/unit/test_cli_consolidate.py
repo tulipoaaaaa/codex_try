@@ -4,10 +4,7 @@ import types
 from typing import List
 import yaml
 
-# Add project root and package paths
-root = _Path(__file__).resolve().parents[3]
-sys.path.insert(0, str(root))
-sys.path.insert(1, str(root / "CorpusBuilderApp"))
+
 
 # Stub heavy dependencies required by imported modules
 qtcore = types.SimpleNamespace(QObject=object, Signal=lambda *a, **k: lambda *a, **k: None, QThread=object, QTimer=object)

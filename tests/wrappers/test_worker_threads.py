@@ -4,10 +4,7 @@ from pathlib import Path
 from types import SimpleNamespace
 import pytest
 
-# Add project paths for imports
-root = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(root))
-sys.path.insert(1, str(root / "CorpusBuilderApp"))
+
 
 # Stub heavy third-party dependencies
 dummy = types.ModuleType("dummy")
