@@ -15,9 +15,17 @@ class DomainClassifierWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.processor = DomainClassifier(project_config)
         self._is_running = False
         self.worker_thread = None
+        self._enabled = True
+
+    def set_enabled(self, enabled: bool):
+        """Enable or disable the wrapper."""
+        self._enabled = bool(enabled)
         
     def start(self, documents=None, **kwargs):
         """Start domain classification on the specified documents."""
+        if not self._enabled:
+            self.status_updated.emit("Domain classifier disabled")
+            return False
         if self._is_running:
             self.status_updated.emit("Domain classification already in progress")
             return False

@@ -15,9 +15,17 @@ class MachineTranslationDetectorWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.processor = MachineTranslationDetector(project_config)
         self._is_running = False
         self.worker_thread = None
+        self._enabled = True
+
+    def set_enabled(self, enabled: bool):
+        """Enable or disable the wrapper."""
+        self._enabled = bool(enabled)
         
     def start(self, file_paths=None, **kwargs):
         """Start machine translation detection on the specified files."""
+        if not self._enabled:
+            self.status_updated.emit("Machine translation detector disabled")
+            return False
         if self._is_running:
             self.status_updated.emit("Machine translation detection already in progress")
             return False

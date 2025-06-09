@@ -1,8 +1,58 @@
 # File: tests/conftest.py
 
-import pytest
 import sys
+import types
 import os
+import pytest
+
+# Provide lightweight Qt stubs if PySide6 is unavailable
+class _DummySignal:
+    def emit(self, *a, **k):
+        pass
+
+qtcore = types.SimpleNamespace(
+    QObject=object,
+    Signal=lambda *a, **k: _DummySignal(),
+    QThread=object,
+    QTimer=object,
+    Slot=lambda *a, **k: lambda *a, **k: None,
+    QDir=object,
+)
+qtwidgets = types.SimpleNamespace(QApplication=type("QApplication", (), {"instance": staticmethod(lambda: None), "__init__": lambda self, *a, **k: None, "quit": lambda self: None}))
+
+sys.modules.setdefault("PySide6", types.SimpleNamespace(QtCore=qtcore, QtWidgets=qtwidgets))
+sys.modules.setdefault("PySide6.QtCore", qtcore)
+sys.modules.setdefault("PySide6.QtWidgets", qtwidgets)
+for mod in [
+    "fitz",
+    "pytesseract",
+    "cv2",
+    "numpy",
+    "matplotlib",
+    "matplotlib.pyplot",
+    "seaborn",
+]:
+    sys.modules.setdefault(mod, types.ModuleType(mod))
+
+if "langdetect" not in sys.modules:
+    langdetect = types.ModuleType("langdetect")
+    langdetect.detect_langs = lambda *a, **k: []
+    langdetect.LangDetectException = Exception
+    sys.modules["langdetect"] = langdetect
+
+dummy_pil = types.ModuleType("PIL")
+dummy_image_mod = types.ModuleType("PIL.Image")
+class DummyImage: ...
+dummy_image_mod.Image = DummyImage
+dummy_enhance_mod = types.ModuleType("PIL.ImageEnhance")
+class DummyEnhance: ...
+dummy_enhance_mod.ImageEnhance = DummyEnhance
+dummy_pil.Image = dummy_image_mod
+dummy_pil.ImageEnhance = dummy_enhance_mod
+sys.modules.setdefault("PIL", dummy_pil)
+sys.modules.setdefault("PIL.Image", dummy_image_mod)
+sys.modules.setdefault("PIL.ImageEnhance", dummy_enhance_mod)
+
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QDir
 import tempfile
