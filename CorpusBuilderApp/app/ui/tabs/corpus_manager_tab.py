@@ -772,7 +772,7 @@ class CorpusManagerTab(QWidget):
                 f"meta_save_{file_path}", "Metadata Save Error", str(e), "error", auto_hide=True
             )
 
-    # Drag-and-drop support (PyQt6)
+    # Drag-and-drop support (PySide6)
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
             event.acceptProposedAction()

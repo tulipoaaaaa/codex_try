@@ -1,9 +1,11 @@
 # File: tests/conftest.py
-
 import sys
 import types
 import os
 import pytest
+import tempfile
+import shutil
+import json
 
 # Provide lightweight Qt stubs if PySide6 is unavailable
 class _DummySignal:
@@ -17,16 +19,57 @@ qtcore = types.SimpleNamespace(
     QTimer=object,
     Slot=lambda *a, **k: lambda *a, **k: None,
     QDir=object,
+    Property=object,
+    __version__="6.5.0",
+    qVersion=lambda: "6.5.0",
+    qDebug=lambda *a, **k: None,
+    qWarning=lambda *a, **k: None,
+    qCritical=lambda *a, **k: None,
+    qFatal=lambda *a, **k: None,
+    qInfo=lambda *a, **k: None,
+    qInstallMessageHandler=lambda *a, **k: None,
 )
-qtwidgets = types.SimpleNamespace(QApplication=type("QApplication", (), {"instance": staticmethod(lambda: None), "__init__": lambda self, *a, **k: None, "quit": lambda self: None}))
-qttest = types.SimpleNamespace(QTest=object, QSignalSpy=object)
 
-sys.modules.setdefault(
-    "PySide6", types.SimpleNamespace(QtCore=qtcore, QtWidgets=qtwidgets, QtTest=qttest)
+qtwidgets = types.SimpleNamespace(
+    QApplication=type("QApplication", (), {
+        "instance": staticmethod(lambda: None),
+        "__init__": lambda self, *a, **k: None,
+        "quit": lambda self: None
+    }),
+    QWidget=object,
+    QVBoxLayout=object,
+    QHBoxLayout=object,
+    QTabWidget=object,
+    QLabel=object,
+    QProgressBar=object,
+    QPushButton=object,
+    QCheckBox=object,
+    QSpinBox=object,
+    QListWidget=object,
+    QTreeView=object,
+    QGroupBox=object,
+    QFileDialog=object,
+    QMessageBox=object,
+    QSystemTrayIcon=object,
 )
+
+qtgui = types.SimpleNamespace(QIcon=object)
+qttest = types.SimpleNamespace(QTest=object, QSignalSpy=object)
+qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
+
+sys.modules.setdefault("PySide6", types.SimpleNamespace(
+    QtCore=qtcore,
+    QtWidgets=qtwidgets,
+    QtGui=qtgui,
+    QtTest=qttest
+))
 sys.modules.setdefault("PySide6.QtCore", qtcore)
 sys.modules.setdefault("PySide6.QtWidgets", qtwidgets)
+sys.modules.setdefault("PySide6.QtGui", qtgui)
 sys.modules.setdefault("PySide6.QtTest", qttest)
+sys.modules.setdefault("PySide6.QtMultimedia", qtmultimedia)
+
+# Mock external modules
 for mod in [
     "fitz",
     "pytesseract",
@@ -38,12 +81,14 @@ for mod in [
 ]:
     sys.modules.setdefault(mod, types.ModuleType(mod))
 
+# Mock langdetect
 if "langdetect" not in sys.modules:
     langdetect = types.ModuleType("langdetect")
     langdetect.detect_langs = lambda *a, **k: []
     langdetect.LangDetectException = Exception
     sys.modules["langdetect"] = langdetect
 
+# Mock PIL modules
 dummy_pil = types.ModuleType("PIL")
 dummy_image_mod = types.ModuleType("PIL.Image")
 class DummyImage: ...
@@ -57,14 +102,12 @@ sys.modules.setdefault("PIL", dummy_pil)
 sys.modules.setdefault("PIL.Image", dummy_image_mod)
 sys.modules.setdefault("PIL.ImageEnhance", dummy_enhance_mod)
 
-from PySide6.QtWidgets import QApplication
-from PySide6.QtCore import QDir
-import tempfile
-import shutil
-
 # Add the app directory to the Python path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'app'))
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'shared_tools'))
+
+from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import QDir
 
 @pytest.fixture(scope="session")
 def qapp():
@@ -102,7 +145,6 @@ def mock_project_config(temp_dir):
             return self.config['directories'][name]
 
     cfg = DummyConfig(temp_dir)
-
     for path in cfg.config['directories'].values():
         os.makedirs(path, exist_ok=True)
 
@@ -112,16 +154,13 @@ def mock_project_config(temp_dir):
 def sample_files(temp_dir):
     """Create sample files for testing."""
     files = {}
-    
-    # Create a sample text file
+
     text_file = os.path.join(temp_dir, 'sample.txt')
     with open(text_file, 'w') as f:
         f.write("This is a sample text file for testing.")
     files['text'] = text_file
-    
-    # Create a sample JSON metadata file
+
     metadata_file = os.path.join(temp_dir, 'sample_metadata.json')
-    import json
     metadata = {
         'title': 'Sample Document',
         'author': 'Test Author',
@@ -131,5 +170,5 @@ def sample_files(temp_dir):
     with open(metadata_file, 'w') as f:
         json.dump(metadata, f)
     files['metadata'] = metadata_file
-    
+
     return files
