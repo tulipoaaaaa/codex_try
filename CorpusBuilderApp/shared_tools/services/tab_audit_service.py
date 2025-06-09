@@ -52,7 +52,6 @@ class TabAuditService(QObject):
             "analytics_tab",
             "configuration_tab",
             "logs_tab",
-            "maintenance_tab",
         ]
 
         for attr in tabs:
