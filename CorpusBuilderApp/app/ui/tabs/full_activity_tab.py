@@ -69,6 +69,12 @@ class FullActivityTab(QWidget):
             except Exception:
                 pass
 
+        if self.task_source:
+            try:
+                self.task_source.history_changed.connect(self.load_activity_data)
+            except Exception:
+                pass
+
         self.init_ui()
         self.setup_update_timer()
         self.load_activity_data()
@@ -469,6 +475,8 @@ class FullActivityTab(QWidget):
 
     def load_existing_history(self):
         """Load prior activity from disk if available."""
+        if self.task_source:
+            return
         try:
             log_dir = Path(self.config.get_logs_dir())
         except Exception:
