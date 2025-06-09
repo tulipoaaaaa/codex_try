@@ -14,6 +14,8 @@ from PySide6.QtCharts import QChart, QChartView, QPieSeries, QBarSeries, QBarSet
 
 import logging
 from datetime import datetime, timedelta
+from pathlib import Path
+import json
 from app.helpers.chart_manager import ChartManager
 from app.ui.theme.theme_constants import (
     DEFAULT_FONT_SIZE,
@@ -33,10 +35,11 @@ from app.ui.widgets.status_dot import StatusDot
 
 class FullActivityTab(QWidget):
     """Comprehensive activity monitoring tab with detailed statistics and metrics"""
-    
-    def __init__(self, config, parent=None):
+
+    def __init__(self, config, activity_log_service=None, parent=None):
         super().__init__(parent)
         self.config = config
+        self.activity_log_service = activity_log_service
         self.logger = logging.getLogger(self.__class__.__name__)
 
         # Apply shared UI theme settings
@@ -46,8 +49,15 @@ class FullActivityTab(QWidget):
         self.chart_manager = ChartManager()
         
         # Initialize persistent activity data
-        self.activities_data = None
-        
+        self.activities_data: list[dict] = []
+        self.load_existing_history()
+
+        if self.activity_log_service:
+            try:
+                self.activity_log_service.activity_added.connect(self.on_activity_added)
+            except Exception:
+                pass
+
         self.init_ui()
         self.setup_update_timer()
         self.load_activity_data()
@@ -442,6 +452,53 @@ class FullActivityTab(QWidget):
         self.update_timer = QTimer(self)
         self.update_timer.timeout.connect(self.load_activity_data)
         self.update_timer.start(10000)  # Update every 10 seconds
+
+    def load_existing_history(self):
+        """Load prior activity from disk if available."""
+        try:
+            log_dir = Path(self.config.get_logs_dir())
+        except Exception:
+            return
+        log_file = log_dir / "activity.log"
+        if not log_file.exists():
+            return
+        try:
+            with open(log_file, "r", encoding="utf-8") as fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        entry = json.loads(line)
+                        self.activities_data.append(self._map_entry(entry))
+                    except Exception:
+                        continue
+        except Exception as exc:
+            self.logger.warning("Failed to load history: %s", exc)
+
+    def _map_entry(self, entry: dict) -> dict:
+        """Map raw log entry to internal representation."""
+        details = entry.get("details") or {}
+        if not isinstance(details, dict):
+            details = {}
+        timestamp = entry.get("timestamp", datetime.utcnow().isoformat())
+        return {
+            "time": datetime.fromisoformat(timestamp).strftime("%H:%M:%S"),
+            "start_time": timestamp,
+            "action": entry.get("message", ""),
+            "status": details.get("status", "info"),
+            "details": details.get("details", ""),
+            "duration_seconds": details.get("duration_seconds", 0),
+            "progress": details.get("progress", 0),
+            "type": details.get("type", "General"),
+            "domain": details.get("domain", "General"),
+            "error_message": details.get("error_message", ""),
+        }
+
+    def on_activity_added(self, entry: dict):
+        """Handle new activity emitted from ``ActivityLogService``."""
+        self.activities_data.append(self._map_entry(entry))
+        self.load_activity_data()
     
     def load_activity_data(self):
         """Load and update all activity data"""
@@ -696,119 +753,7 @@ Progress: {activity.get('progress', 0)}%
                 self.logs_btn.setEnabled(True)
     
     def get_activity_data(self):
-        """Get comprehensive activity data"""
-        # Return persistent data if available, otherwise initialize
-        if self.activities_data is not None:
-            return self.activities_data
-        print("[DEBUG] Initializing activities_data (should only happen once per app run)")
-        # In production, this would fetch from actual activity logs
-        # For demo, return enhanced mock data
-        
-        now = datetime.now()
-        
-        self.activities_data = [
-            {
-                "time": (now - timedelta(minutes=2)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "GitHub collection: crypto-research",
-                "status": "running",
-                "details": "Processing 67 repositories, 23 completed",
-                "duration_seconds": 120,
-                "progress": 34,
-                "type": "Collection",
-                "domain": "Crypto Derivatives"
-            },
-            {
-                "time": (now - timedelta(minutes=8)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=15)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "arXiv processing batch #847",
-                "status": "success",
-                "details": "263 PDFs processed successfully, 5 failed extraction",
-                "duration_seconds": 420,
-                "progress": 100,
-                "type": "Processing",
-                "domain": "High Frequency Trading"
-            },
-            {
-                "time": (now - timedelta(minutes=15)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=28)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "Domain rebalancing optimization",
-                "status": "success",
-                "details": "8 domains rebalanced, targets achieved",
-                "duration_seconds": 780,
-                "progress": 100,
-                "type": "Optimization",
-                "domain": "General"
-            },
-            {
-                "time": (now - timedelta(minutes=23)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=35)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "ISDA documentation collection",
-                "status": "success",
-                "details": "12 documents collected from ISDA.org",
-                "duration_seconds": 720,
-                "progress": 100,
-                "type": "Collection",
-                "domain": "Regulation & Compliance"
-            },
-            {
-                "time": (now - timedelta(minutes=35)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=47)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "Quality analysis pipeline",
-                "status": "running",
-                "details": "2,234 documents analyzed, 156 remaining",
-                "duration_seconds": 720,
-                "progress": 93,
-                "type": "Analysis",
-                "domain": "General"
-            },
-            {
-                "time": (now - timedelta(minutes=47)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=52)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "Corpus backup to cloud storage",
-                "status": "success",
-                "details": "45.8 GB backed up to AWS S3",
-                "duration_seconds": 300,
-                "progress": 100,
-                "type": "Backup",
-                "domain": "General"
-            },
-            {
-                "time": (now - timedelta(minutes=63)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=67)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "Weekly performance report",
-                "status": "success",
-                "details": "Report generated and exported to PDF",
-                "duration_seconds": 240,
-                "progress": 100,
-                "type": "Reporting",
-                "domain": "General"
-            },
-            {
-                "time": (now - timedelta(hours=1, minutes=15)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(hours=1, minutes=20)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "System maintenance routine",
-                "status": "success",
-                "details": "Cache cleared, indexes rebuilt, temp files cleaned",
-                "duration_seconds": 300,
-                "progress": 100,
-                "type": "Maintenance",
-                "domain": "General"
-            },
-            {
-                "time": (now - timedelta(hours=2)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(hours=2, minutes=5)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "BitMEX API data collection",
-                "status": "error",
-                "details": "API rate limit exceeded",
-                "duration_seconds": 180,
-                "progress": 45,
-                "type": "Collection",
-                "domain": "Crypto Derivatives",
-                "error_message": "HTTP 429: Too Many Requests"
-            }
-        ]
-        
+        """Return current activity log entries."""
         return self.activities_data
     
     def retry_task(self):
