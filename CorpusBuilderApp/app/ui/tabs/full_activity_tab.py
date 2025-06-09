@@ -36,6 +36,9 @@ from app.ui.widgets.status_dot import StatusDot
 class FullActivityTab(QWidget):
     """Comprehensive activity monitoring tab with detailed statistics and metrics"""
 
+    retry_requested = pyqtSignal(str)
+    stop_requested = pyqtSignal(str)
+
     def __init__(self, config, activity_log_service=None, parent=None):
         super().__init__(parent)
         self.config = config
@@ -493,6 +496,7 @@ class FullActivityTab(QWidget):
             "type": details.get("type", "General"),
             "domain": details.get("domain", "General"),
             "error_message": details.get("error_message", ""),
+            "task_id": details.get("task_id", ""),
         }
 
     def on_activity_added(self, entry: dict):
@@ -755,6 +759,9 @@ Progress: {activity.get('progress', 0)}%
     def get_activity_data(self):
         """Return current activity log entries."""
         return self.activities_data
+
+    def _get_task_id(self, activity: dict) -> str:
+        return activity.get("task_id") or f"TASK_{hash(activity.get('action', '')) % 10000:04d}"
     
     def retry_task(self):
         print("[DEBUG] Retry button clicked")
@@ -763,7 +770,8 @@ Progress: {activity.get('progress', 0)}%
             activities = self.get_activity_data()
             if current_row < len(activities):
                 activity = activities[current_row]
-                
+                task_id = self._get_task_id(activity)
+
                 if activity['status'] == 'error':
                     # Simulate retrying the task
                     activity['status'] = 'running'
@@ -786,6 +794,7 @@ Progress: {activity.get('progress', 0)}%
                     self.stop_btn.setEnabled(True)
                     
                     self.logger.info(f"Retried task: {activity['action']}")
+                    self.retry_requested.emit(task_id)
     
     def stop_task(self):
         print("[DEBUG] Stop button clicked")
@@ -794,7 +803,8 @@ Progress: {activity.get('progress', 0)}%
             activities = self.get_activity_data()
             if current_row < len(activities):
                 activity = activities[current_row]
-                
+                task_id = self._get_task_id(activity)
+
                 if activity['status'] == 'running':
                     # Simulate stopping the task
                     activity['status'] = 'stopped'
@@ -815,6 +825,7 @@ Progress: {activity.get('progress', 0)}%
                     self.retry_btn.setEnabled(True)  # Allow retry of stopped task
                     
                     self.logger.info(f"Stopped task: {activity['action']}")
+                    self.stop_requested.emit(task_id)
     
     def view_task_logs(self):
         print("[DEBUG] View Logs button clicked")
@@ -904,7 +915,7 @@ Progress: {activity.get('progress', 0)}%
         logs.append("=" * 80)
         logs.append(f"TASK LOG: {activity['action']}")
         logs.append("=" * 80)
-        logs.append(f"Task ID: TASK_{hash(activity['action']) % 10000:04d}")
+        logs.append(f"Task ID: {self._get_task_id(activity)}")
         logs.append(f"Status: {activity['status'].upper()}")
         logs.append(f"Type: {activity.get('type', 'Unknown')}")
         logs.append(f"Domain: {activity.get('domain', 'General')}")
