@@ -5,12 +5,37 @@ import tempfile
 import shutil
 import pytest
 
+# Ensure repo root is importable when running tests individually
+base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+if base_dir not in sys.path:
+    sys.path.insert(0, base_dir)
+
+# Alias for legacy package name used by some tests
+sys.modules.setdefault(
+    "CryptoFinanceCorpusBuilder",
+    types.ModuleType("CryptoFinanceCorpusBuilder"),
+)
+sys.modules.setdefault(
+    "CryptoFinanceCorpusBuilder.shared_tools",
+    __import__("CorpusBuilderApp.shared_tools", fromlist=["dummy"]),
+)
+
+try:
+    from dotenv import load_dotenv  # type: ignore
+except Exception:  # pragma: no cover - optional dependency
+    def load_dotenv(*args, **kwargs):
+        pass
+    stub = types.ModuleType("dotenv")
+    stub.load_dotenv = load_dotenv
+    sys.modules.setdefault("dotenv", stub)
+
 # Ensure the CorpusBuilderApp root is on the Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'CorpusBuilderApp'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
-if 'PySide6' not in sys.modules:
+if os.environ.get("PYTEST_QT_STUBS") == "1":
+    print("Loaded PySide6 stub")
     class _Signal:
         def __init__(self, *a, **k):
             self._slots = []
@@ -75,6 +100,34 @@ if 'PySide6' not in sys.modules:
     class QGroupBox(QWidget):
         def __init__(self, *a, **k):
             pass
+    class QFrame(QWidget):
+        pass
+    class QLineEdit(QWidget):
+        def text(self):
+            return ""
+        def setText(self, *a, **k):
+            pass
+    class QComboBox(QWidget):
+        def __init__(self, *a, **k):
+            self._text = ""
+        def addItem(self, *a, **k):
+            pass
+        def currentText(self):
+            return self._text
+        def setCurrentText(self, t):
+            self._text = t
+    class QGridLayout:
+        def addWidget(self, *a, **k):
+            pass
+    class QTextEdit(QWidget):
+        def toPlainText(self):
+            return ""
+        def setPlainText(self, *a, **k):
+            pass
+    class QTableWidget(QWidget):
+        pass
+    class QSplitter(QWidget):
+        pass
     class QSpinBox:
         def __init__(self, *a, **k):
             self._value = 0
@@ -145,6 +198,13 @@ if 'PySide6' not in sys.modules:
         QListWidget=QListWidget,
         QTreeView=QTreeView,
         QGroupBox=QGroupBox,
+        QFrame=QFrame,
+        QLineEdit=QLineEdit,
+        QComboBox=QComboBox,
+        QGridLayout=QGridLayout,
+        QTextEdit=QTextEdit,
+        QTableWidget=QTableWidget,
+        QSplitter=QSplitter,
         QFileDialog=QFileDialog,
         QMessageBox=QMessageBox,
         QSystemTrayIcon=QSystemTrayIcon,
