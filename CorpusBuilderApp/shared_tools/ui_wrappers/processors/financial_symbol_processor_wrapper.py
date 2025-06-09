@@ -82,6 +82,10 @@ class FinancialSymbolProcessorWrapper(BaseWrapper, ProcessorWrapperMixin):
             f"Financial symbol extraction completed: {total_symbols} symbols extracted from {len(results)} files"
         )
 
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass
+
 class FinancialSymbolWorkerThread(QThread):
     """Worker thread for financial symbol extraction processing."""
     

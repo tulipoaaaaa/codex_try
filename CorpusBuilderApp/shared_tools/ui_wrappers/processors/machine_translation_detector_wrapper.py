@@ -82,6 +82,10 @@ class MachineTranslationDetectorWrapper(BaseWrapper, ProcessorWrapperMixin):
             f"Machine translation detection completed: {translated_count} translated documents found in {len(results)} files"
         )
 
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass
+
 class MTDetectorWorkerThread(QThread):
     """Worker thread for machine translation detection processing."""
     

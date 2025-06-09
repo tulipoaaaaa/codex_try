@@ -192,3 +192,7 @@ class CorpusBalancerWrapper(BaseWrapper, ProcessorWrapperMixin):
 
         # Notify the UI about updates
         self.status_updated.emit("Updated collector configs based on imbalance analysis")
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass

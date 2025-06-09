@@ -74,6 +74,10 @@ class FormulaExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
             f"Formula extraction completed: {total_formulas} formulas extracted from {len(results)} files"
         )
 
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass
+
 class FormulaExtractorWorkerThread(QThread):
     """Worker thread for formula extraction processing."""
     

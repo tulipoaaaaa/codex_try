@@ -81,6 +81,10 @@ class LanguageConfidenceDetectorWrapper(BaseWrapper, ProcessorWrapperMixin):
             f"Language detection completed: {len(results)} files processed"
         )
 
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass
+
 class LanguageDetectorWorkerThread(QThread):
     """Worker thread for language detection processing."""
     

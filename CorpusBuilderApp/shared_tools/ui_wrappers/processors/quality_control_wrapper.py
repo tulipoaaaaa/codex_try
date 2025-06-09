@@ -87,7 +87,11 @@ class QualityControlWrapper(BaseWrapper, ProcessorWrapperMixin):
         
     def _on_status_updated(self, *args, **kwargs):
         pass
-        
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass
+
 class QCWorkerThread(QThread):
     """Worker thread for quality control processing."""
     
