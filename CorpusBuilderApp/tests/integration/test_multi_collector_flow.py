@@ -6,6 +6,8 @@ import pytest
 
 from shared_tools.project_config import ProjectConfig
 from shared_tools.storage.corpus_manager import CorpusManager
+from shared_tools.collectors.fred_collector import FREDCollector
+from shared_tools.collectors.github_collector import GitHubCollector
 
 
 def _write_yaml(path: Path, corpus_dir: Path) -> None:
@@ -19,13 +21,6 @@ def _write_yaml(path: Path, corpus_dir: Path) -> None:
 
 def test_run_fred_and_github_collectors(monkeypatch, tmp_path):
     """Run collectors sequentially using mocked APIs."""
-
-    import sys, importlib
-    sys.modules.pop("numpy", None)
-    import numpy as _real_numpy
-    sys.modules["numpy"] = _real_numpy
-    from shared_tools.collectors.fred_collector import FREDCollector
-    from shared_tools.collectors.github_collector import GitHubCollector
 
     corpus_root = tmp_path / "corpus"
     cfg_path = tmp_path / "cfg.yaml"
@@ -45,6 +40,22 @@ def test_run_fred_and_github_collectors(monkeypatch, tmp_path):
     cfg.metadata_dir = cfg.get_metadata_dir()
     cfg.log_dir = cfg.get_logs_dir()
     cfg.domain_configs = cfg.get("domains", {})
+
+    # Provide minimal pandas.DataFrame stub for collectors
+    import pandas as pd
+
+    class _DummyDF(list):
+        def to_csv(self, path, index=False):
+            import csv
+            if self:
+                with open(path, "w", newline="", encoding="utf-8") as fh:
+                    writer = csv.DictWriter(fh, fieldnames=self[0].keys())
+                    writer.writeheader()
+                    writer.writerows(self)
+            else:
+                Path(path).write_text("")
+
+    monkeypatch.setattr(pd, "DataFrame", lambda data: _DummyDF(data), raising=False)
 
     def fake_fred_api(self, endpoint, params=None):
         if endpoint == "series":
