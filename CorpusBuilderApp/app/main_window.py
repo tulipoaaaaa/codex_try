@@ -24,6 +24,7 @@ from ui.tabs.full_activity_tab import FullActivityTab
 from ui.dialogs.settings_dialog import SettingsDialog
 from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
 from shared_tools.services.activity_log_service import ActivityLogService
+from shared_tools.services.tab_audit_service import TabAuditService
 
 class CryptoCorpusMainWindow(QMainWindow):
     """Main application window"""
@@ -72,7 +73,14 @@ class CryptoCorpusMainWindow(QMainWindow):
         
         # Setup update timer
         self.setup_update_timer()
-        
+
+        # Run a startup audit of tab connections
+        try:
+            self.tab_audit_service = TabAuditService(self)
+            self.tab_audit_service.audit()
+        except Exception as exc:  # pragma: no cover - defensive
+            self.logger.error("Tab audit failed: %s", exc)
+
         self.logger.info("Main window initialized")
     
     def init_ui(self):
