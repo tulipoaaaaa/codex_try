@@ -102,7 +102,7 @@ sys.modules.setdefault("PIL", dummy_pil)
 sys.modules.setdefault("PIL.Image", dummy_image_mod)
 sys.modules.setdefault("PIL.ImageEnhance", dummy_enhance_mod)
 
-# Ensure the package root is on the Python path
+# Ensure the CorpusBuilderApp root is on the Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
