@@ -23,6 +23,7 @@ from ui.tabs.maintenance_tab import MaintenanceTab
 from ui.tabs.full_activity_tab import FullActivityTab
 from ui.dialogs.settings_dialog import SettingsDialog
 from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
+from shared_tools.services.activity_log_service import ActivityLogService
 
 class CryptoCorpusMainWindow(QMainWindow):
     """Main application window"""
@@ -36,7 +37,7 @@ class CryptoCorpusMainWindow(QMainWindow):
         self.logger = logging.getLogger(self.__class__.__name__)
 
         # Services and wrappers
-        self.activity_log_service = getattr(self.config, "activity_log_service", None)
+        self.activity_log_service = ActivityLogService()
         self.balancer_wrapper = CorpusBalancerWrapper(self.config)
         self.balancer_wrapper.balance_completed.connect(self.on_balance_completed)
         
@@ -238,6 +239,10 @@ class CryptoCorpusMainWindow(QMainWindow):
 
         if getattr(self, "configuration_tab", None) and hasattr(self.configuration_tab, 'configuration_saved'):
             self.configuration_tab.configuration_saved.connect(lambda _: self.config.save())
+            if self.activity_log_service:
+                self.configuration_tab.configuration_saved.connect(
+                    lambda _: self.activity_log_service.log("Configuration", "Settings saved")
+                )
 
         # Connect dashboard signals
         if getattr(self, "dashboard_tab", None):
@@ -397,8 +402,20 @@ class CryptoCorpusMainWindow(QMainWindow):
         self.logger.info("Main window closed")
 
     def on_balance_completed(self):
-        """Log completion of corpus rebalancing."""
-        if self.activity_log_service:
+        """Refresh collectors and log completion of corpus rebalancing."""
+        if getattr(self, "collectors_tab", None):
+            wrappers = getattr(self.collectors_tab, "collector_wrappers", {})
+            for wrapper in wrappers.values():
+                if hasattr(wrapper, "refresh_config"):
+                    try:
+                        wrapper.refresh_config()
+                    except Exception:
+                        pass
+            if self.activity_log_service:
+                self.activity_log_service.log(
+                    "Balancer", "Collectors refreshed after corpus balance"
+                )
+        elif self.activity_log_service:
             self.activity_log_service.log(
                 "Balancer",
                 "Corpus balancing completed and collector configs updated."
