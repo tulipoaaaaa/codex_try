@@ -613,30 +613,37 @@ class ProcessorsTab(QWidget):
     
     def apply_advanced_processing(self):
         # Enable/disable processors based on UI selections
-        wrapper_map = {
-            'deduplicator': self.enable_deduplication.isChecked(),
-            'domain': self.enable_domain_classification.isChecked(),
-            'financial': self.enable_financial_symbols.isChecked(),
-            'language': self.enable_language_confidence.isChecked(),
-            'mt_detector': self.enable_mt_detection.isChecked(),
-        }
+        
+        wrappers_to_run = []
+        mapping = [
+            ("deduplicator", self.enable_deduplication),
+            ("domain", self.enable_domain_classification),
+            ("financial", self.enable_financial_symbols),
+            ("language", self.enable_language_confidence),
+            ("mt_detector", self.enable_mt_detection),
+        ]
 
-        for key, flag in wrapper_map.items():
-            wrapper = self.processor_wrappers.get(key)
-            if wrapper and hasattr(wrapper, 'set_enabled'):
-                wrapper.set_enabled(flag)
-        
-        # Start a complex batch operation that applies multiple processors
-        self.advanced_status.setText("Starting advanced processing...")
+        # Enable/disable wrappers if supported and collect the ones to run
+        for name, checkbox in mapping:
+            wrapper = self.processor_wrappers.get(name)
+            if not wrapper:
+                continue
+            if hasattr(wrapper, "set_enabled"):
+                wrapper.set_enabled(checkbox.isChecked())
+            if checkbox.isChecked():
+                wrappers_to_run.append(wrapper)
+
+        if not wrappers_to_run:
+            self.advanced_status.setText("No advanced processors enabled")
+            self.advanced_progress_bar.setValue(0)
+            return
+
+        self._advanced_wrappers = wrappers_to_run
+        self._current_advanced_index = 0
+
         self.advanced_progress_bar.setValue(0)
-        
-        # TODO: Implement complex batch processing with multiple processors
-        # For now, just simulate a basic operation
-        self.advanced_status.setText("Advanced processing in progress...")
-        
-        # This would be done with proper processing in the real implementation
-        self.advanced_progress_bar.setValue(100)
-        self.advanced_status.setText("Advanced processing completed")
+        self.advanced_status.setText("Starting advanced processing...")
+        self._start_next_advanced_processor()
 
     def start_batch_processing(self):
         input_dir = self.input_dir_path.text()
@@ -744,6 +751,11 @@ class ProcessorsTab(QWidget):
     def stop_all_processors(self):
         for wrapper in self.processor_wrappers.values():
             wrapper.stop()
+
+        self._advanced_wrappers = []
+        self._current_advanced_index = 0
+        self.advanced_progress_bar.setValue(0)
+        self.advanced_status.setText("Advanced processing stopped")
             
         # Reset UI elements
         self.pdf_start_btn.setEnabled(True)
@@ -754,6 +766,49 @@ class ProcessorsTab(QWidget):
         self.batch_stop_btn.setEnabled(False)
         
         self.processing_status_label.setText("All processors stopped")
+
+    def _start_next_advanced_processor(self):
+        if self._current_advanced_index >= len(getattr(self, "_advanced_wrappers", [])):
+            self.advanced_progress_bar.setValue(100)
+            self.advanced_status.setText("Advanced processing completed")
+            self._advanced_wrappers = []
+            return
+
+        wrapper = self._advanced_wrappers[self._current_advanced_index]
+
+        if hasattr(wrapper, "progress_updated"):
+            wrapper.progress_updated.connect(self._update_advanced_progress)
+        if hasattr(wrapper, "status_updated"):
+            wrapper.status_updated.connect(self.advanced_status.setText)
+        if hasattr(wrapper, "batch_completed"):
+            wrapper.batch_completed.connect(self._on_advanced_wrapper_completed)
+        elif hasattr(wrapper, "completed"):
+            wrapper.completed.connect(self._on_advanced_wrapper_completed)
+
+        wrapper.start()
+
+    def _update_advanced_progress(self, value):
+        total = len(self._advanced_wrappers)
+        base = (self._current_advanced_index / total) * 100
+        step = value / total
+        self.advanced_progress_bar.setValue(int(base + step))
+
+    def _on_advanced_wrapper_completed(self, _results):
+        wrapper = self._advanced_wrappers[self._current_advanced_index]
+        try:
+            if hasattr(wrapper, "progress_updated"):
+                wrapper.progress_updated.disconnect(self._update_advanced_progress)
+            if hasattr(wrapper, "status_updated"):
+                wrapper.status_updated.disconnect(self.advanced_status.setText)
+            if hasattr(wrapper, "batch_completed"):
+                wrapper.batch_completed.disconnect(self._on_advanced_wrapper_completed)
+            elif hasattr(wrapper, "completed"):
+                wrapper.completed.disconnect(self._on_advanced_wrapper_completed)
+        except Exception:
+            pass
+
+        self._current_advanced_index += 1
+        self._start_next_advanced_processor()
 
     def run_batch_operation(self, operation_type):
         selected_files = self.get_selected_files()
