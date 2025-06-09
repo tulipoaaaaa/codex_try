@@ -39,57 +39,67 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         def emit(self, *a, **k):
             pass
 
-    qtcore = types.SimpleNamespace(
-        QObject=object,
-        Signal=lambda *a, **k: _DummySignal(),
-        QThread=object,
-        QTimer=object,
-        Slot=lambda *a, **k: lambda *a, **k: None,
-        QDir=object,
-        Property=object,
-        __version__="6.5.0",
-        qVersion=lambda: "6.5.0",
-        qDebug=lambda *a, **k: None,
-        qWarning=lambda *a, **k: None,
-        qCritical=lambda *a, **k: None,
-        qFatal=lambda *a, **k: None,
-        qInfo=lambda *a, **k: None,
-        qInstallMessageHandler=lambda *a, **k: None,
-    )
+    class _DummyModuleCore(types.ModuleType):
+        def __getattr__(self, name):
+            return object
 
-    qtwidgets = types.SimpleNamespace(
-        QApplication=type("QApplication", (), {
+    qtcore = _DummyModuleCore("PySide6.QtCore")
+    class _QObject:
+        def __init__(self, *a, **k):
+            pass
+
+    qtcore.QObject = _QObject
+    qtcore.Signal = lambda *a, **k: _DummySignal()
+    qtcore.QThread = object
+    qtcore.QTimer = object
+    qtcore.Slot = lambda *a, **k: (lambda *a, **k: None)
+    qtcore.QDir = object
+    qtcore.Property = object
+    qtcore.Qt = types.SimpleNamespace(
+        Orientation=types.SimpleNamespace(Vertical=0, Horizontal=1),
+        AlignmentFlag=types.SimpleNamespace(AlignCenter=0),
+    )
+    qtcore.__version__ = "6.5.0"
+    qtcore.qVersion = lambda: "6.5.0"
+    qtcore.qDebug = lambda *a, **k: None
+    qtcore.qWarning = lambda *a, **k: None
+    qtcore.qCritical = lambda *a, **k: None
+    qtcore.qFatal = lambda *a, **k: None
+    qtcore.qInfo = lambda *a, **k: None
+    qtcore.qInstallMessageHandler = lambda *a, **k: None
+
+    class _DummyModuleWidgets(types.ModuleType):
+        def __getattr__(self, name):
+            return object
+
+    qtwidgets = _DummyModuleWidgets("PySide6.QtWidgets")
+    class _QWidget:
+        def __init__(self, *a, **k):
+            pass
+
+    qtwidgets.QWidget = _QWidget
+    qtwidgets.QApplication = type(
+        "QApplication",
+        (),
+        {
             "instance": staticmethod(lambda: None),
             "__init__": lambda self, *a, **k: None,
-            "quit": lambda self: None
-        }),
-        QWidget=object,
-        QVBoxLayout=object,
-        QHBoxLayout=object,
-        QTabWidget=object,
-        QLabel=object,
-        QProgressBar=object,
-        QPushButton=object,
-        QCheckBox=object,
-        QSpinBox=object,
-        QListWidget=object,
-        QTreeView=object,
-        QGroupBox=object,
-        QFrame=object,
-        QLineEdit=object,
-        QComboBox=object,
-        QGridLayout=object,
-        QTextEdit=object,
-        QTableWidget=object,
-        QSplitter=object,
-        QFileDialog=object,
-        QMessageBox=object,
-        QSystemTrayIcon=object,
+            "quit": lambda self: None,
+        },
     )
 
-    qtgui = types.SimpleNamespace(QIcon=object)
+    class _DummyGui(types.ModuleType):
+        def __getattr__(self, name):
+            return object
+
+    qtgui = _DummyGui("PySide6.QtGui")
+    qtgui.QIcon = object
     qttest = types.SimpleNamespace(QTest=object, QSignalSpy=object)
     qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
+    class _DummyCharts(types.ModuleType):
+        def __getattr__(self, name):
+            return object
+    qtcharts = _DummyCharts("PySide6.QtCharts")
 
     sys.modules.setdefault("PySide6", types.SimpleNamespace(
         QtCore=qtcore,
@@ -103,6 +113,7 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
     sys.modules.setdefault("PySide6.QtGui", qtgui)
     sys.modules.setdefault("PySide6.QtTest", qttest)
     sys.modules.setdefault("PySide6.QtMultimedia", qtmultimedia)
+    sys.modules.setdefault("PySide6.QtCharts", qtcharts)
 
 # Mock external modules
 for mod in [
@@ -113,6 +124,7 @@ for mod in [
     "matplotlib",
     "matplotlib.pyplot",
     "seaborn",
+    "pandas",
 ]:
     sys.modules.setdefault(mod, types.ModuleType(mod))
 
