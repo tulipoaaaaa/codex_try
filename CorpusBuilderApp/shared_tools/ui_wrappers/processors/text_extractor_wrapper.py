@@ -76,6 +76,7 @@ class TextExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
     def __init__(self, config):
         super().__init__(config)
         self.extractor = None
+        self.worker_threads = 4
         
     def _create_target_object(self):
         """Create Text extractor instance"""
@@ -83,12 +84,18 @@ class TextExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
             self.extractor = TextExtractor(
                 input_dir=str(self.config.raw_data_dir),
                 output_dir=str(self.config.nonpdf_extracted_dir),
-                num_workers=4
+                num_workers=self.worker_threads
             )
         return self.extractor
         
     def _get_operation_type(self):
         return "extract_text"
+
+    def set_worker_threads(self, count: int):
+        """Set the number of worker threads for processing"""
+        self.worker_threads = count
+        if self.extractor:
+            self.extractor.num_workers = count
         
     def start_batch_processing(self, files_to_process: List[str]):
         """Start batch processing of non-PDF files"""
