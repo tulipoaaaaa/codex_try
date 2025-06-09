@@ -154,6 +154,11 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         pass
     class QSplitter(QWidget):
         pass
+    class QScrollArea(QWidget):
+        def setWidgetResizable(self, *a, **k):
+            pass
+        def setHorizontalScrollBarPolicy(self, *a, **k):
+            pass
     class QSpinBox:
         def __init__(self, *a, **k):
             self._value = 0
@@ -176,12 +181,59 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
             return types.SimpleNamespace(text=lambda: self._items[i], isSelected=lambda: True)
     class QTreeView(QWidget):
         pass
+    class QTableWidgetItem:
+        def __init__(self, *a, **k):
+            pass
+    class QDateEdit(QWidget):
+        def setDate(self, *a, **k):
+            pass
+        def setDisplayFormat(self, *a, **k):
+            pass
+        def setCalendarPopup(self, *a, **k):
+            pass
+    class QMenu(QWidget):
+        def addAction(self, *a, **k):
+            pass
     class QTabWidget(QWidget):
         def addTab(self, *a, **k):
             pass
     class QFileDialog: pass
     class QMessageBox: pass
     class QSystemTrayIcon:
+        def __init__(self, *a, **k):
+            pass
+    class QInputDialog(QWidget):
+        pass
+    class QSlider(QWidget):
+        pass
+    class QHeaderView(QWidget):
+        Stretch = 0
+        ResizeToContents = 1
+        def setSectionResizeMode(self, *a, **k):
+            pass
+    class QFont:
+        pass
+    class QSizePolicy:
+        Expanding = 0
+        Preferred = 1
+    class QFileSystemModel(QWidget):
+        pass
+    class QDate:
+        currentDate = staticmethod(lambda: None)
+        def addDays(self, *a):
+            return self
+    class QDialog(QWidget):
+        pass
+    class QColor:
+        def __init__(self, *a, **k):
+            pass
+    class QBrush:
+        def __init__(self, *a, **k):
+            pass
+    class QTextCharFormat:
+        def __init__(self, *a, **k):
+            pass
+    class QMargins:
         def __init__(self, *a, **k):
             pass
     class QUrl: pass
@@ -200,6 +252,8 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         Slot=Slot,
         QMutex=object,
         QUrl=QUrl,
+        QDate=QDate,
+        QMargins=QMargins,
         qDebug=lambda *a, **k: None,
         qWarning=lambda *a, **k: None,
         qCritical=lambda *a, **k: None,
@@ -210,39 +264,51 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         __version__="6.5.0",
         qVersion=lambda: "6.5.0",
     )
-    qtwidgets = _DummyModule("PySide6.QtWidgets")
-    qtwidgets.QApplication = QApplication
-    qtwidgets.QWidget = QWidget
-    qtwidgets.QVBoxLayout = QVBoxLayout
-    qtwidgets.QHBoxLayout = QVBoxLayout
-    qtwidgets.QTabWidget = QTabWidget
-    qtwidgets.QLabel = QLabel
-    qtwidgets.QProgressBar = QProgressBar
-    qtwidgets.QPushButton = QPushButton
-    qtwidgets.QCheckBox = QCheckBox
-    qtwidgets.QSpinBox = QSpinBox
-    qtwidgets.QListWidget = QListWidget
-    qtwidgets.QTreeView = QTreeView
-    qtwidgets.QGroupBox = QGroupBox
-    qtwidgets.QFrame = QFrame
-    qtwidgets.QScrollArea = QScrollArea
-    qtwidgets.QMenu = QMenu
-    qtwidgets.QLineEdit = QLineEdit
-    qtwidgets.QDateEdit = QDateEdit
-    qtwidgets.QComboBox = QComboBox
-    qtwidgets.QGridLayout = QGridLayout
-    qtwidgets.QTextEdit = QTextEdit
-    qtwidgets.QTableWidget = QTableWidget
-    qtwidgets.QTableWidgetItem = QTableWidgetItem
-    qtwidgets.QHeaderView = QHeaderView
-    qtwidgets.QSplitter = QSplitter
-    qtwidgets.QFileDialog = QFileDialog
-    qtwidgets.QMessageBox = QMessageBox
-    qtwidgets.QSystemTrayIcon = QSystemTrayIcon
+    
+    qtwidgets = types.SimpleNamespace(
+        QApplication=QApplication,
+        QWidget=QWidget,
+        QVBoxLayout=QVBoxLayout,
+        QHBoxLayout=QVBoxLayout,
+        QTabWidget=QTabWidget,
+        QLabel=QLabel,
+        QProgressBar=QProgressBar,
+        QPushButton=QPushButton,
+        QCheckBox=QCheckBox,
+        QSpinBox=QSpinBox,
+        QListWidget=QListWidget,
+        QTreeView=QTreeView,
+        QGroupBox=QGroupBox,
+        QFrame=QFrame,
+        QLineEdit=QLineEdit,
+        QComboBox=QComboBox,
+        QGridLayout=QGridLayout,
+        QTextEdit=QTextEdit,
+        QTableWidget=QTableWidget,
+        QTableWidgetItem=QTableWidgetItem,
+        QSplitter=QSplitter,
+        QScrollArea=QScrollArea,
+        QFileDialog=QFileDialog,
+        QMessageBox=QMessageBox,
+        QSystemTrayIcon=QSystemTrayIcon,
+        QInputDialog=QInputDialog,
+        QSlider=QSlider,
+        QHeaderView=QHeaderView,
+        QSizePolicy=QSizePolicy,
+        QDateEdit=QDateEdit,
+        QMenu=QMenu,
+        QFileSystemModel=QFileSystemModel,
+        QDialog=QDialog,
+    )
+    qtgui = types.SimpleNamespace(
+        QIcon=object,
+        QFont=QFont,
+        QSizePolicy=QSizePolicy,
+        QColor=QColor,
+        QTextCharFormat=QTextCharFormat,
+        QBrush=QBrush,
+    )
 
-    qtgui = _DummyModule("PySide6.QtGui")
-    qtgui.QIcon = object
-    qtcharts = _DummyModule("PySide6.QtCharts")
     qttest = types.SimpleNamespace(QTest=object)
     qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
     sys.modules['PySide6'] = types.SimpleNamespace(

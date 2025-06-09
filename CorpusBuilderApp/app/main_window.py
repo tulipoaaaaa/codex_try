@@ -19,11 +19,11 @@ from ui.tabs.balancer_tab import BalancerTab
 from ui.tabs.analytics_tab import AnalyticsTab
 from ui.tabs.configuration_tab import ConfigurationTab
 from ui.tabs.logs_tab import LogsTab
-from ui.tabs.maintenance_tab import MaintenanceTab
 from ui.tabs.full_activity_tab import FullActivityTab
 from ui.dialogs.settings_dialog import SettingsDialog
 from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
 from shared_tools.services.activity_log_service import ActivityLogService
+from shared_tools.services.task_history_service import TaskHistoryService
 from shared_tools.services.tab_audit_service import TabAuditService
 
 class CryptoCorpusMainWindow(QMainWindow):
@@ -43,6 +43,7 @@ class CryptoCorpusMainWindow(QMainWindow):
 
         # Services and wrappers
         self.activity_log_service = ActivityLogService()
+        self.task_history_service = TaskHistoryService()
         self.balancer_wrapper = CorpusBalancerWrapper(self.config)
         self.balancer_wrapper.balance_completed.connect(self.on_balance_completed)
         
@@ -55,7 +56,6 @@ class CryptoCorpusMainWindow(QMainWindow):
         self.analytics_tab = None
         self.configuration_tab = None
         self.logs_tab = None
-        self.maintenance_tab = None
         self.full_activity_tab = None
 
         # Settings dialog for application preferences
@@ -155,11 +155,6 @@ class CryptoCorpusMainWindow(QMainWindow):
             self.logs_tab = LogsTab(self.config)
             self.logger.debug("LogsTab initialized successfully")
             self.tab_widget.addTab(self.logs_tab, "📝 Logs")
-            # Add Maintenance tab
-            self.logger.debug("Initializing MaintenanceTab...")
-            self.maintenance_tab = MaintenanceTab(parent=self)
-            self.logger.debug("MaintenanceTab initialized successfully")
-            self.tab_widget.addTab(self.maintenance_tab, "🛠️ Maintenance")
             self.logger.info("All tabs initialized successfully")
         except Exception as e:
             self.logger.error(f"Failed to initialize tabs: {e}")
@@ -388,7 +383,11 @@ class CryptoCorpusMainWindow(QMainWindow):
             
             # Create new Full Activity tab
             if not self.full_activity_tab:
-                self.full_activity_tab = FullActivityTab(self.config)
+                self.full_activity_tab = FullActivityTab(
+                self.config,
+                activity_log_service=self.activity_log_service,
+                task_history_service=self.task_history_service,
+                )
                 self.full_activity_tab.retry_requested.connect(self.on_retry_requested)
                 self.full_activity_tab.stop_requested.connect(self.on_stop_requested)
             

@@ -11,12 +11,16 @@ from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
 from app.ui.widgets.status_dot import StatusDot
 from app.ui.tabs.full_activity_tab import FullActivityTab
-from shared_tools.services.activity_log_service import ActivityLogService
+from shared_tools.services.task_history_service import TaskHistoryService
 
 @pytest.fixture
 def activity_tab(qapp, mock_project_config, qtbot):
-    service = ActivityLogService()
-    tab = FullActivityTab(mock_project_config, activity_log_service=service)
+    service = TaskHistoryService()
+    tab = FullActivityTab(
+        mock_project_config,
+        activity_log_service=None,
+        task_history_service=service,
+    )
     qtbot.addWidget(tab)
     return tab, service
 
@@ -53,17 +57,8 @@ def test_status_dot_styles(qtbot):
 def test_activity_table_updates(activity_tab, qtbot):
     tab, service = activity_tab
     initial = tab.activity_table.rowCount()
-    service.log(
-        "tester",
-        "New Task",
-        {
-            "status": "success",
-            "duration_seconds": 1,
-            "progress": 100,
-            "type": "Processing",
-            "domain": "Test",
-        },
-    )
+    service.add_task("t1", {"name": "New Task", "status": "running"})
+    service.update_task("t1", status="success", progress=100, duration_seconds=1)
 
     qtbot.waitUntil(lambda: tab.activity_table.rowCount() == initial + 1, timeout=1000)
 
