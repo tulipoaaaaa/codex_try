@@ -613,21 +613,18 @@ class ProcessorsTab(QWidget):
     
     def apply_advanced_processing(self):
         # Enable/disable processors based on UI selections
-        self.processor_wrappers['deduplicator'].set_enabled(
-            self.enable_deduplication.isChecked()
-        )
-        self.processor_wrappers['domain'].set_enabled(
-            self.enable_domain_classification.isChecked()
-        )
-        self.processor_wrappers['financial'].set_enabled(
-            self.enable_financial_symbols.isChecked()
-        )
-        self.processor_wrappers['language'].set_enabled(
-            self.enable_language_confidence.isChecked()
-        )
-        self.processor_wrappers['mt_detector'].set_enabled(
-            self.enable_mt_detection.isChecked()
-        )
+        wrapper_map = {
+            'deduplicator': self.enable_deduplication.isChecked(),
+            'domain': self.enable_domain_classification.isChecked(),
+            'financial': self.enable_financial_symbols.isChecked(),
+            'language': self.enable_language_confidence.isChecked(),
+            'mt_detector': self.enable_mt_detection.isChecked(),
+        }
+
+        for key, flag in wrapper_map.items():
+            wrapper = self.processor_wrappers.get(key)
+            if wrapper and hasattr(wrapper, 'set_enabled'):
+                wrapper.set_enabled(flag)
         
         # Start a complex batch operation that applies multiple processors
         self.advanced_status.setText("Starting advanced processing...")
