@@ -8,6 +8,15 @@ except Exception:  # pragma: no cover - PySide6 unavailable
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
 from app.ui.widgets.status_dot import StatusDot
+from app.ui.tabs.full_activity_tab import FullActivityTab
+from shared_tools.services.activity_log_service import ActivityLogService
+
+@pytest.fixture
+def activity_tab(qapp, mock_project_config, qtbot):
+    service = ActivityLogService()
+    tab = FullActivityTab(mock_project_config, activity_log_service=service)
+    qtbot.addWidget(tab)
+    return tab, service
 
 
 def test_cardwrapper_title(qtbot):
@@ -37,4 +46,22 @@ def test_status_dot_styles(qtbot):
         widget = StatusDot(status, status)
         qtbot.addWidget(widget)
         assert widget.label.objectName() == obj_name
+
+
+def test_activity_table_updates(activity_tab, qtbot):
+    tab, service = activity_tab
+    initial = tab.activity_table.rowCount()
+    service.log(
+        "tester",
+        "New Task",
+        {
+            "status": "success",
+            "duration_seconds": 1,
+            "progress": 100,
+            "type": "Processing",
+            "domain": "Test",
+        },
+    )
+
+    qtbot.waitUntil(lambda: tab.activity_table.rowCount() == initial + 1, timeout=1000)
 
