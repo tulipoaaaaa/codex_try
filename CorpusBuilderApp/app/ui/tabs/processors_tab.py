@@ -306,6 +306,7 @@ class ProcessorsTab(QWidget):
         batch_layout.addWidget(self.apply_to_all_btn)
         
         self.apply_to_selected_btn = QPushButton("Apply to Selected Domain")
+        self.apply_to_selected_btn.clicked.connect(self.apply_selected_domain)
         batch_layout.addWidget(self.apply_to_selected_btn)
         
         layout.addWidget(batch_group)
@@ -640,6 +641,14 @@ class ProcessorsTab(QWidget):
         # This would be done with proper processing in the real implementation
         self.advanced_progress_bar.setValue(100)
         self.advanced_status.setText("Advanced processing completed")
+
+    @pyqtSlot()
+    def apply_selected_domain(self):
+        """Apply advanced processing to a user-selected domain."""
+        # Placeholder for more complex domain-specific logic
+        self.advanced_status.setText(
+            "Processing selected domain... (not yet implemented)"
+        )
 
     def start_batch_processing(self):
         input_dir = self.input_dir_path.text()
