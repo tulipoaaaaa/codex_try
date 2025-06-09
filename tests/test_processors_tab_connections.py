@@ -1,5 +1,6 @@
 import sys
 import types
+import pytest
 
 from PySide6.QtWidgets import QApplication
 
@@ -27,6 +28,8 @@ class_names = {
 for name, cls_name in class_names.items():
     mod = types.ModuleType(name)
     setattr(mod, cls_name, type(cls_name, (), {}))
+    if name == 'shared_tools.ui_wrappers.processors.domain_classifier_wrapper':
+        setattr(mod, 'DomainClassifierWorkerThread', type('DomainClassifierWorkerThread', (), {}))
     sys.modules[name] = mod
 
 # Stub NotificationManager to avoid heavy UI dependencies
@@ -53,3 +56,11 @@ def test_selected_domain_button_connected(monkeypatch):
 
     assert hasattr(tab.apply_to_selected_btn.clicked, "_slots")
     assert tab.apply_selected_domain in tab.apply_to_selected_btn.clicked._slots
+
+
+@pytest.fixture(autouse=True)
+def _cleanup_module():
+    yield
+    for name in class_names:
+        sys.modules.pop(name, None)
+    sys.modules.pop('app.ui.tabs.corpus_manager_tab', None)

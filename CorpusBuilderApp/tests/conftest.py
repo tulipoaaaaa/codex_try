@@ -12,15 +12,6 @@ base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if base_dir not in sys.path:
     sys.path.insert(0, base_dir)
 
-# Alias for compatibility with CryptoCorpusBuilder imports
-sys.modules.setdefault(
-    "CryptoCorpusBuilder",
-    types.ModuleType("CryptoCorpusBuilder"),
-)
-sys.modules.setdefault(
-    "CryptoCorpusBuilder.shared_tools",
-    __import__("CorpusBuilderApp.shared_tools", fromlist=["dummy"]),
-)
 
 try:
     from dotenv import load_dotenv  # type: ignore
