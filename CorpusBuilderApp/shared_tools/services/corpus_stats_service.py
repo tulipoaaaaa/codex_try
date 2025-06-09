@@ -59,7 +59,7 @@ class CorpusStatsService(QObject):
 
         if stats:
             self.stats = stats
-            self.stats_updated.emit(stats)
+        self.stats_updated.emit(stats)
 
     # ------------------------------------------------------------------
     def get_domain_summary(self) -> Dict[str, int]:
@@ -78,4 +78,22 @@ class CorpusStatsService(QObject):
                 else:
                     count = int(data) if isinstance(data, (int, float)) else 0
                 summary[domain] = count
+        return summary
+
+    # ------------------------------------------------------------------
+    def get_domain_size_summary(self) -> Dict[str, float]:
+        """Return mapping of domain name to size in MB."""
+        domains = self.stats.get("domains", {}) if isinstance(self.stats, dict) else {}
+        summary: Dict[str, float] = {}
+        if isinstance(domains, dict):
+            for domain, data in domains.items():
+                if isinstance(data, dict):
+                    size = (
+                        data.get("size_mb")
+                        or data.get("total_size_mb")
+                        or 0
+                    )
+                else:
+                    size = float(data) if isinstance(data, (int, float)) else 0.0
+                summary[domain] = float(size)
         return summary
