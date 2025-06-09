@@ -35,13 +35,18 @@ class FREDWrapper(BaseWrapper, CollectorWrapperMixin):
         super().start(**kwargs)
 
     def refresh_config(self):
-        """Re-apply configuration values from :class:`ProjectConfig`. Safe to call at any time."""
-        config = self.project_config.get(f"collectors.{self.name}", {})
-        for key, value in config.items():
+        """Reload series IDs and API key from configuration."""
+        cfg = self.config.get(f"collectors.{self.name}", {}) or {}
+        for key, value in cfg.items():
             method = f"set_{key}"
             if hasattr(self, method):
                 try:
                     getattr(self, method)(value)
                 except Exception:
-                    pass
+                    continue
+
+        if self.collector:
+            api_key = self.config.get("api_keys.fred_key")
+            if api_key:
+                self.collector.api_key = api_key
 
