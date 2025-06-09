@@ -532,6 +532,32 @@ class DashboardTab(QWidget):
             btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
             btn.clicked.connect(slot)
             quick_actions_layout.addWidget(btn)
+
+        # Rebalance Now quick action
+        self.rebalance_now_btn = QPushButton("Rebalance Now")
+        self.rebalance_now_btn.setObjectName("action-btn")
+        self.rebalance_now_btn.setStyleSheet("""
+                QPushButton[objectName="action-btn"] {
+                    background-color: #32B8C6;
+                    color: white;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    font-weight: 600;
+                    padding: 12px 16px;
+                }
+                QPushButton[objectName="action-btn"]:hover {
+                    background-color: #2DA6B2;
+                    transform: translateY(-1px);
+                }
+                QPushButton[objectName="action-btn"]:pressed {
+                    background-color: #248995;
+                }
+            """)
+        self.rebalance_now_btn.setFixedHeight(40)
+        self.rebalance_now_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
+        self.rebalance_now_btn.clicked.connect(self.rebalance_requested.emit)
+        quick_actions_layout.addWidget(self.rebalance_now_btn)
         return quick_actions_card
 
     def create_corpus_health_widget(self):
