@@ -1,9 +1,174 @@
-import importlib.util
-import pathlib
+# File: tests/conftest.py
+import sys
+import types
+import os
+import pytest
+import tempfile
+import shutil
+import json
 
-shared_path = pathlib.Path(__file__).resolve().parents[2] / "tests" / "conftest.py"
-spec = importlib.util.spec_from_file_location("conftest_shared", shared_path)
-mod = importlib.util.module_from_spec(spec)
-spec.loader.exec_module(mod)
-mod.__file__ = __file__
-globals().update(mod.__dict__)
+# Provide lightweight Qt stubs if PySide6 is unavailable
+class _DummySignal:
+    def emit(self, *a, **k):
+        pass
+
+qtcore = types.SimpleNamespace(
+    QObject=object,
+    Signal=lambda *a, **k: _DummySignal(),
+    QThread=object,
+    QTimer=object,
+    Slot=lambda *a, **k: lambda *a, **k: None,
+    QDir=object,
+    Property=object,
+    __version__="6.5.0",
+    qVersion=lambda: "6.5.0",
+    qDebug=lambda *a, **k: None,
+    qWarning=lambda *a, **k: None,
+    qCritical=lambda *a, **k: None,
+    qFatal=lambda *a, **k: None,
+    qInfo=lambda *a, **k: None,
+    qInstallMessageHandler=lambda *a, **k: None,
+)
+
+qtwidgets = types.SimpleNamespace(
+    QApplication=type("QApplication", (), {
+        "instance": staticmethod(lambda: None),
+        "__init__": lambda self, *a, **k: None,
+        "quit": lambda self: None
+    }),
+    QWidget=object,
+    QVBoxLayout=object,
+    QHBoxLayout=object,
+    QTabWidget=object,
+    QLabel=object,
+    QProgressBar=object,
+    QPushButton=object,
+    QCheckBox=object,
+    QSpinBox=object,
+    QListWidget=object,
+    QTreeView=object,
+    QGroupBox=object,
+    QFileDialog=object,
+    QMessageBox=object,
+    QSystemTrayIcon=object,
+)
+
+qtgui = types.SimpleNamespace(QIcon=object)
+qttest = types.SimpleNamespace(QTest=object, QSignalSpy=object)
+qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
+
+sys.modules.setdefault("PySide6", types.SimpleNamespace(
+    QtCore=qtcore,
+    QtWidgets=qtwidgets,
+    QtGui=qtgui,
+    QtTest=qttest
+))
+sys.modules.setdefault("PySide6.QtCore", qtcore)
+sys.modules.setdefault("PySide6.QtWidgets", qtwidgets)
+sys.modules.setdefault("PySide6.QtGui", qtgui)
+sys.modules.setdefault("PySide6.QtTest", qttest)
+sys.modules.setdefault("PySide6.QtMultimedia", qtmultimedia)
+
+# Mock external modules
+for mod in [
+    "fitz",
+    "pytesseract",
+    "cv2",
+    "numpy",
+    "matplotlib",
+    "matplotlib.pyplot",
+    "seaborn",
+]:
+    sys.modules.setdefault(mod, types.ModuleType(mod))
+
+# Mock langdetect
+if "langdetect" not in sys.modules:
+    langdetect = types.ModuleType("langdetect")
+    langdetect.detect_langs = lambda *a, **k: []
+    langdetect.LangDetectException = Exception
+    sys.modules["langdetect"] = langdetect
+
+# Mock PIL modules
+dummy_pil = types.ModuleType("PIL")
+dummy_image_mod = types.ModuleType("PIL.Image")
+class DummyImage: ...
+dummy_image_mod.Image = DummyImage
+dummy_enhance_mod = types.ModuleType("PIL.ImageEnhance")
+class DummyEnhance: ...
+dummy_enhance_mod.ImageEnhance = DummyEnhance
+dummy_pil.Image = dummy_image_mod
+dummy_pil.ImageEnhance = dummy_enhance_mod
+sys.modules.setdefault("PIL", dummy_pil)
+sys.modules.setdefault("PIL.Image", dummy_image_mod)
+sys.modules.setdefault("PIL.ImageEnhance", dummy_enhance_mod)
+
+# Add the app directory to the Python path
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'app'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'shared_tools'))
+
+from PySide6.QtWidgets import QApplication
+from PySide6.QtCore import QDir
+
+@pytest.fixture(scope="session")
+def qapp():
+    """Create a QApplication instance for the test session."""
+    app = QApplication.instance()
+    if app is None:
+        app = QApplication([])
+    yield app
+    app.quit()
+
+@pytest.fixture
+def temp_dir():
+    """Create a temporary directory for testing."""
+    temp_path = tempfile.mkdtemp()
+    yield temp_path
+    shutil.rmtree(temp_path)
+
+@pytest.fixture
+def mock_project_config(temp_dir):
+    """Create a mock project configuration for testing."""
+    class DummyConfig:
+        def __init__(self, base):
+            self.base = base
+            self.config = {
+                'directories': {
+                    'corpus_root': base,
+                    'raw_data': os.path.join(base, 'raw'),
+                    'processed_data': os.path.join(base, 'processed'),
+                    'metadata': os.path.join(base, 'metadata'),
+                    'logs': os.path.join(base, 'logs'),
+                }
+            }
+
+        def get_directory(self, name):
+            return self.config['directories'][name]
+
+    cfg = DummyConfig(temp_dir)
+    for path in cfg.config['directories'].values():
+        os.makedirs(path, exist_ok=True)
+
+    return cfg
+
+@pytest.fixture
+def sample_files(temp_dir):
+    """Create sample files for testing."""
+    files = {}
+
+    text_file = os.path.join(temp_dir, 'sample.txt')
+    with open(text_file, 'w') as f:
+        f.write("This is a sample text file for testing.")
+    files['text'] = text_file
+
+    metadata_file = os.path.join(temp_dir, 'sample_metadata.json')
+    metadata = {
+        'title': 'Sample Document',
+        'author': 'Test Author',
+        'year': 2023,
+        'domain': 'Risk Management'
+    }
+    with open(metadata_file, 'w') as f:
+        json.dump(metadata, f)
+    files['metadata'] = metadata_file
+
+    return files
