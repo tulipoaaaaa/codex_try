@@ -1,5 +1,7 @@
 import pytest
 
+from PySide6.QtCore import Qt
+
 try:
     from PySide6.QtWidgets import QApplication, QLabel
 except Exception:  # pragma: no cover - PySide6 unavailable
@@ -59,4 +61,49 @@ def test_activity_table_updates(activity_tab, qtbot):
     service.update_task("t1", status="success", progress=100, duration_seconds=1)
 
     qtbot.waitUntil(lambda: tab.activity_table.rowCount() == initial + 1, timeout=1000)
+
+
+def test_retry_stop_signals(activity_tab, qtbot):
+    tab, service = activity_tab
+    service.log(
+        "tester",
+        "Fail Task",
+        {
+            "status": "error",
+            "duration_seconds": 1,
+            "progress": 0,
+            "type": "Processing",
+            "domain": "Test",
+            "task_id": "task1",
+        },
+    )
+    service.log(
+        "tester",
+        "Run Task",
+        {
+            "status": "running",
+            "duration_seconds": 2,
+            "progress": 50,
+            "type": "Processing",
+            "domain": "Test",
+            "task_id": "task2",
+        },
+    )
+
+    qtbot.waitUntil(lambda: tab.activity_table.rowCount() >= 2, timeout=1000)
+
+    results = {}
+    tab.retry_requested.connect(lambda tid: results.setdefault("retry", tid))
+    tab.stop_requested.connect(lambda tid: results.setdefault("stop", tid))
+
+    tab.activity_table.selectRow(0)
+    qtbot.waitUntil(lambda: tab.retry_btn.isEnabled(), timeout=1000)
+    qtbot.mouseClick(tab.retry_btn, Qt.MouseButton.LeftButton)
+
+    tab.activity_table.selectRow(1)
+    qtbot.waitUntil(lambda: tab.stop_btn.isEnabled(), timeout=1000)
+    qtbot.mouseClick(tab.stop_btn, Qt.MouseButton.LeftButton)
+
+    assert results.get("retry") == "task1"
+    assert results.get("stop") == "task2"
 
