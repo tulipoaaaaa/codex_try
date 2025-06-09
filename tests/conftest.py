@@ -128,6 +128,8 @@ if 'PySide6' not in sys.modules:
         qInfo=lambda *a, **k: None,
         qInstallMessageHandler=lambda *a, **k: None,
         Property=object,
+        __version__="6.5.0",
+        qVersion=lambda: "6.5.0",
     )
     qtwidgets = types.SimpleNamespace(
         QApplication=QApplication,
@@ -148,8 +150,8 @@ if 'PySide6' not in sys.modules:
         QSystemTrayIcon=QSystemTrayIcon,
     )
     qtgui = types.SimpleNamespace(QIcon=object)
-    qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
     qttest = types.SimpleNamespace(QTest=object)
+    qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
     sys.modules['PySide6'] = types.SimpleNamespace(
         QtCore=qtcore,
         QtWidgets=qtwidgets,
@@ -159,6 +161,7 @@ if 'PySide6' not in sys.modules:
     sys.modules['PySide6.QtCore'] = qtcore
     sys.modules['PySide6.QtWidgets'] = qtwidgets
     sys.modules['PySide6.QtGui'] = qtgui
+    sys.modules['PySide6.QtTest'] = qttest
     sys.modules['PySide6.QtMultimedia'] = qtmultimedia
     sys.modules['PySide6.QtTest'] = qttest
 

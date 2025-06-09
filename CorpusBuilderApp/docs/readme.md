@@ -1,6 +1,6 @@
 # CryptoFinance Corpus Builder
 
-A professional-grade PyQt6 desktop application for building, managing, and analyzing large-scale cryptocurrency research corpora.
+A professional-grade PySide6 desktop application for building, managing, and analyzing large-scale cryptocurrency research corpora.
 
 ---
 
