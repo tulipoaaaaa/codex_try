@@ -48,7 +48,7 @@ thread_local = threading.local()
 def get_worker_temp_dir():
     """Get unique temp directory for this worker thread."""
     if not hasattr(thread_local, 'temp_dir'):
-        base_temp = "G:/ai_trading_dev/CryptoFinanceCorpusBuilder/temp_workers"
+        base_temp = "G:/ai_trading_dev/CryptoCorpusBuilder/temp_workers"
         thread_id = threading.get_ident()
         worker_id = f"pdf_worker_{thread_id}_{uuid.uuid4().hex[:8]}"
         unique_dir = os.path.join(base_temp, worker_id)
@@ -73,7 +73,7 @@ def worker_initializer():
     if gs_bin not in current_path:
         os.environ["PATH"] = gs_bin + os.pathsep + current_path
     worker_pid = os.getpid()
-    base_temp = "G:/ai_trading_dev/CryptoFinanceCorpusBuilder/temp_workers"
+    base_temp = "G:/ai_trading_dev/CryptoCorpusBuilder/temp_workers"
     unique_temp = os.path.join(base_temp, f"pdf_worker_{worker_pid}_{uuid.uuid4().hex[:8]}")
     os.makedirs(unique_temp, exist_ok=True)
     os.environ['TEMP'] = unique_temp
@@ -170,7 +170,7 @@ DOMAIN_THRESHOLDS = {
 }
 
 # --- Logging ---
-log_dir = Path("G:/ai_trading_dev/CryptoFinanceCorpusBuilder/logs")
+log_dir = Path("G:/ai_trading_dev/CryptoCorpusBuilder/logs")
 log_dir.mkdir(parents=True, exist_ok=True)
 log_file = log_dir / "batch_text_extractor_enhanced_prerefactor.log"
 logging.basicConfig(
@@ -923,7 +923,7 @@ def cleanup_worker_temp_dirs():
     """Clean up temporary directories created by workers."""
     try:
         import glob
-        base_temp = "G:/ai_trading_dev/CryptoFinanceCorpusBuilder/temp_workers"
+        base_temp = "G:/ai_trading_dev/CryptoCorpusBuilder/temp_workers"
         worker_dirs = glob.glob(os.path.join(base_temp, "pdf_worker_*") )
         for worker_dir in worker_dirs:
             try:

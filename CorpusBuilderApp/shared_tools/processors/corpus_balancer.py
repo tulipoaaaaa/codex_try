@@ -1,4 +1,4 @@
-# CryptoFinanceCorpusBuilder/processors/corpus_balancer.py
+# CryptoCorpusBuilder/processors/corpus_balancer.py
 """
 Corpus Balancer Module - Integrates with existing pipeline architecture
 Analyzes corpus balance, identifies imbalances, and provides rebalancing recommendations

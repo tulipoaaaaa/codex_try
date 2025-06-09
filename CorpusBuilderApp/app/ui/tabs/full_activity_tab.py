@@ -1,5 +1,5 @@
 """
-Full Activity Tab for CryptoFinance Corpus Builder
+Full Activity Tab for Crypto Corpus Builder
 Comprehensive activity monitoring with statistics, runtime tracking, and operational metrics
 """
 

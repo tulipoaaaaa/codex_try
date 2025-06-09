@@ -1,5 +1,5 @@
 @echo off
-REM CryptoFinance Corpus Builder v3 - Windows Launcher
+REM Crypto Corpus Builder v3 - Windows Launcher
 REM (Activates your preferred venv, then runs the app)
 
 call G:\venv312\Scripts\Activate.ps1
