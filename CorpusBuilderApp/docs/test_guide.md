@@ -23,32 +23,32 @@ The table below lists all test modules and the directories or inputs they expect
 
 | Test File | Required Folder or Input | Description |
 |-----------|-------------------------|-------------|
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_annas_library_collector.py | AA_ACCOUNT_COOKIE env var, config/test_config.yaml | Downloads PDFs from Anna's Archive |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_api_collector.py | None (uses temp dirs) | Exercises generic API collector |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_arxiv_collector.py | Internet access, config/test_config.yaml | Collects papers from arXiv |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_arxiv_collector_projectconfig.py | config/master_config.yaml | Arxiv collector with ProjectConfig |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_bitmex_collector.py | mock_bitmex_research.html file | Parses BitMEX research posts |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_chunking_behavior.py | data/test_collect/chunking_tests/* | Chunking of CSV/py/ipynb/JSON files |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_domain_config_wrapper.py | None | Domain config wrapper logic |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_fred_collector.py | FRED_API_KEY env var, config/test_config.yaml | Downloads data from FRED |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_general_web_collector.py | None | Web scraping collector |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_github_collector.py | GitHub token env var, output dir | Clones GitHub repos |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_github_collector_projectconfig.py | master_config.yaml | GitHub collector with ProjectConfig |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_isda_collector.py | None | ISDA website collector |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_pdf_extractor.py | tests/pdf_extraction/test_pdfs/ | Runs real PDF extraction |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_processors.py | None | Processor integration tests |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_quantopian_collector.py | None | Quantopian data collector |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_repo_collector.py | config/test_config.yaml | Repository collector downloads |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_scidb_collector.py | SciDB credentials | SciDB data fetch |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_scidb_collector_projectconfig.py | master_config.yaml | SciDB collector with ProjectConfig |
-| CryptoFinanceCorpusBuilder/tests/deprecated/test_web_collector.py | None | Generic website scraping |
-| CryptoFinanceCorpusBuilder/tests/test_base_extractor.py | temp input/output dirs with sample text | Base extractor pipeline |
-| CryptoFinanceCorpusBuilder/tests/test_bitmex_collector.py | mock_bitmex_research.html | Old BitMEX collector |
-| CryptoFinanceCorpusBuilder/tests/test_collectors.py | temp dirs | Basic collector behaviours |
-| CryptoFinanceCorpusBuilder/tests/test_corpus_balance.py | temp corpus with _extracted & low_quality | Corpus balancing analysis |
-| CryptoFinanceCorpusBuilder/tests/test_extractor_utils.py | temp files | Utility functions |
-| CryptoFinanceCorpusBuilder/tests/test_quality_config.py | config/quality_control_config.json | Model config validation |
-| CryptoFinanceCorpusBuilder/tests/test_quality_control_config.py | config/quality_control_config.json | Quality control config validation |
+| CryptoCorpusBuilder/tests/deprecated/test_annas_library_collector.py | AA_ACCOUNT_COOKIE env var, config/test_config.yaml | Downloads PDFs from Anna's Archive |
+| CryptoCorpusBuilder/tests/deprecated/test_api_collector.py | None (uses temp dirs) | Exercises generic API collector |
+| CryptoCorpusBuilder/tests/deprecated/test_arxiv_collector.py | Internet access, config/test_config.yaml | Collects papers from arXiv |
+| CryptoCorpusBuilder/tests/deprecated/test_arxiv_collector_projectconfig.py | config/master_config.yaml | Arxiv collector with ProjectConfig |
+| CryptoCorpusBuilder/tests/deprecated/test_bitmex_collector.py | mock_bitmex_research.html file | Parses BitMEX research posts |
+| CryptoCorpusBuilder/tests/deprecated/test_chunking_behavior.py | data/test_collect/chunking_tests/* | Chunking of CSV/py/ipynb/JSON files |
+| CryptoCorpusBuilder/tests/deprecated/test_domain_config_wrapper.py | None | Domain config wrapper logic |
+| CryptoCorpusBuilder/tests/deprecated/test_fred_collector.py | FRED_API_KEY env var, config/test_config.yaml | Downloads data from FRED |
+| CryptoCorpusBuilder/tests/deprecated/test_general_web_collector.py | None | Web scraping collector |
+| CryptoCorpusBuilder/tests/deprecated/test_github_collector.py | GitHub token env var, output dir | Clones GitHub repos |
+| CryptoCorpusBuilder/tests/deprecated/test_github_collector_projectconfig.py | master_config.yaml | GitHub collector with ProjectConfig |
+| CryptoCorpusBuilder/tests/deprecated/test_isda_collector.py | None | ISDA website collector |
+| CryptoCorpusBuilder/tests/deprecated/test_pdf_extractor.py | tests/pdf_extraction/test_pdfs/ | Runs real PDF extraction |
+| CryptoCorpusBuilder/tests/deprecated/test_processors.py | None | Processor integration tests |
+| CryptoCorpusBuilder/tests/deprecated/test_quantopian_collector.py | None | Quantopian data collector |
+| CryptoCorpusBuilder/tests/deprecated/test_repo_collector.py | config/test_config.yaml | Repository collector downloads |
+| CryptoCorpusBuilder/tests/deprecated/test_scidb_collector.py | SciDB credentials | SciDB data fetch |
+| CryptoCorpusBuilder/tests/deprecated/test_scidb_collector_projectconfig.py | master_config.yaml | SciDB collector with ProjectConfig |
+| CryptoCorpusBuilder/tests/deprecated/test_web_collector.py | None | Generic website scraping |
+| CryptoCorpusBuilder/tests/test_base_extractor.py | temp input/output dirs with sample text | Base extractor pipeline |
+| CryptoCorpusBuilder/tests/test_bitmex_collector.py | mock_bitmex_research.html | Old BitMEX collector |
+| CryptoCorpusBuilder/tests/test_collectors.py | temp dirs | Basic collector behaviours |
+| CryptoCorpusBuilder/tests/test_corpus_balance.py | temp corpus with _extracted & low_quality | Corpus balancing analysis |
+| CryptoCorpusBuilder/tests/test_extractor_utils.py | temp files | Utility functions |
+| CryptoCorpusBuilder/tests/test_quality_config.py | config/quality_control_config.json | Model config validation |
+| CryptoCorpusBuilder/tests/test_quality_control_config.py | config/quality_control_config.json | Quality control config validation |
 | tests/deprecated/test_corpus_management.py | temp corpus directories with sample file | Corpus manager UI integration |
 | tests/deprecated/test_data_collectors.py | API keys env vars; network access | Collector behaviours across services |
 | tests/deprecated/test_ui_integration.py | PySide6 installed | Basic UI widget integration |
