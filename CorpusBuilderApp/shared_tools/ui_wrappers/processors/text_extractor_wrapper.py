@@ -4,6 +4,7 @@ Provides text extraction capabilities with UI controls
 """
 
 from PySide6.QtCore import Signal as pyqtSignal, QThread
+import time
 from ..base_wrapper import BaseWrapper, ProcessorWrapperMixin
 from shared_tools.processors.text_extractor import TextExtractor
 from typing import List, Dict, Any
@@ -102,10 +103,13 @@ class TextExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
         if self._is_running:
             self.status_updated.emit("Processing already in progress")
             return
-            
+
         self._is_running = True
         self.status_updated.emit(f"Starting non-PDF processing of {len(files_to_process)} files...")
-        
+        if self.task_history_service:
+            self._current_task_id = f"TextExtractor_{int(time.time()*1000)}"
+            self.task_history_service.start_task(self._current_task_id, "Text Batch")
+
         # Create extractor instance
         extractor = self._create_target_object()
         

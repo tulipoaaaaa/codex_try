@@ -30,9 +30,11 @@ from app.helpers.notifier import Notifier
 
 
 class ProcessorsTab(QWidget):
-    def __init__(self, project_config, parent=None):
+    def __init__(self, project_config, task_history_service=None, parent=None):
         super().__init__(parent)
         self.project_config = project_config
+        self.task_history_service = task_history_service
+        self._task_ids = {}
         self.processor_wrappers = {}
         self.file_queue = []
         self.notification_manager = NotificationManager(self)
@@ -572,11 +574,17 @@ class ProcessorsTab(QWidget):
         # Update UI
         self.pdf_start_btn.setEnabled(False)
         self.pdf_stop_btn.setEnabled(True)
+        if self.task_history_service:
+            tid = f"processor_pdf_{int(time.time()*1000)}"
+            self._task_ids['pdf'] = tid
+            self.task_history_service.start_task(tid, 'PDF Processing', {'type': 'processing'})
         # Start processing
         pdf_wrapper.start_batch_processing(files_to_process)
 
     def stop_pdf_processing(self):
         self.processor_wrappers['pdf'].stop()
+        if self.task_history_service and 'pdf' in self._task_ids:
+            self.task_history_service.fail_task(self._task_ids.pop('pdf'), 'stopped')
         self.pdf_start_btn.setEnabled(True)
         self.pdf_stop_btn.setEnabled(False)
 
@@ -604,11 +612,17 @@ class ProcessorsTab(QWidget):
         # Update UI
         self.text_start_btn.setEnabled(False)
         self.text_stop_btn.setEnabled(True)
+        if self.task_history_service:
+            tid = f"processor_text_{int(time.time()*1000)}"
+            self._task_ids['text'] = tid
+            self.task_history_service.start_task(tid, 'Text Processing', {'type': 'processing'})
         # Start processing
         text_wrapper.start_batch_processing(files_to_process)
 
     def stop_text_processing(self):
         self.processor_wrappers['text'].stop()
+        if self.task_history_service and 'text' in self._task_ids:
+            self.task_history_service.fail_task(self._task_ids.pop('text'), 'stopped')
         self.text_start_btn.setEnabled(True)
         self.text_stop_btn.setEnabled(False)
     
@@ -735,6 +749,8 @@ class ProcessorsTab(QWidget):
     def on_pdf_batch_completed(self, results):
         self.pdf_start_btn.setEnabled(True)
         self.pdf_stop_btn.setEnabled(False)
+        if self.task_history_service and 'pdf' in self._task_ids:
+            self.task_history_service.complete_task(self._task_ids.pop('pdf'))
         
         # Update status
         success_count = results.get('success_count', 0)
@@ -748,6 +764,8 @@ class ProcessorsTab(QWidget):
     def on_text_batch_completed(self, results):
         self.text_start_btn.setEnabled(True)
         self.text_stop_btn.setEnabled(False)
+        if self.task_history_service and 'text' in self._task_ids:
+            self.task_history_service.complete_task(self._task_ids.pop('text'))
         
         # Update status
         success_count = results.get('success_count', 0)

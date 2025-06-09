@@ -36,10 +36,11 @@ from app.ui.widgets.status_dot import StatusDot
 class FullActivityTab(QWidget):
     """Comprehensive activity monitoring tab with detailed statistics and metrics"""
 
-    def __init__(self, config, activity_log_service=None, parent=None):
+    def __init__(self, config, activity_log_service=None, task_source=None, parent=None):
         super().__init__(parent)
         self.config = config
         self.activity_log_service = activity_log_service
+        self.task_source = task_source
         self.logger = logging.getLogger(self.__class__.__name__)
 
         # Apply shared UI theme settings
@@ -55,6 +56,12 @@ class FullActivityTab(QWidget):
         if self.activity_log_service:
             try:
                 self.activity_log_service.activity_added.connect(self.on_activity_added)
+            except Exception:
+                pass
+
+        if self.task_source:
+            try:
+                self.task_source.history_changed.connect(self.load_activity_data)
             except Exception:
                 pass
 
@@ -455,6 +462,8 @@ class FullActivityTab(QWidget):
 
     def load_existing_history(self):
         """Load prior activity from disk if available."""
+        if self.task_source:
+            return
         try:
             log_dir = Path(self.config.get_logs_dir())
         except Exception:
@@ -754,6 +763,11 @@ Progress: {activity.get('progress', 0)}%
     
     def get_activity_data(self):
         """Return current activity log entries."""
+        if self.task_source:
+            try:
+                return self.task_source.get_history()
+            except Exception:
+                return []
         return self.activities_data
     
     def retry_task(self):

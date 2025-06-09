@@ -1,4 +1,8 @@
 from PySide6.QtCore import QObject, Signal as pyqtSignal, QThread, QTimer
+import time
+from typing import Optional
+
+from shared_tools.services.task_history_service import TaskHistoryService
 from abc import ABC, abstractmethod
 import logging
 from typing import Dict, Any, Optional
@@ -44,12 +48,14 @@ class BaseWrapper(QObject):
     error_occurred = pyqtSignal(str)    # Error message
     completed = pyqtSignal(dict)        # Results dictionary
     
-    def __init__(self, config):
+    def __init__(self, config, task_history_service: Optional[TaskHistoryService] = None):
         super().__init__()
         self.config = config
         self.worker = None
         self._is_running = False
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
+        self.task_history_service = task_history_service
+        self._current_task_id: str | None = None
         
     @abstractmethod
     def _create_target_object(self):
@@ -66,10 +72,14 @@ class BaseWrapper(QObject):
         if self._is_running:
             self.status_updated.emit("Operation already in progress")
             return
-            
+
         self._is_running = True
         self.status_updated.emit("Starting operation...")
-        
+
+        if self.task_history_service:
+            self._current_task_id = f"{self.__class__.__name__}_{int(time.time()*1000)}"
+            self.task_history_service.start_task(self._current_task_id, self.__class__.__name__)
+
         target_obj = self._create_target_object()
         operation_type = self._get_operation_type()
         
@@ -86,18 +96,27 @@ class BaseWrapper(QObject):
             self.progress_updated.emit(percentage)
         if message:
             self.status_updated.emit(message)
+        if self.task_history_service and self._current_task_id and total > 0:
+            percentage = min(100, int((current / total) * 100))
+            self.task_history_service.update_progress(self._current_task_id, percentage)
             
     def _on_error(self, error_message: str):
         """Handle errors"""
         self._is_running = False
         self.error_occurred.emit(error_message)
         self.status_updated.emit(f"Error: {error_message}")
+        if self.task_history_service and self._current_task_id:
+            self.task_history_service.fail_task(self._current_task_id, error_message)
+            self._current_task_id = None
         
     def _on_finished(self, results: Dict[str, Any]):
         """Handle completion"""
         self._is_running = False
         self.completed.emit(results)
         self.status_updated.emit("Operation completed successfully")
+        if self.task_history_service and self._current_task_id:
+            self.task_history_service.complete_task(self._current_task_id)
+            self._current_task_id = None
         
     def stop(self):
         """Stop the operation"""
