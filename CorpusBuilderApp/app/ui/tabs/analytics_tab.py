@@ -17,6 +17,7 @@ from PySide6.QtGui import QPainter, QColor, QIcon, QLinearGradient, QPen
 from app.helpers.chart_manager import ChartManager
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
+from shared_tools.services.corpus_stats_service import CorpusStatsService
 
 import random
 import datetime
@@ -27,8 +28,15 @@ class AnalyticsTab(QWidget):
         super().__init__(parent)
         self.project_config = project_config
         self.chart_manager = ChartManager('dark')  # Will be updated based on actual theme
+        self.stats_service = CorpusStatsService(project_config)
+        self.stats_service.stats_updated.connect(self.on_stats_updated)
         self.setup_ui()
-        
+        self.stats_service.refresh_stats()
+
+    def showEvent(self, event):
+        super().showEvent(event)
+        self.stats_service.refresh_stats()
+
     def setup_ui(self):
         outer_layout = QVBoxLayout(self)
         outer_layout.setContentsMargins(0, 0, 0, 0)
@@ -85,12 +93,6 @@ class AnalyticsTab(QWidget):
         filter_grid.addWidget(make_label("Domain"), 0, 2)
         self.domain_filter = QComboBox()
         self.domain_filter.addItem("All Domains")
-        domains = [
-            "Crypto Derivatives", "High Frequency Trading", "Risk Management",
-            "Market Microstructure", "DeFi", "Portfolio Construction",
-            "Valuation Models", "Regulation & Compliance"
-        ]
-        self.domain_filter.addItems(domains)
         filter_grid.addWidget(self.domain_filter, 1, 2)
         self.domain_filter.currentIndexChanged.connect(self.update_charts)
         
@@ -120,8 +122,8 @@ class AnalyticsTab(QWidget):
         self.domain_chart_container = self.create_chart_card(
             "Corpus Domain Distribution", "Distribution across different domains", self.create_domain_distribution_chart()
         )
-        self.quality_chart_container = self.create_chart_card(
-            "Document Quality by Domain", "Average quality scores across domains", self.create_quality_metrics_chart()
+        self.size_chart_container = self.create_chart_card(
+            "Size by Domain", "Total document size in MB per domain", self.create_size_metrics_chart()
         )
         self.time_chart_container = self.create_chart_card(
             "Document Collection Over Time", "Collection trends and document count", self.create_time_trends_chart()
@@ -131,7 +133,7 @@ class AnalyticsTab(QWidget):
         )
         
         charts_grid.addWidget(self.domain_chart_container, 0, 0)
-        charts_grid.addWidget(self.quality_chart_container, 0, 1)
+        charts_grid.addWidget(self.size_chart_container, 0, 1)
         charts_grid.addWidget(self.time_chart_container, 1, 0)
         charts_grid.addWidget(self.lang_chart_container, 1, 1)
         charts_grid.setColumnStretch(0, 1)
@@ -148,6 +150,19 @@ class AnalyticsTab(QWidget):
     def update_theme(self, theme_name):
         """Update the chart manager theme and refresh charts"""
         self.chart_manager.set_theme(theme_name)
+        self.update_charts()
+
+    def on_stats_updated(self, stats: dict):
+        """Handle updated corpus statistics."""
+        domains = list(self.stats_service.get_domain_summary().keys())
+        self.domain_filter.blockSignals(True)
+        current = self.domain_filter.currentText()
+        self.domain_filter.clear()
+        self.domain_filter.addItem("All Domains")
+        self.domain_filter.addItems(domains)
+        if current in domains:
+            self.domain_filter.setCurrentText(current)
+        self.domain_filter.blockSignals(False)
         self.update_charts()
     
     def create_chart_card(self, title, subtitle, chart_view):
@@ -174,10 +189,10 @@ class AnalyticsTab(QWidget):
         self.domain_chart = chart_view  # Store reference for updates
         return chart_view
     
-    def create_quality_metrics_chart(self):
-        # Create a bar chart for quality metrics using ChartManager
-        chart_view = self.chart_manager.create_chart_view("Document Quality by Domain")
-        self.quality_chart = chart_view  # Store reference for updates
+    def create_size_metrics_chart(self):
+        """Create bar chart for document size by domain."""
+        chart_view = self.chart_manager.create_chart_view("Size by Domain")
+        self.size_chart = chart_view  # Store reference for updates
         return chart_view
     
     def create_time_trends_chart(self):
@@ -206,41 +221,36 @@ class AnalyticsTab(QWidget):
         to_date = self.date_to.date().toPython()
         domain = self.domain_filter.currentText()
         min_quality = self.get_min_quality()
-        
-        # In a real implementation, this would fetch and analyze actual corpus data
-        # For demonstration, we'll use simulated data
-        
-        self.update_domain_distribution_chart(domain, min_quality)
-        self.update_quality_metrics_chart(domain, min_quality)
+
+        counts = self.stats_service.get_domain_summary()
+        sizes = self.stats_service.get_domain_size_summary()
+
+        self.update_domain_distribution_chart(domain, counts)
+        self.update_size_chart(domain, sizes)
         self.update_time_trends_chart(from_date, to_date, domain)
         self.update_language_chart(domain, min_quality)
     
-    def update_domain_distribution_chart(self, domain_filter, min_quality):
+    def update_domain_distribution_chart(self, domain_filter, counts):
         chart_view = self.domain_chart
         chart = chart_view.chart()
         chart.removeAllSeries()
-        # Custom vibrant palette (Claude style)
         palette = [
             QColor("#06b6d4"), QColor("#10b981"), QColor("#f59e0b"), QColor("#ef4444"),
             QColor("#8b5cf6"), QColor("#ec4899"), QColor("#f97316"), QColor("#22d3ee")
         ]
-        domains = [
-            "Crypto Derivatives", "High Frequency Trading", "Risk Management",
-            "Market Microstructure", "DeFi", "Portfolio Construction",
-            "Valuation Models", "Regulation & Compliance"
-        ]
+
+        domains = list(counts.keys())
         if domain_filter != "All Domains":
-            domains = [domain_filter]
-        counts = [320, 180, 175, 160, 200, 100, 75, 40]
+            domains = [d for d in domains if d == domain_filter]
+
         series = QPieSeries()
-        # Remove the donut hole - make it a filled pie chart
-        for i, (domain, count) in enumerate(zip(domains, counts)):
-            if domain_filter == "All Domains" or domain == domain_filter:
-                slice_obj = series.append(f"{domain}", count)
-                slice_obj.setColor(palette[i % len(palette)])
-                slice_obj.setLabelVisible(False)
-                slice_obj.setBorderColor(QColor("#0f1419"))
-                slice_obj.setBorderWidth(2)
+        for i, domain in enumerate(domains):
+            count = counts.get(domain, 0)
+            slice_obj = series.append(f"{domain}", count)
+            slice_obj.setColor(palette[i % len(palette)])
+            slice_obj.setLabelVisible(False)
+            slice_obj.setBorderColor(QColor("#0f1419"))
+            slice_obj.setBorderWidth(2)
         chart.addSeries(series)
         # Custom legend (horizontal, no background)
         legend = chart.legend()
@@ -267,72 +277,38 @@ class AnalyticsTab(QWidget):
         # Center the chart
         chart_view.setAlignment(Qt.AlignCenter)
     
-    def update_quality_metrics_chart(self, domain_filter, min_quality):
-        """Update the quality metrics bar chart with multicolored bars"""
-        chart_view = self.quality_chart
+    def update_size_chart(self, domain_filter, sizes):
+        """Display document size distribution per domain."""
+        chart_view = self.size_chart
         chart = chart_view.chart()
         chart.removeAllSeries()
         chart.removeAxis(chart.axisX())
         chart.removeAxis(chart.axisY())
-        
-        domains = [
-            "Crypto Derivatives", 
-            "High Frequency Trading",
-            "Risk Management",
-            "Market Microstructure",
-            "DeFi",
-            "Portfolio Construction",
-            "Valuation Models",
-            "Regulation & Compliance"
-        ]
+
+        domains = list(sizes.keys())
         if domain_filter != "All Domains":
-            domains = [domain_filter]
-        quality_scores = [85, 78, 82, 75, 88, 90, 83, 79]
-        
-        # Create colorful gradient bars for each domain
-        gradient_colors = [
-            "#ff6b6b", "#4ecdc4", "#45b7d1", "#96ceb4", 
-            "#ffeaa7", "#dda0dd", "#ff9ff3", "#54a0ff"
-        ]
-        
-        # Create multiple bar sets in a single series for proper distribution
+            domains = [d for d in domains if d == domain_filter]
+
+        bar_set = QBarSet("Size MB")
+        for domain in domains:
+            bar_set.append(sizes.get(domain, 0))
+
         series = QBarSeries()
-        filtered_domains = []
-        
-        # First pass: collect filtered domains
-        for i, (domain, score) in enumerate(zip(domains, quality_scores)):
-            if domain_filter == "All Domains" or domain == domain_filter:
-                filtered_domains.append(domain)
-        
-        # Create individual bar sets for each domain with different colors
-        for i, (domain, score) in enumerate(zip(domains, quality_scores)):
-            if domain_filter == "All Domains" or domain == domain_filter:
-                quality_set = QBarSet(domain)
-                # Add values: score for this domain, 0 for others
-                for j, filtered_domain in enumerate(filtered_domains):
-                    if filtered_domain == domain:
-                        if score >= min_quality:
-                            quality_set.append(score)
-                        else:
-                            quality_set.append(min_quality)
-                    else:
-                        quality_set.append(0)
-                # Set individual color (borders not supported in PySide6 QBarSet)
-                quality_set.setColor(QColor(gradient_colors[i % len(gradient_colors)]))
-                series.append(quality_set)
-        
+        series.append(bar_set)
+
         chart.addSeries(series)
-        
+
         # Set up axes with proper domain labels
         axis_x = QBarCategoryAxis()
-        axis_x.append(filtered_domains)
+        axis_x.append(domains)
         axis_x.setLabelsColor(QColor("#f9fafb"))
         chart.addAxis(axis_x, Qt.AlignmentFlag.AlignBottom)
         series.attachAxis(axis_x)
-        
+
         axis_y = QValueAxis()
-        axis_y.setRange(min_quality, 100)
-        axis_y.setTitleText("Quality Score")
+        max_val = max(sizes.values()) if sizes else 0
+        axis_y.setRange(0, max_val * 1.1 if max_val else 1)
+        axis_y.setTitleText("Size (MB)")
         axis_y.setLabelsColor(QColor("#f9fafb"))
         chart.addAxis(axis_y, Qt.AlignmentFlag.AlignLeft)
         series.attachAxis(axis_y)
