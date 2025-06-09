@@ -95,7 +95,8 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         QtCore=qtcore,
         QtWidgets=qtwidgets,
         QtGui=qtgui,
-        QtTest=qttest
+        QtTest=qttest,
+        __version__="6.5.0"
     ))
     sys.modules.setdefault("PySide6.QtCore", qtcore)
     sys.modules.setdefault("PySide6.QtWidgets", qtwidgets)
@@ -178,6 +179,9 @@ def mock_project_config(temp_dir):
 
         def get_directory(self, name):
             return self.config['directories'][name]
+
+        def get_logs_dir(self):
+            return self.config['directories']['logs']
 
     cfg = DummyConfig(temp_dir)
     for path in cfg.config['directories'].values():
