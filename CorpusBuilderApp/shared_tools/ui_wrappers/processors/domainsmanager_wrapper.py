@@ -1017,3 +1017,7 @@ class DomainsManagerWrapper(BaseWrapper, ProcessorWrapperMixin):
     def is_processing(self) -> bool:
         """Check if any operation is currently active"""
         return self.worker is not None and self.worker.isRunning()
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass

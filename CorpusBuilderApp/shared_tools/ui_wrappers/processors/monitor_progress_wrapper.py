@@ -743,3 +743,7 @@ class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
         """Export history to JSON format"""
         # TODO: Implement JSON export logic
         pass
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass

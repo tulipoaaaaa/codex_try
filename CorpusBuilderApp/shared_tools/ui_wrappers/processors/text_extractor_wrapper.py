@@ -129,3 +129,7 @@ class TextExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
         if self.extractor:
             return {"formats_processed": self.extractor.format_counts}
         return {"formats_processed": {}}
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass

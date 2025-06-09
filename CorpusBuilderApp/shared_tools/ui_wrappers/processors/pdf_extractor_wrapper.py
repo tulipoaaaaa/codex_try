@@ -144,3 +144,7 @@ class PDFExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
             return {"files_processed": self.extractor.files_processed,
                     "ocr_used_count": self.extractor.ocr_used_count}
         return {"files_processed": 0, "ocr_used_count": 0}
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass

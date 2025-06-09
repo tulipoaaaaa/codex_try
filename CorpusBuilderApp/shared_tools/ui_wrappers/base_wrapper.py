@@ -118,6 +118,10 @@ class BaseWrapper(QObject):
         """Check if operation is currently running"""
         return self._is_running
 
+    def refresh_config(self):
+        """Default no-op implementation; can be overridden by subclasses."""
+        pass
+
 class CollectorWrapperMixin:
     """Mixin for collector-specific functionality"""
     
