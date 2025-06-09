@@ -699,3 +699,7 @@ class CorruptionDetectorWrapper(BaseWrapper, ProcessorWrapperMixin):
     def is_scanning(self) -> bool:
         """Check if scan is currently active"""
         return self.worker is not None and self.worker.isRunning()
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass

@@ -81,6 +81,10 @@ class DomainClassifierWrapper(BaseWrapper, ProcessorWrapperMixin):
             f"Domain classification completed: {len(results)} documents classified"
         )
 
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass
+
 class DomainClassifierWorkerThread(QThread):
     """Worker thread for domain classification processing."""
     

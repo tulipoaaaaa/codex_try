@@ -74,6 +74,10 @@ class ChartImageExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
             f"Chart extraction completed: {total_charts} charts extracted from {len(results)} files"
         )
 
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass
+
 class ChartExtractorWorkerThread(QThread):
     """Worker thread for chart extraction processing."""
     

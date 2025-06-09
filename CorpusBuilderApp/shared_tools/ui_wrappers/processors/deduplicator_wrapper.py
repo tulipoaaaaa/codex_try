@@ -89,7 +89,11 @@ class DeduplicatorWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.status_updated.emit(
             f"Deduplication completed: {len(results.get('duplicate_sets', []))} duplicate sets found"
         )
-        
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Placeholder for future use."""
+        pass
+
     @pyqtSlot()
     def start_deduplication(self):
         # Automatically generate title cache before deduplication
