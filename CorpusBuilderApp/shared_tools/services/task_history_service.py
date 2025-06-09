@@ -1,105 +1,48 @@
 from __future__ import annotations
-
-import json
 from datetime import datetime
-from pathlib import Path
-from typing import Optional
-
+from typing import Optional, Dict
 from PySide6.QtCore import QObject, Signal as pyqtSignal
 
 
 class TaskHistoryService(QObject):
-    """Track task execution history for collectors and processors."""
+    """Simple service to record background task history."""
 
-    history_changed = pyqtSignal()
-    task_updated = pyqtSignal(str, dict)
+    task_added = pyqtSignal(dict)
+    task_updated = pyqtSignal(dict)
 
-    def __init__(self, history_file: str | Path | None = None, parent: Optional[QObject] = None) -> None:
+    def __init__(self, parent: Optional[QObject] = None) -> None:
         super().__init__(parent)
-        self.history_file = Path(history_file) if history_file else None
-        self.tasks: dict[str, dict] = {}
-        self._load()
+        self._tasks: Dict[str, dict] = {}
 
-    def _load(self) -> None:
-        if self.history_file and self.history_file.exists():
-            try:
-                with open(self.history_file, "r", encoding="utf-8") as fh:
-                    self.tasks = json.load(fh)
-            except Exception:
-                self.tasks = {}
-
-    def _save(self) -> None:
-        if self.history_file:
-            try:
-                with open(self.history_file, "w", encoding="utf-8") as fh:
-                    json.dump(self.tasks, fh)
-            except Exception:
-                pass
-
-    def start_task(self, task_id: str, description: str = "", metadata: Optional[dict] = None) -> None:
-        info = {
-            "description": description,
-            "start_time": datetime.utcnow().isoformat(),
-            "status": "running",
-            "progress": 0,
+    # ------------------------------------------------------------------
+    def add_task(self, task_id: str, info: dict) -> None:
+        """Register a new task and emit ``task_added``."""
+        entry = {
+            "id": task_id,
+            "name": info.get("name", task_id),
+            "status": info.get("status", "pending"),
+            "progress": info.get("progress", 0),
+            "start_time": info.get("start_time", datetime.utcnow().isoformat()),
         }
-        if isinstance(metadata, dict):
-            info.update(metadata)
-        self.tasks[task_id] = info
-        self._save()
-        self.task_updated.emit(task_id, info)
-        self.history_changed.emit()
+        entry.update(info)
+        self._tasks[task_id] = entry
+        self.task_added.emit(entry)
 
-    def update_progress(self, task_id: str, progress: int) -> None:
-        task = self.tasks.get(task_id)
-        if not task:
-            return
-        task["progress"] = progress
-        self._save()
-        self.task_updated.emit(task_id, task)
+    # ------------------------------------------------------------------
+    def update_task(self, task_id: str, **updates: object) -> None:
+        """Update an existing task and emit ``task_updated``."""
+        task = self._tasks.setdefault(
+            task_id,
+            {"id": task_id, "name": task_id, "status": "pending", "progress": 0, "start_time": datetime.utcnow().isoformat()},
+        )
+        task.update(updates)
+        if "end_time" not in task and task.get("status") in {"success", "error", "stopped"}:
+            task["end_time"] = datetime.utcnow().isoformat()
+        self.task_updated.emit(task)
 
-    def complete_task(self, task_id: str) -> None:
-        task = self.tasks.get(task_id)
-        if not task:
-            return
-        task["status"] = "completed"
-        task["progress"] = 100
-        task["end_time"] = datetime.utcnow().isoformat()
-        self._save()
-        self.task_updated.emit(task_id, task)
-        self.history_changed.emit()
-
-    def fail_task(self, task_id: str, error: str = "") -> None:
-        task = self.tasks.get(task_id)
-        if not task:
-            return
-        task["status"] = "failed"
-        task["error"] = error
-        task["end_time"] = datetime.utcnow().isoformat()
-        self._save()
-        self.task_updated.emit(task_id, task)
-        self.history_changed.emit()
-
-    def get_history(self) -> list[dict]:
-        history: list[dict] = []
-        for tid, info in self.tasks.items():
-            start = info.get("start_time")
-            end = info.get("end_time")
-            try:
-                start_dt = datetime.fromisoformat(start) if start else None
-            except Exception:
-                start_dt = None
-            try:
-                end_dt = datetime.fromisoformat(end) if end else None
-            except Exception:
-                end_dt = None
-            if start_dt:
-                finish = end_dt or datetime.utcnow()
-                duration = int((finish - start_dt).total_seconds())
-            else:
-                duration = 0
-            entry = dict(info)
-            entry["task_id"] = tid
-            entry["duration_seconds"] = duration
-            history.append(entry)
-        return history
+    # ------------------------------------------------------------------
+    def load_recent_tasks(self, n: int = 20) -> list[dict]:
+        """Return a list of the most recently added tasks."""
+        tasks = list(self._tasks.values())
+        tasks.sort(key=lambda t: t.get("start_time", ""))
+        return tasks[-n:]

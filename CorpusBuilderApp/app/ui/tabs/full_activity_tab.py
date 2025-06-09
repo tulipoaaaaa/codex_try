@@ -36,11 +36,14 @@ from app.ui.widgets.status_dot import StatusDot
 class FullActivityTab(QWidget):
     """Comprehensive activity monitoring tab with detailed statistics and metrics"""
 
-    def __init__(self, config, activity_log_service=None, task_source=None, parent=None):
+    retry_requested = pyqtSignal(str)
+    stop_requested = pyqtSignal(str)
+
+    def __init__(self, config, activity_log_service=None, task_history_service=None, parent=None):
         super().__init__(parent)
         self.config = config
         self.activity_log_service = activity_log_service
-        self.task_source = task_source
+        self.task_source = task_history_service
         self.logger = logging.getLogger(self.__class__.__name__)
 
         # Apply shared UI theme settings
@@ -52,6 +55,13 @@ class FullActivityTab(QWidget):
         # Initialize persistent activity data
         self.activities_data: list[dict] = []
         self.load_existing_history()
+
+        if self.task_source:
+            try:
+                self.task_source.task_added.connect(lambda _: self.load_activity_data())
+                self.task_source.task_updated.connect(lambda _: self.load_activity_data())
+            except Exception:
+                pass
 
         if self.activity_log_service:
             try:
@@ -413,8 +423,11 @@ class FullActivityTab(QWidget):
         self.activity_table.itemSelectionChanged.connect(self.on_activity_selected)
         
         self.activity_table.setStyleSheet("background-color: #1a1f2e; color: #f9fafb; border: 1px solid #2d3748; border-radius: 8px;")
-        
+
         table_layout.addWidget(self.activity_table)
+        self.no_activity_label = QLabel("No activity yet")
+        self.no_activity_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        table_layout.addWidget(self.no_activity_label)
         layout.addWidget(table_container, 2)  # 2/3 of space
         
         # Right: Task details panel
@@ -494,6 +507,7 @@ class FullActivityTab(QWidget):
         return {
             "time": datetime.fromisoformat(timestamp).strftime("%H:%M:%S"),
             "start_time": timestamp,
+            "id": details.get("task_id"),
             "action": entry.get("message", ""),
             "status": details.get("status", "info"),
             "details": details.get("details", ""),
@@ -502,6 +516,7 @@ class FullActivityTab(QWidget):
             "type": details.get("type", "General"),
             "domain": details.get("domain", "General"),
             "error_message": details.get("error_message", ""),
+            "task_id": details.get("task_id", ""),
         }
 
     def on_activity_added(self, entry: dict):
@@ -678,7 +693,8 @@ class FullActivityTab(QWidget):
         activities = self.get_activity_data()
         
         self.activity_table.setRowCount(len(activities))
-        
+        self.no_activity_label.setVisible(len(activities) == 0)
+
         for row, activity in enumerate(activities):
             # Time
             time_item = QTableWidgetItem(activity['time'])
@@ -764,11 +780,28 @@ Progress: {activity.get('progress', 0)}%
     def get_activity_data(self):
         """Return current activity log entries."""
         if self.task_source:
-            try:
-                return self.task_source.get_history()
-            except Exception:
-                return []
+            tasks = self.task_source.load_recent_tasks()
+            mapped = []
+            for t in tasks:
+                start = t.get("start_time", datetime.utcnow().isoformat())
+                mapped.append({
+                    "id": t.get("id"),
+                    "time": datetime.fromisoformat(start).strftime("%H:%M:%S"),
+                    "start_time": start,
+                    "action": t.get("name", ""),
+                    "status": t.get("status", "pending"),
+                    "details": t.get("details", ""),
+                    "duration_seconds": t.get("duration_seconds", 0),
+                    "progress": t.get("progress", 0),
+                    "type": t.get("type", "General"),
+                    "domain": t.get("domain", "General"),
+                    "error_message": t.get("error_message", ""),
+                })
+            return mapped
         return self.activities_data
+
+    def _get_task_id(self, activity: dict) -> str:
+        return activity.get("task_id") or f"TASK_{hash(activity.get('action', '')) % 10000:04d}"
     
     def retry_task(self):
         print("[DEBUG] Retry button clicked")
@@ -777,7 +810,8 @@ Progress: {activity.get('progress', 0)}%
             activities = self.get_activity_data()
             if current_row < len(activities):
                 activity = activities[current_row]
-                
+                task_id = self._get_task_id(activity)
+
                 if activity['status'] == 'error':
                     # Simulate retrying the task
                     activity['status'] = 'running'
@@ -800,6 +834,9 @@ Progress: {activity.get('progress', 0)}%
                     self.stop_btn.setEnabled(True)
                     
                     self.logger.info(f"Retried task: {activity['action']}")
+
+                    if activity.get('id'):
+                        self.retry_requested.emit(str(activity['id']))
     
     def stop_task(self):
         print("[DEBUG] Stop button clicked")
@@ -808,7 +845,8 @@ Progress: {activity.get('progress', 0)}%
             activities = self.get_activity_data()
             if current_row < len(activities):
                 activity = activities[current_row]
-                
+                task_id = self._get_task_id(activity)
+
                 if activity['status'] == 'running':
                     # Simulate stopping the task
                     activity['status'] = 'stopped'
@@ -829,6 +867,9 @@ Progress: {activity.get('progress', 0)}%
                     self.retry_btn.setEnabled(True)  # Allow retry of stopped task
                     
                     self.logger.info(f"Stopped task: {activity['action']}")
+
+                    if activity.get('id'):
+                        self.stop_requested.emit(str(activity['id']))
     
     def view_task_logs(self):
         print("[DEBUG] View Logs button clicked")
@@ -918,7 +959,7 @@ Progress: {activity.get('progress', 0)}%
         logs.append("=" * 80)
         logs.append(f"TASK LOG: {activity['action']}")
         logs.append("=" * 80)
-        logs.append(f"Task ID: TASK_{hash(activity['action']) % 10000:04d}")
+        logs.append(f"Task ID: {self._get_task_id(activity)}")
         logs.append(f"Status: {activity['status'].upper()}")
         logs.append(f"Type: {activity.get('type', 'Unknown')}")
         logs.append(f"Domain: {activity.get('domain', 'General')}")
