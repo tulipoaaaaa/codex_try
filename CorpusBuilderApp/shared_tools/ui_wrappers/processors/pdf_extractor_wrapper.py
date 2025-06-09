@@ -75,6 +75,7 @@ class PDFExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.enable_ocr = True
         self.extract_tables = True
         self.extract_formulas = True
+        self.worker_threads = 4
         
     def _create_target_object(self):
         """Create PDF extractor instance"""
@@ -82,7 +83,7 @@ class PDFExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
             self.extractor = PDFExtractor(
                 input_dir=str(self.config.raw_data_dir),
                 output_dir=str(self.config.pdf_extracted_dir),
-                num_workers=4
+                num_workers=self.worker_threads
             )
         return self.extractor
         
@@ -100,6 +101,12 @@ class PDFExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
     def set_formula_extraction(self, enabled):
         """Set formula extraction enabled/disabled"""
         self.extract_formulas = enabled
+
+    def set_worker_threads(self, count: int):
+        """Set the number of worker threads for processing"""
+        self.worker_threads = count
+        if self.extractor:
+            self.extractor.num_workers = count
         
     def start_batch_processing(self, files_to_process: List[str]):
         """Start batch processing of PDF files"""
