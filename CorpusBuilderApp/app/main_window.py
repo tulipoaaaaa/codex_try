@@ -389,6 +389,8 @@ class CryptoCorpusMainWindow(QMainWindow):
             # Create new Full Activity tab
             if not self.full_activity_tab:
                 self.full_activity_tab = FullActivityTab(self.config)
+                self.full_activity_tab.retry_requested.connect(self.on_retry_requested)
+                self.full_activity_tab.stop_requested.connect(self.on_stop_requested)
             
             # Add the tab and switch to it
             tab_index = self.tab_widget.addTab(self.full_activity_tab, "📊 Full Activity")
@@ -399,6 +401,14 @@ class CryptoCorpusMainWindow(QMainWindow):
         except Exception as e:
             self.logger.error(f"Error opening Full Activity tab: {e}")
             self.show_error("Tab Error", f"Failed to open Full Activity tab: {e}")
+
+    def on_retry_requested(self, task_id: str) -> None:
+        """Handle retry requests from the Full Activity tab."""
+        self.logger.info("Retry requested for task %s", task_id)
+
+    def on_stop_requested(self, task_id: str) -> None:
+        """Handle stop requests from the Full Activity tab."""
+        self.logger.info("Stop requested for task %s", task_id)
     
     def center_on_screen(self):
         """Center the window on the screen"""
