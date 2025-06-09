@@ -23,14 +23,14 @@ class QuantopianWrapper(BaseWrapper, CollectorWrapperMixin):
         return "collect"
 
     def refresh_config(self):
-        """Re-apply configuration values from :class:`ProjectConfig`. Safe to call at any time."""
-        config = self.project_config.get(f"collectors.{self.name}", {})
-        for key, value in config.items():
+        """Reload configuration values from ``self.config``."""
+        cfg = self.config.get(f"collectors.{self.name}", {}) or {}
+        for key, value in cfg.items():
             method = f"set_{key}"
             if hasattr(self, method):
                 try:
                     getattr(self, method)(value)
                 except Exception:
-                    pass
+                    continue
 
 
