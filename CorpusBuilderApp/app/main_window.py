@@ -19,7 +19,6 @@ from ui.tabs.balancer_tab import BalancerTab
 from ui.tabs.analytics_tab import AnalyticsTab
 from ui.tabs.configuration_tab import ConfigurationTab
 from ui.tabs.logs_tab import LogsTab
-from ui.tabs.maintenance_tab import MaintenanceTab
 from ui.tabs.full_activity_tab import FullActivityTab
 from ui.dialogs.settings_dialog import SettingsDialog
 from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
@@ -55,7 +54,6 @@ class CryptoCorpusMainWindow(QMainWindow):
         self.analytics_tab = None
         self.configuration_tab = None
         self.logs_tab = None
-        self.maintenance_tab = None
         self.full_activity_tab = None
 
         # Settings dialog for application preferences
@@ -155,11 +153,6 @@ class CryptoCorpusMainWindow(QMainWindow):
             self.logs_tab = LogsTab(self.config)
             self.logger.debug("LogsTab initialized successfully")
             self.tab_widget.addTab(self.logs_tab, "📝 Logs")
-            # Add Maintenance tab
-            self.logger.debug("Initializing MaintenanceTab...")
-            self.maintenance_tab = MaintenanceTab(parent=self)
-            self.logger.debug("MaintenanceTab initialized successfully")
-            self.tab_widget.addTab(self.maintenance_tab, "🛠️ Maintenance")
             self.logger.info("All tabs initialized successfully")
         except Exception as e:
             self.logger.error(f"Failed to initialize tabs: {e}")
