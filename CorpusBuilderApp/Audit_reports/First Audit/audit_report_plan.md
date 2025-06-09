@@ -9,7 +9,7 @@ This report summarizes a full audit of the CryptoFinance Corpus Builder v3 codeb
 ## 2. Functionality & Architecture Review
 
 - **Strengths:**
-  - Modular PyQt6 architecture with clear separation of UI, collectors, processors, and utilities.
+  - Modular PySide6 architecture with clear separation of UI, collectors, processors, and utilities.
   - Advanced data collection from 19+ financial and academic sources.
   - Sophisticated document processing pipeline (PDF, text, OCR, ML integration).
   - Modern UI/UX, persistent settings, and notification system.

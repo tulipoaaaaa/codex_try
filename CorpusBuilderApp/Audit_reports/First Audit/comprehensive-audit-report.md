@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-This comprehensive audit of the CryptoFinance Corpus Builder v3 application reveals a sophisticated AI-powered trading corpus development platform with significant functional capabilities but critical security and quality concerns that require immediate attention. The application demonstrates advanced machine learning integration, comprehensive data collection capabilities, and a well-structured PyQt6-based desktop interface. However, the audit identified 45 security issues, including 3 critical vulnerabilities, along with substantial technical debt and testing gaps that pose risks to production deployment.
+This comprehensive audit of the CryptoFinance Corpus Builder v3 application reveals a sophisticated AI-powered trading corpus development platform with significant functional capabilities but critical security and quality concerns that require immediate attention. The application demonstrates advanced machine learning integration, comprehensive data collection capabilities, and a well-structured PySide6-based desktop interface. However, the audit identified 45 security issues, including 3 critical vulnerabilities, along with substantial technical debt and testing gaps that pose risks to production deployment.
 
 **Key Findings:**
 - **164 external dependencies** creating significant supply chain risk
@@ -16,7 +16,7 @@ This comprehensive audit of the CryptoFinance Corpus Builder v3 application reve
 
 ### Core Application Architecture
 
-The CryptoFinance Corpus Builder v3 is a PyQt6-based desktop application designed for building and managing cryptocurrency research corpora. The application follows a modular architecture with clear separation between UI components, data collectors, processors, and shared utilities.
+The CryptoFinance Corpus Builder v3 is a PySide6-based desktop application designed for building and managing cryptocurrency research corpora. The application follows a modular architecture with clear separation between UI components, data collectors, processors, and shared utilities.
 
 **Main Components:**
 - **Main Application**: Entry point with exception handling and configuration management

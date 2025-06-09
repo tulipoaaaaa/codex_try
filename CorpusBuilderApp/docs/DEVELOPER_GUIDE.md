@@ -54,7 +54,7 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for diagrams and data flow.
 
 ## UI Development
 
-- Use PyQt6 widgets and layouts.
+ - Use PySide6 widgets and layouts.
 - Follow the QSS style guide for consistency.
 - Use `IconManager` for all icons.
 
@@ -64,7 +64,7 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) for diagrams and data flow.
 
 - Unit tests: `pytest tests/unit/`
 - Integration tests: `pytest tests/integration/`
-- UI tests: `pytest tests/ui/ --qt-api pyqt6`
+ - UI tests: `pytest tests/ui/ --qt-api pyside6`
 
 ---
 
