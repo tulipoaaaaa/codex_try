@@ -1,11 +1,10 @@
 """Integration test for running multiple collectors sequentially."""
 
-import json
-from pathlib import Path
-import sys
-import types
-
 import pytest
+from CorpusBuilderApp.shared_tools.project_config import ProjectConfig
+from CorpusBuilderApp.shared_tools.collectors.fred_collector import FREDCollector
+from CorpusBuilderApp.shared_tools.collectors.github_collector import GitHubCollector
+
 
 from shared_tools.project_config import ProjectConfig
 

@@ -1,10 +1,8 @@
-import json
-from pathlib import Path
-from unittest.mock import MagicMock
-
 import pytest
+from CorpusBuilderApp.shared_tools.project_config import ProjectConfig
+from CorpusBuilderApp.shared_tools.collectors.fred_collector import FREDCollector
+from CorpusBuilderApp.shared_tools.collectors.github_collector import GitHubCollector
 
-from shared_tools.project_config import ProjectConfig
 
 
 @pytest.mark.integration

@@ -54,7 +54,7 @@
     },
     "rules": [
       {
-        "match": "**/CryptoFinanceCorpusBuilder/**",
+        "match": "**/CryptoCorpusBuilder/**",
         "action": "ignore",
         "reason": "Legacy deprecated folder. Do not read or write."
       },

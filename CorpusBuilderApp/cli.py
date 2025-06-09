@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-CryptoFinance Corpus Builder - Project-wide CLI
+Crypto Corpus Builder - Project-wide CLI
 
 Usage:
   python cli.py --collector <name> --config <config.yaml> [--args ...]
@@ -39,7 +39,7 @@ except ImportError as e:
     sys.exit(1)
 
 def main():
-    parser = argparse.ArgumentParser(description="CryptoFinance Corpus Builder CLI")
+    parser = argparse.ArgumentParser(description="Crypto Corpus Builder CLI")
     parser.add_argument('--collector', required=True, choices=['fred', 'github', 'annas', 'scidb', 'web'], help='Collector to run')
     parser.add_argument('--config', required=True, help='Path to config YAML')
     parser.add_argument('--series-ids', nargs='*', help='FRED: List of series IDs')
