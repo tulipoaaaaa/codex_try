@@ -335,7 +335,7 @@ pytest tests/
 For GUI tests:
 
 ```bash
-pytest tests/ui/ --qt-api pyqt6
+pytest tests/ui/ --qt-api pyside6
 ```
 ```
 

@@ -8,7 +8,6 @@ UPGRADES = [
     ("scrapy", "2.11.1"),
     ("scikit-learn", "1.4.2"),
     ("black", "24.4.2"),
-    # ("PyQt6", "6.6.1"),
     # Add more as needed
 ]
 
