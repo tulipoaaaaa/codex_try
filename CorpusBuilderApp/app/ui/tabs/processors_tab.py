@@ -613,6 +613,7 @@ class ProcessorsTab(QWidget):
     
     def apply_advanced_processing(self):
         # Enable/disable processors based on UI selections
+        
         wrappers_to_run = []
         mapping = [
             ("deduplicator", self.enable_deduplication),
@@ -639,6 +640,7 @@ class ProcessorsTab(QWidget):
 
         self._advanced_wrappers = wrappers_to_run
         self._current_advanced_index = 0
+
         self.advanced_progress_bar.setValue(0)
         self.advanced_status.setText("Starting advanced processing...")
         self._start_next_advanced_processor()
