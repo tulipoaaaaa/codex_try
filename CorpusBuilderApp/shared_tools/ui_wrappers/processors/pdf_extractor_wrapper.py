@@ -1,4 +1,5 @@
 from PySide6.QtCore import Signal as pyqtSignal, QThread
+import time
 from ..base_wrapper import BaseWrapper, ProcessorWrapperMixin
 from shared_tools.processors.pdf_extractor import PDFExtractor
 from typing import List, Dict, Any
@@ -113,10 +114,13 @@ class PDFExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
         if self._is_running:
             self.status_updated.emit("Processing already in progress")
             return
-            
+
         self._is_running = True
         self.status_updated.emit(f"Starting PDF processing of {len(files_to_process)} files...")
-        
+        if self.task_history_service:
+            self._current_task_id = f"PDFExtractor_{int(time.time()*1000)}"
+            self.task_history_service.start_task(self._current_task_id, "PDF Batch")
+
         # Create extractor instance
         extractor = self._create_target_object()
         
