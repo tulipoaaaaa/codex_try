@@ -10,7 +10,8 @@ from PySide6.QtWidgets import (
     QPushButton,
     QScrollArea,
     QSizePolicy,
-    QFrame
+    QFrame,
+    QProgressBar,
 )
 from PySide6.QtCore import Qt, Signal, QMargins
 from PySide6.QtGui import QColor, QPainter
@@ -47,6 +48,8 @@ class DashboardTab(QWidget):
         self.task_history_service = task_history_service
         self.task_queue_manager = task_queue_manager or TaskQueueManager()
         self.task_queue_manager.queue_counts_changed.connect(self.update_queue_counts)
+        self.task_queue_manager.task_progress.connect(self.update_task_progress)
+        self._task_bars: dict[str, QProgressBar] = {}
         self.system_monitor = SystemMonitor()
         self.system_monitor.system_metrics.connect(self.update_system_metrics)
         self.system_monitor.start()
@@ -842,6 +845,12 @@ class DashboardTab(QWidget):
             self.disk_bar.setValue(int(disk))
             self.disk_percent.setText(f"{int(disk)}%")
 
+    def update_task_progress(self, task_id: str, progress: int) -> None:
+        """Update progress bar for a running task."""
+        bar = self._task_bars.get(task_id)
+        if bar:
+            bar.setValue(progress)
+
     def fix_all_label_backgrounds(self):
         # Fix all existing QLabel widgets to have transparent background
         for label in self.findChildren(QLabel):
@@ -1052,8 +1061,16 @@ class DashboardTab(QWidget):
         running_label.setStyleSheet('color: #C5C7C7; font-size: 11px; font-weight: 600; background-color: transparent;')
         top_layout.addWidget(running_label)
         
-        tasks = [('GitHub Collector', 67, '#32B8C6'), ('PDF Processor', 89, '#22c55e')]
-        for task_name, progress, color in tasks:
+        tasks = [
+            (tid, info)
+            for tid, info in self.task_queue_manager.tasks.items()
+            if info.get("status") == "running"
+        ]
+        colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
+        for idx, (task_id, info) in enumerate(tasks):
+            task_name = info.get('name', task_id)
+            progress = info.get('progress', 0)
+            color = colors[idx % len(colors)]
             task_container = QWidget()
             task_container.setStyleSheet('background-color: transparent;')
             task_layout = QVBoxLayout(task_container)
@@ -1061,6 +1078,7 @@ class DashboardTab(QWidget):
             name_label = QLabel(task_name)
             name_label.setStyleSheet('color: #f9fafb; font-size: 10px; background-color: transparent;')
             progress_bar = create_styled_progress_bar(progress, color, height=4)
+            self._task_bars[task_id] = progress_bar
             task_layout.addWidget(name_label)
             task_layout.addWidget(progress_bar)
             top_layout.addWidget(task_container)
