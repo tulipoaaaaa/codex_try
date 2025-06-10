@@ -278,6 +278,8 @@ class CryptoCorpusMainWindow(QMainWindow):
 
         if getattr(self, "configuration_tab", None) and hasattr(self.configuration_tab, 'configuration_saved'):
             self.configuration_tab.configuration_saved.connect(lambda _: self.config.save())
+            if getattr(self, "dashboard_tab", None):
+                self.configuration_tab.configuration_saved.connect(lambda _: self.dashboard_tab.update_environment_info())
             if self.activity_log_service:
                 self.configuration_tab.configuration_saved.connect(
                     lambda _: self.activity_log_service.log("Configuration", "Settings saved")
