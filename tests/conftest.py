@@ -361,7 +361,6 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         QGridLayout=QGridLayout,
         QTextEdit=QTextEdit,
         QTableWidget=QTableWidget,
-        QTableWidgetItem=QTableWidgetItem,
         QTableView=QTableView,
         QHeaderView=QHeaderView,
         QStandardItemModel=QStandardItemModel,
@@ -372,6 +371,7 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         QMenu=QMenu,
         QDateEdit=QDateEdit,
         QSplitter=QSplitter,
+        QTableWidgetItem=QTableWidgetItem,
         QInputDialog=QInputDialog,
         QSlider=QSlider,
         QFont=QFont,
@@ -398,10 +398,7 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
     qttest = types.SimpleNamespace(QTest=object)
     qtcharts = types.SimpleNamespace()
     qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
-    class _DummyCharts(types.ModuleType):
-        def __getattr__(self, name):
-            return object
-    qtcharts = _DummyCharts("PySide6.QtCharts")
+    qtcharts = types.SimpleNamespace()
     sys.modules['PySide6'] = types.SimpleNamespace(
         QtCore=qtcore,
         QtWidgets=qtwidgets,
