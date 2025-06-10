@@ -176,4 +176,12 @@ class ActiveOperations(CardWrapper):
                 'details': 'Waiting for user confirmation on allocation changes',
                 'start_time': now - timedelta(minutes=45)
             }
-        ] 
+        ]
+
+
+class ActiveOperationsWidget(ActiveOperations):
+    """Backwards compatible wrapper accepting a task queue manager."""
+
+    def __init__(self, task_queue_manager=None, parent=None):
+        super().__init__(config=None, parent=parent)
+        self.task_queue_manager = task_queue_manager
