@@ -2,6 +2,7 @@
 Module: batch_text_extractor_enhanced_prerefactor
 Purpose: Provides enhanced batch text extraction for PDFs.
 """
+# Prototype / legacy processor kept for reference and tests
 
 import os
 import sys

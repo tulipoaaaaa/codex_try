@@ -2,6 +2,7 @@
 Batch Text Extractor Enhanced Pre-refactor Wrapper for UI Integration
 Provides comprehensive batch text extraction with advanced preprocessing
 """
+# Prototype / legacy processor kept for reference and tests
 
 import os
 import json
