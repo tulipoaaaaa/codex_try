@@ -1,3 +1,8 @@
+"""
+Module: metadata_validator
+Purpose: Validates corpus document metadata for required fields.
+"""
+
 import os
 import json
 from pathlib import Path

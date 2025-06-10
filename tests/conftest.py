@@ -26,404 +26,55 @@ if project_root not in sys.path:
     sys.path.insert(0, project_root)
 
 if os.environ.get("PYTEST_QT_STUBS") == "1":
-    print("Loaded PySide6 stub")
-    class _Signal:
-        def __init__(self, *a, **k):
-            self._slots = []
-        def connect(self, slot):
-            self._slots.append(slot)
-        def emit(self, *a, **k):
-            for s in self._slots:
-                s(*a, **k)
-
-    class _DummyModule(types.ModuleType):
+    class _SafeStubModule(types.ModuleType):
         def __getattr__(self, name):
-            obj = type(name, (), {})
-            setattr(self, name, obj)
-            return obj
+            return type(name, (), {})
+
+    qtwidgets = _SafeStubModule("PySide6.QtWidgets")
+
     class QApplication:
         _instance = None
+
         def __init__(self, *a, **k):
             QApplication._instance = self
+
         @classmethod
         def instance(cls):
             return cls._instance
+
         def quit(self):
             pass
+
         def processEvents(self, *a, **k):
             pass
-    class QDir:
-        @staticmethod
-        def homePath():
-            import os
-            return os.path.expanduser('~')
-        @staticmethod
-        def rootPath():
-            return '/'
-    class QPushButton:
-        def __init__(self, *a, **k):
-            self.clicked = _Signal()
-    class QLabel:
-        def __init__(self, *a, **k):
-            self._text = ''
-        def setText(self, t):
-            self._text = t
-        def text(self):
-            return self._text
-        def setObjectName(self, n):
-            pass
-    class QProgressBar:
-        def __init__(self, *a, **k):
-            self._value = 0
-        def setRange(self, a, b):
-            pass
-        def setValue(self, v):
-            self._value = v
-    class QCheckBox:
-        def __init__(self, *a, **k):
-            self._checked = False
-        def setChecked(self, v):
-            self._checked = v
-        def isChecked(self):
-            return self._checked
-    class QWidget:
-        def __init__(self, *a, **k):
-            pass
-    class QVBoxLayout:
-        def __init__(self, *a, **k):
-            pass
-        def addWidget(self, *a, **k):
-            pass
-        def addLayout(self, *a, **k):
-            pass
-    class QGroupBox(QWidget):
-        def __init__(self, *a, **k):
-            pass
-    class QFrame(QWidget):
-        pass
-    class QScrollArea(QWidget):
-        def __init__(self, *a, **k):
-            pass
-        def setWidget(self, *a, **k):
-            pass
-    class QMenu(QWidget):
-        def __init__(self, *a, **k):
-            pass
-    class QTableWidgetItem:
-        def __init__(self, *a, **k):
-            pass
-    class QHeaderView:
-        ResizeMode = types.SimpleNamespace(ResizeToContents=1, Stretch=2)
-    class QLineEdit(QWidget):
-        def text(self):
-            return ""
-        def setText(self, *a, **k):
-            pass
-        def setReadOnly(self, *a, **k):
-            pass
-    class QDateEdit(QWidget):
-        def __init__(self, *a, **k):
-            pass
-        def setDate(self, *a, **k):
-            pass
-        def setDisplayFormat(self, *a, **k):
-            pass
-    class QComboBox(QWidget):
-        def __init__(self, *a, **k):
-            self._text = ""
-            self.currentIndexChanged = _Signal()
-        def addItem(self, *a, **k):
-            pass
-        def addItems(self, items):
-            for i in items:
-                self.addItem(i)
-        def currentText(self):
-            return self._text
-        def setCurrentText(self, t):
-            self._text = t
-    class QFormLayout:
-        def addRow(self, *a, **k):
-            pass
-    class QGridLayout:
-        def addWidget(self, *a, **k):
-            pass
-    class QTextEdit(QWidget):
-        def toPlainText(self):
-            return ""
-        def setPlainText(self, *a, **k):
-            pass
-    class QScrollArea(QWidget):
-        def setWidgetResizable(self, *a, **k):
-            pass
-        def setWidget(self, *a, **k):
-            pass
-    class QMenu(QWidget):
-        def addAction(self, *a, **k):
-            pass
-        def exec(self, *a, **k):
-            pass
-    class QTableWidget(QWidget):
-        pass
-    class QTableWidgetItem:
-        def __init__(self, *a, **k):
-            pass
-    class QTableView(QWidget):
-        pass
-    class QHeaderView(QWidget):
-        class ResizeMode:
-            Stretch = 0
-        def setSectionResizeMode(self, *a, **k):
-            pass
-    class QStandardItemModel:
-        def __init__(self, *a, **k):
-            pass
-        def setHorizontalHeaderLabels(self, *a, **k):
-            pass
-        def rowCount(self):
-            return 0
-        def insertRow(self, *a, **k):
-            pass
-        def setItem(self, *a, **k):
-            pass
-    class QStandardItem:
-        def __init__(self, *a, **k):
-            pass
-        def text(self):
-            return ""
-    class QFileSystemModel:
-        def setReadOnly(self, *a, **k):
-            pass
-        def setRootPath(self, *a, **k):
-            pass
-        def index(self, p):
-            return p
-        def filePath(self, index):
-            return index
-    class QSortFilterProxyModel:
-        def setSourceModel(self, *a, **k):
-            pass
-        def setFilterCaseSensitivity(self, *a, **k):
-            pass
-        def setFilterFixedString(self, *a, **k):
-            pass
-        def mapFromSource(self, index):
-            return index
-        def mapToSource(self, index):
-            return index
-    class QDateEdit(QWidget):
-        def setDate(self, *a, **k):
-            pass
-        def date(self):
-            return None
-    class QSplitter(QWidget):
-        pass
-    class QMenu: pass
-    class QScrollArea(QWidget):
-        pass
-    class QDateEdit(QWidget):
-        def __init__(self, *a, **k):
-            pass
-    class QTableWidgetItem: pass
-    class QInputDialog: pass
-    class QSlider(QWidget): pass
-    class QFont: pass
-    class QSizePolicy: pass
-    class QHeaderView: pass
-    class QFileSystemModel: pass
-    class QSpinBox:
-        def __init__(self, *a, **k):
-            self._value = 0
-        def setRange(self, a, b):
-            pass
-        def setValue(self, v):
-            self._value = v
-        def value(self):
-            return self._value
-    class QListWidget(QWidget):
-        def __init__(self, *a, **k):
-            self._items = []
-        def addItem(self, item):
-            self._items.append(item)
-        def clear(self):
-            self._items = []
-        def count(self):
-            return len(self._items)
-        def item(self, i):
-            return types.SimpleNamespace(text=lambda: self._items[i], isSelected=lambda: True)
-    class QTreeView(QWidget):
-        pass
-    class QTableWidgetItem:
-        def __init__(self, *a, **k):
-            pass
-    class QDateEdit(QWidget):
-        def setDate(self, *a, **k):
-            pass
-        def setDisplayFormat(self, *a, **k):
-            pass
-        def setCalendarPopup(self, *a, **k):
-            pass
-    class QMenu(QWidget):
-        def addAction(self, *a, **k):
-            pass
-    class QTabWidget(QWidget):
-        def addTab(self, *a, **k):
-            pass
-    class QFileDialog:
-        @staticmethod
-        def getExistingDirectory(*a, **k):
-            return ""
-    class QMessageBox: pass
-    class QSystemTrayIcon:
-        def __init__(self, *a, **k):
-            pass
-    class QInputDialog(QWidget):
-        pass
-    class QSlider(QWidget):
-        pass
-    class QHeaderView(QWidget):
-        Stretch = 0
-        ResizeToContents = 1
-        def setSectionResizeMode(self, *a, **k):
-            pass
-    class QFont:
-        pass
-    class QSizePolicy:
-        Expanding = 0
-        Preferred = 1
-    class QFileSystemModel(QWidget):
-        pass
-    class QDate:
-        currentDate = staticmethod(lambda: None)
-        def addDays(self, *a):
-            return self
-    class QDialog(QWidget):
-        pass
-    class QColor:
-        def __init__(self, *a, **k):
-            pass
-    class QBrush:
-        def __init__(self, *a, **k):
-            pass
-    class QTextCharFormat:
-        def __init__(self, *a, **k):
-            pass
-    class QMargins:
-        def __init__(self, *a, **k):
-            pass
-    class QUrl: pass
-    Qt = types.SimpleNamespace(MouseButton=types.SimpleNamespace(LeftButton=1), CaseSensitivity=types.SimpleNamespace(CaseInsensitive=0), AlignmentFlag=types.SimpleNamespace(AlignLeft=0))
-    def Slot(*a, **k):
-        def decorator(fn):
-            return fn
-        return decorator
-    class _QtCore(types.SimpleNamespace):
-        def __getattr__(self, name):
-            return object
 
-    qtcore = _QtCore(
-        QObject=object,
-        Signal=lambda *a, **k: _Signal(),
-        QThread=object,
-        QTimer=object,
-        QDir=QDir,
-        Qt=Qt,
-        Slot=Slot,
-        QMutex=object,
-        QModelIndex=object,
-        QPoint=object,
-        QMimeData=object,
-        QUrl=QUrl,
-        QDate=QDate,
-        QMargins=QMargins,
-        qDebug=lambda *a, **k: None,
-        qWarning=lambda *a, **k: None,
-        qCritical=lambda *a, **k: None,
-        qFatal=lambda *a, **k: None,
-        qInfo=lambda *a, **k: None,
-        qInstallMessageHandler=lambda *a, **k: None,
-        Property=object,
-        __version__="6.5.0",
-        qVersion=lambda: "6.5.0",
-    )
+    qtwidgets.QApplication = QApplication
+    sys.modules["PySide6.QtWidgets"] = qtwidgets
 
-    class _QtWidgets(types.SimpleNamespace):
-        def __getattr__(self, name):
-            return object
+    qtcore = _SafeStubModule("PySide6.QtCore")
+    class Signal:
+        def __init__(self, *a, **k):
+            pass
+        def connect(self, *a, **k):
+            pass
+    qtcore.Signal = Signal
+    qtcore.QObject = type("QObject", (), {})
+    qtcore.QThread = type("QThread", (), {})
+    qtcore.QTimer = type("QTimer", (), {})
+    sys.modules["PySide6.QtCore"] = qtcore
 
-    qtwidgets = _QtWidgets(
-        QApplication=QApplication,
-        QWidget=QWidget,
-        QVBoxLayout=QVBoxLayout,
-        QHBoxLayout=QVBoxLayout,
-        QTabWidget=QTabWidget,
-        QLabel=QLabel,
-        QProgressBar=QProgressBar,
-        QPushButton=QPushButton,
-        QCheckBox=QCheckBox,
-        QSpinBox=QSpinBox,
-        QListWidget=QListWidget,
-        QTreeView=QTreeView,
-        QGroupBox=QGroupBox,
-        QFrame=QFrame,
-        QLineEdit=QLineEdit,
-        QComboBox=QComboBox,
-        QFormLayout=QFormLayout,
-        QGridLayout=QGridLayout,
-        QTextEdit=QTextEdit,
-        QTableWidget=QTableWidget,
-        QTableView=QTableView,
-        QHeaderView=QHeaderView,
-        QStandardItemModel=QStandardItemModel,
-        QStandardItem=QStandardItem,
-        QFileSystemModel=QFileSystemModel,
-        QSortFilterProxyModel=QSortFilterProxyModel,
-        QScrollArea=QScrollArea,
-        QMenu=QMenu,
-        QDateEdit=QDateEdit,
-        QSplitter=QSplitter,
-        QTableWidgetItem=QTableWidgetItem,
-        QInputDialog=QInputDialog,
-        QSlider=QSlider,
-        QFont=QFont,
-        QSizePolicy=QSizePolicy,
-        QFileDialog=QFileDialog,
-        QMessageBox=QMessageBox,
-        QSystemTrayIcon=QSystemTrayIcon,
-        QDialog=QDialog,
-    )
-    class _QtGui(types.SimpleNamespace):
-        def __getattr__(self, name):
-            return object
-
-    qtgui = _QtGui(
-        QIcon=object,
-        QAction=object,
-        QFont=object,
-        QColor=object,
-        QTextCharFormat=object,
-        QBrush=object,
-        QDragEnterEvent=object,
-        QDropEvent=object,
-    )
-    qttest = types.SimpleNamespace(QTest=object)
-    qtcharts = types.SimpleNamespace()
-    qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
-    qtcharts = types.SimpleNamespace()
-    sys.modules['PySide6'] = types.SimpleNamespace(
-        QtCore=qtcore,
-        QtWidgets=qtwidgets,
-        QtGui=qtgui,
-        QtCharts=qtcharts,
-        QtTest=qttest,
-        __version__="6.5.0",
-    )
-    sys.modules['PySide6.QtCore'] = qtcore
-    sys.modules['PySide6.QtWidgets'] = qtwidgets
-    sys.modules['PySide6.QtGui'] = qtgui
-    sys.modules['PySide6.QtCharts'] = qtcharts
-    sys.modules['PySide6.QtTest'] = qttest
-    sys.modules['PySide6.QtMultimedia'] = qtmultimedia
-    sys.modules['PySide6.QtTest'] = qttest
+    sys.modules["PySide6.QtGui"] = _SafeStubModule("PySide6.QtGui")
+    sys.modules["PySide6.QtCharts"] = _SafeStubModule("PySide6.QtCharts")
+    sys.modules["PySide6.QtTest"] = _SafeStubModule("PySide6.QtTest")
+    sys.modules["PySide6.QtMultimedia"] = _SafeStubModule("PySide6.QtMultimedia")
+    pyside6 = types.ModuleType("PySide6")
+    pyside6.QtWidgets = sys.modules["PySide6.QtWidgets"]
+    pyside6.QtGui = sys.modules["PySide6.QtGui"]
+    pyside6.QtCharts = sys.modules["PySide6.QtCharts"]
+    pyside6.QtTest = sys.modules["PySide6.QtTest"]
+    pyside6.QtCore = sys.modules["PySide6.QtCore"]
+    pyside6.QtMultimedia = sys.modules["PySide6.QtMultimedia"]
+    sys.modules["PySide6"] = pyside6
 
 for mod in [
     "fitz",
@@ -433,6 +84,13 @@ for mod in [
     "matplotlib",
     "matplotlib.pyplot",
     "seaborn",
+    "pandas",
+    "plotly",
+    "plotly.graph_objects",
+    "plotly.express",
+    "plotly.subplots",
+    "scipy",
+    "scipy.stats",
     "bs4",
     "selenium",
     "selenium.webdriver",
@@ -441,6 +99,9 @@ for mod in [
     "undetected_chromedriver",
     "selenium.common",
     "selenium.common.exceptions",
+    "keyring",
+    "cryptography",
+    "cryptography.fernet",
 ]:
     sys.modules.setdefault(mod, types.ModuleType(mod))
 
@@ -460,6 +121,30 @@ selenium_common = sys.modules.setdefault('selenium.common', types.ModuleType('se
 exceptions_mod = sys.modules.setdefault('selenium.common.exceptions', types.ModuleType('selenium.common.exceptions'))
 setattr(selenium_common, 'exceptions', exceptions_mod)
 setattr(exceptions_mod, 'NoSuchElementException', Exception)
+np_mod = sys.modules.setdefault('numpy', types.ModuleType('numpy'))
+setattr(np_mod, 'ndarray', object)
+setattr(np_mod, 'array', lambda *a, **k: None)
+pd_mod = sys.modules.setdefault('pandas', types.ModuleType('pandas'))
+setattr(pd_mod, 'DataFrame', object)
+setattr(pd_mod, 'read_csv', lambda *a, **k: None)
+for plot_mod in ['plotly', 'plotly.graph_objects', 'plotly.express', 'plotly.subplots']:
+    mod = sys.modules.setdefault(plot_mod, types.ModuleType(plot_mod))
+    if plot_mod == 'plotly.subplots':
+        setattr(mod, 'make_subplots', lambda *a, **k: None)
+
+scipy_mod = sys.modules.setdefault('scipy', types.ModuleType('scipy'))
+scipy_stats_mod = sys.modules.setdefault('scipy.stats', types.ModuleType('scipy.stats'))
+setattr(scipy_mod, 'stats', scipy_stats_mod)
+setattr(scipy_stats_mod, 'entropy', lambda *a, **k: None)
+setattr(scipy_stats_mod, 'chi2_contingency', lambda *a, **k: (None, None, None, None))
+cryptography_mod = sys.modules.setdefault('cryptography', types.ModuleType('cryptography'))
+fernet_mod = sys.modules.setdefault('cryptography.fernet', types.ModuleType('cryptography.fernet'))
+setattr(cryptography_mod, 'fernet', fernet_mod)
+setattr(fernet_mod, 'Fernet', type('Fernet', (), {'generate_key': staticmethod(lambda: b"0"*32)}))
+setattr(fernet_mod, 'InvalidToken', Exception)
+keyring_mod = sys.modules.setdefault('keyring', types.ModuleType('keyring'))
+setattr(keyring_mod, 'get_password', lambda *a, **k: None)
+setattr(keyring_mod, 'set_password', lambda *a, **k: None)
 
 if "langdetect" not in sys.modules:
     langdetect = types.ModuleType("langdetect")

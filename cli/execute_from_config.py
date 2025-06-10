@@ -1,3 +1,8 @@
+"""
+Module: execute_from_config
+Purpose: CLI entry point to run collectors and processors defined in a config.
+"""
+
 import argparse
 import logging
 from typing import List

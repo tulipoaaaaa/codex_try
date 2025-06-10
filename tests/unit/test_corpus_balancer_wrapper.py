@@ -70,6 +70,7 @@ sys.modules.setdefault("scipy", scipy)
 sys.modules.setdefault("scipy.stats", scipy_stats)
 
 from shared_tools.ui_wrappers.processors import corpus_balancer_wrapper as cbw
+cbw.pyqtSignal = lambda *a, **k: _Signal()
 from PySide6.QtWidgets import QApplication
 
 class DummyBalancer:
