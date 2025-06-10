@@ -71,6 +71,8 @@ Launch the application with offscreen rendering:
 HEADLESS=1 python app/main.py
 ```
 
+The Tools menu includes an **Import Corpus** option for loading corpus archives exported from another installation.
+
 ## Command Line Interface
 
 Several CLI tools accompany the GUI for scripted or headless usage. The main
