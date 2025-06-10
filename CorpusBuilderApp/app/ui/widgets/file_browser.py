@@ -305,7 +305,6 @@ class FileBrowser(QWidget):
     def open_file(self, file_path):
         """Open file with default application."""
         from PySide6.QtGui import QDesktopServices
-        from PySide6.QtCore import QUrl
         QDesktopServices.openUrl(QUrl.fromLocalFile(file_path))
         
     def copy_path_to_clipboard(self, file_path):
