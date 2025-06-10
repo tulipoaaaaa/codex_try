@@ -11,6 +11,9 @@ class EnvironmentConfig(BaseModel):
     corpus_dir: str = Field(..., description="Base directory for the corpus")
     cache_dir: Optional[str] = Field(None, description="Optional cache directory")
     log_dir: Optional[str] = Field(None, description="Optional log directory")
+    raw_data_dir: Optional[str] = Field(None, description="Directory for raw documents")
+    processed_dir: Optional[str] = Field(None, description="Directory for processed files")
+    metadata_dir: Optional[str] = Field(None, description="Directory for metadata files")
 
 class DomainConfig(BaseModel):
     """Schema for domain-specific configuration."""
@@ -293,6 +296,24 @@ class ProjectConfig:
         # Deep merge configs, with env vars taking precedence
         self._deep_merge(config, env_config)
 
+        # Populate directories from environment section if not provided
+        env_name = config.get('environment', {}).get('active', 'test')
+        env_cfg = config.get('environments', {}).get(env_name, {})
+        dirs = config.setdefault('directories', {})
+
+        # Corpus root maps to environment corpus_dir
+        dirs.setdefault('corpus_root', env_cfg.get('corpus_dir', '~/crypto_corpus'))
+        dirs.setdefault('raw_data_dir', env_cfg.get('raw_data_dir', os.path.join(dirs['corpus_root'], 'raw')))
+        dirs.setdefault('processed_dir', env_cfg.get('processed_dir', os.path.join(dirs['corpus_root'], 'processed')))
+        dirs.setdefault('metadata_dir', env_cfg.get('metadata_dir', os.path.join(dirs['corpus_root'], 'metadata')))
+        dirs.setdefault('logs_dir', env_cfg.get('log_dir', os.path.join(dirs['corpus_root'], 'logs')))
+
+        # Mirror back into environment config if missing
+        env_cfg.setdefault('raw_data_dir', dirs['raw_data_dir'])
+        env_cfg.setdefault('processed_dir', dirs['processed_dir'])
+        env_cfg.setdefault('metadata_dir', dirs['metadata_dir'])
+        config['environments'][env_name] = env_cfg
+
         # Validate collector and processor sections if present
         self._validate_section_schemas(config)
 
@@ -370,19 +391,36 @@ class ProjectConfig:
 
  # Directory helper methods
     def get_corpus_root(self) -> Path:
-        return Path(self.get('directories.corpus_root')).expanduser()
+        if 'directories' in self.config and 'corpus_root' in self.config['directories']:
+            return Path(self.get('directories.corpus_root')).expanduser()
+        env_cfg = self.config.get('environments', {}).get(self.environment, {})
+        if 'corpus_dir' in env_cfg:
+            return Path(env_cfg['corpus_dir']).expanduser()
+        return Path('~/crypto_corpus').expanduser()
 
     def get_corpus_dir(self) -> Path:
         return self.get_corpus_root()
 
     def get_raw_dir(self) -> Path:
-        return Path(self.get('directories.raw_data_dir')).expanduser()
+        if 'directories' in self.config and 'raw_data_dir' in self.config['directories']:
+            return Path(self.get('directories.raw_data_dir')).expanduser()
+        env_cfg = self.config.get('environments', {}).get(self.environment, {})
+        base = env_cfg.get('raw_data_dir') or os.path.join(env_cfg.get('corpus_dir', '~/crypto_corpus'), 'raw')
+        return Path(base).expanduser()
 
     def get_processed_dir(self) -> Path:
-        return Path(self.get('directories.processed_dir')).expanduser()
+        if 'directories' in self.config and 'processed_dir' in self.config['directories']:
+            return Path(self.get('directories.processed_dir')).expanduser()
+        env_cfg = self.config.get('environments', {}).get(self.environment, {})
+        base = env_cfg.get('processed_dir') or os.path.join(env_cfg.get('corpus_dir', '~/crypto_corpus'), 'processed')
+        return Path(base).expanduser()
 
     def get_metadata_dir(self) -> Path:
-        return Path(self.get('directories.metadata_dir')).expanduser()
+        if 'directories' in self.config and 'metadata_dir' in self.config['directories']:
+            return Path(self.get('directories.metadata_dir')).expanduser()
+        env_cfg = self.config.get('environments', {}).get(self.environment, {})
+        base = env_cfg.get('metadata_dir') or os.path.join(env_cfg.get('corpus_dir', '~/crypto_corpus'), 'metadata')
+        return Path(base).expanduser()
 
     def get_logs_dir(self) -> Path:
         """
@@ -391,9 +429,12 @@ class ProjectConfig:
 
         Use `str(...)` or `.as_posix()` if string form is needed (e.g. subprocess).
         """
-        return Path(
-            self.get("directories.logs_dir", os.path.expanduser("~/.cryptofinance/logs"))
-        ).expanduser()
+        if 'directories' in self.config and 'logs_dir' in self.config['directories']:
+            path = self.get("directories.logs_dir")
+        else:
+            env_cfg = self.config.get('environments', {}).get(self.environment, {})
+            path = env_cfg.get('log_dir', os.path.expanduser("~/.cryptofinance/logs"))
+        return Path(path).expanduser()
 
     def get_stats_dir(self) -> Path:
         """Return directory where corpus statistics are stored."""
@@ -421,11 +462,17 @@ class ProjectConfig:
                     "corpus_dir": str(config_dir / "corpus"),
                     "cache_dir": str(config_dir / "cache"),
                     "log_dir": str(config_dir / "logs"),
+                    "raw_data_dir": str(config_dir / "corpus" / "raw"),
+                    "processed_dir": str(config_dir / "corpus" / "processed"),
+                    "metadata_dir": str(config_dir / "corpus" / "metadata"),
                 },
                 "production": {
                     "corpus_dir": str(Path.home() / "CryptoCorpus"),
                     "cache_dir": str(Path.home() / "CryptoCorpus" / "cache"),
                     "log_dir": str(Path.home() / "CryptoCorpus" / "logs"),
+                    "raw_data_dir": str(Path.home() / "CryptoCorpus" / "raw"),
+                    "processed_dir": str(Path.home() / "CryptoCorpus" / "processed"),
+                    "metadata_dir": str(Path.home() / "CryptoCorpus" / "metadata"),
                 },
             },
             "auto_balance": {
