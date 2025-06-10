@@ -208,6 +208,15 @@ class AnnasMainLibraryCollector(BaseCollector):
                 continue
         return downloaded_files
 
+    def get_capabilities(self):
+        return {
+            "name": "AnnasMainLibraryCollector",
+            "requires_auth": True,
+            "rate_limit": "N/A",
+            "domains": list(self.domain_mapping.values()),
+            "output_type": "PDF",
+        }
+
 def run_annas_main_library_collector(args, source_config, base_dir, batch_json=None):
     """Legacy entry point for backward compatibility."""
     try:

@@ -408,6 +408,15 @@ class FREDCollector(BaseCollector):
             self.logger.error(f"Error validating file {filepath}: {str(e)}")
             return False
 
+    def get_capabilities(self):
+        return {
+            "name": "FREDCollector",
+            "requires_auth": True,
+            "rate_limit": "20/minute",
+            "domains": ["valuation_models"],
+            "output_type": "CSV",
+        }
+
 if __name__ == "__main__":
     import argparse
     

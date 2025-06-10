@@ -653,6 +653,15 @@ def find_isda_documentation(base_dir):
     logger.info(f"Found {len(documentation_pages)} potential documentation pages, saved to {results_path}")
     return documentation_pages
 
+    def get_capabilities(self):
+        return {
+            "name": "ISDADocumentationCollector",
+            "requires_auth": False,
+            "rate_limit": "N/A",
+            "domains": ["regulation_compliance"],
+            "output_type": "PDF",
+        }
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Collect ISDA documentation")

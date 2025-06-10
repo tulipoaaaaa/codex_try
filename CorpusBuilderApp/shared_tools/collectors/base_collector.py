@@ -162,3 +162,12 @@ class BaseCollector:
         delay = random.uniform(*self.delay_range)
         self.logger.debug(f"Waiting {delay:.2f}s before requesting from {domain}")
         time.sleep(delay)
+
+    def get_capabilities(self):
+        return {
+            "name": self.__class__.__name__,
+            "requires_auth": False,
+            "rate_limit": "N/A",
+            "domains": list(self.config.domain_configs.keys()),
+            "output_type": "unknown",
+        }

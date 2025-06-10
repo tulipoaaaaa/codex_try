@@ -320,6 +320,15 @@ def run_bitmex_collector(args, source_config, base_dir):
         traceback.print_exc()
     return None
 
+    def get_capabilities(self):
+        return {
+            "name": "UpdatedBitMEXCollector",
+            "requires_auth": False,
+            "rate_limit": "N/A",
+            "domains": ["crypto_derivatives"],
+            "output_type": "HTML",
+        }
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Collect BitMEX Research blog posts and PDFs")

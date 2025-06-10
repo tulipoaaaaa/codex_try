@@ -172,6 +172,18 @@ class GitHubCollector(ApiCollector):
         
         self.logger.info(f"Cloned {len(cloned_repos)} repositories")
         return cloned_repos
+
+    def get_capabilities(self):
+        return {
+            "name": "GitHubCollector",
+            "requires_auth": bool(self.api_key),
+            "rate_limit": "5/minute",
+            "domains": [
+                "high_frequency_trading",
+                "crypto_derivatives",
+            ],
+            "output_type": "repository",
+        }
     
     def _search_by_topic(self, topic: str, max_repos: int = 10) -> List[Dict[str, Any]]:
         """Search GitHub repositories by topic.

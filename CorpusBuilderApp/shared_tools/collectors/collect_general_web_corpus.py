@@ -104,8 +104,17 @@ class GeneralWebCorpusCollector(BaseCollector):
         self.logger.info(f"Total downloaded: {total_downloaded}")
         for domain, stats in self.tracker['domains'].items():
             self.logger.info(f"{domain}: {stats['completed']} / {stats['allocation']} downloads")
-            
+
         return True
+
+    def get_capabilities(self):
+        return {
+            "name": "GeneralWebCorpusCollector",
+            "requires_auth": True,
+            "rate_limit": "5/minute",
+            "domains": list(DOMAINS.keys()),
+            "output_type": "PDF",
+        }
 
 def run_general_web_corpus_collector(args, source_config, base_dir):
     """Legacy entry point for backward compatibility."""

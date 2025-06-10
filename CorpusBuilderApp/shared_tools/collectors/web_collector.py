@@ -221,6 +221,15 @@ class WebCollector(BaseCollector):
             self.logger.warning(f"Error checking robots.txt for {url}: {e}")
             return True  # Default to allowing if error
 
+    def get_capabilities(self):
+        return {
+            "name": "WebCollector",
+            "requires_auth": False,
+            "rate_limit": "N/A",
+            "domains": list(self.config.domain_configs.keys()),
+            "output_type": "HTML",
+        }
+
 if __name__ == "__main__":
     import argparse
     

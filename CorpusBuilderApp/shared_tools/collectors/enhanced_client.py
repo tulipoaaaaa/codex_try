@@ -14,11 +14,12 @@ from selenium.webdriver.chrome.options import Options
 from selenium.common.exceptions import NoSuchElementException
 import shutil
 from shared_tools.utils.extractor_utils import safe_filename  # type: ignore
+from .utils import ExceptionLoggingMixin
 
 # Replace load_dotenv("/workspace/notebooks/.env") with project root .env
 load_dotenv(os.path.join(os.path.dirname(__file__), '../../.env'))
 
-class CookieAuthClient:
+class CookieAuthClient(ExceptionLoggingMixin):
     """Client for Anna's Archive that uses cookie-based authentication"""
     
     def __init__(self, download_dir=None, account_cookie=None):
@@ -588,8 +589,8 @@ class CookieAuthClient:
                     pdf_file = self._wait_for_pdf_download(download_dir)
                     if pdf_file:
                         print(f"[Selenium] PDF downloaded via fast-download-link: {pdf_file}")
-                except Exception:
-                    pass
+                except Exception as e:
+                    self.log_exception("CookieAuthClient.selenium_fast_download", e)
             if not pdf_file:
                 # Try iframe
                 try:
@@ -600,8 +601,8 @@ class CookieAuthClient:
                     pdf_file = self._wait_for_pdf_download(download_dir)
                     if pdf_file:
                         print(f"[Selenium] PDF downloaded via iframe: {pdf_file}")
-                except Exception:
-                    pass
+                except Exception as e:
+                    self.log_exception("CookieAuthClient.selenium_iframe", e)
             if not pdf_file:
                 # Try all <a> links with 'download' or '.pdf'
                 links = driver.find_elements(By.TAG_NAME, "a")
@@ -649,8 +650,8 @@ class CookieAuthClient:
             if driver:
                 try:
                     driver.quit()
-                except:
-                    pass
+                except Exception as e:
+                    self.log_exception("CookieAuthClient.driver_quit", e)
 
     def _wait_for_pdf_download(self, download_dir, timeout=90):
         """Wait for a PDF file to appear in the download directory."""
@@ -907,8 +908,7 @@ class CookieAuthClient:
                     try:
                         driver.quit()
                     except Exception as quit_error:
-                        print(f"[Selenium] Error quitting driver: {quit_error}")
-                        pass
+                        self.log_exception("CookieAuthClient.driver_quit", quit_error)
         else:
             method = 'requests'
 

@@ -123,6 +123,15 @@ class RepoCollector(BaseCollector):
             self.logger.error(f"Error downloading {zip_url}: {e}")
             return None
 
+    def get_capabilities(self):
+        return {
+            "name": "RepoCollector",
+            "requires_auth": False,
+            "rate_limit": "N/A",
+            "domains": ["other"],
+            "output_type": "repository",
+        }
+
 if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Collect data from a repository")

@@ -9,8 +9,9 @@ import requests
 from dotenv import load_dotenv
 import time
 import logging
+from .utils import ExceptionLoggingMixin
 
-class CookieAuthClient:
+class CookieAuthClient(ExceptionLoggingMixin):
     """Client for Anna's Archive with focus on high-quality PDFs"""
     
     def __init__(self, download_dir=None, account_cookie=None):
@@ -251,8 +252,8 @@ class CookieAuthClient:
                     # Try to remove invalid file
                     try:
                         os.remove(output_path)
-                    except:
-                        pass
+                    except Exception as e:
+                        self.log_exception("CookieAuthClient.download_file", e)
             else:
                 # If we got HTML instead of PDF, check if it has membership wall
                 if "Become a member" in download_response.text:
@@ -287,8 +288,8 @@ class CookieAuthClient:
                     # Try to remove invalid file
                     try:
                         os.remove(output_path)
-                    except:
-                        pass
+                    except Exception as e:
+                        self.log_exception("CookieAuthClient.download_file", e)
             
             print("❌ Could not download a valid PDF.")
             return None
