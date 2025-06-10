@@ -1,3 +1,4 @@
+# PROTOTYPE: Not integrated into app. Placeholder only.
 import fitz
 from PIL import Image
 import pytesseract
