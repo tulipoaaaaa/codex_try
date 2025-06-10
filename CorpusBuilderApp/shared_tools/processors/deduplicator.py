@@ -49,6 +49,7 @@ class Deduplicator:
         
         # Indexes for duplicate detection
         self.file_hashes = {}  # Maps file hash to file paths
+        self.sha256_index = {}  # Maps SHA256 hash to file paths
         self.title_index = {}  # Maps normalized title to document info
         self.minhash_index = {}  # Maps MinHash signatures to document info
         
@@ -79,6 +80,7 @@ class Deduplicator:
                 with open(index_path, 'r') as f:
                     index_data = json.load(f)
                     self.file_hashes = index_data.get('file_hashes', {})
+                    self.sha256_index = index_data.get('sha256_index', {})
                     self.title_index = index_data.get('title_index', {})
                     # MinHash index is rebuilt each time due to its structure
                     self.logger.info(f"Loaded existing deduplication index with {len(self.file_hashes)} entries")
@@ -90,8 +92,10 @@ class Deduplicator:
         # Build the index
         self.logger.info("Building deduplication index...")
         self.file_hashes = {}
+        self.sha256_index = {}
         self.title_index = {}
         self.minhash_index = {}
+        seen_hashes: set[str] = set()
         
         # Scan all files in the corpus directory
         all_files = list(self.corpus_dir.glob("**/*"))
@@ -112,6 +116,13 @@ class Deduplicator:
                 
             # Compute file hash
             file_hash = self._compute_file_hash(file_path)
+
+            sha256 = self._extract_sha256(file_path)
+            if sha256:
+                if sha256 in seen_hashes:
+                    self.logger.warning(f"Duplicate by SHA256 detected: {file_path}")
+                seen_hashes.add(sha256)
+                self.sha256_index.setdefault(sha256, []).append(str(file_path))
             
             if file_hash:
                 # Check if this hash already exists
@@ -147,6 +158,7 @@ class Deduplicator:
             with open(index_path, 'w') as f:
                 json.dump({
                     'file_hashes': self.file_hashes,
+                    'sha256_index': self.sha256_index,
                     'title_index': self.title_index
                 }, f, indent=2)
                 
@@ -165,8 +177,16 @@ class Deduplicator:
                 return []
         
         duplicates = []
-        
-        # Find files with identical hashes
+
+        # Find files with identical hashes (SHA256 and legacy hashes)
+        for file_hash, file_paths in self.sha256_index.items():
+            if len(file_paths) > 1:
+                duplicates.append({
+                    'type': 'identical_hash',
+                    'hash': file_hash,
+                    'files': file_paths
+                })
+
         for file_hash, file_paths in self.file_hashes.items():
             if len(file_paths) > 1:
                 duplicates.append({
@@ -318,6 +338,21 @@ class Deduplicator:
         except Exception as e:
             self.logger.error(f"Error computing hash for {file_path}: {e}")
             return None
+
+    def _extract_sha256(self, file_path: Path) -> Optional[str]:
+        """Return SHA256 from associated metadata if available."""
+        candidates = [Path(f"{file_path}.meta"), Path(f"{file_path}.meta.json"), Path(f"{file_path}.json")]
+        for meta_path in candidates:
+            if meta_path.exists():
+                try:
+                    with open(meta_path, 'r') as f:
+                        data = json.load(f)
+                    sha = data.get("sha256")
+                    if sha:
+                        return sha
+                except Exception:
+                    continue
+        return None
     
     def _extract_title(self, file_path):
         """Extract title from file or associated metadata"""
@@ -476,8 +511,8 @@ class Deduplicator:
                             with open(extracted_path, 'r', encoding='utf-8', errors='ignore') as f:
                                 text = f.read()
                                 token_count += len(text.split())
-                          except Exception as exc:
-                              logger.exception("Unhandled exception in file read: %s", exc)
+                        except Exception as exc:
+                            logger.exception("Unhandled exception in file read: %s", exc)
                 domain_token_counts[domain] = token_count
         return domain_token_counts
 
@@ -520,8 +555,8 @@ class Deduplicator:
                     token_count = eq.get("token_count", 0)
                     if token_count:
                         return token_count
-              except Exception as exc:
-                  logger.exception("Unhandled exception in json token count: %s", exc)
+            except Exception as exc:
+                logger.exception("Unhandled exception in json token count: %s", exc)
         return 0
 
 def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
