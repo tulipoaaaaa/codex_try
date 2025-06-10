@@ -51,6 +51,16 @@ class TextProcessorConfig(BaseModel):
     min_quality: int = 70
 
 
+class AutoBalanceConfig(BaseModel):
+    """Optional schema for Auto Balance service configuration."""
+
+    enabled: bool = False
+    dominance_ratio: float = 5.0
+    min_entropy: float = 2.0
+    check_interval: int = 900  # seconds
+    start_balancing: bool = False
+
+
 COLLECTOR_SCHEMAS: Dict[str, Type[BaseModel]] = {
     "github": GitHubCollectorConfig,
     "arxiv": ArxivCollectorConfig,
@@ -186,6 +196,7 @@ class ProjectConfigSchema(BaseModel):
         },
         description="Domain-specific configurations"
     )
+    auto_balance: AutoBalanceConfig = Field(default_factory=AutoBalanceConfig, description="Auto balance service configuration")
 
 class ProjectConfig:
     """Project configuration manager with .env support"""
@@ -382,5 +393,12 @@ class ProjectConfig:
                     "cache_dir": str(Path.home() / "CryptoCorpus" / "cache"),
                     "log_dir": str(Path.home() / "CryptoCorpus" / "logs"),
                 },
+            },
+            "auto_balance": {
+                "enabled": False,
+                "dominance_ratio": 5.0,
+                "min_entropy": 2.0,
+                "check_interval": 900,
+                "start_balancing": False,
             },
         }
