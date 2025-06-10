@@ -855,40 +855,59 @@ class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
             return
 
         try:
-            cfg = self.config.get_processor_config("monitor_progress") or {}
-        except Exception:  # pragma: no cover - defensive
-            cfg = {}
+             cfg = self.config.get_processor_config("monitor_progress") or {}
 
-        if not isinstance(cfg, dict):  # pragma: no cover - sanity check
-            cfg = {}
+             if not isinstance(cfg, dict):
+                 cfg = {}
 
-        # Update local configuration
-        self.monitor_config.update(cfg)
+             # Update local config
+             self.monitor_config.update(cfg)
 
-        # Update UI controls if present
-        if hasattr(self, "update_interval_slider"):
-            if "update_interval" in cfg:
-                try:
-                    self.update_interval_slider.setValue(int(cfg["update_interval"]))
-                except Exception:  # pragma: no cover - invalid value
-                    pass
-        if hasattr(self, "enable_notifications_cb"):
-            self.enable_notifications_cb.setChecked(cfg.get("enable_notifications", self.enable_notifications_cb.isChecked()))
-        if hasattr(self, "log_progress_cb"):
-            self.log_progress_cb.setChecked(cfg.get("log_progress", self.log_progress_cb.isChecked()))
-        if hasattr(self, "track_memory_cb"):
-            self.track_memory_cb.setChecked(cfg.get("track_memory", self.track_memory_cb.isChecked()))
-        if hasattr(self, "track_cpu_cb"):
-            self.track_cpu_cb.setChecked(cfg.get("track_cpu", self.track_cpu_cb.isChecked()))
+             # Update UI
+             if hasattr(self, "update_interval_slider") and "update_interval" in cfg:
+                 try:
+                      self.update_interval_slider.setValue(int(cfg["update_interval"]))
+                 except Exception:
+                      self.logger.debug("Invalid update_interval value")
 
-        # Apply to running worker
-        if self.monitoring_worker:
-            self.monitoring_worker.monitor_config.update(cfg)
-            if self.monitoring_worker.isRunning():
-                self.monitoring_worker.monitor.configure(
-                    update_interval=self.monitoring_worker.monitor_config.get("update_interval", 1.0),
-                    enable_notifications=self.monitoring_worker.monitor_config.get("enable_notifications", True),
-                    log_progress=self.monitoring_worker.monitor_config.get("log_progress", True),
-                    track_memory=self.monitoring_worker.monitor_config.get("track_memory", True),
-                    track_cpu=self.monitoring_worker.monitor_config.get("track_cpu", True),
-                )
+             if hasattr(self, "enable_notifications_cb"):
+                 self.enable_notifications_cb.setChecked(cfg.get(
+                     "enable_notifications",
+                     self.enable_notifications_cb.isChecked()
+                 ))
+
+             if hasattr(self, "log_progress_cb"):
+                 self.log_progress_cb.setChecked(cfg.get(
+                     "log_progress",
+                     self.log_progress_cb.isChecked()
+                 ))
+
+             if hasattr(self, "track_memory_cb"):
+                 self.track_memory_cb.setChecked(cfg.get(
+                     "track_memory",
+                     self.track_memory_cb.isChecked()
+                 ))
+
+             if hasattr(self, "track_cpu_cb"):
+                 self.track_cpu_cb.setChecked(cfg.get(
+                     "track_cpu",
+                     self.track_cpu_cb.isChecked()
+                 ))
+
+             # Update running monitor worker
+             if self.monitoring_worker:
+                 self.monitoring_worker.monitor_config.update(cfg)
+                 if self.monitoring_worker.isRunning():
+                     self.monitoring_worker.monitor.configure(
+                         update_interval=self.monitoring_worker.monitor_config.get("update_interval", 1.0),
+                         enable_notifications=self.monitoring_worker.monitor_config.get("enable_notifications", True),
+                         log_progress=self.monitoring_worker.monitor_config.get("log_progress", True),
+                         track_memory=self.monitoring_worker.monitor_config.get("track_memory", True),
+                         track_cpu=self.monitoring_worker.monitor_config.get("track_cpu", True),
+                     )
+
+             if cfg and hasattr(self, "configuration_changed"):
+                 self.configuration_changed.emit(cfg)
+
+        except Exception as exc:
+            self.show_error("Configuration Error", f"Failed to refresh configuration: {exc}")
