@@ -1,3 +1,5 @@
+# ⚠️ Prototype Widget: DomainDistribution is not currently used in the UI
+# Kept for potential future integration into dashboard chart views
 # File: app/ui/widgets/domain_distribution.py
 
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QLabel, 

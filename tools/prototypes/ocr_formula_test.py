@@ -1,4 +1,5 @@
-# ⚠️ Prototype script. Not integrated. Used for OCR testing only.
+# ⚠️ Prototype Script: OCR formula detection prototype using pytesseract and fitz
+# Not wired into processor pipeline
 import fitz
 from PIL import Image
 import pytesseract
