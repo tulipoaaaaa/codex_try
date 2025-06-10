@@ -507,18 +507,12 @@ class ProcessorsTab(QWidget):
             # Initialize object-based wrappers
             for name, wrapper_class in object_wrappers:
                 try:
-<<<<<<< HEAD
-                    print(f"DEBUG: Initializing {wrapper_class.__name__} with config_object...")
-                    self.processor_wrappers[name] = wrapper_class(self.project_config)
-                    print(f"DEBUG: {wrapper_class.__name__} initialized successfully")
-=======
                     logger.debug(
                         "Initializing %s with config_object...",
                         wrapper_class.__name__,
                     )
                     self.processor_wrappers[name] = wrapper_class(config_object)
                     logger.debug("%s initialized successfully", wrapper_class.__name__)
->>>>>>> my-feature-branch
                 except Exception as e:
                     logger.error(
                         "Failed to initialize %s: %s", wrapper_class.__name__, e

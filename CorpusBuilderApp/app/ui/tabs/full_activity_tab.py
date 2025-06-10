@@ -91,12 +91,8 @@ class FullActivityTab(QWidget):
         # Header with title and controls
         header_layout = QHBoxLayout()
         
-<<<<<<< HEAD
-        header_layout.addWidget(SectionHeader("Full Activity"))
-=======
         title_label = SectionHeader("📊 Full Activity Dashboard")
         header_layout.addWidget(title_label)
->>>>>>> my-feature-branch
         
         header_layout.addStretch()
         

@@ -479,10 +479,7 @@ def main():
     
     if args.project_config:
         # Use project config
-<<<<<<< HEAD
         from shared_tools.project_config import ProjectConfig
-=======
->>>>>>> my-feature-branch
         project = ProjectConfig.load(args.project_config)
         results = run_with_project_config(project, args.verbose)
     else:
