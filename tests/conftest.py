@@ -168,6 +168,8 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
     pyside6.QtTest = sys.modules["PySide6.QtTest"]
     pyside6.QtCore = sys.modules["PySide6.QtCore"]
     pyside6.QtMultimedia = sys.modules["PySide6.QtMultimedia"]
+    pyside6.__version__ = "6.5.0"
+    sys.modules["PySide6.QtCore"].__version__ = "6.5.0"
     sys.modules["PySide6"] = pyside6
 
 for mod in [
