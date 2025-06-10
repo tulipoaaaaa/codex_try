@@ -237,6 +237,7 @@ def process_nonpdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Op
         formula_extractor = FormulaExtractor()
         symbol_processor = FinancialSymbolProcessor()
         academic_processor = AcademicPaperProcessor()
+        symbol_glossary = None
         
         # Special handling for code files
         is_code_file = ext in ['.py', '.ipynb']
