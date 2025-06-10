@@ -30,6 +30,7 @@ from shared_tools.services.corpus_stats_service import CorpusStatsService
 from app.ui.utils.ui_helpers import create_styled_progress_bar
 from shared_tools.services.task_queue_manager import TaskQueueManager
 from shared_tools.services.system_monitor import SystemMonitor
+from shared_tools.services.dependency_update_service import DependencyUpdateService
 from app.helpers.notifier import Notifier
 from app.ui.widgets.active_operations import ActiveOperationsWidget
 import os
@@ -53,6 +54,16 @@ class DashboardTab(QWidget):
         self.task_queue_manager.queue_counts_changed.connect(self.update_queue_counts)
         self.task_queue_manager.task_progress.connect(self.update_task_progress)
         self._task_bars: dict[str, QProgressBar] = {}
+        self.dependency_update_service = DependencyUpdateService()
+        self.dependency_update_service.dependency_update_progress.connect(
+            self.on_dependency_update_progress
+        )
+        self.dependency_update_service.dependency_update_completed.connect(
+            self.on_dependency_update_completed
+        )
+        self.dependency_update_service.dependency_update_failed.connect(
+            self.on_dependency_update_failed
+        )
         self.system_monitor = SystemMonitor()
         self.system_monitor.system_metrics.connect(self.update_system_metrics)
         self.system_monitor.start()
@@ -888,23 +899,38 @@ class DashboardTab(QWidget):
             QMessageBox.critical(self, "Export Error", str(exc))
 
     def update_dependencies(self):
-        """Update Python dependencies using pip."""
-        import subprocess
-        import sys
+        """Ask for confirmation and run the dependency updater service."""
+        from PySide6.QtWidgets import QMessageBox, QCheckBox
 
-        try:
-            subprocess.check_call(
-                [sys.executable, "-m", "pip", "install", "-r", "requirements.txt"]
-            )
-            Notifier.notify(
-                "Dependencies Updated", "All packages are up to date", level="success"
-            )
+        dialog = QMessageBox(self)
+        dialog.setWindowTitle("Update Dependencies")
+        dialog.setText("Run dependency upgrade now?")
+        dialog.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+        dry_box = QCheckBox("Dry run (no changes)")
+        dialog.setCheckBox(dry_box)
+        if dialog.exec() == QMessageBox.StandardButton.Yes:
+            dry_run = dry_box.isChecked()
             if self.activity_log_service:
-                self.activity_log_service.log("System", "Dependencies updated")
-        except Exception as exc:  # pragma: no cover - runtime guard
-            Notifier.notify("Update Failed", str(exc), level="error")
-            if self.activity_log_service:
-                self.activity_log_service.log("System", f"Dependency update failed: {exc}")
+                self.activity_log_service.log(
+                    "System", "Starting dependency update", {"dry_run": dry_run}
+                )
+            self.dependency_update_service.start_update(dry_run)
+
+    def on_dependency_update_progress(self, percent: int, message: str) -> None:
+        """Handle progress updates from ``DependencyUpdateService``."""
+        if self.activity_log_service:
+            self.activity_log_service.log("DependencyUpdate", message)
+
+    def on_dependency_update_completed(self) -> None:
+        Notifier.notify("Dependencies Updated", "Update completed", level="success")
+        if self.activity_log_service:
+            self.activity_log_service.log("System", "Dependency update completed")
+
+    def on_dependency_update_failed(self, msg: str) -> None:
+        Notifier.notify("Update Failed", msg, level="error")
+        if self.activity_log_service:
+            self.activity_log_service.log("System", f"Dependency update failed: {msg}")
+
     def pause_task(self, task_id):
         print(f"[Stub] Pause {task_id}")
     def stop_task(self, task_id):
