@@ -7,9 +7,9 @@ import os
 import json
 from typing import Dict, List, Optional, Any, Set
 from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Slot as pyqtSlot, QMutex
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
-                           QProgressBar, QLabel, QTextEdit, QFileDialog, QCheckBox, 
-                           QSpinBox, QGroupBox, QGridLayout, QComboBox, QListWidget,
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
+                           QProgressBar, QLabel, QTextEdit, QFileDialog, QCheckBox,
+                           QSpinBox, QDoubleSpinBox, QGroupBox, QGridLayout, QComboBox, QListWidget,
                            QSplitter, QTabWidget, QTableWidget, QTableWidgetItem,
                            QHeaderView, QLineEdit, QTreeWidget, QTreeWidgetItem)
 from shared_tools.ui_wrappers.base_wrapper import BaseWrapper

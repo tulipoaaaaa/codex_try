@@ -11,7 +11,7 @@ from PySide6.QtWidgets import (
     QCheckBox,
     QPushButton,
 )
-from PySide6.QtCore import Qt
+from PySide6.QtCore import Qt, QObject
 
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.status_dot import StatusDot

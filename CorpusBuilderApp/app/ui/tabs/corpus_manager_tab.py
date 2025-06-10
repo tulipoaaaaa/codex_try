@@ -23,6 +23,7 @@ from PySide6.QtWidgets import (
     QFileSystemModel,
     QScrollArea,
     QFrame,
+    QGroupBox,
 )
 from PySide6.QtGui import QAction, QStandardItemModel, QStandardItem, QDragEnterEvent, QDropEvent, QIcon
 from PySide6.QtCore import (
