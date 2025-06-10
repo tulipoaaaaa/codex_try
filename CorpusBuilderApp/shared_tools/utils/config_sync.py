@@ -12,6 +12,8 @@ import argparse
 import datetime
 
 from shared_tools.config import balancer_config, domain_config
+import logging
+logger = logging.getLogger(__name__)
 
 REFERENCE_DOMAINS = balancer_config.DOMAIN_BALANCE_CONFIG
 EXTRACTOR_DOMAINS = domain_config.DOMAINS
@@ -99,7 +101,7 @@ DO NOT modify without updating domain_utils.py wrapper
 
 DOMAINS = \
 ''')
-        pprint.pprint(new_domains, stream=f, width=120)
+        pprint.plogger.info(new_domains, stream=f, width=120)
         f.write('\n\n# (SOURCES section unchanged)\n')
         # Copy the rest of the file (SOURCES etc.)
         with open(BACKUP_PATH, 'r', encoding='utf-8') as orig:
@@ -126,4 +128,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     log = sync_domains(force_sync=args.force_sync)
     for entry in log:
-        print(entry) 
+        logger.info(entry) 

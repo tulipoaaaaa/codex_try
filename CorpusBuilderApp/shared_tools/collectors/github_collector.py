@@ -10,6 +10,8 @@ from typing import List, Optional, Union, Dict, Any
 from .api_collector import ApiCollector
 import re
 from typing import TYPE_CHECKING
+import logging
+logger = logging.getLogger(__name__)
 if TYPE_CHECKING:
     from shared_tools.project_config import ProjectConfig
 
@@ -364,4 +366,4 @@ if __name__ == "__main__":
         max_repos=args.max_repos
     )
     
-    print(f"Collected {len(results)} GitHub records. Output dir: {collector.output_dir}")
+    logger.info(f"Collected {len(results)} GitHub records. Output dir: {collector.output_dir}")

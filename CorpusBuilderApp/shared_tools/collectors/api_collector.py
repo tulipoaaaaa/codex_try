@@ -6,6 +6,8 @@ import requests
 import time
 from typing import Optional, Dict, Union, Any, Tuple
 from pathlib import Path
+import logging
+logger = logging.getLogger(__name__)
 
 class ApiCollector(BaseCollector):
     """Base class for API-based collectors"""
@@ -136,15 +138,15 @@ if __name__ == "__main__":
         try:
             params = json.loads(args.params)
         except Exception as e:
-            print(f"[ERROR] Failed to parse --params JSON: {e}")
+            logger.warning(f"[ERROR] Failed to parse --params JSON: {e}")
             exit(1)
             
-    print(f"[DEBUG] CLI args: {args}")
-    print(f"[DEBUG] Using API key: [REDACTED]")
-    print(f"[DEBUG] Using base URL: {api_base_url}")
-    print(f"[DEBUG] Endpoint: {args.endpoint}")
-    print(f"[DEBUG] Params: {params}")
-    print(f"[DEBUG] Method: {args.method}")
+    logger.debug(f"[DEBUG] CLI args: {args}")
+    logger.debug(f"[DEBUG] Using API key: [REDACTED]")
+    logger.debug(f"[DEBUG] Using base URL: {api_base_url}")
+    logger.debug(f"[DEBUG] Endpoint: {args.endpoint}")
+    logger.debug(f"[DEBUG] Params: {params}")
+    logger.debug(f"[DEBUG] Method: {args.method}")
     
     response = collector.api_request(args.endpoint, params=params, method=args.method)
     
@@ -153,5 +155,5 @@ if __name__ == "__main__":
     with open(output_file, "w", encoding="utf-8") as f:
         json.dump(response, f, indent=2, ensure_ascii=False)
         
-    print(f"[DEBUG] Saved API response to {output_file}")
-    print(f"Collected 1 API record. Output dir: {collector.output_dir}")
+    logger.debug(f"[DEBUG] Saved API response to {output_file}")
+    logger.info(f"Collected 1 API record. Output dir: {collector.output_dir}")

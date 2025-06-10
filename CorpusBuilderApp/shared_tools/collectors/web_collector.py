@@ -8,6 +8,8 @@ import os
 import time
 from typing import List, Dict, Optional, Union, Any
 from pathlib import Path
+import logging
+logger = logging.getLogger(__name__)
 
 class WebCollector(BaseCollector):
     """Base class for web scraping collectors"""
@@ -237,25 +239,25 @@ if __name__ == "__main__":
     if args.no_robots:
         collector.respect_robots_txt = False
         
-    print(f"[DEBUG] CLI args: {args}")
-    print(f"[DEBUG] Respect robots.txt: {collector.respect_robots_txt}")
-    print(f"[DEBUG] Fetching: {args.url}")
+    logger.debug(f"[DEBUG] CLI args: {args}")
+    logger.debug(f"[DEBUG] Respect robots.txt: {collector.respect_robots_txt}")
+    logger.debug(f"[DEBUG] Fetching: {args.url}")
     
     soup = collector.get_soup(args.url)
     if not soup:
-        print("[ERROR] Failed to fetch or parse the web page.")
+        logger.warning("[ERROR] Failed to fetch or parse the web page.")
         exit(1)
         
     links = collector.extract_links(soup, args.url, pattern=args.pattern)
-    print(f"[DEBUG] Extracted {len(links)} links.")
+    logger.debug(f"[DEBUG] Extracted {len(links)} links.")
     
     if args.file_ext:
-        print(f"[DEBUG] Downloading links with extension: {args.file_ext}")
+        logger.debug(f"[DEBUG] Downloading links with extension: {args.file_ext}")
         
     results = collector.download_links(links, file_ext=args.file_ext)
-    print(f"Collected {len(results)} web records. Output dir: {collector.output_dir}")
+    logger.info(f"Collected {len(results)} web records. Output dir: {collector.output_dir}")
     
     if results:
-        print("[DEBUG] Downloaded files:")
+        logger.debug("[DEBUG] Downloaded files:")
         for r in results:
-            print(f"  - {r['filename']} from {r['url']}")
+            logger.info(f"  - {r['filename']} from {r['url']}")

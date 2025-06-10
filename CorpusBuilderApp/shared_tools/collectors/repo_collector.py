@@ -5,6 +5,8 @@ import os
 import shutil
 import tempfile
 from pathlib import Path
+import logging
+logger = logging.getLogger(__name__)
 
 class RepoCollector(BaseCollector):
     """Base class for collecting from code repositories (e.g., GitHub)"""
@@ -152,4 +154,4 @@ if __name__ == "__main__":
         repo_path = collector.clone_repo(args.query, branch=args.branch)
         if repo_path:
             results.append(str(repo_path))
-    print(f"Collected {len(results)} repository records. Output dir: {output_dir}")
+    logger.info(f"Collected {len(results)} repository records. Output dir: {output_dir}")

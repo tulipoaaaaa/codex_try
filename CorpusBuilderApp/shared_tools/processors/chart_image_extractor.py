@@ -20,6 +20,7 @@ import base64
 from io import BytesIO
 import re
 from shared_tools.config.project_config import ProjectConfig
+logger = logging.getLogger(__name__)
 
 class ChartImageExtractor:
     """Extract and analyze charts, graphs, and images from PDFs."""
@@ -170,8 +171,8 @@ class ChartImageExtractor:
             
             doc.close()
             
-            print(f"Total raster images found: {total_raster_images}")
-            print(f"Total vector graphics detected: {total_vector_graphics}")
+            logger.info(f"Total raster images found: {total_raster_images}")
+            logger.info(f"Total vector graphics detected: {total_vector_graphics}")
             
         except Exception as e:
             self.logger.error(f"Error extracting images from PDF {pdf_path}: {e}")
@@ -664,10 +665,10 @@ def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     results = extractor.process_directory(project.get_input_dir())
     
     if verbose:
-        print("\nChart Image Extraction Results:")
-        print(f"Processed files: {len(results['processed_files'])}")
-        print(f"Total charts found: {results['total_charts']}")
-        print(f"Files with charts: {results['files_with_charts']}")
+        logger.info("\nChart Image Extraction Results:")
+        logger.info(f"Processed files: {len(results['processed_files'])}")
+        logger.info(f"Total charts found: {results['total_charts']}")
+        logger.info(f"Files with charts: {results['files_with_charts']}")
     
     return results
 
@@ -695,7 +696,7 @@ def main():
     with open(output_file, 'w') as f:
         json.dump(results, f, indent=2)
     
-    print(f"\nExtraction results saved to: {output_file}")
+    logger.info(f"\nExtraction results saved to: {output_file}")
 
 if __name__ == "__main__":
     main()

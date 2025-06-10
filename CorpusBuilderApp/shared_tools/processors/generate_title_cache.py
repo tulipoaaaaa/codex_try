@@ -4,6 +4,8 @@ import re
 import unicodedata
 import argparse
 from typing import List, Set
+import logging
+logger = logging.getLogger(__name__)
 
 def generate_title_cache(corpus_dir: str, output_dir: str) -> None:
     """
@@ -22,7 +24,7 @@ def generate_title_cache(corpus_dir: str, output_dir: str) -> None:
                 metadata_files.append(os.path.join(root, file))
     
     if not metadata_files:
-        print("No metadata files found.")
+        logger.info("No metadata files found.")
         return
     
     # Process each metadata file
@@ -39,7 +41,7 @@ def generate_title_cache(corpus_dir: str, output_dir: str) -> None:
                         title = re.sub(r'\s+', ' ', title)
                         all_titles.add(title)
         except Exception as e:
-            print(f"Error processing {metadata_file}: {e}")
+            logger.warning(f"Error processing {metadata_file}: {e}")
     
     # Write cache file
     cache_file = os.path.join(output_dir, 'title_cache.txt')
@@ -47,7 +49,7 @@ def generate_title_cache(corpus_dir: str, output_dir: str) -> None:
         for title in sorted(all_titles):
             f.write(f"{title}\n")
     
-    print(f"Title cache generated: {cache_file}")
+    logger.info(f"Title cache generated: {cache_file}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a cache of document titles from corpus metadata.")

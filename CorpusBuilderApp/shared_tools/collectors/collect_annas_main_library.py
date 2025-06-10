@@ -258,4 +258,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     results = run_annas_main_library_collector(args, None, args.output_dir, args.batch_json)
-    print(f"\nCollected {len(results)} files") 
+    logger.info(f"\nCollected {len(results)} files") 

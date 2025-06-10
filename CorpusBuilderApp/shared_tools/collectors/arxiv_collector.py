@@ -11,6 +11,7 @@ import logging
 import argparse
 import requests
 import json
+logger = logging.getLogger(__name__)
 
 def ascii_safe(s):
     """Make string safe for console output on any platform."""
@@ -313,4 +314,4 @@ if __name__ == "__main__":
         search_terms=args.search_terms,
         max_results=args.max_results
     )
-    print(f"Collected {len(results)} papers. Output dir: {args.output_dir}")
+    logger.info(f"Collected {len(results)} papers. Output dir: {args.output_dir}")

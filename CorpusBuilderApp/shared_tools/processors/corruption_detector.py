@@ -9,6 +9,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Union
 from shared_tools.project_config import ProjectConfig
+logger = logging.getLogger(__name__)
 
 def detect_corruption(text: str, config: Optional[Dict] = None) -> Dict[str, Any]:
     """Detect corruption in text using CorruptionDetector
@@ -266,10 +267,10 @@ def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     results = detector.process_directory(project.get_input_dir())
     
     if verbose:
-        print("\nCorruption Detection Results:")
-        print(f"Processed files: {len(results['processed_files'])}")
-        print(f"Corrupted files: {results['corrupted_count']}")
-        print(f"Clean files: {results['clean_count']}")
+        logger.info("\nCorruption Detection Results:")
+        logger.info(f"Processed files: {len(results['processed_files'])}")
+        logger.info(f"Corrupted files: {results['corrupted_count']}")
+        logger.info(f"Clean files: {results['clean_count']}")
     
     return results
 
@@ -297,7 +298,7 @@ def main():
     with open(output_file, 'w') as f:
         json.dump(results, f, indent=2)
     
-    print(f"\nDetection results saved to: {output_file}")
+    logger.info(f"\nDetection results saved to: {output_file}")
 
 if __name__ == "__main__":
     main() 
