@@ -1,9 +1,5 @@
-"""
-Config Sync Script
-Synchronizes domain_config.py allocations and properties with balancer_config.py target_weights and fields.
-Backs up the original domain_config.py before modifying.
-Supports safe (default) and force modes.
-"""
+# ⚠️ Developer-only script.
+# Syncs domain_config.py with balancer_config.yaml – use with caution.
 import sys
 import shutil
 from pathlib import Path
