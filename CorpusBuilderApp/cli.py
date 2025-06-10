@@ -41,6 +41,7 @@ CLI Command          | GUI Equivalent
 --collector web      | Collectors -> General Web
 diff-corpus          | Tools -> Diff Corpus Profiles
 export-corpus        | Tools -> Export Corpus
+check-corpus         | Tools -> Validate Corpus
 """
 
 sys.path.append(str(Path(__file__).resolve().parent.parent))
@@ -157,16 +158,16 @@ def main(argv: list[str] | None = None) -> int:
             help="Sample files with CorruptionDetector",
         )
         chk_args = check_parser.parse_args(argv[1:])
-        from tools import check_corpus_structure
+        from tools.check_corpus_structure import check_corpus_structure
+        from shared_tools.project_config import ProjectConfig
 
-        call_args = ["--config", chk_args.config]
-        if chk_args.validate_metadata:
-            call_args.append("--validate-metadata")
-        if chk_args.auto_fix:
-            call_args.append("--auto-fix")
-        if chk_args.check_integrity:
-            call_args.append("--check-integrity")
-        check_corpus_structure.main(call_args)
+        config = ProjectConfig.from_yaml(chk_args.config)
+        check_corpus_structure(
+            config,
+            validate_metadata=chk_args.validate_metadata,
+            auto_fix=chk_args.auto_fix,
+            check_integrity=chk_args.check_integrity,
+        )
         return 0
 
     if argv and argv[0] == "import-corpus":

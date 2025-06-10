@@ -119,6 +119,11 @@ python CorpusBuilderApp/cli.py export-corpus --corpus-dir data/corpus \
     --output-dir exports --dry-run
 ```
 
+### Example Commands
+```bash
+python CorpusBuilderApp/cli.py check-corpus --config config.yaml --auto-fix
+```
+
 ## License
 
 This project is proprietary and all rights are reserved by Bored AI Labs.
