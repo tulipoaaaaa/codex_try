@@ -1,4 +1,5 @@
 import os
+import types
 import pytest
 
 try:
@@ -47,3 +48,33 @@ def test_invalid_path_shows_error(qtbot, mock_project_config, tmp_path, monkeypa
     qtbot.addWidget(tab)
     qtbot.mouseClick(tab.save_btn, Qt.MouseButton.LeftButton)
     assert errors and "Failed to save configuration" in errors[0]
+
+
+def test_environment_change_auto_saved(monkeypatch, mock_project_config, tmp_path):
+    """Ensure environment selection is persisted when auto-save is enabled."""
+
+    def dummy_setup(self):
+        self.env_selector = types.SimpleNamespace(
+            currentText=lambda: self._env,
+            setCurrentText=lambda v: setattr(self, "_env", v),
+        )
+        self._env = "test"
+        self.config_path = types.SimpleNamespace(setText=lambda v: None)
+        self.auto_save = types.SimpleNamespace(isChecked=lambda: True)
+
+    cfg = _make_config(mock_project_config, tmp_path)
+    tab = ConfigurationTab.__new__(ConfigurationTab)
+    tab.project_config = cfg
+    dummy_setup(tab)
+    tab.load_current_config = lambda: None
+
+    recorded: list[tuple[str, str]] = []
+    tab.project_config.set = lambda k, v: recorded.append((k, v))  # type: ignore
+    saved: list[bool] = []
+    tab.project_config.save = lambda: saved.append(True)  # type: ignore
+
+    tab.env_selector.setCurrentText("production")
+    tab.on_environment_changed()
+
+    assert ("environment.active", "production") in recorded
+    assert saved
