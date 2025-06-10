@@ -935,9 +935,20 @@ class DashboardTab(QWidget):
             self.activity_log_service.log("System", f"Dependency update failed: {msg}")
 
     def pause_task(self, task_id):
-        print(f"[Stub] Pause {task_id}")
+        if hasattr(self, "task_queue_manager"):
+            try:
+                self.task_queue_manager.update_task(task_id, "stopped")
+            except Exception as exc:  # pragma: no cover
+                if hasattr(self, "logger"):
+                    self.logger.warning("Failed to pause task %s: %s", task_id, exc)
+
     def stop_task(self, task_id):
-        print(f"[Stub] Stop {task_id}")
+        if hasattr(self, "task_queue_manager"):
+            try:
+                self.task_queue_manager.update_task(task_id, "stopped")
+            except Exception as exc:  # pragma: no cover
+                if hasattr(self, "logger"):
+                    self.logger.warning("Failed to stop task %s: %s", task_id, exc)
 
     def update_overview_metrics(self, stats: dict):
         """Update metric cards from provided corpus stats."""

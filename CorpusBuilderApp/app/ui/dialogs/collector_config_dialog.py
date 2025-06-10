@@ -20,6 +20,7 @@ from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
 
 import inspect
 from typing import Any, Callable, Dict
+import logging
 
 
 class CollectorConfigDialog(QDialog):
@@ -33,6 +34,7 @@ class CollectorConfigDialog(QDialog):
         parent: QObject | None = None,
     ) -> None:
         super().__init__(parent)
+        self.logger = logging.getLogger(self.__class__.__name__)
         self.collector_name = collector_name
         self.project_config = project_config
         self.wrapper = wrapper
@@ -135,7 +137,7 @@ class CollectorConfigDialog(QDialog):
                 try:
                     setter(value)
                 except Exception as exc:
-                    print(f"Failed to set {attr}: {exc}")
+                    self.logger.info("Failed to set %s: %s", attr, exc)
             cfg[attr] = value
         self.project_config.set(f"collectors.{self.collector_name}", cfg)
         self.project_config.save()

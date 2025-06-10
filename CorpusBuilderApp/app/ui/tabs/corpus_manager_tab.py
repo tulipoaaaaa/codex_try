@@ -975,4 +975,17 @@ class CorpusManagerTab(QWidget):
         return card
 
     def rebalance_corpus(self):
-        QMessageBox.information(self, "Rebalance Corpus", "Rebalancing not implemented in UI")
+        try:
+            from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
+
+            wrapper = CorpusBalancerWrapper(self.project_config)
+            wrapper.start()
+            if hasattr(self, "notification_manager"):
+                self.notification_manager.add_notification(
+                    "corpus_rebalance",
+                    "Rebalancing",
+                    "Corpus balancing started",
+                    auto_hide=True,
+                )
+        except Exception as exc:  # pragma: no cover - best effort
+            QMessageBox.critical(self, "Rebalance Error", str(exc))
