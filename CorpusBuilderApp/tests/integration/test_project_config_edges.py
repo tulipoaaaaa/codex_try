@@ -61,7 +61,7 @@ from app.ui.dialogs.settings_dialog import SettingsDialog
 
 def _write_yaml(path: Path, corpus_dir: Path) -> None:
     data = {
-        "environment": "test",
+        "environment": {"active": "test"},
         "environments": {"test": {"corpus_dir": str(corpus_dir)}},
     }
     with open(path, "w", encoding="utf-8") as fh:

@@ -225,6 +225,8 @@ class ProjectConfig:
         # Load configuration
         self.config = self._load_yaml_and_env_merge()
         self.revalidate()
+        # Ensure legacy attribute remains consistent
+        self.environment = self.get("environment.active")
         
     def _load_yaml_and_env_merge(self) -> Dict[str, Any]:
         """Load configuration from YAML and merge environment variables."""
@@ -234,6 +236,15 @@ class ProjectConfig:
         if self.config_path.exists():
             with open(self.config_path, 'r') as f:
                 config = yaml.safe_load(f)
+
+        # Convert legacy environment format
+        if isinstance(config.get('environment'), str):
+            config['environment'] = {
+                'active': config['environment'],
+                'python_path': '',
+                'venv_path': '',
+                'temp_dir': ''
+            }
         
         # Override with environment variables
         env_config = {
