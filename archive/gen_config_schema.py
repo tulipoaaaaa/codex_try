@@ -1,3 +1,4 @@
+# DEPRECATED: Use CLI command `generate-default-config` instead
 # Utility script to generate a sample ProjectConfig YAML.
 # Not used in runtime – useful for onboarding and CI.
 
