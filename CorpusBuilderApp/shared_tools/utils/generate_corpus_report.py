@@ -1,3 +1,8 @@
+"""
+Module: generate_corpus_report
+Purpose: Creates summary reports for a corpus directory.
+"""
+
 import os
 import json
 from collections import Counter, defaultdict

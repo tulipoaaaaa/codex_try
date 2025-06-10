@@ -345,8 +345,8 @@ class SciDBCollector(BaseCollector):
                     # Try to remove invalid file
                     try:
                         os.remove(filepath)
-                    except:
-                        pass
+                    except Exception as exc:
+                        self.logger.exception("Unhandled exception in remove invalid file: %s", exc)
             else:
                 # If we got HTML instead of PDF, check if it has membership wall
                 if "Become a member" in download_response.text:
@@ -395,10 +395,10 @@ class SciDBCollector(BaseCollector):
                 else:
                     self.logger.warning(f"Downloaded file is not a valid PDF.")
                     # Try to remove invalid file
-                    try:
-                        os.remove(filepath)
-                    except:
-                        pass
+            try:
+                os.remove(filepath)
+            except Exception as exc:
+                self.logger.exception("Unhandled exception in remove invalid file: %s", exc)
             
             self.logger.error(f"Could not download a valid PDF.")
             return None

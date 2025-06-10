@@ -1,3 +1,8 @@
+"""
+Module: metadata_normalizer
+Purpose: Standardizes metadata fields across corpus documents.
+"""
+
 import os
 import json
 from pathlib import Path

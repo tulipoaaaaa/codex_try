@@ -1,6 +1,10 @@
 import os
 import sys
 import pytest
+
+pytestmark = pytest.mark.skipif(
+    "PySide6.QtWidgets" not in sys.modules, reason="GUI not available"
+)
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Qt
 

@@ -1,3 +1,8 @@
+"""
+Module: pdf_safe_open
+Purpose: Safely opens PDFs while suppressing known warnings.
+"""
+
 import os
 import fitz  # PyMuPDF
 import logging
