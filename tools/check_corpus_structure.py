@@ -5,6 +5,7 @@ Purpose: Utility to validate corpus folder structure for the active ProjectConfi
 
 import argparse
 import logging
+import json
 from pathlib import Path
 from typing import Iterable
 
@@ -36,8 +37,41 @@ def _has_contents(path: Path) -> bool:
         return False
 
 
-def check_corpus_structure(config: ProjectConfig) -> None:
-    """Validate corpus directory layout for the active environment."""
+def validate_metadata_files(cfg: ProjectConfig) -> None:
+    """Validate JSON metadata files under ``cfg.get_metadata_dir()``."""
+    meta_root = Path(cfg.get_metadata_dir())
+    required = {"domain", "author", "year"}
+    if not meta_root.exists():
+        logger.warning("Metadata directory missing: %s", meta_root)
+        return
+
+    for meta_file in meta_root.rglob("*.json"):
+        try:
+            with open(meta_file, "r", encoding="utf-8") as fh:
+                data = json.load(fh)
+        except Exception as exc:  # pragma: no cover - best effort
+            logger.warning("Invalid metadata JSON %s: %s", meta_file, exc)
+            continue
+
+        missing = [k for k in required if k not in data]
+        if missing:
+            logger.warning(
+                "Metadata file %s missing fields: %s",
+                meta_file,
+                ", ".join(missing),
+            )
+
+
+def check_corpus_structure(config: ProjectConfig, *, validate_metadata: bool = False) -> None:
+    """Validate corpus directory layout for the active environment.
+
+    Parameters
+    ----------
+    config:
+        Active :class:`ProjectConfig` instance.
+    validate_metadata:
+        When ``True`` also run :func:`validate_metadata_files`.
+    """
     corpus_root = Path(config.get_corpus_dir())
     logger.info("Corpus root: %s", corpus_root)
 
@@ -73,10 +107,18 @@ def check_corpus_structure(config: ProjectConfig) -> None:
                     ", ".join(missing),
                 )
 
+    if validate_metadata:
+        validate_metadata_files(config)
+
 
 def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Check corpus folder structure")
     parser.add_argument("--config", required=True, help="Path to ProjectConfig YAML")
+    parser.add_argument(
+        "--validate-metadata",
+        action="store_true",
+        help="Also validate metadata JSON files",
+    )
     return parser.parse_args(list(argv) if argv is not None else None)
 
 
@@ -84,7 +126,7 @@ def main(argv: Iterable[str] | None = None) -> None:
     args = parse_args(argv)
     logging.basicConfig(level=logging.INFO)
     cfg = ProjectConfig.from_yaml(args.config)
-    check_corpus_structure(cfg)
+    check_corpus_structure(cfg, validate_metadata=args.validate_metadata)
 
 
 if __name__ == "__main__":
