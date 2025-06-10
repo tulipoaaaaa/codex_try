@@ -1,1 +1,1 @@
-CorpusBuilder — modern crypto corpus suite.
+"""CorpusBuilder - modern crypto corpus suite."""
