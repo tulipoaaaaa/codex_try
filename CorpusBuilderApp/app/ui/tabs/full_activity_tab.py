@@ -24,6 +24,7 @@ from app.ui.theme.theme_constants import (
     BUTTON_COLOR_PRIMARY,
     BUTTON_COLOR_DANGER,
     BUTTON_COLOR_GRAY,
+    CARD_BORDER_COLOR,
     STATUS_DOT_GREEN,
     STATUS_DOT_RED,
     STATUS_DOT_GRAY,
@@ -91,7 +92,9 @@ class FullActivityTab(QWidget):
         
         title_label = QLabel("📊 Full Activity Dashboard")
         title_label.setObjectName("dashboard-section-header")
-        title_label.setStyleSheet("font-size: 20px; font-weight: 700; color: #32B8C6;")
+        title_label.setStyleSheet(
+            f"font-size: 20px; font-weight: 700; color: {BUTTON_COLOR_PRIMARY};"
+        )
         header_layout.addWidget(title_label)
         
         header_layout.addStretch()
@@ -147,7 +150,9 @@ class FullActivityTab(QWidget):
         metrics_layout = QHBoxLayout()
         
         # Total Tasks Card
-        self.total_tasks_card = self.create_metric_card("Total Tasks", "156", "#32B8C6")
+        self.total_tasks_card = self.create_metric_card(
+            "Total Tasks", "156", BUTTON_COLOR_PRIMARY
+        )
         metrics_layout.addWidget(self.total_tasks_card)
         
         # Success Rate Card  
@@ -159,7 +164,9 @@ class FullActivityTab(QWidget):
         metrics_layout.addWidget(self.avg_runtime_card)
         
         # Active Tasks Card
-        self.active_tasks_card = self.create_metric_card("Active Now", "3", "#32B8C6")
+        self.active_tasks_card = self.create_metric_card(
+            "Active Now", "3", BUTTON_COLOR_PRIMARY
+        )
         metrics_layout.addWidget(self.active_tasks_card)
         
         layout.addLayout(metrics_layout)
@@ -196,7 +203,9 @@ class FullActivityTab(QWidget):
         # Status Distribution Pie Chart (no header, legend below with colored squares)
         status_chart_container = QFrame()
         status_chart_container.setObjectName("card")
-        status_chart_container.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
+        status_chart_container.setStyleSheet(
+            f"background-color: #1a1f2e; border-radius: 12px; border: 1px solid {CARD_BORDER_COLOR};"
+        )
         status_chart_layout = QVBoxLayout(status_chart_container)
         status_chart_layout.setContentsMargins(CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2)
         
@@ -254,7 +263,9 @@ class FullActivityTab(QWidget):
         # Runtime Distribution Bar Chart (no header, legend below with colored squares)
         runtime_chart_container = QFrame()
         runtime_chart_container.setObjectName("card")
-        runtime_chart_container.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
+        runtime_chart_container.setStyleSheet(
+            f"background-color: #1a1f2e; border-radius: 12px; border: 1px solid {CARD_BORDER_COLOR};"
+        )
         runtime_chart_layout = QVBoxLayout(runtime_chart_container)
         runtime_chart_layout.setContentsMargins(CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2)
         
@@ -312,7 +323,9 @@ class FullActivityTab(QWidget):
         # Performance Trends Line Chart (no header, legend below with colored squares)
         trends_chart_container = QFrame()
         trends_chart_container.setObjectName("card")
-        trends_chart_container.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
+        trends_chart_container.setStyleSheet(
+            f"background-color: #1a1f2e; border-radius: 12px; border: 1px solid {CARD_BORDER_COLOR};"
+        )
         trends_chart_layout = QVBoxLayout(trends_chart_container)
         trends_chart_layout.setContentsMargins(CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2)
         
@@ -367,7 +380,9 @@ class FullActivityTab(QWidget):
         card = QFrame()
         card.setObjectName("card")
         card.setMinimumSize(200, 100)
-        card.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
+        card.setStyleSheet(
+            f"background-color: #1a1f2e; border-radius: 12px; border: 1px solid {CARD_BORDER_COLOR};"
+        )
         
         layout = QVBoxLayout(card)
         layout.setSpacing(8)
@@ -422,7 +437,9 @@ class FullActivityTab(QWidget):
         self.activity_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.activity_table.itemSelectionChanged.connect(self.on_activity_selected)
         
-        self.activity_table.setStyleSheet("background-color: #1a1f2e; color: #f9fafb; border: 1px solid #2d3748; border-radius: 8px;")
+        self.activity_table.setStyleSheet(
+            f"background-color: #1a1f2e; color: #f9fafb; border: 1px solid {CARD_BORDER_COLOR}; border-radius: 8px;"
+        )
 
         table_layout.addWidget(self.activity_table)
         self.no_activity_label = QLabel("No activity yet")
@@ -438,7 +455,9 @@ class FullActivityTab(QWidget):
         self.task_info = QTextEdit()
         self.task_info.setReadOnly(True)
         self.task_info.setPlainText("Select a task to view detailed information...")
-        self.task_info.setStyleSheet("background-color: #0f1419; color: #f9fafb; border-radius: 8px; border: 1px solid #2d3748;")
+        self.task_info.setStyleSheet(
+            f"background-color: #0f1419; color: #f9fafb; border-radius: 8px; border: 1px solid {CARD_BORDER_COLOR};"
+        )
         details_layout.addWidget(self.task_info)
         
         # Task actions
