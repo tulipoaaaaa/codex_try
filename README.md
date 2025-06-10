@@ -30,6 +30,20 @@ variable `PYTEST_QT_STUBS=1`. This enables stubbed Qt classes so tests work in
 headless or CI environments. Only limited behaviour is covered, so full UI
 tests should still be executed locally with PySide6 available.
 
+The test `tests/ui_wrappers/test_balancer_wrapper.py` relies on PySide6 (or the
+`PYTEST_QT_STUBS` environment variable) and is marked with the
+`optional_dependency` marker. Run only optional tests with:
+
+```bash
+pytest -m optional_dependency
+```
+
+Skip them using:
+
+```bash
+pytest -m "not optional_dependency"
+```
+
 ## Pre-push hook
 
 A convenience script is provided at `scripts/pre_push.sh` to run linting and the
