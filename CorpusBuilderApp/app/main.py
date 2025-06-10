@@ -22,6 +22,7 @@ sys.path.insert(0, str(current_dir))
 from main_window import CryptoCorpusMainWindow
 from shared_tools.project_config import ProjectConfig
 from app.helpers.theme_manager import ThemeManager
+from shared_tools.logging_config import setup_logging
 
 # Update theme config path to use the correct location
 THEME_CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'resources', 'styles', 'theme_config.json')
@@ -93,16 +94,9 @@ class CryptoCorpusApp(QApplication):
         log_dir.mkdir(parents=True, exist_ok=True)
         
         log_file = log_dir / 'app.log'
-        
-        logging.basicConfig(
-            level=logging.INFO,
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler(log_file),
-                logging.StreamHandler()
-            ]
-        )
-        
+
+        setup_logging(log_file=log_file)
+
         self.logger = logging.getLogger('CryptoCorpusApp')
     
     def load_environment(self):
