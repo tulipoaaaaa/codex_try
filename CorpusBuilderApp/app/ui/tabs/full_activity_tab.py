@@ -89,9 +89,7 @@ class FullActivityTab(QWidget):
         # Header with title and controls
         header_layout = QHBoxLayout()
         
-        title_label = QLabel("📊 Full Activity Dashboard")
-        title_label.setObjectName("dashboard-section-header")
-        title_label.setStyleSheet("font-size: 20px; font-weight: 700; color: #32B8C6;")
+        title_label = SectionHeader("📊 Full Activity Dashboard")
         header_layout.addWidget(title_label)
         
         header_layout.addStretch()
