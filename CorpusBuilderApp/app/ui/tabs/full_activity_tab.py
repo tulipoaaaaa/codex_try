@@ -60,20 +60,20 @@ class FullActivityTab(QWidget):
             try:
                 self.task_source.task_added.connect(lambda _: self.load_activity_data())
                 self.task_source.task_updated.connect(lambda _: self.load_activity_data())
-            except Exception:
-                pass
+            except Exception as exc:
+                self.logger.warning("Failed to connect task signals: %s", exc)
 
         if self.activity_log_service:
             try:
                 self.activity_log_service.activity_added.connect(self.on_activity_added)
-            except Exception:
-                pass
+            except Exception as exc:
+                self.logger.warning("Failed to connect activity_added: %s", exc)
 
         if self.task_source:
             try:
                 self.task_source.history_changed.connect(self.load_activity_data)
-            except Exception:
-                pass
+            except Exception as exc:
+                self.logger.warning("Failed to connect history_changed: %s", exc)
 
         self.init_ui()
         self.setup_update_timer()

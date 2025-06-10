@@ -92,8 +92,8 @@ class BaseWrapper(QObject):
                     "Task started",
                     {"status": "running", "task_id": self._task_id},
                 )
-            except Exception:
-                pass
+            except Exception as exc:
+                self.logger.warning("Activity log failed on start: %s", exc)
         
         target_obj = self._create_target_object()
         operation_type = self._get_operation_type()
@@ -133,8 +133,8 @@ class BaseWrapper(QObject):
                     "Task error",
                     {"status": "error", "task_id": self._task_id, "error_message": error_message},
                 )
-            except Exception:
-                pass
+            except Exception as exc:
+                self.logger.warning("Activity log failed on error: %s", exc)
         
     def _on_finished(self, results: Dict[str, Any]):
         """Handle completion"""
@@ -152,8 +152,8 @@ class BaseWrapper(QObject):
                     "Task completed",
                     {"status": "success", "task_id": self._task_id},
                 )
-            except Exception:
-                pass
+            except Exception as exc:
+                self.logger.warning("Activity log failed on complete: %s", exc)
         
     def stop(self):
         """Stop the operation"""
