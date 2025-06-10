@@ -93,11 +93,25 @@ Useful flags:
 - `--extract` – run enabled processors
 - `--balance` – run the corpus balancer
 - `--preview-only` – list modules without executing them
+- `--series-ids` – FRED collector: comma separated series IDs
+- `--max-results` – FRED collector: limit number of data points
+- `--search-terms` – GitHub collector: repository search terms
+- `--topic` – GitHub collector: optional topic filter
+- `--max-repos` – GitHub collector: maximum repositories to fetch
+- `--query` – Annas collector: search query
+- `--output-dir` – output directory for Annas, SciDB or Web collectors
+- `export-corpus --dry-run` – preview export actions without writing files
 
 Example preview run:
 ```bash
 python cli/execute_from_config.py --config path/to/config.yaml \
     --collect --extract --balance --preview-only
+```
+
+Example dry run export:
+```bash
+python CorpusBuilderApp/cli.py export-corpus --corpus-dir data/corpus \
+    --output-dir exports --dry-run
 ```
 
 ## License
