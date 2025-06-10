@@ -22,8 +22,9 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 
 from .base_collector import BaseCollector
 from .enhanced_client import CookieAuthClient
+from .utils import ExceptionLoggingMixin
 
-class SciDBCollector(BaseCollector):
+class SciDBCollector(BaseCollector, ExceptionLoggingMixin):
     """Collector for SciDB academic papers with focus on finance and crypto"""
     
     def __init__(self, config, delay_range=(3, 7), account_cookie=None):
@@ -344,8 +345,8 @@ class SciDBCollector(BaseCollector):
                     # Try to remove invalid file
                     try:
                         os.remove(filepath)
-                    except:
-                        pass
+                    except Exception as e:
+                        self.log_exception("SciDBCollector.download", e)
             else:
                 # If we got HTML instead of PDF, check if it has membership wall
                 if "Become a member" in download_response.text:
@@ -396,8 +397,8 @@ class SciDBCollector(BaseCollector):
                     # Try to remove invalid file
                     try:
                         os.remove(filepath)
-                    except:
-                        pass
+                    except Exception as e:
+                        self.log_exception("SciDBCollector.download", e)
             
             self.logger.error(f"Could not download a valid PDF.")
             return None
@@ -499,6 +500,15 @@ def main():
     
     for domain, count in sorted(by_domain.items()):
         print(f"  {domain}: {count} papers")
+
+    def get_capabilities(self):
+        return {
+            "name": "SciDBCollector",
+            "requires_auth": bool(self.account_cookie),
+            "rate_limit": "N/A",
+            "domains": list(self.domain_mapping.values()),
+            "output_type": "PDF",
+        }
 
 if __name__ == "__main__":
     main()

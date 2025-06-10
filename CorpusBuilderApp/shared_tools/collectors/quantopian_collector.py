@@ -265,6 +265,15 @@ class QuantopianCollector(BaseCollector):
             self.logger.error(f"Error cloning repository {repo_url}: {e}")
             return None
 
+    def get_capabilities(self):
+        return {
+            "name": "QuantopianCollector",
+            "requires_auth": False,
+            "rate_limit": "N/A",
+            "domains": ["portfolio_construction"],
+            "output_type": "notebook",
+        }
+
 if __name__ == "__main__":
     import argparse
     

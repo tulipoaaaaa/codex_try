@@ -110,6 +110,15 @@ class ApiCollector(BaseCollector):
                 self.logger.debug(f"Rate limiting: waiting {wait_time:.2f}s for {domain}")
                 time.sleep(wait_time)
 
+    def get_capabilities(self):
+        return {
+            "name": "ApiCollector",
+            "requires_auth": bool(self.api_key),
+            "rate_limit": "N/A",
+            "domains": list(self.config.domain_configs.keys()),
+            "output_type": "JSON",
+        }
+
 if __name__ == "__main__":
     import argparse
     from dotenv import load_dotenv

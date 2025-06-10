@@ -300,6 +300,18 @@ class ArxivCollector(ApiCollector):
             dbg.write(f"Collector: arxiv, Title: {norm_title}\n")
         return norm_title in self.titles_cache
 
+    def get_capabilities(self):
+        return {
+            "name": "ArxivCollector",
+            "requires_auth": False,
+            "rate_limit": "15/minute",
+            "domains": [
+                "crypto_derivatives",
+                "portfolio_construction",
+            ],
+            "output_type": "PDF",
+        }
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Collect papers from arXiv")
     parser.add_argument("--output-dir", required=True, help="Output directory for collected papers")
