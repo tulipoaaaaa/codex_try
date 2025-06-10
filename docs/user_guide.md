@@ -110,6 +110,9 @@ python CorpusBuilderApp/cli.py export-corpus --corpus-dir data/corpus --output-d
 ```
 If the Dashboard is open, you can also trigger an export from the **Tools** or **Corpus Manager** tab.
 
+## Importing a Corpus
+Use **Tools → Import Corpus** to load a previously exported ZIP archive. The selected archive is extracted to your configured corpus directory, allowing you to restore or share datasets between environments.
+
 ## Tools
 
 - **check_corpus_structure.py** – validate the directories defined in your
