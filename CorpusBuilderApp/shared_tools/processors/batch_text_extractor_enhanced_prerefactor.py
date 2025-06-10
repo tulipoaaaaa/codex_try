@@ -930,8 +930,8 @@ def cleanup_worker_temp_dirs():
                 import shutil
                 shutil.rmtree(worker_dir, ignore_errors=True)
                 print(f"Cleaned up temp dir: {worker_dir}")
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.exception("Unhandled exception in cleanup_worker_temp_dirs: %s", exc)
     except Exception as e:
         print(f"Cleanup warning: {str(e)}") 
 
