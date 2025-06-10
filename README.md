@@ -87,6 +87,16 @@ Useful flags:
 
 - `--version` – print the application version
 - `--matrix` – show CLI and GUI feature parity
+- `--collect` – run enabled collectors
+- `--extract` – run enabled processors
+- `--balance` – run the corpus balancer
+- `--preview-only` – list modules without executing them
+
+Example preview run:
+```bash
+python cli/execute_from_config.py --config path/to/config.yaml \
+    --collect --extract --balance --preview-only
+```
 
 ## License
 
