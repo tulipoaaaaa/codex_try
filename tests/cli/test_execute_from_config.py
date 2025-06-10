@@ -2,7 +2,9 @@ import sys
 from pathlib import Path as _Path, Path
 import types
 from typing import List
-import yaml
+import importlib
+sys.modules.pop('yaml', None)
+yaml = importlib.import_module('yaml')
 import pytest
 
 pytestmark = pytest.mark.optional_dependency

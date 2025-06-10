@@ -280,18 +280,48 @@ class ProjectConfig:
                     'max_retries': int(os.getenv('MAX_RETRIES', '3')),
                     'timeout': int(os.getenv('TIMEOUT', '300'))
                 }
-            },
-            'directories': {
-                'corpus_root': os.getenv('CORPUS_ROOT', '~/crypto_corpus'),
-                'raw_data_dir': os.getenv('RAW_DATA_DIR', '~/crypto_corpus/raw'),
-                'processed_dir': os.getenv('PROCESSED_DIR', '~/crypto_corpus/processed'),
-                'metadata_dir': os.getenv('METADATA_DIR', '~/crypto_corpus/metadata'),
-                'logs_dir': os.getenv('LOGS_DIR', '~/crypto_corpus/logs')
             }
         }
+        env_dirs = {}
+        if 'CORPUS_ROOT' in os.environ:
+            env_dirs['corpus_root'] = os.environ['CORPUS_ROOT']
+        if 'RAW_DATA_DIR' in os.environ:
+            env_dirs['raw_data_dir'] = os.environ['RAW_DATA_DIR']
+        if 'PROCESSED_DIR' in os.environ:
+            env_dirs['processed_dir'] = os.environ['PROCESSED_DIR']
+        if 'METADATA_DIR' in os.environ:
+            env_dirs['metadata_dir'] = os.environ['METADATA_DIR']
+        if 'LOGS_DIR' in os.environ:
+            env_dirs['logs_dir'] = os.environ['LOGS_DIR']
+        if env_dirs:
+            env_config['directories'] = env_dirs
         
         # Deep merge configs, with env vars taking precedence
         self._deep_merge(config, env_config)
+
+        # Map legacy directories to environment-specific section
+        env_name = config.get('environment', {}).get('active', self.environment)
+        dirs = config.get('directories', {})
+        envs = config.setdefault('environments', {})
+        env_section = envs.setdefault(env_name, {})
+        defaults = {
+            'corpus_root': '~/crypto_corpus',
+            'raw_data_dir': '~/crypto_corpus/raw',
+            'processed_dir': '~/crypto_corpus/processed',
+            'metadata_dir': '~/crypto_corpus/metadata',
+            'logs_dir': '~/crypto_corpus/logs',
+        }
+        for key, default in defaults.items():
+            value = dirs.get(key)
+            if value is None:
+                value = env_section.get(key)
+            if value is None:
+                value = default
+            dirs[key] = value
+            env_section[key] = value
+        config['directories'] = dirs
+        envs[env_name] = env_section
+        config['environments'] = envs
 
         # Validate collector and processor sections if present
         self._validate_section_schemas(config)
@@ -362,27 +392,42 @@ class ProjectConfig:
     def revalidate(self) -> None:
         """Re-parse the current configuration using the schema."""
         self._parsed_config = self._schema.parse_obj(self.config)
-        # Ensure defaults like domains are present without dropping unknown keys
-        parsed_dict = self._parsed_config.dict()
+        parsed_dict = getattr(self._parsed_config, "dict", lambda: {})()
         for key, value in parsed_dict.items():
             if key not in self.config:
                 self.config[key] = value
 
  # Directory helper methods
     def get_corpus_root(self) -> Path:
-        return Path(self.get('directories.corpus_root')).expanduser()
+        env = self.get('environment.active')
+        path = self.get(f'environments.{env}.corpus_root')
+        if path is None:
+            path = self.get('directories.corpus_root')
+        return Path(path).expanduser()
 
     def get_corpus_dir(self) -> Path:
         return self.get_corpus_root()
 
     def get_raw_dir(self) -> Path:
-        return Path(self.get('directories.raw_data_dir')).expanduser()
+        env = self.get('environment.active')
+        path = self.get(f'environments.{env}.raw_data_dir')
+        if path is None:
+            path = self.get('directories.raw_data_dir')
+        return Path(path).expanduser()
 
     def get_processed_dir(self) -> Path:
-        return Path(self.get('directories.processed_dir')).expanduser()
+        env = self.get('environment.active')
+        path = self.get(f'environments.{env}.processed_dir')
+        if path is None:
+            path = self.get('directories.processed_dir')
+        return Path(path).expanduser()
 
     def get_metadata_dir(self) -> Path:
-        return Path(self.get('directories.metadata_dir')).expanduser()
+        env = self.get('environment.active')
+        path = self.get(f'environments.{env}.metadata_dir')
+        if path is None:
+            path = self.get('directories.metadata_dir')
+        return Path(path).expanduser()
 
     def get_logs_dir(self) -> Path:
         """
@@ -391,9 +436,11 @@ class ProjectConfig:
 
         Use `str(...)` or `.as_posix()` if string form is needed (e.g. subprocess).
         """
-        return Path(
-            self.get("directories.logs_dir", os.path.expanduser("~/.cryptofinance/logs"))
-        ).expanduser()
+        env = self.get('environment.active')
+        path = self.get(f'environments.{env}.logs_dir')
+        if path is None:
+            path = self.get('directories.logs_dir', os.path.expanduser("~/.cryptofinance/logs"))
+        return Path(path).expanduser()
 
     def get_stats_dir(self) -> Path:
         """Return directory where corpus statistics are stored."""
