@@ -11,6 +11,8 @@ from pathlib import Path
 from dotenv import load_dotenv, set_key
 from pydantic import ValidationError
 from app.helpers.crypto_utils import encrypt_value, decrypt_value
+from app.ui.widgets.section_header import SectionHeader
+from app.ui.theme.theme_constants import PAGE_MARGIN
 
 
 class ConfigurationTab(QWidget):
@@ -28,6 +30,8 @@ class ConfigurationTab(QWidget):
         
     def setup_ui(self):
         main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
+        main_layout.setSpacing(PAGE_MARGIN)
         
         # Create tabs for different configuration sections
         self.config_tabs = QTabWidget()
@@ -313,6 +317,7 @@ class ConfigurationTab(QWidget):
         self.domains_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
         self.domains_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         self.domains_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        self.domains_table.setAlternatingRowColors(True)
         
         # Initialize with domains
         domains = [
@@ -346,7 +351,7 @@ class ConfigurationTab(QWidget):
             self.domains_table.setItem(i, 1, QTableWidgetItem(str(target)))
             self.domains_table.setItem(i, 2, QTableWidgetItem(desc))
         
-        layout.addWidget(QLabel("Domain Configuration:"))
+        layout.addWidget(SectionHeader("Domain Configuration"))
         layout.addWidget(self.domains_table)
         
         # Domain options
