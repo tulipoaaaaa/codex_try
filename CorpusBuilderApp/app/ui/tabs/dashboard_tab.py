@@ -31,6 +31,7 @@ from app.ui.utils.ui_helpers import create_styled_progress_bar
 from shared_tools.services.task_queue_manager import TaskQueueManager
 from shared_tools.services.system_monitor import SystemMonitor
 from app.helpers.notifier import Notifier
+from app.ui.widgets.active_operations import ActiveOperationsWidget
 import os
 
 ICON_PATH = os.path.join(os.path.dirname(__file__), '../../resources/icons')
@@ -125,9 +126,9 @@ class DashboardTab(QWidget):
         center_col = QVBoxLayout()
         center_col.setSpacing(12)
         # Active Operations
-        ops_card = CardWrapper()
-        ops_card.setObjectName('active-operations')
-        ops_card.setStyleSheet(f"""
+        active_card = CardWrapper()
+        active_card.setObjectName("active-operations")
+        active_card.setStyleSheet(f"""
             QFrame[objectName="active-operations"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
@@ -135,25 +136,14 @@ class DashboardTab(QWidget):
                 padding: 16px;
             }}
         """)
-        ops_layout = ops_card.body_layout
-        ops_layout.setContentsMargins(16, 8, 16, 16)
-        ops_layout.setSpacing(8)
-        ops_header = SectionHeader("Active Operations")
-        ops_header.setStyleSheet("font-size: 16px; font-weight: 600; color: #fff;")
-        ops_layout.addWidget(ops_header)
-        for op in [
-            ("GitHub Collector", 80, "running"),
-            ("arXiv Processor", 100, "done"),
-            ("PDF Extractor", 45, "running"),
-        ]:
-            row = QVBoxLayout()
-            label = QLabel(op[0])
-            label.setStyleSheet("background-color: transparent; font-size: 14px; color: #f9fafb;")
-            row.addWidget(label)
-            bar = create_styled_progress_bar(op[1], "#32B8C6", height=8)
-            row.addWidget(bar)
-            ops_layout.addLayout(row)
-        center_col.addWidget(ops_card)
+        active_layout = active_card.body_layout
+        active_layout.setContentsMargins(16, 8, 16, 16)
+        active_layout.setSpacing(8)
+        self.active_operations = ActiveOperationsWidget(
+            task_queue_manager=self.task_queue_manager
+        )
+        active_layout.addWidget(self.active_operations)
+        center_col.addWidget(active_card)
         # Enhanced Task Queue
         center_col.addWidget(self.create_refined_task_queue())
         # Performance Metrics
