@@ -71,6 +71,23 @@ Launch the application with offscreen rendering:
 HEADLESS=1 python app/main.py
 ```
 
+## Command Line Interface
+
+Several CLI tools accompany the GUI for scripted or headless usage. The main
+entry points live in `CorpusBuilderApp/cli.py` and `cli/execute_from_config.py`.
+See the [full CLI usage](docs/user_guide.md#using-the-cli) for details.
+
+Key commands include:
+
+- `export-corpus` – archive a corpus for distribution
+- `diff-corpus` – compare two corpus profile JSON files
+- Pipeline execution via `execute_from_config.py`
+
+Useful flags:
+
+- `--version` – print the application version
+- `--matrix` – show CLI and GUI feature parity
+
 ## License
 
 This project is proprietary and all rights are reserved by Bored AI Labs.
