@@ -25,8 +25,21 @@ from PySide6.QtWidgets import (
     QFrame,
 )
 from PySide6.QtGui import QAction, QStandardItemModel, QStandardItem, QDragEnterEvent, QDropEvent, QIcon
-from PySide6.QtCore import Qt, QDir, QSortFilterProxyModel, QModelIndex, Slot as pyqtSlot, QPoint, QThread, Signal as pyqtSignal, QMimeData, QTimer, QMutex
+from PySide6.QtCore import (
+    Qt,
+    QDir,
+    QSortFilterProxyModel,
+    QModelIndex,
+    Slot as pyqtSlot,
+    QPoint,
+    QThread,
+    Signal as pyqtSignal,
+    QMimeData,
+    QTimer,
+    QMutex,
+)
 from shared_tools.storage.corpus_manager import CorpusManager
+from shared_tools.services.corpus_validator_service import CorpusValidatorService
 import os
 import json
 import shutil
@@ -132,15 +145,33 @@ class BatchMetadataEditor(QDialog):
         return self.overwrite_cb.isChecked()
 
 class CorpusManagerTab(QWidget):
-    def __init__(self, project_config, parent=None):
+    def __init__(self, project_config, activity_log_service=None, parent=None):
         super().__init__(parent)
         self.notification_manager = NotificationManager(self)  # Initialize first
         self.project_config = project_config
+        self.activity_log_service = activity_log_service
         self.manager = CorpusManager()
+        self.validator_service = CorpusValidatorService(
+            project_config, activity_log_service
+        )
         self.setup_ui()
         self.selected_files = []
         self.batch_metadata_editor = None
         self.sound_enabled = True  # Will be set from user settings
+        self.validator_service.validation_completed.connect(
+            self.show_validation_results
+        )
+        self.validator_service.validation_failed.connect(
+            lambda e: QMessageBox.critical(self, "Validation Error", e)
+        )
+        self.validator_service.validation_started.connect(
+            lambda: self.notification_manager.add_notification(
+                "corpus_validate",
+                "Validating Corpus",
+                "Checking corpus structure...",
+                auto_hide=True,
+            )
+        )
         
     def setup_ui(self):
         outer_layout = QVBoxLayout(self)
@@ -357,6 +388,10 @@ class CorpusManagerTab(QWidget):
         self.batch_edit_btn = QPushButton("Edit Metadata")
         self.batch_edit_btn.clicked.connect(self.open_batch_metadata_editor)
         other_buttons_layout.addWidget(self.batch_edit_btn)
+
+        self.validate_structure_btn = QPushButton("Validate Structure")
+        self.validate_structure_btn.clicked.connect(self.validate_corpus_structure)
+        other_buttons_layout.addWidget(self.validate_structure_btn)
 
         batch_ops_layout.addLayout(other_buttons_layout)
         
@@ -875,6 +910,20 @@ class CorpusManagerTab(QWidget):
             self.refresh_file_view()
         except Exception as e:
             QMessageBox.critical(self, "Batch Organize Error", str(e))
+
+    def validate_corpus_structure(self) -> None:
+        """Trigger corpus structure validation via the service."""
+        self.validator_service.validate_structure()
+
+    def show_validation_results(self, results: dict) -> None:
+        messages = results.get("messages", [])
+        if messages:
+            text = "\n".join(
+                f"[{m['level'].upper()}] {m['message']}" for m in messages
+            )
+        else:
+            text = "No issues found."
+        QMessageBox.information(self, "Validation Results", text)
 
     def update_header_info(self):
         path = self.path_input.text()
