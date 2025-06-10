@@ -351,12 +351,8 @@ pytest tests/ui/ --qt-api pyside6
 
 ## Directory Structure
 
-```
-<<<<<<< HEAD
-corpusbuilder/
-=======
+
 CryptoCorpusBuilder/
->>>>>>> my-feature-branch
 ├── app/                          # Main application code
 │   ├── main.py                   # Application entry point
 │   ├── main_window.py            # Main window class

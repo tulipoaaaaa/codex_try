@@ -6,15 +6,11 @@ from PySide6.QtWidgets import (
     QVBoxLayout,
     QHBoxLayout,
     QGridLayout,
-<<<<<<< HEAD
     QFrame,
-=======
->>>>>>> my-feature-branch
     QLabel,
     QPushButton,
     QScrollArea,
     QSizePolicy,
-    QFrame,
     QProgressBar,
 )
 from PySide6.QtCore import Qt, Signal, QMargins
@@ -84,11 +80,7 @@ class DashboardTab(QWidget):
             self.task_history_service.task_added.connect(lambda *_: self.load_data())
             self.task_history_service.task_updated.connect(lambda *_: self.load_data())
 
-<<<<<<< HEAD
-        # Top statistics grid
-        stats_layout = QGridLayout()
-        stats_layout.setSpacing(16)
-=======
+        # Real-time activity log signal wiring (from main branch)
         if self.activity_log_service:
             self.activity_log_service.activity_added.connect(
                 self.recent_activity_widget.add_activity
@@ -98,7 +90,6 @@ class DashboardTab(QWidget):
                     e.get("source", "Info"), e.get("message", ""), e.get("details")
                 )
             )
->>>>>>> my-feature-branch
 
     def _init_ui(self):
         self.setStyleSheet("QWidget, QFrame, QGroupBox { background-color: #0f1419; }")
@@ -165,22 +156,6 @@ class DashboardTab(QWidget):
         self.active_operations = ActiveOperationsWidget(
             task_queue_manager=self.task_queue_manager
         )
-<<<<<<< HEAD
-        stats_layout.addWidget(self.collectors_card, 0, 0)
-
-        self.processors_card = self._create_stat_card(
-            "Active Processors", str(self.active_processors)
-        )
-        stats_layout.addWidget(self.processors_card, 0, 1)
-
-        self.errors_card = self._create_stat_card("Errors", str(self.error_count))
-        stats_layout.addWidget(self.errors_card, 1, 0)
-
-        self.documents_card = self._create_stat_card(
-            "Total Documents", str(self.total_documents)
-        )
-        stats_layout.addWidget(self.documents_card, 1, 1)
-=======
         active_layout.addWidget(self.active_operations)
         center_col.addWidget(active_card)
         # Enhanced Task Queue
@@ -206,7 +181,6 @@ class DashboardTab(QWidget):
         dot.setFixedSize(14, 14)
         dot.setStyleSheet('background-color: #22c55e; border-radius: 7px;')
         return dot
->>>>>>> my-feature-branch
 
     def fix_metric_card_transparency(self, title, value, unit=''):
         metric_widget = QWidget()
@@ -774,9 +748,9 @@ class DashboardTab(QWidget):
             stat_layout = QVBoxLayout(stat_container)
             stat_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
             stat_layout.setSpacing(2)
-            value_label = QLabel(value)
+        value_label = QLabel(value)
             value_label.setStyleSheet(f'color: {color}; font-size: 15px; font-weight: 700; text-align: center; background-color: transparent;')
-            value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             label_widget = QLabel(label)
             label_widget.setStyleSheet('color: #C5C7C7; font-size: 10px; text-align: center; background-color: transparent;')
             label_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -847,8 +821,8 @@ class DashboardTab(QWidget):
                             "details": a.get("details", ""),
                         }
                     )
-            except Exception:
-                pass
+        except Exception:
+            pass
 
     # --- Placeholder methods for actions ---
     def start_corpus_optimization(self):
@@ -922,21 +896,6 @@ class DashboardTab(QWidget):
         if not file_path:
             return
         try:
-<<<<<<< HEAD
-            from shared_tools.storage.corpus_manager import (
-                CorpusManager,
-            )
-
-            cm = CorpusManager(self.config)
-            stats = cm.get_corpus_stats()
-            self.total_documents = stats.get("total_documents", 0)
-            self.total_docs_label.setText(
-                f"Total Documents: {self.total_documents}"
-            )
-            value_label = self.documents_card.findChild(QLabel, "stat-value")
-            if value_label:
-                value_label.setText(str(self.total_documents))
-=======
             with open(file_path, "w", encoding="utf-8") as fh:
                 fh.write(report)
             Notifier.notify("Report Exported", f"Saved to {file_path}", level="success")
@@ -948,7 +907,6 @@ class DashboardTab(QWidget):
     def update_dependencies(self):
         """Ask for confirmation and run the dependency updater service."""
         from PySide6.QtWidgets import QMessageBox, QCheckBox
->>>>>>> my-feature-branch
 
         dialog = QMessageBox(self)
         dialog.setWindowTitle("Update Dependencies")

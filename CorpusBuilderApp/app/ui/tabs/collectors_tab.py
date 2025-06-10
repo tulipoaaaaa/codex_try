@@ -24,10 +24,7 @@ from shared_tools.ui_wrappers.collectors.scidb_wrapper import SciDBWrapper
 from shared_tools.ui_wrappers.collectors.web_wrapper import WebWrapper
 
 from app.ui.widgets.collector_card import CollectorCard
-<<<<<<< HEAD
 from app.ui.widgets.card_wrapper import CardWrapper
-=======
->>>>>>> my-feature-branch
 from app.ui.widgets.section_header import SectionHeader
 from app.helpers.notifier import Notifier
 from app.ui.dialogs.collector_config_dialog import CollectorConfigDialog
@@ -55,13 +52,17 @@ class CollectorsTab(QWidget):
     ) -> None:
         super().__init__(parent)
         self.project_config = project_config
-<<<<<<< HEAD
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self.task_history_service = task_history_service
+        self.task_queue_manager = task_queue_manager
+        self._task_ids: dict[str, str] = {}
+        self.cards: dict[str, CollectorCard] = {}
 
         # Initialize collector wrappers
         self.collector_wrappers = {
             "isda": ISDAWrapper(self.project_config),
             "github": GitHubWrapper(self.project_config),
-            "anna": AnnasArchiveWrapper(self.project_config),
+            "annas_archive": AnnasArchiveWrapper(self.project_config),
             "arxiv": ArxivWrapper(self.project_config),
             "fred": FREDWrapper(self.project_config),
             "bitmex": BitMEXWrapper(self.project_config),
@@ -70,36 +71,11 @@ class CollectorsTab(QWidget):
             "web": WebWrapper(self.project_config),
         }
 
-        self.cards: dict[str, CollectorCard] = {}
-
-        self._init_ui()
-
-=======
-        self.logger = logging.getLogger(self.__class__.__name__)
-        self.task_history_service = task_history_service
-        self.task_queue_manager = task_queue_manager
-        self._task_ids: dict[str, str] = {}
-        self.cards: dict[str, CollectorCard] = {}
-        
-        # Initialize collector wrappers
-        self.collector_wrappers = {
-            'isda': ISDAWrapper(self.project_config),
-            'github': GitHubWrapper(self.project_config),
-            'annas_archive': AnnasArchiveWrapper(self.project_config),
-            'arxiv': ArxivWrapper(self.project_config),
-            'fred': FREDWrapper(self.project_config),
-            'bitmex': BitMEXWrapper(self.project_config),
-            'quantopian': QuantopianWrapper(self.project_config),
-            'scidb': SciDBWrapper(self.project_config),
-            'web': WebWrapper(self.project_config)
-        }
-
         if self.task_queue_manager:
             for wrapper in self.collector_wrappers.values():
                 wrapper.task_queue_manager = self.task_queue_manager
-        
+
         # Configure wrappers from project config
->>>>>>> my-feature-branch
         for name, wrapper in self.collector_wrappers.items():
             params = self.project_config.get(f"collectors.{name}", {})
             if isinstance(params, dict):
@@ -110,7 +86,7 @@ class CollectorsTab(QWidget):
                             getattr(wrapper, method)(value)
                         except Exception as exc:
                             self.logger.info("Failed to apply %s on %s: %s", method, name, exc)
-        
+
         # Setup UI
         self.setup_ui()
         self.connect_signals()
@@ -201,133 +177,79 @@ class CollectorsTab(QWidget):
         header = SectionHeader("Collectors")
         layout.addWidget(header)
 
-        for name, wrapper in self.collector_wrappers.items():
-            card_wrap = CardWrapper()
-            card_layout = card_wrap.body_layout
-            card = CollectorCard(name.title())
-            running = bool(self.project_config.get(f"collectors.{name}.running", False))
-            card.update_status("running" if running else "stopped")
+    def connect_signals(self) -> None:
+        """Connect signals for collector cards."""
+        for name, card in self.cards.items():
             card.start_requested.connect(lambda n=name: self.start_collection(n))
             card.stop_requested.connect(lambda n=name: self.stop_collection(n))
             card.configure_requested.connect(lambda n=name: self.configure_collector(n))
             card.logs_requested.connect(lambda n=name: self.show_logs(n))
-            self.cards[name] = card
-            card_layout.addWidget(card)
-            layout.addWidget(card_wrap)
 
-        status_card = CardWrapper()
-        status_layout = status_card.body_layout
-        self.collection_status_label = QLabel("Ready")
-        status_layout.addWidget(self.collection_status_label)
-        self.overall_progress = QProgressBar()
-        self.overall_progress.setRange(0, 100)
-        status_layout.addWidget(self.overall_progress)
-        stop_all_btn = QPushButton("Stop All Collectors")
-        stop_all_btn.clicked.connect(self.stop_all_collectors)
-        status_layout.addWidget(stop_all_btn)
-        layout.addWidget(status_card)
-
-    def connect_signals(self) -> None:
-        for name, wrapper in self.collector_wrappers.items():
-            if hasattr(wrapper, "progress_updated"):
-                wrapper.progress_updated.connect(lambda v, n=name: self._handle_progress(n, v))
-            if hasattr(wrapper, "status_updated"):
-                wrapper.status_updated.connect(lambda m, n=name: self._handle_status(n, m))
-            if hasattr(wrapper, "completed"):
-                wrapper.completed.connect(lambda r, n=name: self.on_collection_completed(n, r))
-            if hasattr(wrapper, "error_occurred"):
-                wrapper.error_occurred.connect(lambda m, n=name: self.on_wrapper_error(n, m))
-
-    # --------------------------------------------------------------- Slots ----
     def _handle_progress(self, name: str, value: int) -> None:
+        """Handle progress updates from collectors."""
         if name in self.cards:
             self.cards[name].update_progress(value)
-        self.update_progress(value)
 
     def _handle_status(self, name: str, message: str) -> None:
+        """Handle status updates from collectors."""
         if name in self.cards:
             self.cards[name].update_status(message)
-        self.update_status(message)
 
     def start_collection(self, name: str) -> None:
-        wrapper = self.collector_wrappers.get(name)
-        if not wrapper:
-            return
-        wrapper.start()
-        if self.task_history_service:
-            tid = f"collector_{name}_{int(time.time()*1000)}"
-            self._task_ids[name] = tid
-            self.task_history_service.start_task(tid, name, {"type": "collection", "domain": name})
-        self.cards[name].update_status("running")
-        self.project_config.set(f"collectors.{name}.running", True)
-        self.project_config.save()
-        self.collection_started.emit(name)
+        """Start data collection for the specified collector."""
+        if name in self.collector_wrappers:
+            wrapper = self.collector_wrappers[name]
+            wrapper.start_collection()
+            self.collection_started.emit(name)
 
     def stop_collection(self, name: str) -> None:
-        wrapper = self.collector_wrappers.get(name)
-        if not wrapper:
-            return
-        wrapper.stop()
-        if self.task_history_service and name in self._task_ids:
-            self.task_history_service.fail_task(self._task_ids.pop(name), "stopped")
-        self.cards[name].update_status("stopped")
-        self.project_config.set(f"collectors.{name}.running", False)
-        self.project_config.save()
+        """Stop data collection for the specified collector."""
+        if name in self.collector_wrappers:
+            wrapper = self.collector_wrappers[name]
+            wrapper.stop_collection()
+            self.collection_finished.emit(name, False)
 
     def configure_collector(self, name: str) -> None:
-        wrapper = self.collector_wrappers.get(name)
-        if wrapper is None:
-            return
-        self.show_config_dialog(wrapper)
+        """Configure the specified collector."""
+        if name in self.collector_wrappers:
+            wrapper = self.collector_wrappers[name]
+            self.show_config_dialog(wrapper)
 
     def show_config_dialog(self, wrapper) -> None:
-        dialog = CollectorConfigDialog(
-            wrapper.name,
-            self.project_config,
-            wrapper,
-            self,
-        )
-        if dialog.exec():
-            try:
-                wrapper.refresh_config()
-            except Exception:
-                pass
+        """Show configuration dialog for the collector."""
+        dialog = CollectorConfigDialog(wrapper, self)
+        if dialog.exec_():
+            # Configuration was accepted
+            pass
 
     def show_logs(self, name: str) -> None:
-        Notifier.notify("Logs", f"Logs for {name} not implemented")
+        """Show logs for the specified collector."""
+        if name in self.collector_wrappers:
+            wrapper = self.collector_wrappers[name]
+            # Implement log viewing logic here
 
     def stop_all_collectors(self) -> None:
-        for name, wrapper in self.collector_wrappers.items():
-            wrapper.stop()
-            if name in self.cards:
-                self.cards[name].update_status("stopped")
-            self.project_config.set(f"collectors.{name}.running", False)
-            self.collection_finished.emit(name, False)
-        self.collection_status_label.setText("All collectors stopped")
-        self.project_config.save()
+        """Stop all active collectors."""
+        for name in self.collector_wrappers:
+            self.stop_collection(name)
 
-    # ------------------------------------------------------------- Handlers ----
     def update_progress(self, value: int) -> None:
+        """Update overall progress bar."""
         self.overall_progress.setValue(value)
 
     def update_status(self, message: str) -> None:
+        """Update status label."""
         self.collection_status_label.setText(message)
 
     def on_collection_completed(self, collector_name: str, results: dict) -> None:
-        self.cards[collector_name].update_status("stopped")
-        self.project_config.set(f"collectors.{collector_name}.running", False)
-        self.project_config.save()
-        if self.task_history_service and collector_name in self._task_ids:
-            self.task_history_service.complete_task(self._task_ids.pop(collector_name))
-        self.collection_finished.emit(collector_name, True)
-        self.collection_status_label.setText(f"{collector_name} collection completed")
+        """Handle collection completion."""
+        if collector_name in self.cards:
+            self.cards[collector_name].update_status("Collection completed")
+            self.collection_finished.emit(collector_name, True)
 
     def on_wrapper_error(self, collector_name: str, message: str) -> None:
-        self.cards[collector_name].update_status("error")
-        self.project_config.set(f"collectors.{collector_name}.running", False)
-        self.project_config.save()
-        if self.task_history_service and collector_name in self._task_ids:
-            self.task_history_service.fail_task(self._task_ids.pop(collector_name), message)
-        self.collector_error.emit(collector_name, message)
-        self.collection_status_label.setText(f"{collector_name} error: {message}")
+        """Handle errors from collector wrappers."""
+        if collector_name in self.cards:
+            self.cards[collector_name].update_status(f"Error: {message}")
+            self.collector_error.emit(collector_name, message)
 

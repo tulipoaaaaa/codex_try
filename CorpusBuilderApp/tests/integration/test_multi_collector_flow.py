@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-import pytest
-from shared_tools.project_config import ProjectConfig
-from shared_tools.collectors.fred_collector import FREDCollector
-from shared_tools.collectors.github_collector import GitHubCollector
-=======
 import os
 import yaml
 from pathlib import Path
@@ -24,7 +18,6 @@ def _write_yaml(path: Path, corpus_dir: Path) -> None:
     with open(path, "w", encoding="utf-8") as fh:
         yaml.safe_dump(data, fh)
 
->>>>>>> my-feature-branch
 
 def test_run_fred_and_github_collectors(monkeypatch, tmp_path):
     """Run collectors sequentially using mocked APIs."""

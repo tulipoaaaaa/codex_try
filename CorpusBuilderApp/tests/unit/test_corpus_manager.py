@@ -1,8 +1,10 @@
-<<<<<<< HEAD
 import sys
 import types
 import os
 from pathlib import Path
+import json
+import pytest
+from shared_tools.storage.corpus_manager import CorpusManager
 
 # Provide minimal PySide6 stub so corpus_manager imports succeed
 class _DummySignal:
@@ -18,8 +20,7 @@ qtcore = types.SimpleNamespace(QObject=object, Signal=lambda *a, **k: _DummySign
 sys.modules.setdefault("PySide6", types.SimpleNamespace(QtCore=qtcore))
 sys.modules.setdefault("PySide6.QtCore", qtcore)
 
-from shared_tools.storage.corpus_manager import CorpusManager
-
+# Class 1 — for UI signal-based tests
 class TestableCorpusManager(CorpusManager):
     """Extend CorpusManager to emit an operation_completed signal."""
     def __init__(self, *args, **kwargs):
@@ -149,14 +150,8 @@ def test_organize_files(tmp_path):
     assert progress
     assert status[-1] == "Organize completed"
     assert completed == ["organize"]
-=======
-import json
-from pathlib import Path
 
-import pytest
-from shared_tools.storage.corpus_manager import CorpusManager
-
-
+# Class 2 — for corpus stats and metadata tests
 class SimpleCorpusManager(CorpusManager):
     """Extend CorpusManager with minimal helpers for testing."""
 
@@ -200,13 +195,13 @@ def test_add_document_with_sample_metadata(tmp_path):
     meta = dest.with_suffix(dest.suffix + ".meta")
     assert meta.exists()
     with open(meta, "r", encoding="utf-8") as fh:
-        data = json.load(fh)
-    assert data.get("filename") == dest.name
+        meta_data = json.load(fh)
+    assert meta_data["filename"] == dest.name
 
 def test_get_corpus_stats_empty(tmp_path):
-    """Verify stats structure when corpus is empty."""
+    """Ensure get_corpus_stats returns empty stats for empty corpus."""
     manager = SimpleCorpusManager()
     stats = manager.get_corpus_stats(tmp_path)
-
-    assert stats == {"domains": {}, "total_files": 0, "total_size_mb": 0.0}
->>>>>>> my-feature-branch
+    assert stats["total_files"] == 0
+    assert stats["total_size_mb"] == 0.0
+    assert stats["domains"] == {}

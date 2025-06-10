@@ -15,11 +15,9 @@
 ## Project Structure
 
 ```
-<<<<<<< HEAD
-corpusbuilder/
-=======
+
 CryptoCorpusBuilder/
->>>>>>> my-feature-branch
+
 ├── app/                  # Main application code
 │   ├── main.py
 │   ├── main_window.py
