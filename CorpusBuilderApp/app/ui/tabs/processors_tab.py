@@ -1,7 +1,20 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, 
-                             QLabel, QProgressBar, QPushButton, QCheckBox, 
-                             QSpinBox, QListWidget, QGroupBox, QFileDialog, QMessageBox)
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QTabWidget,
+    QLabel,
+    QProgressBar,
+    QPushButton,
+    QCheckBox,
+    QSpinBox,
+    QListWidget,
+    QGroupBox,
+    QFileDialog,
+    QMessageBox,
+)
 from PySide6.QtCore import Qt, Slot as pyqtSlot
+import logging
 from PySide6.QtGui import QIcon
 import os
 import shutil
@@ -27,6 +40,8 @@ from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBa
 from .corpus_manager_tab import NotificationManager
 from app.helpers.icon_manager import IconManager
 from app.helpers.notifier import Notifier
+
+logger = logging.getLogger(__name__)
 
 
 class ProcessorsTab(QWidget):
@@ -432,13 +447,15 @@ class ProcessorsTab(QWidget):
     def init_processors(self):
         """Initialize all processor wrappers with correct parameter types"""
         try:
-            print("DEBUG: Starting processor wrapper initialization...")
-            print(f"DEBUG: project_config type: {type(self.project_config)}")
+            logger.debug("Starting processor wrapper initialization...")
+            logger.debug("project_config type: %s", type(self.project_config))
             
             # Get both config object and config path
             config_object = self.project_config
-            config_path = getattr(self.project_config, 'config_path', str(self.project_config))
-            print(f"DEBUG: Using config_path: {config_path}")
+            config_path = getattr(
+                self.project_config, "config_path", str(self.project_config)
+            )
+            logger.debug("Using config_path: %s", config_path)
             
             # Wrappers that expect config_path (string)
             path_wrappers = [
@@ -462,21 +479,31 @@ class ProcessorsTab(QWidget):
             # Initialize path-based wrappers
             for name, wrapper_class in path_wrappers:
                 try:
-                    print(f"DEBUG: Initializing {wrapper_class.__name__} with config_path...")
+                    logger.debug(
+                        "Initializing %s with config_path...",
+                        wrapper_class.__name__,
+                    )
                     self.processor_wrappers[name] = wrapper_class(config_path)
-                    print(f"DEBUG: {wrapper_class.__name__} initialized successfully")
+                    logger.debug("%s initialized successfully", wrapper_class.__name__)
                 except Exception as e:
-                    print(f"ERROR: Failed to initialize {wrapper_class.__name__}: {e}")
+                    logger.error(
+                        "Failed to initialize %s: %s", wrapper_class.__name__, e
+                    )
                     self.processor_wrappers[name] = None
             
             # Initialize object-based wrappers
             for name, wrapper_class in object_wrappers:
                 try:
-                    print(f"DEBUG: Initializing {wrapper_class.__name__} with config_object...")
+                    logger.debug(
+                        "Initializing %s with config_object...",
+                        wrapper_class.__name__,
+                    )
                     self.processor_wrappers[name] = wrapper_class(config_object)
-                    print(f"DEBUG: {wrapper_class.__name__} initialized successfully")
+                    logger.debug("%s initialized successfully", wrapper_class.__name__)
                 except Exception as e:
-                    print(f"ERROR: Failed to initialize {wrapper_class.__name__}: {e}")
+                    logger.error(
+                        "Failed to initialize %s: %s", wrapper_class.__name__, e
+                    )
                     self.processor_wrappers[name] = None
 
             if self.task_queue_manager:
@@ -484,20 +511,23 @@ class ProcessorsTab(QWidget):
                     if wrapper:
                         wrapper.task_queue_manager = self.task_queue_manager
 
-            print("DEBUG: Processor wrapper initialization completed")
+            logger.debug("Processor wrapper initialization completed")
             
         except Exception as e:
-            print(f"ERROR: Failed to initialize processor wrappers: {e}")
+            logger.error("Failed to initialize processor wrappers: %s", e)
             # Fallback: create empty wrappers dict
-            self.processor_wrappers = {name: None for name in [
-                'pdf', 'text', 'balancer', 'quality', 'deduplicator', 
+            self.processor_wrappers = {
+                name: None
+                for name in [
+                'pdf', 'text', 'balancer', 'quality', 'deduplicator',
                 'domain', 'formula', 'chart', 'language', 'mt_detector', 'financial'
-            ]}
-            print("DEBUG: Using empty processor wrappers as fallback")
+                ]
+            }
+            logger.debug("Using empty processor wrappers as fallback")
 
     def connect_signals(self):
         """Connect signals with defensive checks"""
-        print("DEBUG: Setting up processor signal connections...")
+        logger.debug("Setting up processor signal connections...")
         # Connect PDF processor signals if they exist
         pdf_wrapper = self.processor_wrappers.get('pdf')
         if pdf_wrapper:
@@ -508,7 +538,7 @@ class ProcessorsTab(QWidget):
             if hasattr(pdf_wrapper, 'batch_completed'):
                 pdf_wrapper.batch_completed.connect(self.on_pdf_batch_completed)
             else:
-                print("DEBUG: PDFExtractorWrapper has no 'batch_completed' signal")
+                logger.debug("PDFExtractorWrapper has no 'batch_completed' signal")
         # Connect Text processor signals if they exist
         text_wrapper = self.processor_wrappers.get('text')
         if text_wrapper:
@@ -519,7 +549,7 @@ class ProcessorsTab(QWidget):
             if hasattr(text_wrapper, 'batch_completed'):
                 text_wrapper.batch_completed.connect(self.on_text_batch_completed)
             else:
-                print("DEBUG: TextExtractorWrapper has no 'batch_completed' signal")
+                logger.debug("TextExtractorWrapper has no 'batch_completed' signal")
         # Connect button signals
         if hasattr(self, 'pdf_start_btn'):
             self.pdf_start_btn.clicked.connect(self.start_pdf_processing)
@@ -529,7 +559,7 @@ class ProcessorsTab(QWidget):
             self.text_start_btn.clicked.connect(self.start_text_processing)
         if hasattr(self, 'text_stop_btn'):
             self.text_stop_btn.clicked.connect(self.stop_text_processing)
-        print("DEBUG: Processor signal connections completed")
+        logger.debug("Processor signal connections completed")
 
     def add_pdf_files(self):
         files, _ = QFileDialog.getOpenFileNames(
@@ -564,13 +594,15 @@ class ProcessorsTab(QWidget):
     def start_pdf_processing(self):
         """Start PDF processing with safety checks"""
         if not hasattr(self, 'pdf_file_list'):
-            print("DEBUG: PDF UI not fully initialized")
+            logger.debug("PDF UI not fully initialized")
+            self.processing_status_label.setText("PDF UI not fully initialized")
             return
         pdf_wrapper = self.processor_wrappers.get('pdf')
         if not pdf_wrapper:
-            print("DEBUG: PDF wrapper not available")
+            logger.debug("PDF wrapper not available")
+            self.processing_status_label.setText("PDF wrapper not available")
             return
-        print("DEBUG: PDF processing start requested")
+        logger.debug("PDF processing start requested")
         # Get files from list
         files_to_process = []
         for i in range(self.pdf_file_list.count()):
@@ -603,13 +635,15 @@ class ProcessorsTab(QWidget):
     def start_text_processing(self):
         """Start Text processing with safety checks"""
         if not hasattr(self, 'text_file_list'):
-            print("DEBUG: Text UI not fully initialized")
+            logger.debug("Text UI not fully initialized")
+            self.processing_status_label.setText("Text UI not fully initialized")
             return
         text_wrapper = self.processor_wrappers.get('text')
         if not text_wrapper:
-            print("DEBUG: Text wrapper not available")
+            logger.debug("Text wrapper not available")
+            self.processing_status_label.setText("Text wrapper not available")
             return
-        print("DEBUG: Text processing start requested")
+        logger.debug("Text processing start requested")
         # Get files from list
         files_to_process = []
         for i in range(self.text_file_list.count()):
@@ -844,7 +878,7 @@ class ProcessorsTab(QWidget):
             elif hasattr(wrapper, "completed"):
                 wrapper.completed.disconnect(self._on_advanced_wrapper_completed)
         except Exception as exc:
-            print(f"Failed to disconnect advanced wrapper signals: {exc}")
+            logger.warning("Failed to disconnect advanced wrapper signals: %s", exc)
 
         self._current_advanced_index += 1
         self._start_next_advanced_processor()

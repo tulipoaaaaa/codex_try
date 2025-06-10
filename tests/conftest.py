@@ -77,6 +77,8 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
     qtcore.QObject = type("QObject", (), {})
     qtcore.QThread = type("QThread", (), {})
     qtcore.QTimer = type("QTimer", (), {})
+    qtcore.Slot = lambda *a, **k: (lambda *a, **k: None)
+    qtcore.qInstallMessageHandler = lambda *a, **k: None
     sys.modules["PySide6.QtCore"] = qtcore
 
     sys.modules["PySide6.QtGui"] = _SafeStubModule("PySide6.QtGui")
