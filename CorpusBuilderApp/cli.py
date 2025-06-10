@@ -107,6 +107,7 @@ def main(argv: list[str] | None = None) -> int:
             "  check-corpus --config file.yaml [--auto-fix] [--validate-metadata] [--check-integrity]"
         )
         print("  import-corpus --source-dir path --config file.yaml")
+        print("  stats --config file.yaml     Show domain stats in console")
         print("  --matrix     Show CLI/GUI feature parity")
         print("  --version    Show current version")
         return 0
@@ -125,6 +126,7 @@ def main(argv: list[str] | None = None) -> int:
         "export-corpus",
         "check-corpus",
         "import-corpus",
+        "stats",
         "sync-domain-config",
         "sync-config",
     ]
@@ -161,6 +163,27 @@ def main(argv: list[str] | None = None) -> int:
         if exp_args.dry_run:
             call_args.append("--dry-run")
         export_corpus.main(call_args)
+        return 0
+
+    if argv and argv[0] == "stats":
+        stats_parser = argparse.ArgumentParser(
+            prog="stats",
+            description="Show domain stats in console",
+        )
+        stats_parser.add_argument("--config", required=True, help="Path to ProjectConfig YAML")
+        stats_args = stats_parser.parse_args(argv[1:])
+
+        from shared_tools.project_config import ProjectConfig
+        from shared_tools.services.corpus_stats_service import CorpusStatsService
+
+        cfg = ProjectConfig.from_yaml(stats_args.config)
+        service = CorpusStatsService(cfg)
+        service.refresh_stats()
+        counts = service.get_domain_summary()
+        total = sum(counts.values()) or 0
+        for domain, count in sorted(counts.items()):
+            pct = (count / total * 100) if total else 0
+            print(f"{domain}: {count} ({pct:.2f}%)")
         return 0
 
     if argv and argv[0] == "check-corpus":

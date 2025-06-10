@@ -70,6 +70,10 @@ Sync extractor domains with the balancer reference:
 ```bash
 python CorpusBuilderApp/cli.py sync-domain-config --config config/balancer_config.yaml
 ```
+Show domain distribution stats:
+```bash
+python CorpusBuilderApp/cli.py stats --config config.yaml
+```
 You can run collectors, processors and the corpus balancer headlessly with
 `cli/execute_from_config.py`:
 ```bash
