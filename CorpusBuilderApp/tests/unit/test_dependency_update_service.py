@@ -35,6 +35,7 @@ class DummyThread:
 
 def test_service_dry_run(monkeypatch):
     monkeypatch.setattr(dservice, "DependencyUpdateThread", DummyThread)
+    monkeypatch.setattr(dservice, "is_virtual_env", lambda: True)
     service = dservice.DependencyUpdateService()
     # replace Qt signals with dummy versions
     service.dependency_update_progress = DummySignal()
@@ -46,3 +47,14 @@ def test_service_dry_run(monkeypatch):
     assert service.start_update(dry_run=True)
     assert completed
     assert progress
+
+
+def test_service_requires_virtualenv(monkeypatch):
+    monkeypatch.setattr(dservice, "DependencyUpdateThread", DummyThread)
+    monkeypatch.setattr(dservice, "is_virtual_env", lambda: False)
+    service = dservice.DependencyUpdateService()
+    service.dependency_update_failed = DummySignal()
+    received = []
+    service.dependency_update_failed.connect(lambda msg: received.append(msg))
+    assert service.start_update(dry_run=True) is False
+    assert received
