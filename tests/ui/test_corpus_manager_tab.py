@@ -60,6 +60,8 @@ def minimal_setup_ui(self):
     self.batch_move_btn.clicked.connect(self.batch_move_files)
     self.batch_delete_btn = types.SimpleNamespace(clicked=DummySignal())
     self.batch_delete_btn.clicked.connect(self.batch_delete_files)
+    self.validate_structure_btn = types.SimpleNamespace(clicked=DummySignal())
+    self.validate_structure_btn.clicked.connect(self.validate_corpus_structure)
 
 
 class DummyMessageBox:
