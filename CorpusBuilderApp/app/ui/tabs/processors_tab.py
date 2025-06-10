@@ -30,10 +30,17 @@ from app.helpers.notifier import Notifier
 
 
 class ProcessorsTab(QWidget):
-    def __init__(self, project_config, task_history_service=None, parent=None):
+    def __init__(
+        self,
+        project_config,
+        task_history_service=None,
+        task_queue_manager=None,
+        parent=None,
+    ):
         super().__init__(parent)
         self.project_config = project_config
         self.task_history_service = task_history_service
+        self.task_queue_manager = task_queue_manager
         self._task_ids = {}
         self.processor_wrappers = {}
         self.file_queue = []
@@ -471,7 +478,12 @@ class ProcessorsTab(QWidget):
                 except Exception as e:
                     print(f"ERROR: Failed to initialize {wrapper_class.__name__}: {e}")
                     self.processor_wrappers[name] = None
-            
+
+            if self.task_queue_manager:
+                for wrapper in self.processor_wrappers.values():
+                    if wrapper:
+                        wrapper.task_queue_manager = self.task_queue_manager
+
             print("DEBUG: Processor wrapper initialization completed")
             
         except Exception as e:

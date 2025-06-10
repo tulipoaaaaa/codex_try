@@ -38,10 +38,17 @@ class CollectorsTab(QWidget):
     collection_finished = pyqtSignal(str, bool)
     collector_error = pyqtSignal(str, str)
 
-    def __init__(self, project_config, task_history_service=None, parent: QWidget | None = None) -> None:
+    def __init__(
+        self,
+        project_config,
+        task_history_service=None,
+        task_queue_manager=None,
+        parent: QWidget | None = None,
+    ) -> None:
         super().__init__(parent)
         self.project_config = project_config
         self.task_history_service = task_history_service
+        self.task_queue_manager = task_queue_manager
         self._task_ids: dict[str, str] = {}
         self.cards: dict[str, CollectorCard] = {}
         
@@ -57,6 +64,10 @@ class CollectorsTab(QWidget):
             'scidb': SciDBWrapper(self.project_config),
             'web': WebWrapper(self.project_config)
         }
+
+        if self.task_queue_manager:
+            for wrapper in self.collector_wrappers.values():
+                wrapper.task_queue_manager = self.task_queue_manager
         
         # Configure wrappers from project config
         for name, wrapper in self.collector_wrappers.items():
