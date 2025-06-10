@@ -304,8 +304,8 @@ class LogsTab(QWidget):
                     entry_date = datetime.strptime(entry.get("time", ""), "%Y-%m-%d %H:%M:%S").date()
                     if entry_date != datetime.now().date():
                         continue
-                except Exception:
-                    pass
+                except Exception as exc:
+                    print(f"Failed to parse entry date: {exc}")
             filtered.append(entry)
         
         return filtered

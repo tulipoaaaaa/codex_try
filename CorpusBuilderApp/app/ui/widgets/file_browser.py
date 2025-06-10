@@ -341,15 +341,22 @@ class FileBrowser(QWidget):
         """Handle drop event."""
         urls = event.mimeData().urls()
         file_paths = []
-        
+
         for url in urls:
             if url.isLocalFile():
                 file_paths.append(url.toLocalFile())
-                
+
         if file_paths:
+            # Navigate to the directory of the first dropped file so it appears
+            # in the view. This keeps navigation history consistent.
+            first = file_paths[0]
+            directory = first if os.path.isdir(first) else os.path.dirname(first)
+            if os.path.isdir(directory):
+                self.set_directory(directory)
+
             self.files_dropped.emit(file_paths)
             self.status_label.setText(f"Dropped {len(file_paths)} file(s)")
-            
+
         event.acceptProposedAction()
         
     def get_current_directory(self):

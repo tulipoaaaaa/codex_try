@@ -831,8 +831,8 @@ class ProcessorsTab(QWidget):
                 wrapper.batch_completed.disconnect(self._on_advanced_wrapper_completed)
             elif hasattr(wrapper, "completed"):
                 wrapper.completed.disconnect(self._on_advanced_wrapper_completed)
-        except Exception:
-            pass
+        except Exception as exc:
+            print(f"Failed to disconnect advanced wrapper signals: {exc}")
 
         self._current_advanced_index += 1
         self._start_next_advanced_processor()
