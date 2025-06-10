@@ -28,6 +28,7 @@ from shared_tools.services.corpus_stats_service import CorpusStatsService
 from app.ui.utils.ui_helpers import create_styled_progress_bar
 from shared_tools.services.task_queue_manager import TaskQueueManager
 from shared_tools.services.system_monitor import SystemMonitor
+from app.helpers.notifier import Notifier
 import os
 
 ICON_PATH = os.path.join(os.path.dirname(__file__), '../../resources/icons')
@@ -789,13 +790,102 @@ class DashboardTab(QWidget):
 
     # --- Placeholder methods for actions ---
     def start_corpus_optimization(self):
-        print("[Stub] Optimize Corpus triggered.")
+        """Run the corpus balancer using the wrapper service."""
+        from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import (
+            CorpusBalancerWrapper,
+        )
+
+        self._balancer_wrapper = CorpusBalancerWrapper(
+            self.config,
+            activity_log_service=self.activity_log_service,
+            task_history_service=self.task_history_service,
+            task_queue_manager=self.task_queue_manager,
+        )
+        self._balancer_wrapper.completed.connect(
+            lambda *_: Notifier.notify(
+                "Corpus Optimization", "Optimization completed", level="success"
+            )
+        )
+        self._balancer_wrapper.error_occurred.connect(
+            lambda msg: Notifier.notify(
+                "Optimization Error", msg, level="error"
+            )
+        )
+        self._balancer_wrapper.start_balancing()
+
     def start_all_collectors(self):
-        print("[Stub] Run All Collectors triggered.")
+        """Start all enabled collectors via wrapper factory."""
+        from shared_tools.ui_wrappers.wrapper_factory import create_collector_wrapper
+
+        names = self.config.get("enabled_collectors") or []
+        if not names:
+            Notifier.notify("Collectors", "No collectors enabled", level="warning")
+            return
+
+        self._collector_wrappers = []
+        for name in names:
+            try:
+                wrapper = create_collector_wrapper(name, self.config)
+            except Exception as exc:  # pragma: no cover - defensive
+                Notifier.notify(f"{name} Error", str(exc), level="error")
+                continue
+            wrapper.completed.connect(
+                lambda _r, n=name: Notifier.notify(
+                    "Collector Finished", f"{n} completed", level="success"
+                )
+            )
+            wrapper.error_occurred.connect(
+                lambda msg, n=name: Notifier.notify(
+                    f"{n} Error", msg, level="error"
+                )
+            )
+            wrapper.start()
+            self._collector_wrappers.append(wrapper)
+
+        if self.activity_log_service:
+            self.activity_log_service.log("Collectors", "Started all collectors")
+
     def export_report(self):
-        print("[Stub] Export Report triggered.")
+        """Generate and save a corpus analysis report."""
+        from PySide6.QtWidgets import QFileDialog, QMessageBox
+        from shared_tools.utils.generate_corpus_report import main as gen_report
+
+        report = gen_report(self.config)
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Export Corpus Report",
+            "corpus_report.txt",
+            "Text Files (*.txt);;All Files (*)",
+        )
+        if not file_path:
+            return
+        try:
+            with open(file_path, "w", encoding="utf-8") as fh:
+                fh.write(report)
+            Notifier.notify("Report Exported", f"Saved to {file_path}", level="success")
+            if self.activity_log_service:
+                self.activity_log_service.log("Report", f"Exported to {file_path}")
+        except Exception as exc:  # pragma: no cover - runtime guard
+            QMessageBox.critical(self, "Export Error", str(exc))
+
     def update_dependencies(self):
-        print("[Stub] Update Dependencies triggered.")
+        """Update Python dependencies using pip."""
+        import subprocess
+        import sys
+
+        try:
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "install", "-r", "requirements.txt"]
+            )
+            Notifier.notify(
+                "Dependencies Updated", "All packages are up to date", level="success"
+            )
+            if self.activity_log_service:
+                self.activity_log_service.log("System", "Dependencies updated")
+        except Exception as exc:  # pragma: no cover - runtime guard
+            Notifier.notify("Update Failed", str(exc), level="error")
+            if self.activity_log_service:
+                self.activity_log_service.log("System", f"Dependency update failed: {exc}")
     def pause_task(self, task_id):
         print(f"[Stub] Pause {task_id}")
     def stop_task(self, task_id):
