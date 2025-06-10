@@ -2,6 +2,8 @@ import sys
 import types
 import pytest
 
+pytestmark = pytest.mark.optional_dependency
+
 # Ensure required Qt classes exist before importing the tab module
 from PySide6 import QtWidgets, QtGui, QtCore
 

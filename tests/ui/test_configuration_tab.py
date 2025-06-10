@@ -2,6 +2,8 @@ import os
 import types
 import pytest
 
+pytestmark = pytest.mark.optional_dependency
+
 try:
     from PySide6.QtCore import Qt
     from app.ui.tabs.configuration_tab import ConfigurationTab

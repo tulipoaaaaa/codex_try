@@ -5,6 +5,13 @@ import tempfile
 import shutil
 import pytest
 
+# Register optional dependency marker so tests can be skipped cleanly
+def pytest_configure(config):
+    config.addinivalue_line(
+        "markers",
+        "optional_dependency: marks tests that require optional packages (PySide6, yaml)",
+    )
+
 # Ensure repo root is importable when running tests individually
 base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if base_dir not in sys.path:
@@ -18,12 +25,21 @@ except Exception:  # pragma: no cover - optional dependency
         pass
     stub = types.ModuleType("dotenv")
     stub.load_dotenv = load_dotenv
+    stub.set_key = lambda *a, **k: None
     sys.modules.setdefault("dotenv", stub)
 
 # Ensure the CorpusBuilderApp root is on the Python path
 project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'CorpusBuilderApp'))
 if project_root not in sys.path:
     sys.path.insert(0, project_root)
+
+if "PYTEST_QT_STUBS" not in os.environ:
+    try:  # Auto-enable stubs when PySide6 is missing
+        import importlib.util
+        if importlib.util.find_spec("PySide6") is None:
+            os.environ["PYTEST_QT_STUBS"] = "1"
+    except Exception:
+        os.environ["PYTEST_QT_STUBS"] = "1"
 
 if os.environ.get("PYTEST_QT_STUBS") == "1":
     class _SafeStubModule(types.ModuleType):
@@ -84,6 +100,8 @@ for mod in [
     "matplotlib",
     "matplotlib.pyplot",
     "seaborn",
+    "yaml",
+    "requests",
     "pandas",
     "plotly",
     "plotly.graph_objects",
@@ -102,6 +120,8 @@ for mod in [
     "keyring",
     "cryptography",
     "cryptography.fernet",
+    "pydantic",
+    "psutil",
 ]:
     sys.modules.setdefault(mod, types.ModuleType(mod))
 
@@ -145,6 +165,12 @@ setattr(fernet_mod, 'InvalidToken', Exception)
 keyring_mod = sys.modules.setdefault('keyring', types.ModuleType('keyring'))
 setattr(keyring_mod, 'get_password', lambda *a, **k: None)
 setattr(keyring_mod, 'set_password', lambda *a, **k: None)
+pydantic_mod = sys.modules.setdefault('pydantic', types.ModuleType('pydantic'))
+setattr(pydantic_mod, 'BaseModel', object)
+setattr(pydantic_mod, 'validator', lambda *a, **k: (lambda f: f))
+setattr(pydantic_mod, 'field_validator', lambda *a, **k: (lambda f: f))
+setattr(pydantic_mod, 'Field', lambda *a, **k: None)
+setattr(pydantic_mod, 'ValidationError', type('ValidationError', (Exception,), {}))
 
 if "langdetect" not in sys.modules:
     langdetect = types.ModuleType("langdetect")

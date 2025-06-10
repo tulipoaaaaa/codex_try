@@ -2,6 +2,8 @@ import sys
 import types
 import pytest
 
+pytestmark = pytest.mark.optional_dependency
+
 class _Signal:
     def __init__(self, *a, **k):
         self._slots = []

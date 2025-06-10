@@ -3,6 +3,9 @@ from pathlib import Path as _Path, Path
 import types
 from typing import List
 import yaml
+import pytest
+
+pytestmark = pytest.mark.optional_dependency
 
 
 

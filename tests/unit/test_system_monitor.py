@@ -4,6 +4,8 @@ import types
 
 import pytest
 
+pytestmark = pytest.mark.optional_dependency
+
 
 class DummyTimer:
     def __init__(self, *args, **kwargs):
