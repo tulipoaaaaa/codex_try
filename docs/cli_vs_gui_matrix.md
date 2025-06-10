@@ -13,6 +13,10 @@ The table below outlines which parts of the project are available via command-li
 | Theme and notification settings | ❌ | ✅ |
 | Configuration management | ✅ (via YAML) | ✅ (via settings tabs) |
 | View logs | ✅ (console) | ✅ (dedicated tab) |
-| Start individual collectors with custom arguments | ✅ | ✅ (through UI forms) |
+| Start individual collectors with custom arguments | ✅ | ❌ |
+| diff-corpus command | ✅ | ❌ |
+| export-corpus command | ✅ | ❌ |
+| --matrix option | ✅ | ❌ |
+| --version option | ✅ | ❌ |
 
 Use the command-line tools for headless batch operations or automation scripts. Launch the GUI for an interactive experience with corpus management, analytics and visual feedback.
