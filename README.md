@@ -1,7 +1,6 @@
 # codex_try
 
-<<<<<<< HEAD
-[![Tests](https://github.com/OWNER/REPO/actions/workflows/test.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/test.yml)
+[![Tests](https://github.com/tulipoaaaaa/codex_try/actions/workflows/test.yml/badge.svg)](https://github.com/tulipoaaaaa/codex_try/actions/workflows/test.yml)
 
 ## Installation
 
@@ -12,11 +11,13 @@
    ```
 2. Install the project dependencies:
    ```bash
-   pip install -r CorpusBuilderApp/requirements.txt
+   pip install -r requirements.txt
+   pip install -r requirements-dev.txt
    ```
-   The requirements file contains all mandatory packages. If you plan to use the
-   graphical interface, ensure that `PySide6` is installed. It is already listed
-   in the requirements but can be installed separately with `pip install PySide6`.
+   `requirements.txt` includes all runtime packages. The optional
+   `requirements-dev.txt` file adds linting and test tools. For minimal
+   deployments you can instead use `requirements.runtime.txt` or
+   `CorpusBuilderApp/requirements.txt`.
 
 ## Running the Application
 
@@ -31,36 +32,21 @@ python cli/execute_from_config.py --help
 
 ## Running Tests
 
-The primary test suite lives in the tests/ directory and can be executed with:
+The primary test suite lives in the `tests/` directory and can be executed with:
 
-bash
-Copy
-Edit
+```bash
 pytest -q
+```
 Some integration tests under CorpusBuilderApp/tests rely on optional packages
 such as requests, PyMuPDF (for the fitz module), PySide6, and aiohttp.
 
 These tests are skipped automatically when dependencies are missing.
 To run the full suite with all optional tests, install the extras:
 
-pip install requests PyMuPDF PySide6 aiohttp
-=======
-
-[![Tests](https://github.com/tulipoaaaaa/codex_try/actions/workflows/test.yml/badge.svg)](https://github.com/tulipoaaaaa/codex_try/actions/workflows/test.yml)
-
-## Installation
-
-Install the full development requirements and then any development extras:
-
 ```bash
-pip install -r requirements.txt
-pip install -r requirements-dev.txt
+pip install requests PyMuPDF PySide6 aiohttp
 ```
 
-`requirements.txt` contains all runtime and development dependencies. For
-minimal Docker or PyInstaller builds use `requirements.runtime.txt` instead,
-which only includes the packages needed at runtime. The optional
-`requirements-dev.txt` file adds linting and test tools.
 
 ## Environment configuration
 
@@ -173,5 +159,3 @@ python CorpusBuilderApp/cli.py check-corpus --config config.yaml --auto-fix
 
 This project is proprietary and all rights are reserved by Bored AI Labs.
 To inquire about licensing, contact [legal@boredailabs.com](mailto:legal@boredailabs.com).
-
->>>>>>> my-feature-branch
