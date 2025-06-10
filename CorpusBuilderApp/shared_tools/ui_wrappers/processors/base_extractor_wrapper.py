@@ -542,47 +542,47 @@ class BaseExtractorWrapper(BaseWrapper):
 
     def refresh_config(self):
         """Reload parameters from ``self.config``."""
-    cfg = {}
-    try:
-        if hasattr(self, "config") and hasattr(self.config, "get_processor_config"):
-            cfg = self.config.get_processor_config("base_extractor") or {}
+        cfg = {}
+        try:
+            if hasattr(self, "config") and hasattr(self.config, "get_processor_config"):
+                cfg = self.config.get_processor_config("base_extractor") or {}
 
-        for k, v in cfg.items():
-            method = f"set_{k}"
+            for k, v in cfg.items():
+                method = f"set_{k}"
 
-            # Try wrapper setter method
-            if hasattr(self, method):
-                try:
-                    getattr(self, method)(v)
-                    continue
-                except Exception:
-                    self.logger.debug("Failed to apply %s via wrapper method", k)
+                # Try wrapper setter method
+                if hasattr(self, method):
+                    try:
+                        getattr(self, method)(v)
+                        continue
+                    except Exception:
+                        self.logger.debug("Failed to apply %s via wrapper method", k)
 
-            # Try processor setter method
-            if hasattr(self.processor, method):
-                try:
-                    getattr(self.processor, method)(v)
-                    continue
-                except Exception:
-                    self.logger.debug("Failed to apply %s via processor method", k)
+                # Try processor setter method
+                if hasattr(self.processor, method):
+                    try:
+                        getattr(self.processor, method)(v)
+                        continue
+                    except Exception:
+                        self.logger.debug("Failed to apply %s via processor method", k)
 
-            # Try direct attribute set on processor
-            if hasattr(self.processor, k):
-                try:
-                    setattr(self.processor, k, v)
-                    continue
-                except Exception:
-                    self.logger.debug("Failed to set %s directly on processor", k)
+                # Try direct attribute set on processor
+                if hasattr(self.processor, k):
+                    try:
+                        setattr(self.processor, k, v)
+                        continue
+                    except Exception:
+                        self.logger.debug("Failed to set %s directly on processor", k)
 
-            # Try direct attribute set on wrapper
-            if hasattr(self, k):
-                try:
-                    setattr(self, k, v)
-                except Exception:
-                    self.logger.debug("Failed to set %s directly on wrapper", k)
+                # Try direct attribute set on wrapper
+                if hasattr(self, k):
+                    try:
+                        setattr(self, k, v)
+                    except Exception:
+                        self.logger.debug("Failed to set %s directly on wrapper", k)
 
-        if cfg and hasattr(self, "configuration_changed"):
-            self.configuration_changed.emit(cfg)
+            if cfg and hasattr(self, "configuration_changed"):
+                self.configuration_changed.emit(cfg)
 
-    except Exception as exc:
-        self.show_error("Configuration Error", f"Failed to refresh configuration: {exc}")
+        except Exception as exc:
+            self.show_error("Configuration Error", f"Failed to refresh configuration: {exc}")
