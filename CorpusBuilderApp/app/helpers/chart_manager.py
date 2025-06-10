@@ -3,10 +3,10 @@ Chart Manager for Crypto Corpus Builder
 Centralizes chart styling, colors, and creation for consistency across the application.
 """
 
-from PySide6.QtGui import QColor, QPainter, QBrush
+from PySide6.QtGui import QColor, QPainter
 from PySide6.QtCharts import QChart, QChartView, QPieSeries, QBarSeries, QBarSet, QBarCategoryAxis, QValueAxis
 from PySide6.QtCore import Qt
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 
 
 class ChartManager:
@@ -236,24 +236,18 @@ class ChartManager:
         """Get consistent color for a status"""
         return self.STATUS_COLORS.get(status.lower(), self.BRAND_COLORS['primary'])
     
-    def update_chart_theme(self, chart_view: QChartView):
-        """Update an existing chart's theme"""
-        chart = chart_view.chart()
+    def apply_chart_theme(self, chart: QChart) -> None:
+        """Apply the current theme to a chart instance."""
         chart.setBackgroundBrush(QColor(self.background_color))
         chart.setTitleBrush(QColor(self.title_color))
-        
-        # Improve legend contrast
+
         legend = chart.legend()
         if legend:
             legend.setLabelColor(QColor(255, 255, 255))  # White text for better contrast
             legend.setBackgroundVisible(True)
-            legend.setColor(QColor(self.background_color))  # Match background
+            legend.setColor(QColor(self.background_color))
+
+    def update_chart_theme(self, chart_view: QChartView) -> None:
+        """Update an existing chart view's theme"""
+        self.apply_chart_theme(chart_view.chart())
     
-    def apply_white_legend_text(self, chart_view: QChartView):
-        """Apply white text to chart legends for better contrast"""
-        chart = chart_view.chart()
-        legend = chart.legend()
-        if legend:
-            legend.setLabelColor(QColor(255, 255, 255))  # White text
-            legend.setBackgroundVisible(True)
-            legend.setColor(QColor(self.background_color))  # Match chart background 
