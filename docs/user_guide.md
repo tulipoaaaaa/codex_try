@@ -60,9 +60,22 @@ To compare corpus profiles use:
 ```bash
 python CorpusBuilderApp/cli.py diff-corpus --profile-a snapshot1.json --profile-b snapshot2.json
 ```
-You can run collectors and processors headlessly with `cli/execute_from_config.py`:
+You can run collectors, processors and the corpus balancer headlessly with
+`cli/execute_from_config.py`:
 ```bash
 python cli/execute_from_config.py --config path/to/config.yaml --run-all
+```
+Additional flags let you control which phases execute:
+
+- `--collect` – run enabled collectors
+- `--extract` – run enabled processors
+- `--balance` – run the corpus balancer
+- `--preview-only` – show selected modules without running them
+
+Preview all phases without executing them:
+```bash
+python cli/execute_from_config.py --config path/to/config.yaml \
+    --collect --extract --balance --preview-only
 ```
 
 Use `--version` to print the application version or `--matrix` to see which
