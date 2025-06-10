@@ -43,6 +43,6 @@ Only the variables relevant to your workflow need to be defined. If a value is o
 
 The active environment is controlled by the `ENVIRONMENT` variable. Set it to `test` or `production` in your `.env` file (or export it in the shell) before launching the application or running command-line tools. The GUI also exposes an environment selector in the **Configuration** tab that updates the same value.
 
-Different YAML configuration files can be used for each environment (for example `config/test.yaml` and `config/production.yaml`). Changing `ENVIRONMENT` ensures the appropriate configuration is loaded.
+Different YAML configuration files can be used for each environment (for example `config/test.yaml` and `config/production.yaml`). Changing `ENVIRONMENT` ensures the appropriate configuration is loaded. YAML configurations now use an `environment` key with an `environments` mapping for the directory paths, though old `directories:` blocks are still recognized for backward compatibility. Environment variables such as `CORPUS_ROOT` continue to override the respective paths defined in the YAML file.
 
 For automated tests or headless operation you can simply set `ENVIRONMENT=test`.

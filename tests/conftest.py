@@ -48,6 +48,78 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
 
     qtwidgets = _SafeStubModule("PySide6.QtWidgets")
 
+    class _Widget:
+        def __init__(self, *a, **k):
+            pass
+
+        def setAcceptDrops(self, *a, **k):
+            pass
+
+        def setWindowTitle(self, *a, **k):
+            pass
+
+    for name in [
+        "QWidget",
+        "QDialog",
+        "QGroupBox",
+        "QFrame",
+        "QFileDialog",
+        "QScrollArea",
+        "QMenu",
+    ]:
+        qtwidgets.__dict__[name] = type(name, (), {
+            "__init__": _Widget.__init__,
+            "setAcceptDrops": _Widget.setAcceptDrops,
+            "setWindowTitle": _Widget.setWindowTitle,
+        })
+
+    for name in [
+        "QPushButton",
+        "QLabel",
+        "QLineEdit",
+        "QComboBox",
+        "QTabWidget",
+        "QCheckBox",
+        "QFormLayout",
+        "QSpinBox",
+        "QTableWidget",
+        "QTableWidgetItem",
+        "QHeaderView",
+        "QDialogButtonBox",
+        "QDateEdit",
+    ]:
+        qtwidgets.__dict__[name] = type(name, (), {"__init__": _Widget.__init__})
+
+    for name in [
+        "QVBoxLayout",
+        "QHBoxLayout",
+        "QFormLayout",
+    ]:
+        qtwidgets.__dict__[name] = type(
+            name,
+            (),
+            {
+                "__init__": _Widget.__init__,
+                "addWidget": lambda *a, **k: None,
+                "addLayout": lambda *a, **k: None,
+                "addRow": lambda *a, **k: None,
+                "addStretch": lambda *a, **k: None,
+                "setContentsMargins": lambda *a, **k: None,
+                "setSpacing": lambda *a, **k: None,
+            },
+        )
+
+    class QMessageBox:
+        @staticmethod
+        def critical(*a, **k):
+            pass
+
+        @staticmethod
+        def information(*a, **k):
+            pass
+
+    qtwidgets.QMessageBox = QMessageBox
+
     class QApplication:
         _instance = None
 
@@ -108,7 +180,6 @@ for mod in [
     "matplotlib",
     "matplotlib.pyplot",
     "seaborn",
-    "yaml",
     "requests",
     "pandas",
     "PyPDF2",
@@ -141,9 +212,10 @@ for mod in [
         setattr(module, "exceptions", exceptions_mod)
         setattr(module, "Session", lambda *a, **k: object())
     if mod == "yaml":
-        import json
-        setattr(module, "safe_dump", lambda data, fh: fh.write(json.dumps(data)))
-        setattr(module, "safe_load", lambda fh: json.load(fh))
+        import importlib
+        _real_yaml = importlib.import_module('yaml')
+        setattr(module, "safe_dump", lambda data, fh: _real_yaml.safe_dump(data, fh))
+        setattr(module, "safe_load", lambda fh: _real_yaml.safe_load(fh))
     if mod == "psutil":
         class _P:
             def __init__(self, *a, **k):
@@ -161,9 +233,7 @@ setattr(exceptions_ns, 'Timeout', Exception)
 setattr(exceptions_ns, 'HTTPError', Exception)
 setattr(requests_mod, 'exceptions', exceptions_ns)
 
-yaml_mod = sys.modules.setdefault('yaml', types.ModuleType('yaml'))
-setattr(yaml_mod, 'safe_dump', lambda *a, **k: '')
-setattr(yaml_mod, 'safe_load', lambda *a, **k: {})
+import yaml as yaml_mod
 
 bs4_mod = sys.modules.setdefault('bs4', types.ModuleType('bs4'))
 setattr(bs4_mod, 'BeautifulSoup', lambda *a, **k: None)
@@ -213,6 +283,9 @@ class DummyBaseModel:
     @classmethod
     def parse_obj(cls, obj):
         return cls()
+
+    def dict(self, *a, **k):
+        return {}
 
 setattr(pydantic_mod, 'BaseModel', DummyBaseModel)
 setattr(pydantic_mod, 'validator', lambda *a, **k: (lambda f: f))

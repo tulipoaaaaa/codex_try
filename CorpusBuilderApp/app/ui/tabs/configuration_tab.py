@@ -426,12 +426,23 @@ class ConfigurationTab(QWidget):
         self.scidb_token.setText(self.project_config.get("api_keys.scidb", ""))
         self.web_token.setText(self.project_config.get("api_keys.web", ""))
 
-        # Load directories
-        self.corpus_root.setText(self.project_config.get("directories.corpus_root", ""))
-        self.raw_data_dir.setText(self.project_config.get("directories.raw_data", ""))
-        self.processed_dir.setText(self.project_config.get("directories.processed", ""))
-        self.metadata_dir.setText(self.project_config.get("directories.metadata", ""))
-        self.logs_dir.setText(self.project_config.get("directories.logs", ""))
+        # Load directories from the active environment
+        env_dirs = self.project_config.get(f"environments.{env}", {})
+        self.corpus_root.setText(
+            env_dirs.get("corpus_root", self.project_config.get("directories.corpus_root", ""))
+        )
+        self.raw_data_dir.setText(
+            env_dirs.get("raw_dir", self.project_config.get("directories.raw_data", ""))
+        )
+        self.processed_dir.setText(
+            env_dirs.get("processed_dir", self.project_config.get("directories.processed", ""))
+        )
+        self.metadata_dir.setText(
+            env_dirs.get("metadata_dir", self.project_config.get("directories.metadata", ""))
+        )
+        self.logs_dir.setText(
+            env_dirs.get("logs_dir", self.project_config.get("directories.logs", ""))
+        )
 
         # Load domains
         domains = self.project_config.get("domains", {})
@@ -503,12 +514,23 @@ class ConfigurationTab(QWidget):
             self.project_config.set("api_keys.scidb", self.scidb_token.text())
             self.project_config.set("api_keys.web", self.web_token.text())
 
-            # Save directories
-            self.project_config.set("directories.corpus_root", self.corpus_root.text())
-            self.project_config.set("directories.raw_data", self.raw_data_dir.text())
-            self.project_config.set("directories.processed", self.processed_dir.text())
-            self.project_config.set("directories.metadata", self.metadata_dir.text())
-            self.project_config.set("directories.logs", self.logs_dir.text())
+            # Save directories under the active environment
+            env = self.env_selector.currentText()
+            self.project_config.set(
+                f"environments.{env}.corpus_root", self.corpus_root.text()
+            )
+            self.project_config.set(
+                f"environments.{env}.raw_dir", self.raw_data_dir.text()
+            )
+            self.project_config.set(
+                f"environments.{env}.processed_dir", self.processed_dir.text()
+            )
+            self.project_config.set(
+                f"environments.{env}.metadata_dir", self.metadata_dir.text()
+            )
+            self.project_config.set(
+                f"environments.{env}.logs_dir", self.logs_dir.text()
+            )
 
             # Save domains
             domains = self.validate_domain_config()

@@ -11,6 +11,9 @@ class EnvironmentConfig(BaseModel):
     corpus_dir: str = Field(..., description="Base directory for the corpus")
     cache_dir: Optional[str] = Field(None, description="Optional cache directory")
     log_dir: Optional[str] = Field(None, description="Optional log directory")
+    raw_data_dir: Optional[str] = Field(None, description="Directory for raw documents")
+    processed_dir: Optional[str] = Field(None, description="Directory for processed files")
+    metadata_dir: Optional[str] = Field(None, description="Directory for metadata files")
 
 class DomainConfig(BaseModel):
     """Schema for domain-specific configuration."""
@@ -468,11 +471,17 @@ class ProjectConfig:
                     "corpus_dir": str(config_dir / "corpus"),
                     "cache_dir": str(config_dir / "cache"),
                     "log_dir": str(config_dir / "logs"),
+                    "raw_data_dir": str(config_dir / "corpus" / "raw"),
+                    "processed_dir": str(config_dir / "corpus" / "processed"),
+                    "metadata_dir": str(config_dir / "corpus" / "metadata"),
                 },
                 "production": {
                     "corpus_dir": str(Path.home() / "CryptoCorpus"),
                     "cache_dir": str(Path.home() / "CryptoCorpus" / "cache"),
                     "log_dir": str(Path.home() / "CryptoCorpus" / "logs"),
+                    "raw_data_dir": str(Path.home() / "CryptoCorpus" / "raw"),
+                    "processed_dir": str(Path.home() / "CryptoCorpus" / "processed"),
+                    "metadata_dir": str(Path.home() / "CryptoCorpus" / "metadata"),
                 },
             },
             "auto_balance": {

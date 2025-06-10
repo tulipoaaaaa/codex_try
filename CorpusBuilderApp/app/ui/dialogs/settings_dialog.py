@@ -253,12 +253,14 @@ class SettingsDialog(QDialog):
         self.show_tooltips.setChecked(self.current_settings.get('show_tooltips', True))
         self.auto_refresh.setChecked(self.current_settings.get('auto_refresh', True))
         
-        # Directories tab
-        self.corpus_root.setText(self.current_settings.get('corpus_root', ''))
-        self.raw_dir.setText(self.current_settings.get('raw_dir', ''))
-        self.processed_dir.setText(self.current_settings.get('processed_dir', ''))
-        self.metadata_dir.setText(self.current_settings.get('metadata_dir', ''))
-        self.logs_dir.setText(self.current_settings.get('logs_dir', ''))
+        # Directories tab - support new environment layout with legacy fallback
+        env = self.env_selector.currentText()
+        env_dirs = self.current_settings.get('environments', {}).get(env, {})
+        self.corpus_root.setText(env_dirs.get('corpus_root', self.current_settings.get('corpus_root', '')))
+        self.raw_dir.setText(env_dirs.get('raw_dir', self.current_settings.get('raw_dir', '')))
+        self.processed_dir.setText(env_dirs.get('processed_dir', self.current_settings.get('processed_dir', '')))
+        self.metadata_dir.setText(env_dirs.get('metadata_dir', self.current_settings.get('metadata_dir', '')))
+        self.logs_dir.setText(env_dirs.get('logs_dir', self.current_settings.get('logs_dir', '')))
         self.create_missing.setChecked(self.current_settings.get('create_missing_dirs', True))
         
         # Processing tab
@@ -274,25 +276,24 @@ class SettingsDialog(QDialog):
     
     def get_settings(self):
         """Get the settings from the dialog."""
+        env = self.env_selector.currentText()
         return {
             # General
-            'environment': {
-                'active': self.env_selector.currentText(),
-                'python_path': self.python_path.text(),
-                'venv_path': self.venv_path.text(),
-            },
+            'environment.active': env,
+            'environment.python_path': self.python_path.text(),
+            'environment.venv_path': self.venv_path.text(),
             'theme': self.theme_selector.currentText(),
             'show_tooltips': self.show_tooltips.isChecked(),
             'auto_refresh': self.auto_refresh.isChecked(),
-            
-            # Directories
-            'corpus_root': self.corpus_root.text(),
-            'raw_dir': self.raw_dir.text(),
-            'processed_dir': self.processed_dir.text(),
-            'metadata_dir': self.metadata_dir.text(),
-            'logs_dir': self.logs_dir.text(),
+
+            # Directories stored per-environment
+            f'environments.{env}.corpus_root': self.corpus_root.text(),
+            f'environments.{env}.raw_dir': self.raw_dir.text(),
+            f'environments.{env}.processed_dir': self.processed_dir.text(),
+            f'environments.{env}.metadata_dir': self.metadata_dir.text(),
+            f'environments.{env}.logs_dir': self.logs_dir.text(),
             'create_missing_dirs': self.create_missing.isChecked(),
-            
+
             # Processing
             'enable_ocr': self.enable_ocr.isChecked(),
             'pdf_threads': self.pdf_threads.value(),
@@ -303,7 +304,7 @@ class SettingsDialog(QDialog):
             'min_quality': self.min_quality.value(),
             'batch_size': self.batch_size.value(),
             'timeout': self.timeout.value(),
-            'sound_enabled': self.sound_checkbox.isChecked()
+            'sound_enabled': self.sound_checkbox.isChecked(),
         }
     
     def accept(self):
