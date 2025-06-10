@@ -28,6 +28,7 @@ from app.ui.theme.theme_constants import (
     DEFAULT_FONT_SIZE,
     CARD_MARGIN,
     BUTTON_COLOR_DANGER,
+    PAGE_MARGIN,
 )
 
 
@@ -77,6 +78,8 @@ class CollectorsTab(QWidget):
     def setup_ui(self) -> None:
         """Initialize the user interface."""
         layout = QVBoxLayout(self)
+        layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
+        layout.setSpacing(PAGE_MARGIN)
         
         # Status section
         status_group = QGroupBox("Collection Status")
@@ -127,9 +130,9 @@ class CollectorsTab(QWidget):
         
         # Control buttons
         control_layout = QHBoxLayout()
-        
+
         stop_all_btn = QPushButton("Stop All Collectors")
-        stop_all_btn.setStyleSheet(f"background-color: {BUTTON_COLOR_DANGER};")
+        stop_all_btn.setObjectName("danger")
         stop_all_btn.clicked.connect(self.stop_all_collectors)
         control_layout.addWidget(stop_all_btn)
         

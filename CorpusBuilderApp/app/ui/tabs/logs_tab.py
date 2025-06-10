@@ -21,6 +21,7 @@ from app.ui.widgets.section_header import SectionHeader
 from app.ui.widgets.status_dot import StatusDot
 from shared_tools.services.activity_log_service import ActivityLogService
 from shared_tools.utils.log_file_parser import LogFileParser
+from app.ui.theme.theme_constants import PAGE_MARGIN
 
 import os
 import re
@@ -41,6 +42,8 @@ class LogsTab(QWidget):
         
     def setup_ui(self):
         main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
+        main_layout.setSpacing(PAGE_MARGIN)
 
         header = SectionHeader("Logs")
         main_layout.addWidget(header)
@@ -95,6 +98,7 @@ class LogsTab(QWidget):
         self.log_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.log_table.horizontalHeader().setSectionResizeMode(3, QHeaderView.ResizeMode.Stretch)
         self.log_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
+        self.log_table.setAlternatingRowColors(True)
         self.log_table.clicked.connect(self.on_log_entry_selected)
         
         table_card = CardWrapper(title="Entries")
