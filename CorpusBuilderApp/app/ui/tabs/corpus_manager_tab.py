@@ -393,6 +393,12 @@ class CorpusManagerTab(QWidget):
         self.validate_metadata_cb = QCheckBox("Validate Metadata")
         other_buttons_layout.addWidget(self.validate_metadata_cb)
 
+        self.auto_fix_cb = QCheckBox("Auto-fix missing folders")
+        other_buttons_layout.addWidget(self.auto_fix_cb)
+
+        self.check_integrity_cb = QCheckBox("Run corruption check")
+        other_buttons_layout.addWidget(self.check_integrity_cb)
+
         self.validate_structure_btn = QPushButton("Validate Structure")
         self.validate_structure_btn.clicked.connect(self.validate_corpus_structure)
         other_buttons_layout.addWidget(self.validate_structure_btn)
@@ -918,7 +924,9 @@ class CorpusManagerTab(QWidget):
     def validate_corpus_structure(self) -> None:
         """Trigger corpus structure validation via the service."""
         self.validator_service.validate_structure(
-            validate_metadata=self.validate_metadata_cb.isChecked()
+            validate_metadata=self.validate_metadata_cb.isChecked(),
+            auto_fix=self.auto_fix_cb.isChecked(),
+            check_integrity=self.check_integrity_cb.isChecked(),
         )
 
     def show_validation_results(self, results: dict) -> None:
