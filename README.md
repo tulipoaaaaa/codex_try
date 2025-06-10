@@ -1,7 +1,7 @@
 # codex_try
 
 
-[![Tests](https://github.com/OWNER/REPO/actions/workflows/test.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/test.yml)
+[![Tests](https://github.com/tulipoaaaaa/codex_try/actions/workflows/test.yml/badge.svg)](https://github.com/tulipoaaaaa/codex_try/actions/workflows/test.yml)
 
 ## Installation
 
