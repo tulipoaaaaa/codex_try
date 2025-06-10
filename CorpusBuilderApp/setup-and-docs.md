@@ -248,6 +248,10 @@ FRED_API_KEY=your_fred_key_here
 # Other API keys as needed
 ```
 
+For more environment variable examples and details on switching between test
+and production, see
+[../docs/environment_config.md](../docs/environment_config.md).
+
 ### 5. Directory Structure
 
 The application will automatically create the required directory structure on first run:
