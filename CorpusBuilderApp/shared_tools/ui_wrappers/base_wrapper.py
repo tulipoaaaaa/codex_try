@@ -11,6 +11,20 @@ from uuid import uuid4
 from shared_tools.services.task_history_service import TaskHistoryService
 from pathlib import Path
 
+
+class DummySignal:
+    """Lightweight signal used in test mode."""
+
+    def __init__(self) -> None:
+        self._slots: list = []
+
+    def connect(self, slot) -> None:  # pragma: no cover - simple store
+        self._slots.append(slot)
+
+    def emit(self, *args, **kwargs) -> None:  # pragma: no cover - runtime helper
+        for s in list(self._slots):
+            s(*args, **kwargs)
+
 class BaseWorkerThread(QThread):
     """Base worker thread for all collectors/processors"""
     progress = pyqtSignal(int, int, str)  # current, total, message
@@ -51,7 +65,7 @@ class BaseWrapper(QObject):
     error_occurred = pyqtSignal(str)    # Error message
     completed = pyqtSignal(dict)        # Results dictionary
     
-    def __init__(self, config, activity_log_service=None, task_history_service: TaskHistoryService | None = None):
+    def __init__(self, config, activity_log_service=None, task_history_service: TaskHistoryService | None = None, test_mode: bool = False):
         super().__init__()
         self.config = config
         self.worker = None
@@ -60,6 +74,9 @@ class BaseWrapper(QObject):
         self.activity_log_service = activity_log_service
         self.task_history_service = task_history_service
         self._task_id: str | None = None
+        self._test_mode = False
+        if test_mode:
+            self.set_test_mode(True)
         
     @abstractmethod
     def _create_target_object(self):
@@ -175,6 +192,19 @@ class BaseWrapper(QObject):
     def is_running(self) -> bool:
         """Check if operation is currently running"""
         return self._is_running
+
+    # ------------------------------------------------------------------
+    def set_test_mode(self, enabled: bool = True) -> None:
+        """Replace Qt signals with in-memory stubs for tests."""
+        self._test_mode = enabled
+        if enabled:
+            for name in dir(self):
+                try:
+                    attr = getattr(self, name)
+                except Exception:
+                    continue
+                if hasattr(attr, "connect") and hasattr(attr, "emit"):
+                    setattr(self, name, DummySignal())
 
     def refresh_config(self):
         """Default no-op implementation; can be overridden by subclasses."""

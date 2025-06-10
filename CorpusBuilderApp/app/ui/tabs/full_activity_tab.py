@@ -90,11 +90,7 @@ class FullActivityTab(QWidget):
         # Header with title and controls
         header_layout = QHBoxLayout()
         
-        title_label = QLabel("📊 Full Activity Dashboard")
-        title_label.setObjectName("dashboard-section-header")
-        title_label.setStyleSheet(
-            f"font-size: 20px; font-weight: 700; color: {BUTTON_COLOR_PRIMARY};"
-        )
+        title_label = SectionHeader("📊 Full Activity Dashboard")
         header_layout.addWidget(title_label)
         
         header_layout.addStretch()
@@ -1108,4 +1104,4 @@ Progress: {activity.get('progress', 0)}%
     def update_theme(self, theme_name):
         """Update theme for charts"""
         self.chart_manager.set_theme(theme_name)
-        self.load_activity_data()  # Refresh charts with new theme 
+        self.load_activity_data()  # Refresh charts with new theme

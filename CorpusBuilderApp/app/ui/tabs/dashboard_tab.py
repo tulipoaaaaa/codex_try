@@ -8,7 +8,6 @@ from PySide6.QtWidgets import (
     QGridLayout,
     QLabel,
     QPushButton,
-    QProgressBar,
     QScrollArea,
     QSizePolicy,
     QFrame
@@ -32,6 +31,7 @@ from app.ui.theme.theme_constants import (
     BUTTON_COLOR_GRAY,
 )
 from shared_tools.services.corpus_stats_service import CorpusStatsService
+from app.ui.utils.ui_helpers import create_styled_progress_bar
 import os
 
 ICON_PATH = os.path.join(os.path.dirname(__file__), '../../resources/icons')
@@ -76,10 +76,7 @@ class DashboardTab(QWidget):
         header_layout = QVBoxLayout()
         header_layout.setContentsMargins(24, 16, 24, 4)
         header_row = QHBoxLayout()
-        title_label = QLabel('📊 Corpus Overview Dashboard')
-        title_label.setStyleSheet(
-            f'background-color: transparent; font-size: 20px; font-weight: 700; color: {BUTTON_COLOR_PRIMARY}; margin-bottom: 4px;'
-        )
+        title_label = SectionHeader('📊 Corpus Overview Dashboard')
         header_row.addWidget(title_label)
         header_row.addStretch()
         health_indicator = self.create_system_health_indicator()
@@ -141,14 +138,7 @@ class DashboardTab(QWidget):
             label = QLabel(op[0])
             label.setStyleSheet("background-color: transparent; font-size: 14px; color: #f9fafb;")
             row.addWidget(label)
-            bar = QProgressBar()
-            bar.setValue(op[1])
-            bar.setFixedHeight(8)
-            bar.setStyleSheet(
-                f"QProgressBar {{ background-color: {CARD_BORDER_COLOR}; border-radius: 4px; }} "
-                f"QProgressBar::chunk {{ background-color: {BUTTON_COLOR_PRIMARY}; border-radius: 4px; }}"
-            )
-            bar.setTextVisible(False)
+            bar = create_styled_progress_bar(op[1], "#32B8C6", height=8)
             row.addWidget(bar)
             ops_layout.addLayout(row)
         center_col.addWidget(ops_card)
@@ -262,8 +252,7 @@ class DashboardTab(QWidget):
         layout = QVBoxLayout(container)
         layout.setSpacing(4)
         layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('🖥️ System Status')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        header = SectionHeader('🖥️ System Status')
         layout.addWidget(header)
         resources = [('CPU', 45, '#32B8C6'), ('RAM', 67, '#E68161'), ('Disk', 23, '#22c55e')]
         for label, value, color in resources:
@@ -275,17 +264,8 @@ class DashboardTab(QWidget):
             label_widget = QLabel(label)
             label_widget.setFixedWidth(35)
             label_widget.setStyleSheet('color: #f9fafb; font-size: 12px; background-color: transparent;')
-            progress_bar = QProgressBar()
-            progress_bar.setValue(value)
-            progress_bar.setFixedHeight(6)
+            progress_bar = create_styled_progress_bar(value, color, height=6)
             progress_bar.setFixedWidth(80)
-            progress_bar.setTextVisible(False)
-            progress_bar.setStyleSheet(
-                f'''
-                QProgressBar {{ background-color: {CARD_BORDER_COLOR}; border-radius: 3px; }}
-                QProgressBar::chunk {{ background-color: {color}; border-radius: 3px; }}
-            '''
-            )
             percent_label = QLabel(f'{value}%')
             percent_label.setStyleSheet('color: #f9fafb; font-size: 12px; font-weight: 600; background-color: transparent;')
             percent_label.setFixedWidth(30)
@@ -313,8 +293,7 @@ class DashboardTab(QWidget):
         layout = QVBoxLayout(container)
         layout.setSpacing(6)
         layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('🔔 Alerts')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        header = SectionHeader('🔔 Alerts')
         layout.addWidget(header)
         alerts = [('⚠️', 'Storage > 90%', '#E68161'), ('ℹ️', 'Update available', '#32B8C6'), ('✅', 'Backup current', '#22c55e')]
         for icon, text, color in alerts:
@@ -348,8 +327,7 @@ class DashboardTab(QWidget):
         main_layout = QVBoxLayout(container)
         main_layout.setSpacing(8)
         main_layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('📋 Recent Activity')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent;')
+        header = SectionHeader('📋 Recent Activity')
         main_layout.addWidget(header)
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
@@ -446,14 +424,7 @@ class DashboardTab(QWidget):
             task_layout.setSpacing(2)
             name_label = QLabel(task_name)
             name_label.setStyleSheet('color: #f9fafb; font-size: 10px; background-color: transparent;')
-            progress_bar = QProgressBar()
-            progress_bar.setValue(progress)
-            progress_bar.setFixedHeight(4)
-            progress_bar.setTextVisible(False)
-            progress_bar.setStyleSheet(f'''
-                QProgressBar {{ background-color: {CARD_BORDER_COLOR}; border-radius: 2px; }}
-                QProgressBar::chunk {{ background-color: {color}; border-radius: 2px; }}
-            ''')
+            progress_bar = create_styled_progress_bar(progress, color, height=4)
             task_layout.addWidget(name_label)
             task_layout.addWidget(progress_bar)
             main_layout.addWidget(task_container)
@@ -714,8 +685,7 @@ class DashboardTab(QWidget):
         ''')
         header_layout = QVBoxLayout()
         header_layout.setSpacing(2)
-        header_label = QLabel('📊 Quick Stats')
-        header_label.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent;')
+        header_label = SectionHeader('📊 Quick Stats')
         header_layout.addWidget(header_label)
         grid_layout = QGridLayout()
         grid_layout.setSpacing(16)
@@ -771,13 +741,13 @@ class DashboardTab(QWidget):
     def create_card_with_styling(self, title, object_name):
         container = CardWrapper(title)
         container.setObjectName(object_name)
-        container.setStyleSheet("""
-            QFrame[objectName="stat-card"] {
+        container.setStyleSheet(f"""
+            QFrame[objectName="{object_name}"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 20px;
-            }
+            }}
         """)
         return container
 
@@ -985,8 +955,7 @@ class DashboardTab(QWidget):
         main_layout = QVBoxLayout(container)
         main_layout.setSpacing(8)
         main_layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('📈 Performance Metrics')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        header = SectionHeader('📈 Performance Metrics')
         main_layout.addWidget(header)
         grid_layout = QGridLayout()
         grid_layout.setSpacing(16)
@@ -1031,8 +1000,7 @@ class DashboardTab(QWidget):
         main_layout = QVBoxLayout(container)
         main_layout.setSpacing(8)
         main_layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('📋 Task Queue')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent;')
+        header = SectionHeader('📋 Task Queue')
         main_layout.addWidget(header)
         
         # Top section with running tasks
@@ -1054,14 +1022,7 @@ class DashboardTab(QWidget):
             task_layout.setSpacing(2)
             name_label = QLabel(task_name)
             name_label.setStyleSheet('color: #f9fafb; font-size: 10px; background-color: transparent;')
-            progress_bar = QProgressBar()
-            progress_bar.setValue(progress)
-            progress_bar.setFixedHeight(4)
-            progress_bar.setTextVisible(False)
-            progress_bar.setStyleSheet(f'''
-                QProgressBar {{ background-color: {CARD_BORDER_COLOR}; border-radius: 2px; }}
-                QProgressBar::chunk {{ background-color: {color}; border-radius: 2px; }}
-            ''')
+            progress_bar = create_styled_progress_bar(progress, color, height=4)
             task_layout.addWidget(name_label)
             task_layout.addWidget(progress_bar)
             top_layout.addWidget(task_container)
@@ -1156,8 +1117,7 @@ class DashboardTab(QWidget):
         layout = QVBoxLayout(container)
         layout.setSpacing(8)
         layout.setContentsMargins(16, 16, 16, 16)
-        header = QLabel('🌍 Environment')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent;')
+        header = SectionHeader('🌍 Environment')
         layout.addWidget(header)
         info = [
             ('Python', '3.12.0'),
@@ -1198,8 +1158,7 @@ class DashboardTab(QWidget):
         layout = QVBoxLayout(container)
         layout.setSpacing(4)
         layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('🖥️ System Status')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        header = SectionHeader('🖥️ System Status')
         layout.addWidget(header)
         resources = [('CPU', 45, '#32B8C6'), ('RAM', 67, '#E68161'), ('Disk', 23, '#22c55e')]
         for label, value, color in resources:
@@ -1211,15 +1170,8 @@ class DashboardTab(QWidget):
             label_widget = QLabel(label)
             label_widget.setFixedWidth(35)
             label_widget.setStyleSheet('color: #f9fafb; font-size: 12px; background-color: transparent;')
-            progress_bar = QProgressBar()
-            progress_bar.setValue(value)
-            progress_bar.setFixedHeight(6)
+            progress_bar = create_styled_progress_bar(value, color, height=6)
             progress_bar.setFixedWidth(80)
-            progress_bar.setTextVisible(False)
-            progress_bar.setStyleSheet(f'''
-                QProgressBar {{ background-color: {CARD_BORDER_COLOR}; border-radius: 3px; }}
-                QProgressBar::chunk {{ background-color: {color}; border-radius: 3px; }}
-            ''')
             percent_label = QLabel(f'{value}%')
             percent_label.setStyleSheet('color: #f9fafb; font-size: 12px; font-weight: 600; background-color: transparent;')
             percent_label.setFixedWidth(30)
@@ -1250,8 +1202,7 @@ class DashboardTab(QWidget):
         layout = QVBoxLayout(container)
         layout.setSpacing(6)
         layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('🔔 Alerts')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        header = SectionHeader('🔔 Alerts')
         layout.addWidget(header)
         alerts = [('⚠️', 'Storage > 90%', '#E68161'), ('ℹ️', 'Update available', '#32B8C6'), ('✅', 'Backup current', '#22c55e')]
         for icon, text, color in alerts:
