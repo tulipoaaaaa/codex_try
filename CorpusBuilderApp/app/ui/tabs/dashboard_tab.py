@@ -16,7 +16,8 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, Signal, QMargins
 from PySide6.QtGui import QColor, QPainter
 import sys
-from PySide6.QtCharts import QChart, QChartView, QPieSeries
+from PySide6.QtCharts import QPieSeries
+from app.helpers.chart_manager import ChartManager
 from datetime import datetime
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
@@ -49,6 +50,7 @@ class DashboardTab(QWidget):
         self.activity_log_service = activity_log_service
         self.metric_labels = {}
         self.stats_service = CorpusStatsService(project_config)
+        self.chart_manager = ChartManager('dark')
         self.task_history_service = task_history_service
         self.task_queue_manager = task_queue_manager or TaskQueueManager()
         self.task_queue_manager.queue_counts_changed.connect(self.update_queue_counts)
@@ -222,7 +224,8 @@ class DashboardTab(QWidget):
 
     def create_giant_pie_chart(self, domain_data):
         from PySide6.QtCore import Qt
-        chart = QChart()
+        chart_view = self.chart_manager.create_chart_view("")
+        chart = chart_view.chart()
         chart.setBackgroundBrush(QColor('transparent'))
         chart.setMargins(QMargins(0, 0, 0, 0))
         colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
@@ -237,10 +240,10 @@ class DashboardTab(QWidget):
         chart.addSeries(series)
         chart.setTitle('')
         chart.legend().setVisible(False)
-        chart_view = QChartView(chart)
         chart_view.setFixedSize(300, 300)
         chart_view.setStyleSheet('background-color: transparent; border: none;')
         chart_view.setRenderHint(QPainter.Antialiasing)
+        self.chart_manager.apply_chart_theme(chart)
         chart_container = QWidget()
         chart_container.setStyleSheet('background-color: transparent;')
         chart_layout = QVBoxLayout(chart_container)
@@ -1007,7 +1010,8 @@ class DashboardTab(QWidget):
 
     def create_large_pie_chart(self, domain_data):
         from PySide6.QtCore import Qt
-        chart = QChart()
+        chart_view = self.chart_manager.create_chart_view("")
+        chart = chart_view.chart()
         chart.setBackgroundBrush(QColor('transparent'))
         chart.setMargins(QMargins(0, 0, 0, 0))
         colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
@@ -1022,10 +1026,10 @@ class DashboardTab(QWidget):
         chart.addSeries(series)
         chart.setTitle('')
         chart.legend().setVisible(False)
-        chart_view = QChartView(chart)
         chart_view.setFixedSize(220, 220)
         chart_view.setStyleSheet('background-color: transparent; border: none;')
         chart_view.setRenderHint(QPainter.Antialiasing)
+        self.chart_manager.apply_chart_theme(chart)
         chart_container = QWidget()
         chart_container.setStyleSheet('background-color: transparent;')
         chart_layout = QVBoxLayout(chart_container)
@@ -1093,7 +1097,8 @@ class DashboardTab(QWidget):
         return container
 
     def create_huge_pie_chart_up_left(self, domain_data):
-        chart = QChart()
+        chart_view = self.chart_manager.create_chart_view("")
+        chart = chart_view.chart()
         chart.setBackgroundBrush(QColor('transparent'))
         chart.setMargins(QMargins(0, 0, 0, 0))
         colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
@@ -1108,10 +1113,10 @@ class DashboardTab(QWidget):
         chart.addSeries(series)
         chart.setTitle('')
         chart.legend().setVisible(False)
-        chart_view = QChartView(chart)
         chart_view.setFixedSize(480, 480)
         chart_view.setStyleSheet('background-color: transparent; border: none;')
         chart_view.setRenderHint(QPainter.Antialiasing)
+        self.chart_manager.apply_chart_theme(chart)
         chart_container = QWidget()
         chart_container.setStyleSheet('background-color: transparent;')
         chart_layout = QHBoxLayout(chart_container)
