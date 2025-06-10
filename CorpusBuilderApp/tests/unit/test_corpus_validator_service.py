@@ -4,6 +4,9 @@ from pathlib import Path
 from PySide6.QtCore import QObject
 
 from shared_tools.services.corpus_validator_service import CorpusValidatorService
+from tools.check_corpus_structure import validate_metadata_files
+import json
+import logging
 
 
 class DummyCfg:
@@ -50,5 +53,47 @@ def test_validation_failure_emits_error(monkeypatch, tmp_path, qapp):
     )
     service.validate_structure()
     assert service.results == {}
+
+
+def test_validate_metadata_files_success(tmp_path, caplog):
+    meta_dir = tmp_path / "metadata" / "a"
+    meta_dir.mkdir(parents=True)
+    good = meta_dir / "good.json"
+    with open(good, "w", encoding="utf-8") as fh:
+        json.dump({"domain": "a", "author": "me", "year": 2024}, fh)
+    cfg = DummyCfg(tmp_path)
+    with caplog.at_level(logging.WARNING, logger="tools.check_corpus_structure"):
+        validate_metadata_files(cfg)
+    assert not caplog.records
+
+
+def test_validate_metadata_files_warns(tmp_path, caplog):
+    meta_dir = tmp_path / "metadata"
+    meta_dir.mkdir(parents=True)
+    bad = meta_dir / "bad.json"
+    bad.write_text("{bad}")
+    cfg = DummyCfg(tmp_path)
+    with caplog.at_level(logging.WARNING, logger="tools.check_corpus_structure"):
+        validate_metadata_files(cfg)
+    assert any("Invalid metadata" in r.message for r in caplog.records)
+
+
+def test_service_passes_flag(monkeypatch, tmp_path, qapp):
+    for sub in ["raw", "processed", "metadata", "logs"]:
+        (tmp_path / sub).mkdir()
+    cfg = DummyCfg(tmp_path)
+    captured = {}
+
+    def fake_check(_cfg, *, validate_metadata=False):
+        captured["flag"] = validate_metadata
+
+    monkeypatch.setattr(
+        "shared_tools.services.corpus_validator_service.check_corpus_structure",
+        fake_check,
+    )
+
+    service = CorpusValidatorService(cfg)
+    service.validate_structure(validate_metadata=True)
+    assert captured.get("flag") is True
 
 
