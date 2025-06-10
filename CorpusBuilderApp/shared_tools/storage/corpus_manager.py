@@ -10,7 +10,11 @@ class SignalEmitter(QObject):
     """Base class providing progress, status and completion signals."""
     progress_updated = pyqtSignal(int, str, dict)
     status_updated = pyqtSignal(str)
+<<<<<<< HEAD
     operation_completed = pyqtSignal(str)
+=======
+    operation_completed = pyqtSignal(str)  # Signal emitted when an operation is completed
+>>>>>>> my-feature-branch
 
 class CorpusManager(SignalEmitter):
     """Backend class for common corpus file operations."""

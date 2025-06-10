@@ -5,6 +5,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Union
 from shared_tools.project_config import ProjectConfig
+logger = logging.getLogger(__name__)
 
 # --- Load language/domain-specific config ---
 def load_mt_config(config_path=None):
@@ -89,7 +90,7 @@ def check_ngram_repetition(text, n=3, threshold=4, text_len=None, verbose=False)
     counts = Counter(ngrams)
     repeated = [(ng, c) for ng, c in counts.items() if c >= threshold]
     if verbose:
-        print(f"[MT-DEBUG] N-gram matches: {repeated}")
+        logger.debug(f"[MT-DEBUG] N-gram matches: {repeated}")
     if repeated:
         return True, [f"High n-gram repetition: '{ng}' ({c} times)" for ng, c in repeated]
     return False, []
@@ -313,7 +314,7 @@ def detect_machine_translation(text, config_path=None, file_type=None, domain=No
         else:
             severity = 'ok'
     if verbose:
-        print(f"[MT-DEBUG] Heuristics triggered: {triggered}, Score: {score}, Confidence: {confidence}")
+        logger.debug(f"[MT-DEBUG] Heuristics triggered: {triggered}, Score: {score}, Confidence: {confidence}")
     return {
         'machine_translated_flag': machine_translated_flag,
         'machine_translation_score': min(100, score),
@@ -533,10 +534,10 @@ def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     results = detector.process_directory(project.get_input_dir())
     
     if verbose:
-        print("\nMachine Translation Detection Results:")
-        print(f"Processed files: {len(results['processed_files'])}")
-        print(f"Machine translated: {results['machine_translated_count']}")
-        print(f"Natural text: {results['natural_text_count']}")
+        logger.info("\nMachine Translation Detection Results:")
+        logger.info(f"Processed files: {len(results['processed_files'])}")
+        logger.info(f"Machine translated: {results['machine_translated_count']}")
+        logger.info(f"Natural text: {results['natural_text_count']}")
     
     return results
 
@@ -564,7 +565,7 @@ def main():
     with open(output_file, 'w') as f:
         json.dump(results, f, indent=2)
     
-    print(f"\nDetection results saved to: {output_file}")
+    logger.info(f"\nDetection results saved to: {output_file}")
 
 if __name__ == "__main__":
     main() 

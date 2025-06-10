@@ -1,5 +1,0 @@
-2025-05-08 19:35:44,550 - BitMEXResearchCollector - INFO - Collecting BitMEX Research blog posts (max 1 pages)
-2025-05-08 19:35:44,552 - BitMEXResearchCollector - INFO - Fetching page 1: https://blog.bitmex.com/research/
-2025-05-08 19:35:49,268 - BitMEXResearchCollector - WARNING - Robots.txt disallows access to https://blog.bitmex.com/research/
-2025-05-08 19:35:49,272 - BitMEXResearchCollector - WARNING - Failed to fetch page 1
-2025-05-08 19:35:49,280 - BitMEXResearchCollector - INFO - Saved metadata for 0 posts to /workspace/data/test_corpus/bitmex/bitmex_research_posts.json

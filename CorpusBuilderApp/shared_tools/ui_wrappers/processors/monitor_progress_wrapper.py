@@ -7,16 +7,59 @@ import os
 import time
 import json
 from typing import Dict, List, Optional, Any, Callable
-from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Slot as pyqtSlot, QTimer, QMutex
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
-                           QProgressBar, QLabel, QTextEdit, QCheckBox, 
-                           QSpinBox, QGroupBox, QGridLayout, QComboBox,
-                           QTableWidget, QTableWidgetItem, QHeaderView,
-                           QTabWidget, QSplitter, QSlider, QListWidget)
-from PySide6.QtGui import QColor, QBrush, QPalette
-from PySide6.QtCore import Qt
+from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, QTimer
+try:
+    from PySide6.QtCore import QMutex
+except Exception:  # pragma: no cover - fallback for stub environments
+    class QMutex:  # type: ignore
+        def lock(self):
+            pass
+        def unlock(self):
+            pass
+try:  # Handle stubs missing Slot
+    from PySide6.QtCore import Slot as pyqtSlot
+except Exception:  # pragma: no cover - fallback for stub environments
+    def pyqtSlot(*args, **kwargs):  # type: ignore
+        def decorator(func):
+            return func
+        return decorator
+try:
+    from PySide6.QtWidgets import (
+        QWidget,
+        QVBoxLayout,
+        QHBoxLayout,
+        QPushButton,
+        QProgressBar,
+        QLabel,
+        QTextEdit,
+        QCheckBox,
+        QSpinBox,
+        QGroupBox,
+        QGridLayout,
+        QComboBox,
+        QTableWidget,
+        QTableWidgetItem,
+        QHeaderView,
+        QTabWidget,
+        QSplitter,
+        QSlider,
+        QListWidget,
+    )
+    from PySide6.QtGui import QColor, QBrush, QPalette
+    from PySide6.QtCore import Qt
+except Exception:  # pragma: no cover - fallback for stubs
+    QWidget = QVBoxLayout = QHBoxLayout = QPushButton = QProgressBar = QLabel = QTextEdit = QCheckBox = QSpinBox = QGroupBox = QGridLayout = QComboBox = QTableWidget = QTableWidgetItem = QHeaderView = QTabWidget = QSplitter = QSlider = QListWidget = object
+    QColor = QBrush = QPalette = object
+    class Qt:
+        Orientation = type("Orientation", (), {"Horizontal": 0})
+
 from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
-from shared_tools.processors.monitor_progress import MonitorProgress
+try:
+    from shared_tools.processors.monitor_progress import MonitorProgress
+except Exception:  # pragma: no cover - optional dependency
+    class MonitorProgress:
+        def configure(self, *a, **k):
+            pass
 from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
 
 
@@ -29,13 +72,14 @@ class ProgressMonitoringWorker(QThread):
     task_failed = pyqtSignal(str, str)  # task_id, error_message
     monitoring_stats = pyqtSignal(dict)  # overall monitoring statistics
     
-    def __init__(self, monitor_config: Dict[str, Any]):
+    def __init__(self, monitor_config: Dict[str, Any], task_queue_manager=None):
         super().__init__()
         self.monitor_config = monitor_config
         self.monitor = MonitorProgress()
         self._is_running = False
         self._mutex = QMutex()
         self.active_tasks = {}
+        self.task_queue_manager = task_queue_manager
         
     def run(self):
         """Execute progress monitoring"""
@@ -71,10 +115,18 @@ class ProgressMonitoringWorker(QThread):
                 continue
                 
     def _check_for_new_tasks(self):
-        """Check for newly started tasks"""
-        # In a real implementation, this would check a task registry
-        # For demonstration, we'll simulate task detection
-        pass
+        """Check ``TaskQueueManager`` for newly registered tasks."""
+        if not self.task_queue_manager:
+            return
+        try:
+            for task_id, info in self.task_queue_manager.tasks.items():
+                if task_id not in self.active_tasks:
+                    self.active_tasks[task_id] = info
+                    name = info.get("name", task_id)
+                    self.task_started.emit(task_id, name)
+        except Exception:
+            # Ignore queue polling errors but continue running
+            return
         
     def _update_active_tasks(self):
         """Update progress for all active tasks"""
@@ -139,13 +191,17 @@ class ProgressMonitoringWorker(QThread):
 
 class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
     """UI Wrapper for Progress Monitoring"""
-    
-    def __init__(self, parent=None):
+
+    def __init__(self, config=None, task_queue_manager=None, parent=None):
         super().__init__(parent)
+        self.config = config
+        self.task_queue_manager = task_queue_manager
         self.monitoring_worker = None
+        self.monitor_config: Dict[str, Any] = {}
         self.monitored_tasks = {}
         self.task_widgets = {}
         self.monitoring_enabled = False
+        self.task_queue_manager = task_queue_manager
         self.setup_ui()
         self.setup_connections()
         
@@ -446,6 +502,15 @@ class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.clear_history_btn.clicked.connect(self.clear_history)
         self.export_history_btn.clicked.connect(self.export_history)
         self.history_filter_combo.currentTextChanged.connect(self.filter_history)
+
+        if self.task_queue_manager:
+            sig = None
+            if hasattr(self.task_queue_manager, "task_added"):
+                sig = getattr(self.task_queue_manager, "task_added")
+            elif hasattr(self.task_queue_manager, "queue_updated"):
+                sig = getattr(self.task_queue_manager, "queue_updated")
+            if sig:
+                sig.connect(lambda *_: self.refresh_tasks())
         
     @pyqtSlot()
     def start_monitoring(self):
@@ -463,7 +528,9 @@ class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
         }
         
         # Create and start worker
-        self.monitoring_worker = ProgressMonitoringWorker(config)
+        self.monitoring_worker = ProgressMonitoringWorker(
+            config, task_queue_manager=self.task_queue_manager
+        )
         self.monitoring_worker.progress_update.connect(self.update_task_progress)
         self.monitoring_worker.task_started.connect(self.add_task_to_table)
         self.monitoring_worker.task_completed.connect(self.mark_task_completed)
@@ -681,8 +748,24 @@ class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
     @pyqtSlot()
     def refresh_tasks(self):
         """Refresh the tasks table"""
-        # Implementation would refresh task data
-        pass
+        if not self.task_queue_manager:
+            self.status_updated.emit("No task queue manager available")
+            return
+
+        try:
+            self.tasks_table.setRowCount(0)
+            self.monitored_tasks.clear()
+            for task_id, info in self.task_queue_manager.tasks.items():
+                self.add_task_to_table(task_id, info.get("name", task_id))
+                progress_data = {
+                    "percentage": info.get("progress", 0),
+                    "status": info.get("status", "pending"),
+                    "details": info.get("details", ""),
+                }
+                self.update_task_progress(task_id, progress_data)
+            self.status_updated.emit("Task list refreshed")
+        except Exception as exc:
+            self.status_updated.emit(f"Failed to refresh tasks: {exc}")
         
     @pyqtSlot()
     def clear_history(self):
@@ -741,5 +824,90 @@ class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
                 
     def _export_history_json(self, filename: str):
         """Export history to JSON format"""
-        # TODO: Implement JSON export logic
-        pass
+        headers = [
+            "Task ID",
+            "Name",
+            "Status",
+            "Start Time",
+            "Duration",
+            "Result",
+            "Error",
+        ]
+
+        rows = []
+        for row in range(self.history_table.rowCount()):
+            row_data = {}
+            for col in range(self.history_table.columnCount()):
+                item = self.history_table.item(row, col)
+                value = item.text() if item else ""
+                if col < len(headers):
+                    row_data[headers[col]] = value
+                else:
+                    row_data[str(col)] = value
+            rows.append(row_data)
+
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(rows, f, ensure_ascii=False, indent=2)
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config`` and update the worker."""
+        if not getattr(self, "config", None):
+            return
+
+        try:
+             cfg = self.config.get_processor_config("monitor_progress") or {}
+
+             if not isinstance(cfg, dict):
+                 cfg = {}
+
+             # Update local config
+             self.monitor_config.update(cfg)
+
+             # Update UI
+             if hasattr(self, "update_interval_slider") and "update_interval" in cfg:
+                 try:
+                      self.update_interval_slider.setValue(int(cfg["update_interval"]))
+                 except Exception:
+                      self.logger.debug("Invalid update_interval value")
+
+             if hasattr(self, "enable_notifications_cb"):
+                 self.enable_notifications_cb.setChecked(cfg.get(
+                     "enable_notifications",
+                     self.enable_notifications_cb.isChecked()
+                 ))
+
+             if hasattr(self, "log_progress_cb"):
+                 self.log_progress_cb.setChecked(cfg.get(
+                     "log_progress",
+                     self.log_progress_cb.isChecked()
+                 ))
+
+             if hasattr(self, "track_memory_cb"):
+                 self.track_memory_cb.setChecked(cfg.get(
+                     "track_memory",
+                     self.track_memory_cb.isChecked()
+                 ))
+
+             if hasattr(self, "track_cpu_cb"):
+                 self.track_cpu_cb.setChecked(cfg.get(
+                     "track_cpu",
+                     self.track_cpu_cb.isChecked()
+                 ))
+
+             # Update running monitor worker
+             if self.monitoring_worker:
+                 self.monitoring_worker.monitor_config.update(cfg)
+                 if self.monitoring_worker.isRunning():
+                     self.monitoring_worker.monitor.configure(
+                         update_interval=self.monitoring_worker.monitor_config.get("update_interval", 1.0),
+                         enable_notifications=self.monitoring_worker.monitor_config.get("enable_notifications", True),
+                         log_progress=self.monitoring_worker.monitor_config.get("log_progress", True),
+                         track_memory=self.monitoring_worker.monitor_config.get("track_memory", True),
+                         track_cpu=self.monitoring_worker.monitor_config.get("track_cpu", True),
+                     )
+
+             if cfg and hasattr(self, "configuration_changed"):
+                 self.configuration_changed.emit(cfg)
+
+        except Exception as exc:
+            self.show_error("Configuration Error", f"Failed to refresh configuration: {exc}")

@@ -1,8 +1,9 @@
 import os
+import logging
 from pathlib import Path
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, Type
 import yaml
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ValidationError
 from dotenv import load_dotenv
 
 class EnvironmentConfig(BaseModel):
@@ -19,6 +20,65 @@ class DomainConfig(BaseModel):
     quality_threshold: float = Field(..., description="Minimum quality score required")
     target_weight: float = Field(..., description="Target weight in corpus balancing")
     search_terms: List[str] = Field(..., description="Domain-specific search terms")
+
+
+class GitHubCollectorConfig(BaseModel):
+    """Optional schema for GitHub collector configuration."""
+    enabled: bool = False
+    search_terms: List[str] = Field(default_factory=list)
+    topic: Optional[str] = None
+    max_repos: int = 10
+
+
+class ArxivCollectorConfig(BaseModel):
+    """Optional schema for arXiv collector configuration."""
+    enabled: bool = False
+    search_terms: List[str] = Field(default_factory=list)
+    max_papers: int = 50
+
+
+class PDFProcessorConfig(BaseModel):
+    """Optional schema for PDF processor configuration."""
+    enabled: bool = False
+    threads: int = 4
+    enable_ocr: bool = True
+
+
+class TextProcessorConfig(BaseModel):
+    """Optional schema for text processor configuration."""
+    enabled: bool = False
+    threads: int = 4
+    min_quality: int = 70
+
+
+class AutoBalanceConfig(BaseModel):
+    """Optional schema for Auto Balance service configuration."""
+
+    enabled: bool = False
+    dominance_ratio: float = 5.0
+    min_entropy: float = 2.0
+    check_interval: int = 900  # seconds
+    start_balancing: bool = False
+
+
+COLLECTOR_SCHEMAS: Dict[str, Type[BaseModel]] = {
+    "github": GitHubCollectorConfig,
+    "arxiv": ArxivCollectorConfig,
+}
+
+
+PROCESSOR_SCHEMAS: Dict[str, Type[BaseModel]] = {
+    "pdf": PDFProcessorConfig,
+    "text": TextProcessorConfig,
+}
+
+
+def get_collector_schema(name: str) -> Optional[Type[BaseModel]]:
+    return COLLECTOR_SCHEMAS.get(name)
+
+
+def get_processor_schema(name: str) -> Optional[Type[BaseModel]]:
+    return PROCESSOR_SCHEMAS.get(name)
 
 class ProjectConfigSchema(BaseModel):
     """Schema for ProjectConfig YAML files."""
@@ -136,6 +196,7 @@ class ProjectConfigSchema(BaseModel):
         },
         description="Domain-specific configurations"
     )
+    auto_balance: AutoBalanceConfig = Field(default_factory=AutoBalanceConfig, description="Auto balance service configuration")
 
 class ProjectConfig:
     """Project configuration manager with .env support"""
@@ -144,18 +205,22 @@ class ProjectConfig:
         """Initialize configuration with .env support"""
         self.config_path = Path(config_path)
         self.environment = environment or os.getenv('ENVIRONMENT', 'test')
-        
+
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self._schema: Type[BaseModel] = ProjectConfigSchema
+
         # Load .env file if it exists
         env_path = self.config_path.parent / '.env'
         if env_path.exists():
             load_dotenv(env_path)
-        
+
         # Load configuration
-        self.config = self._load_config()
+        self.config = self._load_yaml_and_env_merge()
+        self.revalidate()
         
-    def _load_config(self) -> Dict[str, Any]:
-        """Load configuration from YAML and environment variables"""
-        config = {}
+    def _load_yaml_and_env_merge(self) -> Dict[str, Any]:
+        """Load configuration from YAML and merge environment variables."""
+        config: Dict[str, Any] = {}
         
         # Load from YAML if it exists
         if self.config_path.exists():
@@ -208,8 +273,34 @@ class ProjectConfig:
         
         # Deep merge configs, with env vars taking precedence
         self._deep_merge(config, env_config)
+
+        # Validate collector and processor sections if present
+        self._validate_section_schemas(config)
+
         return config
     
+    def _validate_section_schemas(self, config: Dict[str, Any]) -> None:
+        """Validate collector and processor sections using optional schemas."""
+        for name, data in config.get("collectors", {}).items():
+            model = get_collector_schema(name)
+            if model:
+                try:
+                    model.parse_obj(data)
+                except ValidationError as exc:  # pragma: no cover - simple log
+                    self.logger.warning("Invalid collector config '%s': %s", name, exc)
+
+        for name, data in config.get("processors", {}).items():
+            model = get_processor_schema(name)
+            if model:
+                try:
+                    model.parse_obj(data)
+                except ValidationError as exc:  # pragma: no cover - simple log
+                    self.logger.warning("Invalid processor config '%s': %s", name, exc)
+
+    # Backwards compatibility
+    def _load_config(self) -> Dict[str, Any]:
+        return self._load_yaml_and_env_merge()
+
     def _deep_merge(self, target: Dict[str, Any], source: Dict[str, Any]) -> None:
         """Deep merge two dictionaries"""
         for key, value in source.items():
@@ -243,6 +334,15 @@ class ProjectConfig:
         """Save configuration to YAML file"""
         with open(self.config_path, 'w') as f:
             yaml.dump(self.config, f, default_flow_style=False)
+
+    def reload_from_file(self) -> None:
+        """Reload YAML from disk and reapply environment variables."""
+        self.config = self._load_yaml_and_env_merge()
+        self.revalidate()
+
+    def revalidate(self) -> None:
+        """Re-parse the current configuration using the schema."""
+        self._parsed_config = self._schema.parse_obj(self.config)
 
  # Directory helper methods
     def get_corpus_root(self) -> Path:
@@ -280,3 +380,30 @@ class ProjectConfig:
     def from_yaml(cls, yaml_path: str, environment: Optional[str] = None) -> 'ProjectConfig':
         """Load config from YAML file with schema validation."""
         return cls(yaml_path, environment=environment)
+
+    @classmethod
+    def create_default_config_object(cls) -> Dict[str, Any]:
+        """Return a basic default configuration dictionary."""
+        config_dir = Path.home() / ".cryptofinance"
+        return {
+            "environment": "test",
+            "environments": {
+                "test": {
+                    "corpus_dir": str(config_dir / "corpus"),
+                    "cache_dir": str(config_dir / "cache"),
+                    "log_dir": str(config_dir / "logs"),
+                },
+                "production": {
+                    "corpus_dir": str(Path.home() / "CryptoCorpus"),
+                    "cache_dir": str(Path.home() / "CryptoCorpus" / "cache"),
+                    "log_dir": str(Path.home() / "CryptoCorpus" / "logs"),
+                },
+            },
+            "auto_balance": {
+                "enabled": False,
+                "dominance_ratio": 5.0,
+                "min_entropy": 2.0,
+                "check_interval": 900,
+                "start_balancing": False,
+            },
+        }

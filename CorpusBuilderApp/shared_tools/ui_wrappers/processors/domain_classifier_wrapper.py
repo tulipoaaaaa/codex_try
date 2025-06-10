@@ -15,9 +15,17 @@ class DomainClassifierWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.processor = DomainClassifier(project_config)
         self._is_running = False
         self.worker_thread = None
+        self._enabled = True
+
+    def set_enabled(self, enabled: bool):
+        """Enable or disable the wrapper."""
+        self._enabled = bool(enabled)
         
     def start(self, documents=None, **kwargs):
         """Start domain classification on the specified documents."""
+        if not self._enabled:
+            self.status_updated.emit("Domain classifier disabled")
+            return False
         if self._is_running:
             self.status_updated.emit("Domain classification already in progress")
             return False
@@ -72,6 +80,32 @@ class DomainClassifierWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.status_updated.emit(
             f"Domain classification completed: {len(results)} documents classified"
         )
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``."""
+        cfg = {}
+        if hasattr(self.config, 'get_processor_config'):
+            cfg = self.config.get_processor_config('domain_classifier') or {}
+        for k, v in cfg.items():
+            method = f'set_{k}'
+            if hasattr(self, method):
+                try:
+                    getattr(self, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via wrapper', k)
+            if hasattr(self.processor, method):
+                try:
+                    getattr(self.processor, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via processor', k)
+            if hasattr(self.processor, k):
+                setattr(self.processor, k, v)
+            elif hasattr(self, k):
+                setattr(self, k, v)
+        if cfg and hasattr(self, 'configuration_changed'):
+            self.configuration_changed.emit(cfg)
 
 class DomainClassifierWorkerThread(QThread):
     """Worker thread for domain classification processing."""

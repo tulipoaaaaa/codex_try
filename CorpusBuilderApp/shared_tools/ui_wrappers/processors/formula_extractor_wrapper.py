@@ -74,6 +74,32 @@ class FormulaExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
             f"Formula extraction completed: {total_formulas} formulas extracted from {len(results)} files"
         )
 
+    def refresh_config(self):
+        """Reload parameters from ``self.config``."""
+        cfg = {}
+        if hasattr(self.config, 'get_processor_config'):
+            cfg = self.config.get_processor_config('formula_extraction') or {}
+        for k, v in cfg.items():
+            method = f'set_{k}'
+            if hasattr(self, method):
+                try:
+                    getattr(self, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via wrapper', k)
+            if hasattr(self.processor, method):
+                try:
+                    getattr(self.processor, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via processor', k)
+            if hasattr(self.processor, k):
+                setattr(self.processor, k, v)
+            elif hasattr(self, k):
+                setattr(self, k, v)
+        if cfg and hasattr(self, 'configuration_changed'):
+            self.configuration_changed.emit(cfg)
+
 class FormulaExtractorWorkerThread(QThread):
     """Worker thread for formula extraction processing."""
     

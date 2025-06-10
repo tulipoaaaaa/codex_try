@@ -23,10 +23,26 @@ from PySide6.QtWidgets import (
     QFileSystemModel,
     QScrollArea,
     QFrame,
+    QGroupBox,
+    QProgressDialog,
 )
 from PySide6.QtGui import QAction, QStandardItemModel, QStandardItem, QDragEnterEvent, QDropEvent, QIcon
-from PySide6.QtCore import Qt, QDir, QSortFilterProxyModel, QModelIndex, Slot as pyqtSlot, QPoint, QThread, Signal as pyqtSignal, QMimeData, QTimer, QMutex
+from PySide6.QtCore import (
+    Qt,
+    QDir,
+    QSortFilterProxyModel,
+    QModelIndex,
+    Slot as pyqtSlot,
+    QPoint,
+    QThread,
+    Signal as pyqtSignal,
+    QMimeData,
+    QTimer,
+    QMutex,
+)
+import logging
 from shared_tools.storage.corpus_manager import CorpusManager
+from shared_tools.services.corpus_validator_service import CorpusValidatorService
 import os
 import json
 import shutil
@@ -37,6 +53,7 @@ from app.helpers.notifier import Notifier
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
 from app.ui.widgets.status_dot import StatusDot
+from app.ui.theme.theme_constants import PAGE_MARGIN
 from shared_tools.storage.corpus_manager import CorpusManager
 
 class NotificationManager(QWidget):
@@ -131,15 +148,36 @@ class BatchMetadataEditor(QDialog):
         return self.overwrite_cb.isChecked()
 
 class CorpusManagerTab(QWidget):
-    def __init__(self, project_config, parent=None):
+    def __init__(self, project_config, activity_log_service=None, parent=None):
         super().__init__(parent)
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self.progress_dialog = None
         self.notification_manager = NotificationManager(self)  # Initialize first
         self.project_config = project_config
-        self.corpus_manager = CorpusManager()
+        self.activity_log_service = activity_log_service
+        self.manager = CorpusManager()
+        self.validator_service = CorpusValidatorService(
+            project_config, activity_log_service
+        )
         self.setup_ui()
         self.selected_files = []
         self.batch_metadata_editor = None
         self.sound_enabled = True  # Will be set from user settings
+        self.validator_service.validation_completed.connect(
+            self.show_validation_results
+        )
+        self.validator_service.validation_completed.connect(
+            self.on_validation_complete
+        )
+        self.validator_service.validation_failed.connect(self.on_validation_failed)
+        self.validator_service.validation_started.connect(
+            lambda: self.notification_manager.add_notification(
+                "corpus_validate",
+                "Validating Corpus",
+                "Checking corpus structure...",
+                auto_hide=True,
+            )
+        )
         
     def setup_ui(self):
         outer_layout = QVBoxLayout(self)
@@ -153,8 +191,8 @@ class CorpusManagerTab(QWidget):
         scroll_area.setWidget(container)
 
         main_layout = QVBoxLayout(container)
-        main_layout.setContentsMargins(16, 16, 16, 16)
-        main_layout.setSpacing(16)
+        main_layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
+        main_layout.setSpacing(PAGE_MARGIN)
 
         icon_manager = IconManager()
 
@@ -281,10 +319,11 @@ class CorpusManagerTab(QWidget):
         self.metadata_model = QStandardItemModel(0, 2)
         self.metadata_model.setHorizontalHeaderLabels(["Property", "Value"])
         self.metadata_table.setModel(self.metadata_model)
-        
+
         # Make the table more user-friendly
         self.metadata_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         self.metadata_table.verticalHeader().setVisible(False)
+        self.metadata_table.setAlternatingRowColors(True)
         
         metadata_inner_layout.addWidget(self.metadata_table)
         
@@ -337,6 +376,7 @@ class CorpusManagerTab(QWidget):
         actions_layout.addWidget(move_card)
 
         self.batch_delete_btn = QPushButton("Delete")
+        self.batch_delete_btn.setObjectName("danger")
         delete_card = self.create_action_card("Delete Files", self.batch_delete_files, self.batch_delete_btn)
         actions_layout.addWidget(delete_card)
 
@@ -354,6 +394,19 @@ class CorpusManagerTab(QWidget):
         self.batch_edit_btn = QPushButton("Edit Metadata")
         self.batch_edit_btn.clicked.connect(self.open_batch_metadata_editor)
         other_buttons_layout.addWidget(self.batch_edit_btn)
+
+        self.validate_metadata_cb = QCheckBox("Validate Metadata")
+        other_buttons_layout.addWidget(self.validate_metadata_cb)
+
+        self.auto_fix_cb = QCheckBox("Auto-fix missing folders")
+        other_buttons_layout.addWidget(self.auto_fix_cb)
+
+        self.check_integrity_cb = QCheckBox("Run corruption check")
+        other_buttons_layout.addWidget(self.check_integrity_cb)
+
+        self.validate_structure_btn = QPushButton("Validate Structure")
+        self.validate_structure_btn.clicked.connect(self.validate_corpus_structure)
+        other_buttons_layout.addWidget(self.validate_structure_btn)
 
         batch_ops_layout.addLayout(other_buttons_layout)
         
@@ -409,7 +462,13 @@ class CorpusManagerTab(QWidget):
                 docs_path = QDir.homePath() + "/Documents"
                 self.set_root_directory(docs_path)
         except Exception as e:
-            print(f"Error setting root directory: {e}")
+            self.notification_manager.add_notification(
+                "root_dir_error",
+                "Directory Error",
+                str(e),
+                "error",
+                auto_hide=True,
+            )
             # Just use home directory as fallback
             self.set_root_directory(QDir.homePath())
             
@@ -521,7 +580,13 @@ class CorpusManagerTab(QWidget):
                 for key, value in metadata.items():
                     self.add_metadata_row(key, value)
             except Exception as e:
-                print(f"Error loading metadata: {e}")
+                self.notification_manager.add_notification(
+                    "metadata_load_error",
+                    "Metadata Load Error",
+                    str(e),
+                    "error",
+                    auto_hide=True,
+                )
         else:
             # If no metadata file exists, add some default fields
             default_fields = [
@@ -682,7 +747,7 @@ class CorpusManagerTab(QWidget):
         
         if confirm == QMessageBox.StandardButton.Yes:
             try:
-                self.corpus_manager.delete_files([file_path])
+                self.manager.delete_files([file_path])
                 metadata_path = self.get_metadata_path(file_path)
                 if os.path.exists(metadata_path):
                     os.remove(metadata_path)
@@ -726,7 +791,7 @@ class CorpusManagerTab(QWidget):
         confirm = QMessageBox.question(self, "Confirm Delete", f"Delete {len(selected_files)} files?", QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
         if confirm == QMessageBox.StandardButton.Yes:
             try:
-                self.corpus_manager.delete_files(selected_files)
+                self.manager.delete_files(selected_files)
                 self.notification_manager.add_notification("batch_delete", "Batch Delete", f"Deleted {len(selected_files)} files.", "success", auto_hide=True)
                 if self.sound_enabled:
                     Notifier.notify("Batch Delete", f"Deleted {len(selected_files)} files.", level="success")
@@ -776,15 +841,33 @@ class CorpusManagerTab(QWidget):
                 f"meta_save_{file_path}", "Metadata Save Error", str(e), "error", auto_hide=True
             )
 
-    # Drag-and-drop support (PyQt6)
+    # Drag-and-drop support (PySide6)
     def dragEnterEvent(self, event):
         if event.mimeData().hasUrls():
             event.acceptProposedAction()
     def dropEvent(self, event):
+        dest_dir = self.path_input.text()
+        added = []
         for url in event.mimeData().urls():
             file_path = url.toLocalFile()
-            # Add file to file browser (implement as needed)
-            pass
+            if os.path.isfile(file_path):
+                dest = os.path.join(dest_dir, os.path.basename(file_path))
+                try:
+                    shutil.copy(file_path, dest)
+                    added.append(dest)
+                except Exception as exc:  # pragma: no cover - defensive
+                    QMessageBox.critical(self, "Copy Error", str(exc))
+
+        if added:
+            self.notification_manager.add_notification(
+                "files_dropped",
+                "Files Added",
+                f"Added {len(added)} file(s)",
+                "success",
+                auto_hide=True,
+            )
+            if self.sound_enabled:
+                Notifier.notify("Files Added", f"Added {len(added)} file(s)", level="success")
         self.refresh_file_view()
 
     def batch_copy_files(self):
@@ -796,7 +879,7 @@ class CorpusManagerTab(QWidget):
             target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
             if not target_dir:
                 return
-            self.corpus_manager.copy_files(selected_files, target_dir)
+            self.manager.copy_files(selected_files, target_dir)
             self.notification_manager.add_notification("batch_copy", "Batch Copy", f"Copied {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
@@ -811,7 +894,7 @@ class CorpusManagerTab(QWidget):
             target_dir = QFileDialog.getExistingDirectory(self, "Select Target Directory")
             if not target_dir:
                 return
-            self.corpus_manager.move_files(selected_files, target_dir)
+            self.manager.move_files(selected_files, target_dir)
             self.notification_manager.add_notification("batch_move", "Batch Move", f"Moved {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
@@ -826,7 +909,7 @@ class CorpusManagerTab(QWidget):
         if not ok or not pattern:
             return
         try:
-            self.corpus_manager.rename_files(selected_files, pattern)
+            self.manager.rename_files(selected_files, pattern)
             self.notification_manager.add_notification("batch_rename", "Batch Rename", f"Renamed {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
@@ -841,11 +924,41 @@ class CorpusManagerTab(QWidget):
         if not ok:
             return
         try:
-            self.corpus_manager.organize_files(selected_files, criteria)
+            self.manager.organize_files(selected_files, criteria)
             self.notification_manager.add_notification("batch_organize", "Batch Organize", f"Organized {len(selected_files)} files.", "success", auto_hide=True)
             self.refresh_file_view()
         except Exception as e:
             QMessageBox.critical(self, "Batch Organize Error", str(e))
+
+    def validate_corpus_structure(self) -> None:
+        """Trigger corpus structure validation via the service."""
+        self.validate_structure_btn.setEnabled(False)
+        self.progress_dialog = QProgressDialog(
+            "Running task...",
+            "Please wait...",
+            0,
+            0,
+            self,
+        )
+        self.progress_dialog.setWindowTitle("Progress")
+        self.progress_dialog.setWindowModality(Qt.WindowModal)
+        self.progress_dialog.setCancelButton(None)
+        self.progress_dialog.show()
+        self.validator_service.validate_structure(
+            validate_metadata=self.validate_metadata_cb.isChecked(),
+            auto_fix=self.auto_fix_cb.isChecked(),
+            check_integrity=self.check_integrity_cb.isChecked(),
+        )
+
+    def show_validation_results(self, results: dict) -> None:
+        messages = results.get("messages", [])
+        if messages:
+            text = "\n".join(
+                f"[{m['level'].upper()}] {m['message']}" for m in messages
+            )
+        else:
+            text = "No issues found."
+        QMessageBox.information(self, "Validation Results", text)
 
     def update_header_info(self):
         path = self.path_input.text()
@@ -883,4 +996,54 @@ class CorpusManagerTab(QWidget):
         return card
 
     def rebalance_corpus(self):
-        QMessageBox.information(self, "Rebalance Corpus", "Rebalancing not implemented in UI")
+        try:
+            from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
+            wrapper = CorpusBalancerWrapper(self.project_config)
+            wrapper.domain_processed.connect(self.on_domain_processed)
+            wrapper.balance_completed.connect(self.on_balancer_finished)
+
+            self.rebalance_btn.setEnabled(False)
+            self.progress_dialog = QProgressDialog(
+                "Running task...",
+                "Please wait...",
+                0,
+                0,
+                self,
+            )
+            self.progress_dialog.setWindowTitle("Progress")
+            self.progress_dialog.setWindowModality(Qt.WindowModal)
+            self.progress_dialog.setCancelButton(None)
+            self.progress_dialog.show()
+
+            wrapper.start()
+            if hasattr(self, "notification_manager"):
+                self.notification_manager.add_notification(
+                    "corpus_rebalance",
+                    "Rebalancing",
+                    "Corpus balancing started",
+                    auto_hide=True,
+                )
+        except Exception as exc:  # pragma: no cover - best effort
+            QMessageBox.critical(self, "Rebalance Error", str(exc))
+
+    def on_balancer_finished(self, _results: dict) -> None:
+        if self.progress_dialog:
+            self.progress_dialog.close()
+            self.progress_dialog = None
+        self.rebalance_btn.setEnabled(True)
+
+    def on_validation_complete(self, _results: dict | None = None) -> None:
+        if self.progress_dialog:
+            self.progress_dialog.close()
+            self.progress_dialog = None
+        self.validate_structure_btn.setEnabled(True)
+
+    def on_validation_failed(self, error: str) -> None:
+        self.on_validation_complete()
+        QMessageBox.critical(self, "Validation Error", error)
+
+    def on_domain_processed(self, domain_name: str) -> None:
+        self.logger.info(f"Rebalanced domain: {domain_name}")
+        self.notification_manager.add_notification(
+            f"domain_{domain_name}", f"✅ Rebalanced: {domain_name}"
+        )

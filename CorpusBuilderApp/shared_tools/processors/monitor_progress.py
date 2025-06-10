@@ -1,3 +1,8 @@
+"""
+Module: monitor_progress
+Purpose: Tracks corpus processing metrics and generates status reports.
+"""
+
 import os
 import json
 import time
@@ -10,6 +15,7 @@ from PyPDF2 import PdfReader
 import sys
 import logging
 from typing import Callable, Optional
+logger = logging.getLogger(__name__)
 
 class CorpusMonitor:
     def __init__(self, corpus_dir, output_dir, interval=300):
@@ -41,8 +47,8 @@ class CorpusMonitor:
         if self.history_file.exists():
             try:
                 self.history = pd.read_csv(self.history_file).to_dict('records')
-            except:
-                pass
+            except Exception as exc:
+                logger.exception("Unhandled exception in load history: %s", exc)
     
     def log_error(self, error_type, file_path, domain, details):
         entry = {
@@ -111,7 +117,7 @@ class CorpusMonitor:
             'error_count': error_count
         }
         # Print to console
-        print(f"[STATUS] {milestone} - {processed}/{total} files processed ({entry['percent']}%), {error_count} errors, elapsed: {elapsed:.1f}s")
+        logger.info(f"[STATUS] {milestone} - {processed}/{total} files processed ({entry['percent']}%), {error_count} errors, elapsed: {elapsed:.1f}s")
         # Append to status log
         if self.status_log_file.exists():
             with open(self.status_log_file, 'r', encoding='utf-8') as f:
@@ -291,21 +297,21 @@ class CorpusMonitor:
         with open(report_file, 'w') as f:
             f.write(report)
         
-        print(report)
-        print(f"Report saved to {report_file}")
+        logger.info(report)
+        logger.info(f"Report saved to {report_file}")
         
         # Print new errors summary
         if self.new_errors:
-            print("\nNew errors detected:")
+            logger.info("\nNew errors detected:")
             for err in self.new_errors:
-                print(f"[{err['timestamp']}] {err['error_type']} - {err['file_path']} ({err['details']})")
+                logger.info(f"[{err['timestamp']}] {err['error_type']} - {err['file_path']} ({err['details']})")
         
         return report
     
     def generate_charts(self):
         """Generate charts showing progress over time."""
         if not self.history:
-            print("No history available for charts")
+            logger.info("No history available for charts")
             return
         
         # Convert to DataFrame for easier plotting
@@ -360,14 +366,14 @@ class CorpusMonitor:
             plt.tight_layout()
             plt.savefig(charts_dir / 'files_by_domain_over_time.png')
         
-        print(f"Charts saved to {charts_dir}")
+        logger.info(f"Charts saved to {charts_dir}")
     
     def run(self):
         """Run the monitoring loop."""
-        print(f"Starting corpus monitoring at {datetime.datetime.now()}")
-        print(f"Monitoring directory: {self.corpus_dir}")
-        print(f"Interval: {self.interval} seconds")
-        print(f"Press Ctrl+C to stop...")
+        logger.info(f"Starting corpus monitoring at {datetime.datetime.now()}")
+        logger.info(f"Monitoring directory: {self.corpus_dir}")
+        logger.info(f"Interval: {self.interval} seconds")
+        logger.info(f"Press Ctrl+C to stop...")
         start_time = time.time()
         processed = 0
         total_files = None
@@ -391,9 +397,9 @@ class CorpusMonitor:
                                 error_count = len(json.load(f))
                         self.log_status(f"{m}% milestone", processed, total_files, elapsed, error_count)
                         self.status_milestones.add(m)
-                print(f"\n[{datetime.datetime.now()}] Collected stats:")
-                print(f"  Total files: {stats['total_files']}")
-                print(f"  Total size: {stats['total_size_mb']:.2f} MB")
+                logger.info(f"\n[{datetime.datetime.now()}] Collected stats:")
+                logger.info(f"  Total files: {stats['total_files']}")
+                logger.info(f"  Total size: {stats['total_size_mb']:.2f} MB")
                 # Check and log error recovery attempts
                 self.check_and_retry_errors()
                 if stats['total_files'] % 10 == 0:  # Generate report every 10 files
@@ -402,11 +408,11 @@ class CorpusMonitor:
                     self.generate_charts()
                 time.sleep(self.interval)
         except KeyboardInterrupt:
-            print("\nMonitoring stopped by user")
+            logger.info("\nMonitoring stopped by user")
             self.generate_report()
             self.generate_charts()
         
-        print("Final report generated")
+        logger.info("Final report generated")
 
 class MonitorProgress:
     """Monitor and report progress of long-running tasks."""

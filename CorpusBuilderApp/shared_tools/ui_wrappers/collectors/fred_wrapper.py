@@ -9,6 +9,8 @@ class FREDWrapper(BaseWrapper, CollectorWrapperMixin):
     
     def __init__(self, config):
         super().__init__(config)
+        self.project_config = config
+        self.name = "fred"
         self.collector = None
         self.series_ids = []
         
@@ -31,3 +33,20 @@ class FREDWrapper(BaseWrapper, CollectorWrapperMixin):
             'series_ids': self.series_ids
         })
         super().start(**kwargs)
+
+    def refresh_config(self):
+        """Reload series IDs and API key from configuration."""
+        cfg = self.config.get(f"collectors.{self.name}", {}) or {}
+        for key, value in cfg.items():
+            method = f"set_{key}"
+            if hasattr(self, method):
+                try:
+                    getattr(self, method)(value)
+                except Exception:
+                    continue
+
+        if self.collector:
+            api_key = self.config.get("api_keys.fred_key")
+            if api_key:
+                self.collector.api_key = api_key
+

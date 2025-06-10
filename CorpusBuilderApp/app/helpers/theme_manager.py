@@ -1,7 +1,4 @@
-from PySide6.QtWidgets import QApplication, QSystemTrayIcon
-from PySide6.QtCore import QFile, QTextStream, QUrl
-from PySide6.QtMultimedia import QSoundEffect
-import os
+from PySide6.QtWidgets import QApplication
 from pathlib import Path
 
 class ThemeManager:
@@ -69,7 +66,12 @@ class ThemeManager:
                     widget.setStyleSheet(current_style)
                 widget.update()
                 widget.repaint()
-                    
+
+            # Notify widgets that support explicit theme updates
+            for widget in app.topLevelWidgets():
+                if hasattr(widget, 'update_theme'):
+                    widget.update_theme()
+
             print(f"DEBUG: Theme application completed")
             
         except Exception as e:

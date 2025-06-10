@@ -1,14 +1,28 @@
 """
-Main window for CryptoFinance Corpus Builder
+Main window for Crypto Corpus Builder
 """
 
-from PySide6.QtWidgets import (QMainWindow, QTabWidget, QVBoxLayout, QWidget, 
-                             QStatusBar, QMenuBar, QToolBar, QProgressBar, 
-                             QLabel, QSplitter, QMessageBox, QHBoxLayout, QPushButton, QMenu, QDialog, QLineEdit, QComboBox, QTableWidget, QTableWidgetItem, QHeaderView)
-from PySide6.QtCore import Qt, QTimer, Signal as pyqtSignal, QThread, QSize
-from PySide6.QtGui import QAction, QIcon, QPixmap
+from PySide6.QtWidgets import (
+    QMainWindow,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+    QStatusBar,
+    QMenuBar,
+    QToolBar,
+    QProgressBar,
+    QLabel,
+    QSplitter,
+    QMessageBox,
+    QMenu,
+    QFileDialog,
+)
+from PySide6.QtCore import Qt, QTimer, Signal as pyqtSignal, QThread
+from PySide6.QtGui import QAction, QIcon
 import logging
 from pathlib import Path
+import shutil
+import zipfile
 
 # Import all tab widgets
 from ui.tabs.dashboard_tab import DashboardTab
@@ -19,20 +33,35 @@ from ui.tabs.balancer_tab import BalancerTab
 from ui.tabs.analytics_tab import AnalyticsTab
 from ui.tabs.configuration_tab import ConfigurationTab
 from ui.tabs.logs_tab import LogsTab
-from ui.tabs.maintenance_tab import MaintenanceTab
 from ui.tabs.full_activity_tab import FullActivityTab
 from ui.dialogs.settings_dialog import SettingsDialog
+from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
+from shared_tools.services.activity_log_service import ActivityLogService
+from shared_tools.services.task_history_service import TaskHistoryService
+from shared_tools.services.tab_audit_service import TabAuditService
+from shared_tools.services.task_queue_manager import TaskQueueManager
 
 class CryptoCorpusMainWindow(QMainWindow):
     """Main application window"""
     
     def __init__(self, config):
         super().__init__()
-        print(f"DEBUG: MainWindow received config type: {type(config)}")
-        print(f"DEBUG: MainWindow received config value: {config}")
-        print(f"DEBUG: Config has 'get' method: {hasattr(config, 'get')}")
-        self.config = config
         self.logger = logging.getLogger(self.__class__.__name__)
+        self.logger.debug(
+            "MainWindow received config type: %s", type(config)
+        )
+        self.logger.debug("MainWindow received config value: %s", config)
+        self.logger.debug(
+            "Config has 'get' method: %s", hasattr(config, "get")
+        )
+        self.config = config
+
+        # Services and wrappers
+        self.activity_log_service = ActivityLogService()
+        self.task_history_service = TaskHistoryService()
+        self.task_queue_manager = TaskQueueManager()
+        self.balancer_wrapper = CorpusBalancerWrapper(self.config)
+        self.balancer_wrapper.balance_completed.connect(self.on_balance_completed)
         
         # Initialize tab attributes to None
         self.dashboard_tab = None
@@ -43,7 +72,6 @@ class CryptoCorpusMainWindow(QMainWindow):
         self.analytics_tab = None
         self.configuration_tab = None
         self.logs_tab = None
-        self.maintenance_tab = None
         self.full_activity_tab = None
 
         # Settings dialog for application preferences
@@ -61,13 +89,20 @@ class CryptoCorpusMainWindow(QMainWindow):
         
         # Setup update timer
         self.setup_update_timer()
-        
+
+        # Run a startup audit of tab connections
+        try:
+            self.tab_audit_service = TabAuditService(self)
+            self.tab_audit_service.audit()
+        except Exception as exc:  # pragma: no cover - defensive
+            self.logger.error("Tab audit failed: %s", exc)
+
         self.logger.info("Main window initialized")
     
     def init_ui(self):
         """Initialize the user interface"""
         # Set window properties
-        self.setWindowTitle("CryptoFinance Corpus Builder v3")
+        self.setWindowTitle("Crypto Corpus Builder v3")
         self.setMinimumSize(1200, 800)
         self.resize(1400, 900)
         
@@ -90,53 +125,58 @@ class CryptoCorpusMainWindow(QMainWindow):
     def init_tabs(self):
         """Initialize all application tabs"""
         try:
-            print(f"DEBUG: About to initialize tabs with config type: {type(self.config)}")
-            print(f"DEBUG: About to initialize tabs with config value: {self.config}")
+            self.logger.debug(
+                "About to initialize tabs with config type: %s", type(self.config)
+            )
+            self.logger.debug(
+                "About to initialize tabs with config value: %s", self.config
+            )
             # Dashboard tab
-            print("DEBUG: Initializing DashboardTab...")
-            self.dashboard_tab = DashboardTab(self.config)
-            print("DEBUG: DashboardTab initialized successfully")
+            self.logger.debug("Initializing DashboardTab...")
+            self.dashboard_tab = DashboardTab(
+                self.config,
+                self.activity_log_service,
+                task_queue_manager=self.task_queue_manager,
+            )
+            self.logger.debug("DashboardTab initialized successfully")
             self.tab_widget.addTab(self.dashboard_tab, "📊 Dashboard")
             # Collectors tab
-            print("DEBUG: Initializing CollectorsTab...")
-            self.collectors_tab = CollectorsTab(self.config)
-            print("DEBUG: CollectorsTab initialized successfully")
+            self.logger.debug("Initializing CollectorsTab...")
+            self.collectors_tab = CollectorsTab(self.config, task_history_service=self.task_history_service)
+            self.logger.debug("CollectorsTab initialized successfully")
             self.tab_widget.addTab(self.collectors_tab, "🔍 Collectors")
             # Processors tab
-            print("DEBUG: Initializing ProcessorsTab...")
-            self.processors_tab = ProcessorsTab(self.config)
-            print("DEBUG: ProcessorsTab initialized successfully")
+            self.logger.debug("Initializing ProcessorsTab...")
+            self.processors_tab = ProcessorsTab(self.config, task_history_service=self.task_history_service)
+            self.logger.debug("ProcessorsTab initialized successfully")
             self.tab_widget.addTab(self.processors_tab, "⚙️ Processors")
             # Corpus Manager tab
-            print("DEBUG: Initializing CorpusManagerTab...")
-            self.corpus_manager_tab = CorpusManagerTab(self.config)
-            print("DEBUG: CorpusManagerTab initialized successfully")
+            self.logger.debug("Initializing CorpusManagerTab...")
+            self.corpus_manager_tab = CorpusManagerTab(
+                self.config, activity_log_service=self.activity_log_service
+            )
+            self.logger.debug("CorpusManagerTab initialized successfully")
             self.tab_widget.addTab(self.corpus_manager_tab, "📁 Corpus Manager")
             # Balancer tab
-            print("DEBUG: Initializing BalancerTab...")
+            self.logger.debug("Initializing BalancerTab...")
             self.balancer_tab = BalancerTab(self.config)
-            print("DEBUG: BalancerTab initialized successfully")
+            self.logger.debug("BalancerTab initialized successfully")
             self.tab_widget.addTab(self.balancer_tab, "⚖️ Balancer")
             # Analytics tab
-            print("DEBUG: Initializing AnalyticsTab...")
+            self.logger.debug("Initializing AnalyticsTab...")
             self.analytics_tab = AnalyticsTab(self.config)
-            print("DEBUG: AnalyticsTab initialized successfully")
+            self.logger.debug("AnalyticsTab initialized successfully")
             self.tab_widget.addTab(self.analytics_tab, "📈 Analytics")
             # Configuration tab
-            print("DEBUG: Initializing ConfigurationTab...")
+            self.logger.debug("Initializing ConfigurationTab...")
             self.configuration_tab = ConfigurationTab(self.config)
-            print("DEBUG: ConfigurationTab initialized successfully")
+            self.logger.debug("ConfigurationTab initialized successfully")
             self.tab_widget.addTab(self.configuration_tab, "⚙️ Configuration")
             # Logs tab
-            print("DEBUG: Initializing LogsTab...")
+            self.logger.debug("Initializing LogsTab...")
             self.logs_tab = LogsTab(self.config)
-            print("DEBUG: LogsTab initialized successfully")
+            self.logger.debug("LogsTab initialized successfully")
             self.tab_widget.addTab(self.logs_tab, "📝 Logs")
-            # Add Maintenance tab
-            print("DEBUG: Initializing MaintenanceTab...")
-            self.maintenance_tab = MaintenanceTab(parent=self)
-            print("DEBUG: MaintenanceTab initialized successfully")
-            self.tab_widget.addTab(self.maintenance_tab, "🛠️ Maintenance")
             self.logger.info("All tabs initialized successfully")
         except Exception as e:
             self.logger.error(f"Failed to initialize tabs: {e}")
@@ -194,7 +234,7 @@ class CryptoCorpusMainWindow(QMainWindow):
         
         # About action
         about_action = QAction('&About', self)
-        about_action.setStatusTip('About CryptoFinance Corpus Builder')
+        about_action.setStatusTip('About Crypto Corpus Builder')
         about_action.triggered.connect(self.show_about)
         help_menu.addAction(about_action)
     
@@ -232,10 +272,25 @@ class CryptoCorpusMainWindow(QMainWindow):
 
         if getattr(self, "configuration_tab", None) and hasattr(self.configuration_tab, 'configuration_saved'):
             self.configuration_tab.configuration_saved.connect(lambda _: self.config.save())
+            if getattr(self, "dashboard_tab", None):
+                self.configuration_tab.configuration_saved.connect(lambda _: self.dashboard_tab.update_environment_info())
+            if self.activity_log_service:
+                self.configuration_tab.configuration_saved.connect(
+                    lambda _: self.activity_log_service.log("Configuration", "Settings saved")
+                )
 
-        # Connect dashboard View All signal to show full activity tab
-        if getattr(self, "dashboard_tab", None) and hasattr(self.dashboard_tab, 'view_all_activity_requested'):
-            self.dashboard_tab.view_all_activity_requested.connect(self.show_full_activity_tab)
+        # Connect dashboard signals
+        if getattr(self, "dashboard_tab", None):
+            if hasattr(self.dashboard_tab, 'view_all_activity_requested'):
+                self.dashboard_tab.view_all_activity_requested.connect(self.show_full_activity_tab)
+            if hasattr(self.dashboard_tab, 'rebalance_requested'):
+                self.dashboard_tab.rebalance_requested.connect(self.on_rebalance_requested)
+
+        # Refresh collectors when balancing completes
+        if getattr(self, "balancer_tab", None) and hasattr(self.balancer_tab, "balancer"):
+            balancer = self.balancer_tab.balancer
+            if hasattr(balancer, "balance_completed"):
+                balancer.balance_completed.connect(self.on_balance_completed)
     
     def setup_update_timer(self):
         """Setup timer for periodic updates"""
@@ -299,24 +354,110 @@ class CryptoCorpusMainWindow(QMainWindow):
         for key, value in settings.items():
             try:
                 self.config.set(key, value)
-            except Exception:
-                pass
+            except Exception as exc:
+                self.logger.error("Failed to set config %s: %s", key, exc)
         self.config.save()
     
     def export_corpus(self):
         """Export corpus data"""
-        # TODO: Implement corpus export
-        QMessageBox.information(self, "Export", "Corpus export functionality coming soon!")
-    
+        corpus_dir = None
+        if hasattr(self.config, "get_corpus_dir"):
+            try:
+                corpus_dir = Path(self.config.get_corpus_dir())
+            except Exception:  # pragma: no cover - defensive
+                corpus_dir = None
+
+        if not corpus_dir or not corpus_dir.exists():
+            QMessageBox.critical(self, "Export Error", "Corpus directory not found")
+            return
+
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Export Corpus",
+            "corpus_export.zip",
+            "ZIP Files (*.zip);;All Files (*)",
+        )
+
+        if not file_path:
+            return
+
+        if not file_path.endswith(".zip"):
+            file_path += ".zip"
+
+        archive_base = str(Path(file_path).with_suffix(""))
+
+        try:
+            shutil.make_archive(archive_base, "zip", corpus_dir)
+            QMessageBox.information(
+                self,
+                "Export Complete",
+                f"Corpus exported to {file_path}",
+            )
+            if self.activity_log_service:
+                self.activity_log_service.log("Corpus", f"Exported corpus to {file_path}")
+        except Exception as exc:  # pragma: no cover - runtime guard
+            self.logger.error("Corpus export failed: %s", exc)
+            QMessageBox.critical(
+                self,
+                "Export Error",
+                f"Failed to export corpus: {exc}",
+            )
+
     def import_corpus(self):
         """Import corpus data"""
-        # TODO: Implement corpus import
-        QMessageBox.information(self, "Import", "Corpus import functionality coming soon!")
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Import Corpus",
+            "",
+            "ZIP Files (*.zip);;All Files (*)",
+        )
+
+        if not file_path:
+            return
+
+        corpus_dir = None
+        if hasattr(self.config, "get_corpus_dir"):
+            try:
+                corpus_dir = Path(self.config.get_corpus_dir())
+            except Exception:  # pragma: no cover - defensive
+                corpus_dir = None
+
+        if not corpus_dir:
+            QMessageBox.critical(self, "Import Error", "Corpus directory not configured")
+            return
+
+        corpus_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            with zipfile.ZipFile(file_path, "r") as zip_ref:
+                zip_ref.extractall(corpus_dir)
+
+            QMessageBox.information(
+                self,
+                "Import Complete",
+                f"Corpus imported from {file_path}",
+            )
+            if self.activity_log_service:
+                self.activity_log_service.log("Corpus", f"Imported corpus from {file_path}")
+            if getattr(self, "corpus_manager_tab", None) and hasattr(
+                self.corpus_manager_tab, "refresh_file_view"
+            ):
+                try:
+                    self.corpus_manager_tab.refresh_file_view()
+                except Exception:  # pragma: no cover - defensive
+                    pass
+        except Exception as exc:  # pragma: no cover - runtime guard
+            self.logger.error("Corpus import failed: %s", exc)
+            QMessageBox.critical(
+                self,
+                "Import Error",
+                f"Failed to import corpus: {exc}",
+            )
     
     def show_about(self):
         """Show about dialog"""
         about_text = """
-        <h2>CryptoFinance Corpus Builder v3</h2>
+        <h2>Crypto Corpus Builder v3</h2>
         <p>A comprehensive tool for building and managing cryptocurrency research corpora.</p>
         <p><b>Features:</b></p>
         <ul>
@@ -332,10 +473,17 @@ class CryptoCorpusMainWindow(QMainWindow):
     def show_error(self, title, message):
         """Show error dialog"""
         QMessageBox.critical(self, title, message)
+
+    def on_rebalance_requested(self):
+        """Handle manual rebalance requests from the dashboard."""
+        if self.activity_log_service:
+            self.activity_log_service.log("Balancer", "Manual rebalancing initiated from Dashboard")
+        self.balancer_wrapper.balance_corpus()
     
     def show_full_activity_tab(self):
         """Show the full activity tab when View All is clicked"""
         try:
+            print("[DEBUG] show_full_activity_tab called")
             # Check if Full Activity tab already exists
             for i in range(self.tab_widget.count()):
                 if self.tab_widget.tabText(i) == "📊 Full Activity":
@@ -345,7 +493,14 @@ class CryptoCorpusMainWindow(QMainWindow):
             
             # Create new Full Activity tab
             if not self.full_activity_tab:
-                self.full_activity_tab = FullActivityTab(self.config)
+                self.full_activity_tab = FullActivityTab(
+                    self.config,
+                    activity_log_service=self.activity_log_service,
+                    task_history_service=self.task_history_service,
+                    task_queue_manager=self.task_queue_manager,
+                )
+                self.full_activity_tab.retry_requested.connect(self.on_retry_requested)
+                self.full_activity_tab.stop_requested.connect(self.on_stop_requested)
             
             # Add the tab and switch to it
             tab_index = self.tab_widget.addTab(self.full_activity_tab, "📊 Full Activity")
@@ -356,6 +511,14 @@ class CryptoCorpusMainWindow(QMainWindow):
         except Exception as e:
             self.logger.error(f"Error opening Full Activity tab: {e}")
             self.show_error("Tab Error", f"Failed to open Full Activity tab: {e}")
+
+    def on_retry_requested(self, task_id: str) -> None:
+        """Handle retry requests from the Full Activity tab."""
+        self.logger.info("Retry requested for task %s", task_id)
+
+    def on_stop_requested(self, task_id: str) -> None:
+        """Handle stop requests from the Full Activity tab."""
+        self.logger.info("Stop requested for task %s", task_id)
     
     def center_on_screen(self):
         """Center the window on the screen"""
@@ -376,7 +539,31 @@ class CryptoCorpusMainWindow(QMainWindow):
                 self.processors_tab.stop_all()
         except Exception as e:
             self.logger.error(f"Error stopping operations: {e}")
-        
+
         # Accept the close event
         event.accept()
         self.logger.info("Main window closed")
+
+    def on_balance_completed(self):
+        """Refresh collectors and log completion of corpus rebalancing."""
+        if getattr(self, "collectors_tab", None):
+            wrappers = getattr(self.collectors_tab, "collector_wrappers", {})
+            for wrapper in wrappers.values():
+                if hasattr(wrapper, "refresh_config"):
+                    try:
+                        wrapper.refresh_config()
+                    except Exception as e:  # pragma: no cover
+                        self.logger.error(
+                            f"Failed to refresh config for collector {getattr(wrapper, 'name', 'unknown')}: {e}"
+                        )
+        else:
+            message = "Corpus balancing completed (no collectors tab found)."
+
+        try:
+            if self.activity_log_service:
+                self.activity_log_service.log("Balancer", message)
+            else:
+                self.logger.info(message)
+        except Exception as e:
+            self.logger.error(f"Failed to log activity: {e}") 
+     

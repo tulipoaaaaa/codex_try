@@ -1,3 +1,8 @@
+"""
+Module: execute_from_config
+Purpose: CLI entry point to run collectors and processors defined in a config.
+"""
+
 import argparse
 import json
 import logging
@@ -9,6 +14,7 @@ from shared_tools.ui_wrappers.wrapper_factory import (
     create_processor_wrapper,
 )
 from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
+from shared_tools.logging_config import setup_logging
 
 
 logger = logging.getLogger(__name__)
@@ -110,7 +116,7 @@ def run_balancer(config: ProjectConfig, preview: bool = False):
 
 def main(argv: List[str] | None = None):
     args = parse_args(argv)
-    logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s")
+    setup_logging()
     config = load_config(args.config)
 
     run_collect = args.run_all or args.collect

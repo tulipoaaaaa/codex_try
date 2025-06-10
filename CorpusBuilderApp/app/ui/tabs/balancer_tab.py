@@ -3,8 +3,8 @@ Enhanced Corpus Balancer Tab with Re-analysis and Periodic Monitoring
 Provides comprehensive corpus balancing with automatic re-analysis capabilities
 """
 
-import os
 import time
+<<<<<<< HEAD
 from typing import Dict, List, Optional, Any
 from PySide6.QtWidgets import (
     QWidget,
@@ -34,6 +34,21 @@ from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import (
 from app.helpers.icon_manager import IconManager
 from app.helpers.notifier import Notifier
 from app.ui.widgets.section_header import SectionHeader
+=======
+from typing import Dict
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGroupBox,
+                           QLabel, QPushButton, QProgressBar, QSpinBox,
+                           QTableWidget, QTableWidgetItem, QHeaderView,
+                           QComboBox, QCheckBox, QMessageBox, QSlider,
+                           QSystemTrayIcon)
+from PySide6.QtCore import Qt, Slot as pyqtSlot, QTimer, Signal as pyqtSignal, QObject
+from PySide6.QtGui import QColor, QBrush, QIcon
+from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
+from app.helpers.icon_manager import IconManager
+from app.helpers.notifier import Notifier
+from shared_tools.services.corpus_stats_service import CorpusStatsService
+from shared_tools.services.auto_balance_service import AutoBalanceService
+>>>>>>> my-feature-branch
 
 
 class AdvancedNotificationManager(QObject):
@@ -53,15 +68,29 @@ class AdvancedNotificationManager(QObject):
         if QSystemTrayIcon.isSystemTrayAvailable():
             self.tray_icon = QSystemTrayIcon()
             self.tray_icon.setToolTip("Corpus Balancer")
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> my-feature-branch
     def show_notification(
         self,
         title: str,
         message: str,
         notification_type: str = "info",
         duration: int = 5000,
+<<<<<<< HEAD
     ):
         """Show system notification"""
+=======
+    ) -> None:
+        """Emit the ``notification_requested`` signal and optionally show a
+        system tray message."""
+
+        # Emit signal for tests or other listeners
+        self.notification_requested.emit(title, message, notification_type, duration)
+
+>>>>>>> my-feature-branch
         if self.tray_icon:
             icon = QSystemTrayIcon.MessageIcon.Information
             if notification_type == "warning":
@@ -83,6 +112,12 @@ class BalancerTab(QWidget):
         self.notification_manager = AdvancedNotificationManager(self)
         self.sound_enabled = True  # Will be set from user settings
 
+<<<<<<< HEAD
+=======
+        self.stats_service = CorpusStatsService(project_config)
+        self.stats_service.stats_updated.connect(self.update_balancer_view)
+        
+>>>>>>> my-feature-branch
         # Periodic analysis timer
         self.analysis_timer = QTimer()
         self.analysis_timer.timeout.connect(self.perform_periodic_analysis)
@@ -92,10 +127,23 @@ class BalancerTab(QWidget):
         self.analysis_interval_minutes = 30
         self.last_analysis_time = 0
 
+<<<<<<< HEAD
         self.setup_ui()
         self.connect_signals()
         self.refresh_corpus_stats()
 
+=======
+        self.auto_balance_service = AutoBalanceService(self.balancer, project_config)
+
+        self.setup_ui()
+        self.connect_signals()
+        self.stats_service.refresh_stats()
+
+        # apply defaults from config
+        if project_config.get("auto_balance.enabled", False):
+            self.auto_balance_checkbox.setChecked(True)
+        
+>>>>>>> my-feature-branch
     def setup_ui(self):
         """Initialize the enhanced user interface"""
         main_layout = QVBoxLayout(self)
@@ -195,7 +243,14 @@ class BalancerTab(QWidget):
         self.auto_analysis_checkbox = QCheckBox("Enable Automatic Re-analysis")
         self.auto_analysis_checkbox.toggled.connect(self.toggle_auto_analysis)
         periodic_layout.addWidget(self.auto_analysis_checkbox)
+<<<<<<< HEAD
 
+=======
+        self.auto_balance_checkbox = QCheckBox("Enable Auto Balance Loop")
+        self.auto_balance_checkbox.toggled.connect(self.toggle_auto_balance_loop)
+        periodic_layout.addWidget(self.auto_balance_checkbox)
+        
+>>>>>>> my-feature-branch
         interval_layout = QHBoxLayout()
         interval_layout.addWidget(QLabel("Analysis Interval (minutes):"))
         self.interval_slider = QSlider(Qt.Orientation.Horizontal)
@@ -332,6 +387,13 @@ class BalancerTab(QWidget):
         self.balancer.status_updated.connect(self.update_status_display)
         self.balancer.balance_completed.connect(self.on_balance_completed)
 
+<<<<<<< HEAD
+=======
+        self.auto_balance_service.progress.connect(self.update_status_display)
+        self.auto_balance_service.loop_started.connect(lambda: self.update_status_display("Auto balance loop running"))
+        self.auto_balance_service.loop_stopped.connect(lambda: self.update_status_display("Auto balance loop stopped"))
+
+>>>>>>> my-feature-branch
         # Connect notification signals
         self.notification_manager.notification_requested.connect(self.show_notification)
 
@@ -363,6 +425,20 @@ class BalancerTab(QWidget):
             self.analysis_timer.stop()
             self.analysis_timer.start(minutes * 60 * 1000)
 
+<<<<<<< HEAD
+=======
+    @pyqtSlot(bool)
+    def toggle_auto_balance_loop(self, enabled: bool):
+        """Start or stop the auto-balance service."""
+        if enabled:
+            self.status_label.setText("Starting auto balance loop...")
+            self.auto_balance_service.start()
+            self.show_notification("Auto Balance Enabled", "Automatic balancing started")
+        else:
+            self.auto_balance_service.stop()
+            self.show_notification("Auto Balance Disabled", "Auto balancing stopped")
+            
+>>>>>>> my-feature-branch
     @pyqtSlot()
     def perform_periodic_analysis(self):
         """Perform automatic periodic analysis"""
@@ -377,8 +453,13 @@ class BalancerTab(QWidget):
     def reanalyze_corpus(self):
         """Re-analyze corpus after changes"""
         self.status_label.setText("Re-analyzing corpus...")
+<<<<<<< HEAD
         self.refresh_corpus_stats()
 
+=======
+        self.stats_service.refresh_stats()
+        
+>>>>>>> my-feature-branch
         # Check for significant changes
         changes_detected = self.detect_corpus_changes()
 
@@ -431,8 +512,9 @@ class BalancerTab(QWidget):
         return balance_score
 
     def refresh_corpus_stats(self):
-        """Enhanced corpus statistics refresh with balance scoring"""
+        """Request updated corpus statistics."""
         self.status_label.setText("Fetching corpus statistics...")
+<<<<<<< HEAD
 
         # Simulate enhanced statistics
         total_docs = 1250
@@ -448,11 +530,33 @@ class BalancerTab(QWidget):
         }
 
         # Update table with enhanced status indicators
+=======
+        self.stats_service.refresh_stats()
+
+    def update_balancer_view(self, stats: dict) -> None:
+        """Update table and labels using provided corpus stats."""
+        domains = stats.get("domains", {}) if isinstance(stats, dict) else {}
+        domain_counts: Dict[str, int] = {}
+        for name, info in domains.items():
+            if isinstance(info, dict):
+                count = (
+                    info.get("total_files")
+                    or info.get("pdf_files")
+                    or info.get("count")
+                    or 0
+                )
+            else:
+                count = int(info) if isinstance(info, (int, float)) else 0
+            domain_counts[name] = count
+        total_docs = sum(domain_counts.values())
+
+>>>>>>> my-feature-branch
         for i in range(self.domain_table.rowCount()):
             domain = self.domain_table.item(i, 0).text()
             target_text = self.domain_table.item(i, 1).text()
             target = float(target_text.strip("%"))
             count = domain_counts.get(domain, 0)
+<<<<<<< HEAD
             percentage = (count / total_docs) * 100 if total_docs > 0 else 0
 
             # Update current percentage
@@ -466,36 +570,62 @@ class BalancerTab(QWidget):
             progress.setValue(int(percentage))
 
             # Enhanced status indicators
+=======
+            percentage = (count / total_docs) * 100 if total_docs else 0
+
+            self.domain_table.setItem(i, 2, QTableWidgetItem(f"{percentage:.1f}%"))
+            self.domain_table.setItem(i, 3, QTableWidgetItem(str(count)))
+
+            progress = self.domain_table.cellWidget(i, 4)
+            if isinstance(progress, QProgressBar):
+                progress.setValue(int(percentage))
+
+>>>>>>> my-feature-branch
             deviation = abs(percentage - target)
             if deviation <= 1:
                 status = "Optimal"
                 progress.setObjectName("progress-on-target")
-                status_color = QColor(50, 184, 198)  # Brand color for optimal
+                status_color = QColor(50, 184, 198)
             elif deviation <= 3:
                 status = "Good"
                 progress.setObjectName("progress-good")
-                status_color = QColor(230, 129, 97)  # Orange for good
+                status_color = QColor(230, 129, 97)
             else:
                 status = "Needs Attention"
                 progress.setObjectName("progress-needs-attention")
+<<<<<<< HEAD
                 status_color = QColor(255, 84, 89)  # Red for needs attention
 
             # Update status column
+=======
+                status_color = QColor(255, 84, 89)
+
+>>>>>>> my-feature-branch
             status_item = QTableWidgetItem(status)
             status_item.setBackground(QBrush(status_color))
             status_item.setForeground(QBrush(QColor(255, 255, 255)))
             self.domain_table.setItem(i, 5, status_item)
 
+<<<<<<< HEAD
         # Update summary statistics
         balance_score = self.calculate_balance_score()
         self.total_docs_label.setText(f"Total Documents: {total_docs}")
         self.balance_score_label.setText(f"Balance Score: {balance_score:.1f}%")
 
+=======
+        balance_score = self.calculate_balance_score()
+        self.total_docs_label.setText(f"Total Documents: {total_docs}")
+        self.balance_score_label.setText(f"Balance Score: {balance_score:.1f}%")
+>>>>>>> my-feature-branch
         current_time = time.strftime("%H:%M:%S", time.localtime())
         self.status_label.setText(
             f"Corpus contains {total_docs} documents - Updated: {current_time}"
         )
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> my-feature-branch
     def analyze_corpus_balance(self):
         """Enhanced corpus balance analysis with detailed recommendations"""
         self.status_label.setText("Analyzing corpus balance...")
@@ -703,8 +833,13 @@ class BalancerTab(QWidget):
         self.status_label.setText(f"Balancing completed at {completion_time}")
 
         # Refresh statistics
+<<<<<<< HEAD
         self.refresh_corpus_stats()
 
+=======
+        self.stats_service.refresh_stats()
+        
+>>>>>>> my-feature-branch
         # Show detailed completion message
         completion_msg = f"""Corpus balancing completed successfully!\n\nResults Summary:\n• Documents moved: {moved_count}\n• Documents classified: {classified_count}\n• Processing errors: {errors_count}\n• Processing time: {processing_time:.1f} seconds\n• New balance score: {self.calculate_balance_score():.1f}%\n\nThe corpus distribution has been optimized according to target percentages."""
 

@@ -1,10 +1,13 @@
 import os
 import sys
 import pytest
+
+pytestmark = pytest.mark.skipif(
+    "PySide6.QtWidgets" not in sys.modules, reason="GUI not available"
+)
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import Qt
 
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", ".."))
 from app.ui.tabs.analytics_tab import AnalyticsTab
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader

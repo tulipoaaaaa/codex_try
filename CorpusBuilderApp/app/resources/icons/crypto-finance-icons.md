@@ -1,6 +1,6 @@
-# CryptoFinance Corpus Builder Icon Set
+# Crypto Corpus Builder Icon Set
 
-This file contains the icon set created for the CryptoFinance Corpus Builder application, following the style reference provided.
+This file contains the icon set created for the Crypto Corpus Builder application, following the style reference provided.
 
 ## Icon List
 

@@ -1,6 +1,6 @@
-# CryptoFinance Corpus Builder
+# Crypto Corpus Builder
 
-A professional-grade PyQt6 desktop application for building, managing, and analyzing large-scale cryptocurrency research corpora.
+A professional-grade PySide6 desktop application for building, managing, and analyzing large-scale cryptocurrency research corpora.
 
 ---
 
@@ -26,8 +26,13 @@ A professional-grade PyQt6 desktop application for building, managing, and analy
 ### Installation
 
 ```bash
+<<<<<<< HEAD
 git clone https://github.com/your-org/corpusbuilder.git
 cd corpusbuilder
+=======
+git clone https://github.com/your-org/CryptoCorpusBuilder.git
+cd CryptoCorpusBuilder
+>>>>>>> my-feature-branch
 python -m venv venv  # or python3 -m venv venv
 venv\Scripts\activate  # Windows
 # or
@@ -45,6 +50,9 @@ GITHUB_TOKEN=your_github_token
 AA_ACCOUNT_COOKIE=your_anna_cookie
 FRED_API_KEY=your_fred_key
 ```
+
+See [../docs/environment_config.md](../docs/environment_config.md) for the full
+set of variables and instructions on selecting the active environment.
 
 ### Launch
 

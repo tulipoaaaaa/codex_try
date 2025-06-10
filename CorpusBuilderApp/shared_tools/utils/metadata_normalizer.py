@@ -1,8 +1,15 @@
+"""
+Module: metadata_normalizer
+Purpose: Standardizes metadata fields across corpus documents.
+"""
+
 import os
 import json
 from pathlib import Path
 from collections import defaultdict
 from typing import Optional, Union
+import logging
+logger = logging.getLogger(__name__)
 
 try:
     from shared_tools.project_config import ProjectConfig
@@ -97,9 +104,9 @@ def normalize_metadata_file(json_file: Union[str, Path], backup: bool = True):
             os.rename(json_file, backup_path)
         with open(json_file, 'w', encoding='utf-8') as f:
             json.dump(metadata, f, indent=2)
-        print(f"Normalized: {json_file}")
+        logger.info(f"Normalized: {json_file}")
     else:
-        print(f"No changes: {json_file}")
+        logger.info(f"No changes: {json_file}")
 
 def main(base_dir: Union[str, Path, ProjectConfig]):
     """Main function to normalize metadata in a directory.
@@ -111,7 +118,7 @@ def main(base_dir: Union[str, Path, ProjectConfig]):
         try:
             normalize_metadata_file(json_file)
         except Exception as e:
-            print(f"ERROR processing {json_file}: {e}")
+            logger.warning(f"ERROR processing {json_file}: {e}")
 
 if __name__ == "__main__":
     import argparse
@@ -123,4 +130,4 @@ if __name__ == "__main__":
         project = ProjectConfig(args.config)
         main(project)
     else:
-        print("Error: --config argument is required")
+        logger.warning("Error: --config argument is required")

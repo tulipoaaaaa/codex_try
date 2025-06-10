@@ -1,7 +1,7 @@
 # File: shared_tools/ui_wrappers/processors/financial_symbol_processor_wrapper.py
 
 from PySide6.QtCore import Signal as pyqtSignal, QThread
-from shared_tools.processors.finacial_symbol_processor import FinancialSymbolProcessor
+from shared_tools.processors.financial_symbol_processor import FinancialSymbolProcessor
 from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
 from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
 
@@ -15,9 +15,17 @@ class FinancialSymbolProcessorWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.processor = FinancialSymbolProcessor(project_config)
         self._is_running = False
         self.worker_thread = None
+        self._enabled = True
+
+    def set_enabled(self, enabled: bool):
+        """Enable or disable the wrapper."""
+        self._enabled = bool(enabled)
         
     def start(self, file_paths=None, **kwargs):
         """Start financial symbol extraction on the specified files."""
+        if not self._enabled:
+            self.status_updated.emit("Financial symbol processor disabled")
+            return False
         if self._is_running:
             self.status_updated.emit("Financial symbol extraction already in progress")
             return False
@@ -73,6 +81,32 @@ class FinancialSymbolProcessorWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.status_updated.emit(
             f"Financial symbol extraction completed: {total_symbols} symbols extracted from {len(results)} files"
         )
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``."""
+        cfg = {}
+        if hasattr(self.config, 'get_processor_config'):
+            cfg = self.config.get_processor_config('financial_symbol_processor') or {}
+        for k, v in cfg.items():
+            method = f'set_{k}'
+            if hasattr(self, method):
+                try:
+                    getattr(self, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via wrapper', k)
+            if hasattr(self.processor, method):
+                try:
+                    getattr(self.processor, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via processor', k)
+            if hasattr(self.processor, k):
+                setattr(self.processor, k, v)
+            elif hasattr(self, k):
+                setattr(self, k, v)
+        if cfg and hasattr(self, 'configuration_changed'):
+            self.configuration_changed.emit(cfg)
 
 class FinancialSymbolWorkerThread(QThread):
     """Worker thread for financial symbol extraction processing."""

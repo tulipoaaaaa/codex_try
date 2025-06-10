@@ -4,6 +4,8 @@ from pathlib import Path
 from datetime import datetime
 from .deduplicator import Deduplicator
 import argparse
+import logging
+logger = logging.getLogger(__name__)
 
 def get_token_count(json_path):
     try:
@@ -26,7 +28,7 @@ def update_metadata(json_path, group_id, deduplication_date, kept_file_path, is_
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(meta, f, ensure_ascii=False, indent=2)
     except Exception as e:
-        print(f"[WARN] Could not update metadata for {json_path}: {e}")
+        logger.warning(f"[WARN] Could not update metadata for {json_path}: {e}")
 
 def main():
     parser = argparse.ArgumentParser(description="Deduplicate non-PDF extracted outputs and update metadata only.")
@@ -103,8 +105,8 @@ def main():
     }
     with open(args.report, 'w', encoding='utf-8') as f:
         json.dump(report, f, ensure_ascii=False, indent=2)
-    print(f"Deduplication complete. Groups: {len(duplicate_groups)}, Duplicates: {total_duplicates}, Token loss: {total_token_loss}")
-    print(f"Report saved to {args.report}")
+    logger.info(f"Deduplication complete. Groups: {len(duplicate_groups)}, Duplicates: {total_duplicates}, Token loss: {total_token_loss}")
+    logger.info(f"Report saved to {args.report}")
 
 class DeduplicateNonPDFOutputs:
     """Class for deduplicating non-PDF extracted outputs and updating metadata programmatically."""

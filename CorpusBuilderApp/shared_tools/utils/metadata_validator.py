@@ -1,8 +1,15 @@
+"""
+Module: metadata_validator
+Purpose: Validates corpus document metadata for required fields.
+"""
+
 import os
 import json
 from pathlib import Path
 from collections import defaultdict
 from typing import Optional, Union, List, Dict
+import logging
+logger = logging.getLogger(__name__)
 
 try:
     from shared_tools.project_config import ProjectConfig
@@ -88,18 +95,18 @@ def main(base_dir: Union[str, Path, ProjectConfig]):
                 'error': str(e)
             })
     # Output summary
-    print("=== Metadata Audit Report ===")
+    logger.info("=== Metadata Audit Report ===")
     for entry in report:
-        print(f"File: {entry['file']}")
+        logger.info(f"File: {entry['file']}")
         if 'error' in entry:
-            print(f"  ERROR: {entry['error']}")
+            logger.warning(f"  ERROR: {entry['error']}")
         else:
             if entry['missing_fields']:
-                print(f"  Missing fields: {entry['missing_fields']}")
-            print(f"  Field mapping: {entry['field_mapping']}")
-    print("\n=== Field Mapping Summary ===")
+                logger.info(f"  Missing fields: {entry['missing_fields']}")
+            logger.info(f"  Field mapping: {entry['field_mapping']}")
+    logger.info("\n=== Field Mapping Summary ===")
     for field, locations in field_mappings.items():
-        print(f"{field}: {locations}")
+        logger.info(f"{field}: {locations}")
 
 if __name__ == "__main__":
     import argparse
@@ -111,4 +118,4 @@ if __name__ == "__main__":
         project = ProjectConfig(args.config)
         main(project)
     else:
-        print("Error: --config argument is required") 
+        logger.warning("Error: --config argument is required") 

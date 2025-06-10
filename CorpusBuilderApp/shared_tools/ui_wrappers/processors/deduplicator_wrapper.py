@@ -18,9 +18,17 @@ class DeduplicatorWrapper(BaseWrapper, ProcessorWrapperMixin):
         self._is_running = False
         self.worker_thread = None
         self.similarity_threshold = 0.85  # Default threshold
+        self._enabled = True
+
+    def set_enabled(self, enabled: bool):
+        """Enable or disable the wrapper."""
+        self._enabled = bool(enabled)
         
     def start(self, file_paths=None, **kwargs):
         """Start deduplication processing on the specified files."""
+        if not self._enabled:
+            self.status_updated.emit("Deduplicator disabled")
+            return False
         if self._is_running:
             self.status_updated.emit("Deduplication already in progress")
             return False
@@ -81,7 +89,33 @@ class DeduplicatorWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.status_updated.emit(
             f"Deduplication completed: {len(results.get('duplicate_sets', []))} duplicate sets found"
         )
-        
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``."""
+        cfg = {}
+        if hasattr(self.config, 'get_processor_config'):
+            cfg = self.config.get_processor_config('deduplicator') or {}
+        for k, v in cfg.items():
+            method = f'set_{k}'
+            if hasattr(self, method):
+                try:
+                    getattr(self, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via wrapper', k)
+            if hasattr(self.processor, method):
+                try:
+                    getattr(self.processor, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via processor', k)
+            if hasattr(self.processor, k):
+                setattr(self.processor, k, v)
+            elif hasattr(self, k):
+                setattr(self, k, v)
+        if cfg and hasattr(self, 'configuration_changed'):
+            self.configuration_changed.emit(cfg)
+
     @pyqtSlot()
     def start_deduplication(self):
         # Automatically generate title cache before deduplication

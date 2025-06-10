@@ -71,11 +71,16 @@ class CorpusBalancerWrapper(BaseWrapper, ProcessorWrapperMixin):
     domain_processed = pyqtSignal(str, int, int)  # domain, current, target
     balance_completed = pyqtSignal(dict)  # Balance results
     
+<<<<<<< HEAD
     def __init__(self, config: ProjectConfig):
         super().__init__(config)
         self.config = config
         self.corpus_dir = self.config.get_corpus_dir()
         self.logs_dir = self.config.get_logs_dir()
+=======
+    def __init__(self, config, test_mode: bool = False):
+        super().__init__(config, test_mode=test_mode)
+>>>>>>> my-feature-branch
         self.balancer = None
         self.target_allocations = {}
         
@@ -159,8 +164,88 @@ class CorpusBalancerWrapper(BaseWrapper, ProcessorWrapperMixin):
                 if ':' in desc:
                     domains_str = desc.split(':', 1)[1]
                     missing_domains = [d.strip() for d in domains_str.split(',')]
-        if missing_domains:
-            print("[CorpusBalancerWrapper] Would trigger collectors for: {}".format(missing_domains))
-            # TODO: Actually trigger collectors here
+        if not missing_domains:
+            self.status_updated.emit("No missing domains found for collection.")
+            return
+
+        started: list[str] = []
+        wrappers: dict[str, Any] = getattr(self, "collector_wrappers", {})
+
+        for name, wrapper in wrappers.items():
+            try:
+                if hasattr(wrapper, "set_search_terms"):
+                    existing = getattr(wrapper, "search_terms", []) or []
+                    for dom in missing_domains:
+                        if dom not in existing:
+                            existing.append(dom)
+                    wrapper.set_search_terms(existing)
+                wrapper.start()
+                started.append(name)
+            except Exception:
+                continue
+
+        if started:
+            self.status_updated.emit("Triggered collectors: " + ", ".join(started))
         else:
-            print("[CorpusBalancerWrapper] No missing domains found for collection.")
+            self.status_updated.emit("No collectors available to trigger")
+
+    def balance_corpus(self):
+        """Analyze domain imbalance and update collector configurations."""
+
+        # Placeholder target counts per domain
+        domain_targets = {"ai": 300, "finance": 200, "eth": 250}
+
+        # Attempt to get current domain distribution from an attached corpus manager
+        current_counts = {}
+        if hasattr(self, "_corpus_manager") and hasattr(self._corpus_manager, "get_domain_distribution"):
+            try:
+                current_counts = self._corpus_manager.get_domain_distribution()
+            except Exception:
+                current_counts = {}
+
+        # Fallback placeholder distribution if none available
+        if not current_counts:
+            current_counts = {key: 0 for key in domain_targets}
+
+        # Iterate through collectors and adjust search terms for underrepresented domains
+        collectors_cfg = self.config.get("collectors", {}) or {}
+        for domain, target in domain_targets.items():
+            current = current_counts.get(domain, 0)
+            if current < target:
+                for name, cfg in collectors_cfg.items():
+                    terms: List[str] = cfg.get("search_terms", []) or []
+                    if domain not in terms:
+                        terms.append(domain)
+                        self.config.set(f"collectors.{name}.search_terms", terms)
+
+        # Persist configuration changes
+        self.config.save()
+
+        # Notify the UI about updates
+        self.status_updated.emit("Updated collector configs based on imbalance analysis")
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``."""
+        cfg = {}
+        if hasattr(self.config, 'get_processor_config'):
+            cfg = self.config.get_processor_config('corpus_balancer') or {}
+        for k, v in cfg.items():
+            method = f'set_{k}'
+            if hasattr(self, method):
+                try:
+                    getattr(self, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via wrapper', k)
+            if hasattr(self.processor, method):
+                try:
+                    getattr(self.processor, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via processor', k)
+            if hasattr(self.processor, k):
+                setattr(self.processor, k, v)
+            elif hasattr(self, k):
+                setattr(self, k, v)
+        if cfg and hasattr(self, 'configuration_changed'):
+            self.configuration_changed.emit(cfg)

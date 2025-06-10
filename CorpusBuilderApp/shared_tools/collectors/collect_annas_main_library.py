@@ -11,6 +11,7 @@ import datetime
 from .base_collector import BaseCollector
 from shared_tools.utils.domain_utils import get_domain_for_file
 from shared_tools.utils.extractor_utils import safe_filename
+from shared_tools.project_config import ProjectConfig
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -42,7 +43,10 @@ except ImportError:
 
 # Import ProjectConfig if available
 try:
+<<<<<<< HEAD
     from shared_tools.project_config import ProjectConfig  # type: ignore
+=======
+>>>>>>> my-feature-branch
     logger.info("Successfully imported ProjectConfig")
 except ImportError:
     logger.warning("ProjectConfig not found. Legacy mode will be used if --project-config is not provided.")
@@ -62,7 +66,10 @@ def load_existing_titles(existing_titles_path):
 class AnnasMainLibraryCollector(BaseCollector):
     def __init__(self, config, account_cookie=None):
         if isinstance(config, str):
+<<<<<<< HEAD
             from shared_tools.project_config import ProjectConfig
+=======
+>>>>>>> my-feature-branch
             config = ProjectConfig(config, environment='test')
         super().__init__(config)
 
@@ -273,4 +280,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     results = run_annas_main_library_collector(args, None, args.output_dir, args.batch_json)
-    print(f"\nCollected {len(results)} files") 
+    logger.info(f"\nCollected {len(results)} files") 

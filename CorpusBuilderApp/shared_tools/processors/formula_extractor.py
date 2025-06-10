@@ -13,6 +13,8 @@ import logging
 import pytesseract
 from PIL import Image
 from io import BytesIO
+from shared_tools.config.project_config import ProjectConfig
+logger = logging.getLogger(__name__)
 
 class FormulaExtractor:
     """Extract and preserve mathematical formulas from PDFs."""
@@ -458,10 +460,10 @@ def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     results = extractor.process_directory(project.get_input_dir())
     
     if verbose:
-        print("\nFormula Extraction Results:")
-        print(f"Processed files: {len(results['processed_files'])}")
-        print(f"Total formulas found: {results['total_formulas']}")
-        print(f"Files with formulas: {results['files_with_formulas']}")
+        logger.info("\nFormula Extraction Results:")
+        logger.info(f"Processed files: {len(results['processed_files'])}")
+        logger.info(f"Total formulas found: {results['total_formulas']}")
+        logger.info(f"Files with formulas: {results['files_with_formulas']}")
     
     return results
 
@@ -477,7 +479,10 @@ def main():
     
     if args.project_config:
         # Use project config
+<<<<<<< HEAD
         from shared_tools.project_config import ProjectConfig
+=======
+>>>>>>> my-feature-branch
         project = ProjectConfig.load(args.project_config)
         results = run_with_project_config(project, args.verbose)
     else:
@@ -490,7 +495,7 @@ def main():
     with open(output_file, 'w') as f:
         json.dump(results, f, indent=2)
     
-    print(f"\nExtraction results saved to: {output_file}")
+    logger.info(f"\nExtraction results saved to: {output_file}")
 
 if __name__ == "__main__":
     main()

@@ -1,9 +1,16 @@
+"""
+Module: generate_corpus_report
+Purpose: Creates summary reports for a corpus directory.
+"""
+
 import os
 import json
 from collections import Counter, defaultdict
 import random
 from pathlib import Path
 from typing import Optional, Union, Dict, List, Any
+import logging
+logger = logging.getLogger(__name__)
 
 try:
     from shared_tools.project_config import ProjectConfig
@@ -63,7 +70,7 @@ def analyze_metadata(json_files: List[Path]) -> Dict[str, Any]:
             total_files += 1
             
         except Exception as e:
-            print(f"Error processing {json_file}: {str(e)}")
+            logger.warning(f"Error processing {json_file}: {str(e)}")
             
     return {
         'domain_distribution': dict(domain_stats),
@@ -123,6 +130,6 @@ if __name__ == "__main__":
     if args.config:
         project = ProjectConfig(args.config)
         report = main(project)
-        print(report)
+        logger.info(report)
     else:
-        print("Error: --config argument is required") 
+        logger.warning("Error: --config argument is required") 

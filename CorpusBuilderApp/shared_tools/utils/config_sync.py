@@ -1,9 +1,5 @@
-"""
-Config Sync Script
-Synchronizes domain_config.py allocations and properties with balancer_config.py target_weights and fields.
-Backs up the original domain_config.py before modifying.
-Supports safe (default) and force modes.
-"""
+# ⚠️ Developer-only script.
+# Syncs domain_config.py with balancer_config.yaml – use with caution.
 import sys
 import shutil
 from pathlib import Path
@@ -12,6 +8,11 @@ import argparse
 import datetime
 
 from shared_tools.config import balancer_config, domain_config
+<<<<<<< HEAD
+=======
+import logging
+logger = logging.getLogger(__name__)
+>>>>>>> my-feature-branch
 
 REFERENCE_DOMAINS = balancer_config.DOMAIN_BALANCE_CONFIG
 EXTRACTOR_DOMAINS = domain_config.DOMAINS
@@ -62,8 +63,20 @@ def sync_domains(force_sync=False):
                         del new_domains[domain][key]
             # In safe mode, preserve existing search_terms and extra fields
             if not force_sync:
-                # Only update allocation, add missing properties, never delete or overwrite search_terms
-                pass
+                # Only update allocation and add new properties
+                for key, value in ref_cfg.items():
+                    if key in ("allocation", "target_weight"):
+                        target = ref_cfg.get("target_weight", value)
+                        if new_domains[domain].get("allocation") != target:
+                            LOG.append(
+                                f"[UPDATE] Domain '{domain}' allocation changed: {new_domains[domain].get('allocation')} -> {target}"
+                            )
+                            new_domains[domain]["allocation"] = target
+                    elif key not in new_domains[domain]:
+                        LOG.append(
+                            f"[ADD] Property '{key}' added to domain '{domain}': {value}"
+                        )
+                        new_domains[domain][key] = value
             # In force mode, replace search_terms if present in reference
             if force_sync and 'search_terms' in ref_cfg:
                 if new_domains[domain].get('search_terms') != ref_cfg['search_terms']:
@@ -99,7 +112,7 @@ DO NOT modify without updating domain_utils.py wrapper
 
 DOMAINS = \
 ''')
-        pprint.pprint(new_domains, stream=f, width=120)
+        pprint.plogger.info(new_domains, stream=f, width=120)
         f.write('\n\n# (SOURCES section unchanged)\n')
         # Copy the rest of the file (SOURCES etc.)
         with open(BACKUP_PATH, 'r', encoding='utf-8') as orig:
@@ -126,4 +139,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     log = sync_domains(force_sync=args.force_sync)
     for entry in log:
-        print(entry) 
+        logger.info(entry) 

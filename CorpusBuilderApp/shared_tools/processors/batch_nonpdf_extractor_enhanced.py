@@ -28,7 +28,7 @@ import types
 
 from .base_extractor import BaseExtractor, ExtractionError
 from .formula_extractor import FormulaExtractor
-from .finacial_symbol_processor import FinancialSymbolProcessor, AcademicPaperProcessor, MemoryOptimizer
+from .financial_symbol_processor import FinancialSymbolProcessor, AcademicPaperProcessor, MemoryOptimizer
 from .chart_image_extractor import ChartImageExtractor
 from .domain_classifier import DomainClassifier
 from .quality_control import QualityControl
@@ -40,6 +40,7 @@ from ..utils.domain_utils import get_domain_for_file, DOMAIN_KEYWORDS
 from ..utils.metadata_normalizer import main as normalize_directory
 from shared_tools.project_config import ProjectConfig
 
+<<<<<<< HEAD
 # Load project configuration for default paths.  A custom path can be provided
 # via the ``PROJECT_CONFIG`` environment variable.
 _DEFAULT_CONFIG = Path(__file__).resolve().parents[2] / "configs" / "quick_test.yaml"
@@ -47,6 +48,10 @@ _PROJECT = ProjectConfig(os.environ.get("PROJECT_CONFIG", str(_DEFAULT_CONFIG)))
 
 # Configure logging using the project configuration
 log_dir = _PROJECT.get_logs_dir()
+=======
+# Configure logging
+log_dir = Path("G:/ai_trading_dev/CryptoCorpusBuilder/logs")
+>>>>>>> my-feature-branch
 log_dir.mkdir(parents=True, exist_ok=True)
 log_file = log_dir / "batch_nonpdf_extractor.log"
 logging.basicConfig(
@@ -96,14 +101,18 @@ DOMAIN_THRESHOLDS = {
     # Add other domains as needed
 }
 
-print('DEBUG: sys.executable =', sys.executable)
-print('DEBUG: sys.path =', sys.path)
+logger.debug('DEBUG: sys.executable =', sys.executable)
+logger.debug('DEBUG: sys.path =', sys.path)
 
 def get_worker_temp_dir():
     """Get temporary directory for current worker"""
     worker_id = getattr(thread_local, 'worker_id', 'unknown')
+<<<<<<< HEAD
     env_temp = _PROJECT.get('environment.temp_dir', tempfile.gettempdir())
     base_temp = Path(env_temp) / 'temp_workers'
+=======
+    base_temp = Path("G:/ai_trading_dev/CryptoCorpusBuilder/temp_workers")
+>>>>>>> my-feature-branch
     base_temp.mkdir(parents=True, exist_ok=True)
     temp_dir = base_temp / f"temp_worker_{worker_id}"
     temp_dir.mkdir(exist_ok=True)
@@ -209,7 +218,7 @@ def process_nonpdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Op
     worker_id = getattr(thread_local, 'worker_id', 'unknown')
     try:
         if getattr(args, 'verbose', False):
-            print(f"[{worker_id}] Starting processing: {os.path.basename(file_path)}")
+            logger.info(f"[{worker_id}] Starting processing: {os.path.basename(file_path)}")
         
         # Extract text based on file type
         ext = os.path.splitext(file_path)[1].lower()
@@ -218,22 +227,22 @@ def process_nonpdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Op
             return None
             
         # Add debug logging before text extraction
-        print(f"DEBUG: About to extract text from {file_path}")
-        print(f"DEBUG: File extension: {ext}")
-        print(f"DEBUG: Using extraction method: {SUPPORTED_EXTENSIONS[ext]}")
+        logger.debug(f"DEBUG: About to extract text from {file_path}")
+        logger.debug(f"DEBUG: File extension: {ext}")
+        logger.debug(f"DEBUG: Using extraction method: {SUPPORTED_EXTENSIONS[ext]}")
         
         # Extract text
         text, tables, images = extract_text_from_file(file_path)
-        print(f"DEBUG: Text extracted successfully, length: {len(text)}")
+        logger.debug(f"DEBUG: Text extracted successfully, length: {len(text)}")
         
         if not text or len(text.strip()) < MIN_TOKEN_THRESHOLD:
-            print(f"[{worker_id}] Extracted text too short: {len(text.strip())} tokens")
+            logger.info(f"[{worker_id}] Extracted text too short: {len(text.strip())} tokens")
             return None
             
         # Get domain classification
         domain = get_domain_for_file(file_path)
         if not domain:
-            print(f"[{worker_id}] Could not determine domain for {os.path.basename(file_path)}")
+            logger.info(f"[{worker_id}] Could not determine domain for {os.path.basename(file_path)}")
             return None
             
         # Get domain info from classifier
@@ -244,6 +253,7 @@ def process_nonpdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Op
         formula_extractor = FormulaExtractor()
         symbol_processor = FinancialSymbolProcessor()
         academic_processor = AcademicPaperProcessor()
+        symbol_glossary = None
         
         # Special handling for code files
         is_code_file = ext in ['.py', '.ipynb']
@@ -836,10 +846,10 @@ def write_outputs(base_dir, rel_path, text, meta, quality, tables=None, formulas
     txt_path = out_dir / f"{base}.txt"
     json_path = out_dir / f"{base}.json"
 
-    print(f"DEBUG: Writing text output to {txt_path}")
+    logger.debug(f"DEBUG: Writing text output to {txt_path}")
     with open(txt_path, 'w', encoding='utf-8') as f:
         f.write(text)
-    print(f"DEBUG: Finished writing text output to {txt_path}")
+    logger.debug(f"DEBUG: Finished writing text output to {txt_path}")
 
     output_json = dict(meta)
     if tables is not None:
@@ -847,10 +857,10 @@ def write_outputs(base_dir, rel_path, text, meta, quality, tables=None, formulas
     if formulas is not None:
         output_json['formulas'] = formulas
 
-    print(f"DEBUG: Writing JSON output to {json_path}")
+    logger.debug(f"DEBUG: Writing JSON output to {json_path}")
     with open(json_path, 'w', encoding='utf-8') as f:
         json.dump(output_json, f, ensure_ascii=False, indent=2)
-    print(f"DEBUG: Finished writing JSON output to {json_path}")
+    logger.debug(f"DEBUG: Finished writing JSON output to {json_path}")
 
     return txt_path, json_path
 
@@ -997,15 +1007,15 @@ def main():
         auto_normalize=not args.no_normalize
                 )
     
-    print("\nExtraction Results:")
-    print(f"Processed files: {results['files_processed']}")
-    print(f"Successful extractions: {results['success']}")
-    print(f"Failed extractions: {results['errors']}")
-    print(f"Low quality files: {results['files_processed'] - results['success']}")
+    logger.info("\nExtraction Results:")
+    logger.info(f"Processed files: {results['files_processed']}")
+    logger.info(f"Successful extractions: {results['success']}")
+    logger.warning(f"Failed extractions: {results['errors']}")
+    logger.info(f"Low quality files: {results['files_processed'] - results['success']}")
     
     if args.verbose:
-        print("\nDetailed Results:")
-        print(json.dumps(results, indent=2))
+        logger.info("\nDetailed Results:")
+        logger.info(json.dumps(results, indent=2))
 
 class BatchNonPDFExtractorEnhanced:
     """Enhanced batch processor for non-PDF files"""

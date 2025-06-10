@@ -1,8 +1,20 @@
 # File: app/ui/dialogs/api_key_dialog.py
 
-from PySide6.QtWidgets import (QDialog, QVBoxLayout, QHBoxLayout, QLabel, 
-                             QLineEdit, QPushButton, QFormLayout, QDialogButtonBox,
-                             QCheckBox, QComboBox, QTabWidget, QWidget)
+from PySide6.QtWidgets import (
+    QDialog,
+    QVBoxLayout,
+    QHBoxLayout,
+    QLabel,
+    QLineEdit,
+    QPushButton,
+    QFormLayout,
+    QDialogButtonBox,
+    QCheckBox,
+    QComboBox,
+    QTabWidget,
+    QWidget,
+    QMessageBox,
+)
 from PySide6.QtCore import Qt, Signal as pyqtSignal, Slot as pyqtSlot
 
 class APIKeyDialog(QDialog):
@@ -164,7 +176,6 @@ class APIKeyDialog(QDialog):
     def accept(self):
         """Handle dialog acceptance."""
         if not self.encrypt_keys.isChecked() and not self.use_env_file.isChecked():
-            from PySide6.QtWidgets import QMessageBox
             QMessageBox.warning(
                 self,
                 "Security Warning",
@@ -177,8 +188,6 @@ class APIKeyDialog(QDialog):
     
     def test_connections(self):
         """Test connections to APIs."""
-        from PySide6.QtWidgets import QMessageBox
-        
         # In a real implementation, this would test the actual APIs
         # For now, just show a message
         QMessageBox.information(

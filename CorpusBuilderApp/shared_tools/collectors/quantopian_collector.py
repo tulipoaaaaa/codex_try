@@ -6,6 +6,8 @@ import json
 from pathlib import Path
 from typing import List, Dict, Optional, Union, Any
 import time
+import logging
+logger = logging.getLogger(__name__)
 
 class QuantopianCollector(BaseCollector):
     """Collector for Quantopian research archives"""
@@ -275,4 +277,4 @@ if __name__ == "__main__":
     
     collector = QuantopianCollector(args.config)
     results = collector.collect()
-    print(f"Collected {len(results)} Quantopian records. Output dir: {collector.output_dir}")
+    logger.info(f"Collected {len(results)} Quantopian records. Output dir: {collector.output_dir}")

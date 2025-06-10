@@ -8,6 +8,7 @@ from urllib.parse import urljoin
 import logging
 from pathlib import Path
 from .base_collector import BaseCollector
+logger = logging.getLogger(__name__)
 
 class ISDADocumentationCollector(BaseCollector):
     def __init__(self, config, sources=None):
@@ -662,4 +663,4 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     results = run_isda_collector(args, None, args.output_dir)
-    print(f"\nCollected {len(results)} documents") 
+    logger.info(f"\nCollected {len(results)} documents") 

@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Any, Union
 from langdetect import detect_langs, LangDetectException
 from shared_tools.project_config import ProjectConfig
+logger = logging.getLogger(__name__)
 
 class LanguageConfidenceDetector:
     """Detect language confidence"""
@@ -201,10 +202,10 @@ def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     results = detector.process_directory(project.get_input_dir())
     
     if verbose:
-        print("\nLanguage Confidence Detection Results:")
-        print(f"Processed files: {len(results['processed_files'])}")
-        print(f"High confidence: {results['high_confidence_count']}")
-        print(f"Low confidence: {results['low_confidence_count']}")
+        logger.info("\nLanguage Confidence Detection Results:")
+        logger.info(f"Processed files: {len(results['processed_files'])}")
+        logger.info(f"High confidence: {results['high_confidence_count']}")
+        logger.info(f"Low confidence: {results['low_confidence_count']}")
     
     return results
 
@@ -232,7 +233,7 @@ def main():
     with open(output_file, 'w') as f:
         json.dump(results, f, indent=2)
     
-    print(f"\nDetection results saved to: {output_file}")
+    logger.info(f"\nDetection results saved to: {output_file}")
 
 if __name__ == "__main__":
     main()

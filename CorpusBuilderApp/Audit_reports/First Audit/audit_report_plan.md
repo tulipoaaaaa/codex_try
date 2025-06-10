@@ -1,15 +1,15 @@
-# CryptoFinance Corpus Builder v3 - Comprehensive Audit Report & Action Plan
+# Crypto Corpus Builder v3 - Comprehensive Audit Report & Action Plan
 
 ## 1. Executive Summary
 
-This report summarizes a full audit of the CryptoFinance Corpus Builder v3 codebase, documentation, and configuration. The application demonstrates advanced technical capabilities and a modular architecture, but several critical security, quality, and testing issues must be addressed before production deployment. This document details each finding, assesses its true impact, and provides a clear, actionable plan for remediation. **No changes are implemented—approval is required for all recommendations.**
+This report summarizes a full audit of the Crypto Corpus Builder v3 codebase, documentation, and configuration. The application demonstrates advanced technical capabilities and a modular architecture, but several critical security, quality, and testing issues must be addressed before production deployment. This document details each finding, assesses its true impact, and provides a clear, actionable plan for remediation. **No changes are implemented—approval is required for all recommendations.**
 
 ---
 
 ## 2. Functionality & Architecture Review
 
 - **Strengths:**
-  - Modular PyQt6 architecture with clear separation of UI, collectors, processors, and utilities.
+  - Modular PySide6 architecture with clear separation of UI, collectors, processors, and utilities.
   - Advanced data collection from 19+ financial and academic sources.
   - Sophisticated document processing pipeline (PDF, text, OCR, ML integration).
   - Modern UI/UX, persistent settings, and notification system.

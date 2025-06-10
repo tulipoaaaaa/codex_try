@@ -1,0 +1,133 @@
+{
+    "$schema": "https://raw.githubusercontent.com/getcursor/cursor/main/cursor.schema.json",
+    "project": {
+      "name": "CryptoCorpusBuilder",
+      "description": "Corpus ingestion, enrichment, UI management and processor control for crypto-finance documents.",
+      "language": "python",
+      "root": "CorpusBuilderApp"
+    },
+    "settings": {
+      "python_version": "3.11",
+      "venv_path": "./.venv",
+      "entry_point": "CorpusBuilderApp/app/main.py"
+    },
+    "linting": {
+      "tool": "ruff",
+      "enabled": true,
+      "ignore": ["E501", "F401"],
+      "config_file": "pyproject.toml"
+    },
+    "formatting": {
+      "enabled": true,
+      "tool": "black",
+      "lineLength": 100
+    },
+    "type_checking": {
+      "enabled": true,
+      "tool": "mypy",
+      "strict": true,
+      "config_file": "mypy.ini"
+    },
+    "testing": {
+      "framework": "pytest",
+      "entry_point": "pytest -q CorpusBuilderApp/tests",
+      "pytest_ini": "CorpusBuilderApp/pytest.ini",
+      "requires_env": true,
+      "skip_if_missing": ["PySide6", "fitz", "requests"]
+    },
+    "ai_tools": {
+      "codex_assist": true,
+      "codex_guidelines": [
+        "Never refactor working PySide6 logic unless explicitly requested.",
+        "Respect wrapper boundaries: do not move logic from wrappers to UI or vice versa.",
+        "All new logic must use ProjectConfig helpers for path resolution.",
+        "Always suggest test coverage for new features in tests/ui or tests/unit.",
+        "Use CardWrapper, SectionHeader, StatusDot for all visual components unless overridden."
+      ],
+      "cursor_goals": [
+        "1. Ensure all deprecated folders are ignored and marked for deletion.",
+        "2. Convert legacy imports to shared_tools where safe.",
+        "3. Assist in test scaffolding generation using mock ProjectConfig instances.",
+        "4. Avoid breaking UI layout or signal connections — always preserve working tabs.",
+        "5. Default all config parsing to use get_config_value helpers from conf_utils."
+      ]
+    },
+    "rules": [
+      {
+        "match": "**/CryptoCorpusBuilder/**",
+        "action": "ignore",
+        "reason": "Legacy deprecated folder. Do not read or write."
+      },
+      {
+        "match": "**/shared_tools/prev_working/**",
+        "action": "ignore",
+        "reason": "Deprecated legacy experiments. Safe to delete."
+      },
+      {
+        "match": "**/tests/deprecated/**",
+        "action": "ignore",
+        "reason": "Old test stubs or legacy test files."
+      },
+      {
+        "match": "**/app/ui/widgets/**",
+        "action": "read-only",
+        "reason": "Shared UI components like CardWrapper, StatusDot, SectionHeader. Changes must be explicitly requested."
+      },
+      {
+        "match": "**/shared_tools/project_config.py",
+        "action": "read-write",
+        "reason": "Main ProjectConfig schema. Update only if config schema itself changes."
+      },
+      {
+        "match": "**/shared_tools/config/conf_utils.py",
+        "action": "read-write",
+        "reason": "Helper utilities for safe config parsing. Codex should use these to resolve nested or wrapped config values."
+      },
+      {
+        "match": "**/app/ui/tabs/**/*.py",
+        "action": "read-write",
+        "reason": "UI logic for each tab. Update only if adding signals, wrappers, widgets, or fixing visual/styling bugs."
+      },
+      {
+        "match": "**/app/ui/dialogs/settings_dialog.py",
+        "action": "read-write",
+        "reason": "UI config surface. Always ensure setCurrentText() is passed a string. Handle dict config values safely."
+      },
+      {
+        "match": "**/shared_tools/ui_wrappers/processors/**",
+        "action": "read-write",
+        "reason": "UI processor bridge wrappers. Always verify: ProjectConfig is passed, config access is safe, fallback values are valid."
+      },
+      {
+        "match": "**/shared_tools/storage/corpus_manager.py",
+        "action": "read-write",
+        "reason": "Handles file ops. Before changing any method, ensure it emits all 3 signals: progress_updated, status_updated, operation_completed."
+      },
+      {
+        "match": "**/*.qss",
+        "action": "read-write",
+        "reason": "Theme styles. Ensure .stat-card and .status-dot-* selectors are consistent across themes."
+      }
+    ],
+    "patterns": {
+      "function_behavior_checks": [
+        {
+          "trigger": "batch_copy_files",
+          "check": ["corpus_manager.operation_completed.emit", "file copy verification"]
+        },
+        {
+          "trigger": "load_current_settings",
+          "check": ["type check config values", "avoid setCurrentText(dict)"]
+        },
+        {
+          "trigger": "_init_ui",
+          "check": ["combo boxes use string values only", "avoid unwrapped config values"]
+        },
+        {
+          "trigger": "create_collector_wrapper",
+          "check": ["ensure ProjectConfig instance passed", "wrapper class has valid config"]
+        }
+      ]
+    }
+  }
+  

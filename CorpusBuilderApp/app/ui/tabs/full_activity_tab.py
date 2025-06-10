@@ -1,5 +1,5 @@
 """
-Full Activity Tab for CryptoFinance Corpus Builder
+Full Activity Tab for Crypto Corpus Builder
 Comprehensive activity monitoring with statistics, runtime tracking, and operational metrics
 """
 
@@ -14,6 +14,8 @@ from PySide6.QtCharts import QChart, QChartView, QPieSeries, QBarSeries, QBarSet
 
 import logging
 from datetime import datetime, timedelta
+from pathlib import Path
+import json
 from app.helpers.chart_manager import ChartManager
 from app.ui.theme.theme_constants import (
     DEFAULT_FONT_SIZE,
@@ -22,6 +24,7 @@ from app.ui.theme.theme_constants import (
     BUTTON_COLOR_PRIMARY,
     BUTTON_COLOR_DANGER,
     BUTTON_COLOR_GRAY,
+    CARD_BORDER_COLOR,
     STATUS_DOT_GREEN,
     STATUS_DOT_RED,
     STATUS_DOT_GRAY,
@@ -33,10 +36,16 @@ from app.ui.widgets.status_dot import StatusDot
 
 class FullActivityTab(QWidget):
     """Comprehensive activity monitoring tab with detailed statistics and metrics"""
-    
-    def __init__(self, config, parent=None):
+
+    retry_requested = pyqtSignal(str)
+    stop_requested = pyqtSignal(str)
+
+    def __init__(self, config, activity_log_service=None, task_history_service=None, task_queue_manager=None, parent=None):
         super().__init__(parent)
         self.config = config
+        self.activity_log_service = activity_log_service
+        self.task_source = task_history_service
+        self.task_queue_manager = task_queue_manager
         self.logger = logging.getLogger(self.__class__.__name__)
 
         # Apply shared UI theme settings
@@ -46,8 +55,28 @@ class FullActivityTab(QWidget):
         self.chart_manager = ChartManager()
         
         # Initialize persistent activity data
-        self.activities_data = None
-        
+        self.activities_data: list[dict] = []
+        self.load_existing_history()
+
+        if self.task_source:
+            try:
+                self.task_source.task_added.connect(lambda _: self.load_activity_data())
+                self.task_source.task_updated.connect(lambda _: self.load_activity_data())
+            except Exception as exc:
+                self.logger.warning("Failed to connect task signals: %s", exc)
+
+        if self.activity_log_service:
+            try:
+                self.activity_log_service.activity_added.connect(self.on_activity_added)
+            except Exception as exc:
+                self.logger.warning("Failed to connect activity_added: %s", exc)
+
+        if self.task_source:
+            try:
+                self.task_source.history_changed.connect(self.load_activity_data)
+            except Exception as exc:
+                self.logger.warning("Failed to connect history_changed: %s", exc)
+
         self.init_ui()
         self.setup_update_timer()
         self.load_activity_data()
@@ -62,7 +91,12 @@ class FullActivityTab(QWidget):
         # Header with title and controls
         header_layout = QHBoxLayout()
         
+<<<<<<< HEAD
         header_layout.addWidget(SectionHeader("Full Activity"))
+=======
+        title_label = SectionHeader("📊 Full Activity Dashboard")
+        header_layout.addWidget(title_label)
+>>>>>>> my-feature-branch
         
         header_layout.addStretch()
         
@@ -117,7 +151,9 @@ class FullActivityTab(QWidget):
         metrics_layout = QHBoxLayout()
         
         # Total Tasks Card
-        self.total_tasks_card = self.create_metric_card("Total Tasks", "156", "#32B8C6")
+        self.total_tasks_card = self.create_metric_card(
+            "Total Tasks", "156", BUTTON_COLOR_PRIMARY
+        )
         metrics_layout.addWidget(self.total_tasks_card)
         
         # Success Rate Card  
@@ -129,7 +165,9 @@ class FullActivityTab(QWidget):
         metrics_layout.addWidget(self.avg_runtime_card)
         
         # Active Tasks Card
-        self.active_tasks_card = self.create_metric_card("Active Now", "3", "#32B8C6")
+        self.active_tasks_card = self.create_metric_card(
+            "Active Now", "3", BUTTON_COLOR_PRIMARY
+        )
         metrics_layout.addWidget(self.active_tasks_card)
         
         layout.addLayout(metrics_layout)
@@ -166,7 +204,9 @@ class FullActivityTab(QWidget):
         # Status Distribution Pie Chart (no header, legend below with colored squares)
         status_chart_container = QFrame()
         status_chart_container.setObjectName("card")
-        status_chart_container.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
+        status_chart_container.setStyleSheet(
+            f"background-color: #1a1f2e; border-radius: 12px; border: 1px solid {CARD_BORDER_COLOR};"
+        )
         status_chart_layout = QVBoxLayout(status_chart_container)
         status_chart_layout.setContentsMargins(CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2)
         
@@ -224,7 +264,9 @@ class FullActivityTab(QWidget):
         # Runtime Distribution Bar Chart (no header, legend below with colored squares)
         runtime_chart_container = QFrame()
         runtime_chart_container.setObjectName("card")
-        runtime_chart_container.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
+        runtime_chart_container.setStyleSheet(
+            f"background-color: #1a1f2e; border-radius: 12px; border: 1px solid {CARD_BORDER_COLOR};"
+        )
         runtime_chart_layout = QVBoxLayout(runtime_chart_container)
         runtime_chart_layout.setContentsMargins(CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2)
         
@@ -282,7 +324,9 @@ class FullActivityTab(QWidget):
         # Performance Trends Line Chart (no header, legend below with colored squares)
         trends_chart_container = QFrame()
         trends_chart_container.setObjectName("card")
-        trends_chart_container.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
+        trends_chart_container.setStyleSheet(
+            f"background-color: #1a1f2e; border-radius: 12px; border: 1px solid {CARD_BORDER_COLOR};"
+        )
         trends_chart_layout = QVBoxLayout(trends_chart_container)
         trends_chart_layout.setContentsMargins(CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2, CARD_MARGIN // 2)
         
@@ -337,7 +381,9 @@ class FullActivityTab(QWidget):
         card = QFrame()
         card.setObjectName("card")
         card.setMinimumSize(200, 100)
-        card.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
+        card.setStyleSheet(
+            f"background-color: #1a1f2e; border-radius: 12px; border: 1px solid {CARD_BORDER_COLOR};"
+        )
         
         layout = QVBoxLayout(card)
         layout.setSpacing(8)
@@ -392,9 +438,14 @@ class FullActivityTab(QWidget):
         self.activity_table.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         self.activity_table.itemSelectionChanged.connect(self.on_activity_selected)
         
-        self.activity_table.setStyleSheet("background-color: #1a1f2e; color: #f9fafb; border: 1px solid #2d3748; border-radius: 8px;")
-        
+        self.activity_table.setStyleSheet(
+            f"background-color: #1a1f2e; color: #f9fafb; border: 1px solid {CARD_BORDER_COLOR}; border-radius: 8px;"
+        )
+
         table_layout.addWidget(self.activity_table)
+        self.no_activity_label = QLabel("No activity yet")
+        self.no_activity_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        table_layout.addWidget(self.no_activity_label)
         layout.addWidget(table_container, 2)  # 2/3 of space
         
         # Right: Task details panel
@@ -405,7 +456,9 @@ class FullActivityTab(QWidget):
         self.task_info = QTextEdit()
         self.task_info.setReadOnly(True)
         self.task_info.setPlainText("Select a task to view detailed information...")
-        self.task_info.setStyleSheet("background-color: #0f1419; color: #f9fafb; border-radius: 8px; border: 1px solid #2d3748;")
+        self.task_info.setStyleSheet(
+            f"background-color: #0f1419; color: #f9fafb; border-radius: 8px; border: 1px solid {CARD_BORDER_COLOR};"
+        )
         details_layout.addWidget(self.task_info)
         
         # Task actions
@@ -439,6 +492,57 @@ class FullActivityTab(QWidget):
         self.update_timer = QTimer(self)
         self.update_timer.timeout.connect(self.load_activity_data)
         self.update_timer.start(10000)  # Update every 10 seconds
+
+    def load_existing_history(self):
+        """Load prior activity from disk if available."""
+        if self.task_source:
+            return
+        try:
+            log_dir = Path(self.config.get_logs_dir())
+        except Exception:
+            return
+        log_file = log_dir / "activity.log"
+        if not log_file.exists():
+            return
+        try:
+            with open(log_file, "r", encoding="utf-8") as fh:
+                for line in fh:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    try:
+                        entry = json.loads(line)
+                        self.activities_data.append(self._map_entry(entry))
+                    except Exception:
+                        continue
+        except Exception as exc:
+            self.logger.warning("Failed to load history: %s", exc)
+
+    def _map_entry(self, entry: dict) -> dict:
+        """Map raw log entry to internal representation."""
+        details = entry.get("details") or {}
+        if not isinstance(details, dict):
+            details = {}
+        timestamp = entry.get("timestamp", datetime.utcnow().isoformat())
+        return {
+            "time": datetime.fromisoformat(timestamp).strftime("%H:%M:%S"),
+            "start_time": timestamp,
+            "id": details.get("task_id"),
+            "action": entry.get("message", ""),
+            "status": details.get("status", "info"),
+            "details": details.get("details", ""),
+            "duration_seconds": details.get("duration_seconds", 0),
+            "progress": details.get("progress", 0),
+            "type": details.get("type", "General"),
+            "domain": details.get("domain", "General"),
+            "error_message": details.get("error_message", ""),
+            "task_id": details.get("task_id", ""),
+        }
+
+    def on_activity_added(self, entry: dict):
+        """Handle new activity emitted from ``ActivityLogService``."""
+        self.activities_data.append(self._map_entry(entry))
+        self.load_activity_data()
     
     def load_activity_data(self):
         """Load and update all activity data"""
@@ -458,12 +562,15 @@ class FullActivityTab(QWidget):
             self.logger.error(f"Error loading activity data: {e}")
     
     def update_metrics(self):
-        """Update the metric cards"""
-        # In production, this would fetch real data
-        # For demo, using mock data with some variation
-        
+        """Update the metric cards with real task history"""
+
         activities = self.get_activity_data()
         total_tasks = len(activities)
+
+        if self.task_source:
+            counts = self.task_source.get_recent_task_counts(days=7)
+            total_tasks = sum(counts.values()) or total_tasks
+
         success_count = len([a for a in activities if a['status'] == 'success'])
         success_rate = (success_count / total_tasks * 100) if total_tasks > 0 else 0
         active_count = len([a for a in activities if a['status'] == 'running'])
@@ -505,6 +612,7 @@ class FullActivityTab(QWidget):
         
         for status, count in status_counts.items():
             slice_obj = series.append(f"{status.title()} ({count})", count)
+            slice_obj.setProperty("domain_count", count)
             if status in colors:
                 slice_obj.setBrush(QColor(colors[status]))
             
@@ -587,29 +695,48 @@ class FullActivityTab(QWidget):
             legend.setVisible(False)
     
     def update_trends_chart(self):
-        """Update the performance trends chart"""
-        # For demo, create a simple trends visualization
-        # In production, this would show actual performance metrics over time
+        """Update the performance trends chart with daily task counts."""
         chart = self.trends_chart.chart()
         chart.removeAllSeries()
-        
-        # Remove chart title since it's now in the consolidated header
+        for axis in chart.axes():
+            chart.removeAxis(axis)
+
+        counts = self.task_source.get_recent_task_counts(days=7) if self.task_source else {}
+        if not counts:
+            return
+        dates = sorted(counts.keys())
+
+        series = QBarSeries()
+        bar_set = QBarSet("Tasks")
+        for d in dates:
+            bar_set.append(counts[d])
+        series.append(bar_set)
+        chart.addSeries(series)
+
+        axis_x = QBarCategoryAxis()
+        axis_x.append(dates)
+        axis_x.setLabelsColor(QColor(255, 255, 255))
+        chart.addAxis(axis_x, Qt.AlignmentFlag.AlignBottom)
+        series.attachAxis(axis_x)
+
+        axis_y = QValueAxis()
+        axis_y.setRange(0, max(counts.values()) if counts else 1)
+        axis_y.setLabelsColor(QColor(255, 255, 255))
+        chart.addAxis(axis_y, Qt.AlignmentFlag.AlignLeft)
+        series.attachAxis(axis_y)
+
         chart.setTitle("")
-        
-        # Hide chart legend since we have custom legend below
         legend = chart.legend()
         if legend:
             legend.setVisible(False)
-        
-        # Mock trend data would go here
-        # This is a placeholder for the trend visualization
     
     def update_activity_table(self):
         """Update the detailed activity table"""
         activities = self.get_activity_data()
         
         self.activity_table.setRowCount(len(activities))
-        
+        self.no_activity_label.setVisible(len(activities) == 0)
+
         for row, activity in enumerate(activities):
             # Time
             time_item = QTableWidgetItem(activity['time'])
@@ -687,137 +814,57 @@ Progress: {activity.get('progress', 0)}%
                 self.logs_btn.setEnabled(True)
     
     def get_activity_data(self):
-        """Get comprehensive activity data"""
-        # Return persistent data if available, otherwise initialize
-        if self.activities_data is not None:
-            return self.activities_data
-        print("[DEBUG] Initializing activities_data (should only happen once per app run)")
-        # In production, this would fetch from actual activity logs
-        # For demo, return enhanced mock data
-        
-        now = datetime.now()
-        
-        self.activities_data = [
-            {
-                "time": (now - timedelta(minutes=2)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=2)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "GitHub collection: crypto-research",
-                "status": "running",
-                "details": "Processing 67 repositories, 23 completed",
-                "duration_seconds": 120,
-                "progress": 34,
-                "type": "Collection",
-                "domain": "Crypto Derivatives"
-            },
-            {
-                "time": (now - timedelta(minutes=8)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=15)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "arXiv processing batch #847",
-                "status": "success",
-                "details": "263 PDFs processed successfully, 5 failed extraction",
-                "duration_seconds": 420,
-                "progress": 100,
-                "type": "Processing",
-                "domain": "High Frequency Trading"
-            },
-            {
-                "time": (now - timedelta(minutes=15)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=28)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "Domain rebalancing optimization",
-                "status": "success",
-                "details": "8 domains rebalanced, targets achieved",
-                "duration_seconds": 780,
-                "progress": 100,
-                "type": "Optimization",
-                "domain": "General"
-            },
-            {
-                "time": (now - timedelta(minutes=23)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=35)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "ISDA documentation collection",
-                "status": "success",
-                "details": "12 documents collected from ISDA.org",
-                "duration_seconds": 720,
-                "progress": 100,
-                "type": "Collection",
-                "domain": "Regulation & Compliance"
-            },
-            {
-                "time": (now - timedelta(minutes=35)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=47)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "Quality analysis pipeline",
-                "status": "running",
-                "details": "2,234 documents analyzed, 156 remaining",
-                "duration_seconds": 720,
-                "progress": 93,
-                "type": "Analysis",
-                "domain": "General"
-            },
-            {
-                "time": (now - timedelta(minutes=47)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=52)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "Corpus backup to cloud storage",
-                "status": "success",
-                "details": "45.8 GB backed up to AWS S3",
-                "duration_seconds": 300,
-                "progress": 100,
-                "type": "Backup",
-                "domain": "General"
-            },
-            {
-                "time": (now - timedelta(minutes=63)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(minutes=67)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "Weekly performance report",
-                "status": "success",
-                "details": "Report generated and exported to PDF",
-                "duration_seconds": 240,
-                "progress": 100,
-                "type": "Reporting",
-                "domain": "General"
-            },
-            {
-                "time": (now - timedelta(hours=1, minutes=15)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(hours=1, minutes=20)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "System maintenance routine",
-                "status": "success",
-                "details": "Cache cleared, indexes rebuilt, temp files cleaned",
-                "duration_seconds": 300,
-                "progress": 100,
-                "type": "Maintenance",
-                "domain": "General"
-            },
-            {
-                "time": (now - timedelta(hours=2)).strftime("%H:%M:%S"),
-                "start_time": (now - timedelta(hours=2, minutes=5)).strftime("%Y-%m-%d %H:%M:%S"),
-                "action": "BitMEX API data collection",
-                "status": "error",
-                "details": "API rate limit exceeded",
-                "duration_seconds": 180,
-                "progress": 45,
-                "type": "Collection",
-                "domain": "Crypto Derivatives",
-                "error_message": "HTTP 429: Too Many Requests"
-            }
-        ]
-        
+        """Return current activity log entries."""
+        if self.task_source:
+            tasks = self.task_source.load_recent_tasks()
+            mapped = []
+            for t in tasks:
+                start = t.get("start_time", datetime.utcnow().isoformat())
+                mapped.append({
+                    "id": t.get("id"),
+                    "time": datetime.fromisoformat(start).strftime("%H:%M:%S"),
+                    "start_time": start,
+                    "action": t.get("name", ""),
+                    "status": t.get("status", "pending"),
+                    "details": t.get("details", ""),
+                    "duration_seconds": t.get("duration_seconds", 0),
+                    "progress": t.get("progress", 0),
+                    "type": t.get("type", "General"),
+                    "domain": t.get("domain", "General"),
+                    "error_message": t.get("error_message", ""),
+                })
+            return mapped
         return self.activities_data
+
+    def _get_task_id(self, activity: dict) -> str:
+        return activity.get("task_id") or f"TASK_{hash(activity.get('action', '')) % 10000:04d}"
     
     def retry_task(self):
-        print("[DEBUG] Retry button clicked")
+        """Handle the retry action for the selected task."""
+        self.logger.debug("Retry button clicked")
         current_row = self.activity_table.currentRow()
         if current_row >= 0:
             activities = self.get_activity_data()
             if current_row < len(activities):
                 activity = activities[current_row]
-                
+                task_id = self._get_task_id(activity)
+
                 if activity['status'] == 'error':
-                    # Simulate retrying the task
+                    # Reset local task info
                     activity['status'] = 'running'
                     activity['progress'] = 0
                     activity['start_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     activity['duration_seconds'] = 0
                     if 'error_message' in activity:
                         del activity['error_message']
+
+                    if self.task_queue_manager:
+                        try:
+                            self.task_queue_manager.add_task(task_id, {
+                                "name": activity.get('action', task_id)
+                            })
+                        except Exception as exc:  # pragma: no cover
+                            self.logger.warning("Failed to queue retry for %s: %s", task_id, exc)
                     
                     # Update the UI
                     self.update_activity_table()
@@ -832,20 +879,30 @@ Progress: {activity.get('progress', 0)}%
                     self.stop_btn.setEnabled(True)
                     
                     self.logger.info(f"Retried task: {activity['action']}")
+                    
+                    if activity.get('id'):
+                        self.retry_requested.emit(str(activity['id']))
     
     def stop_task(self):
-        print("[DEBUG] Stop button clicked")
+        """Handle the stop action for the selected task."""
+        self.logger.debug("Stop button clicked")
         current_row = self.activity_table.currentRow()
         if current_row >= 0:
             activities = self.get_activity_data()
             if current_row < len(activities):
                 activity = activities[current_row]
-                
+                task_id = self._get_task_id(activity)
+
                 if activity['status'] == 'running':
-                    # Simulate stopping the task
                     activity['status'] = 'stopped'
-                    activity['progress'] = activity.get('progress', 0)  # Keep current progress
+                    activity['progress'] = activity.get('progress', 0)
                     activity['details'] += " (Manually stopped by user)"
+
+                    if self.task_queue_manager:
+                        try:
+                            self.task_queue_manager.update_task(task_id, "stopped", activity['progress'])
+                        except Exception as exc:  # pragma: no cover
+                            self.logger.warning("Failed to stop task %s: %s", task_id, exc)
                     
                     # Update the UI
                     self.update_activity_table()
@@ -861,9 +918,13 @@ Progress: {activity.get('progress', 0)}%
                     self.retry_btn.setEnabled(True)  # Allow retry of stopped task
                     
                     self.logger.info(f"Stopped task: {activity['action']}")
+
+                    if activity.get('id'):
+                        self.stop_requested.emit(str(activity['id']))
     
     def view_task_logs(self):
-        print("[DEBUG] View Logs button clicked")
+        """Display detailed logs for the selected task."""
+        self.logger.debug("View Logs button clicked")
         current_row = self.activity_table.currentRow()
         if current_row >= 0:
             activities = self.get_activity_data()
@@ -950,7 +1011,7 @@ Progress: {activity.get('progress', 0)}%
         logs.append("=" * 80)
         logs.append(f"TASK LOG: {activity['action']}")
         logs.append("=" * 80)
-        logs.append(f"Task ID: TASK_{hash(activity['action']) % 10000:04d}")
+        logs.append(f"Task ID: {self._get_task_id(activity)}")
         logs.append(f"Status: {activity['status'].upper()}")
         logs.append(f"Type: {activity.get('type', 'Unknown')}")
         logs.append(f"Domain: {activity.get('domain', 'General')}")
@@ -1080,4 +1141,4 @@ Progress: {activity.get('progress', 0)}%
     def update_theme(self, theme_name):
         """Update theme for charts"""
         self.chart_manager.set_theme(theme_name)
-        self.load_activity_data()  # Refresh charts with new theme 
+        self.load_activity_data()  # Refresh charts with new theme
