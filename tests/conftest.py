@@ -379,6 +379,7 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         QFileDialog=QFileDialog,
         QMessageBox=QMessageBox,
         QSystemTrayIcon=QSystemTrayIcon,
+        QDialog=QDialog,
     )
     class _QtGui(types.SimpleNamespace):
         def __getattr__(self, name):
@@ -397,6 +398,10 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
     qttest = types.SimpleNamespace(QTest=object)
     qtcharts = types.SimpleNamespace()
     qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
+    class _DummyCharts(types.ModuleType):
+        def __getattr__(self, name):
+            return object
+    qtcharts = _DummyCharts("PySide6.QtCharts")
     sys.modules['PySide6'] = types.SimpleNamespace(
         QtCore=qtcore,
         QtWidgets=qtwidgets,
