@@ -2,6 +2,8 @@ import sys
 import types
 import pytest
 
+pytestmark = pytest.mark.optional_dependency
+
 # Provide minimal stubs for heavy dependencies before importing the wrapper
 class _Signal:
     def __init__(self, *a, **k):
