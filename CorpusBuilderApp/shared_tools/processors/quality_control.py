@@ -11,6 +11,7 @@ from .machine_translation_detector import MachineTranslationDetector
 from .language_confidence_detector import LanguageConfidenceDetector
 from .corruption_detector import CorruptionDetector
 from shared_tools.project_config import ProjectConfig
+logger = logging.getLogger(__name__)
 
 class QualityControl:
     """Quality control for corpus content"""
@@ -176,10 +177,10 @@ def run_with_project_config(project: Union[str, ProjectConfig], verbose: bool = 
     results = qc.process_directory(project.raw_data_dir)
     
     if verbose:
-        print("\nQuality Control Results:")
-        print(f"Processed files: {len(results['processed_files'])}")
-        print(f"Passed quality check: {results['passed_count']}")
-        print(f"Failed quality check: {results['failed_count']}")
+        logger.info("\nQuality Control Results:")
+        logger.info(f"Processed files: {len(results['processed_files'])}")
+        logger.info(f"Passed quality check: {results['passed_count']}")
+        logger.warning(f"Failed quality check: {results['failed_count']}")
     
     return results
 
@@ -199,7 +200,7 @@ def main():
     with open(output_file, 'w') as f:
         json.dump(results, f, indent=2)
     
-    print(f"\nQuality control results saved to: {output_file}")
+    logger.info(f"\nQuality control results saved to: {output_file}")
 
 if __name__ == "__main__":
     main() 

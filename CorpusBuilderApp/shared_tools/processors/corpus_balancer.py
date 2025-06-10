@@ -26,6 +26,7 @@ from plotly.subplots import make_subplots
 from ..utils.domain_utils import get_valid_domains, get_domain_for_file
 from ..utils.extractor_utils import safe_filename
 from shared_tools.project_config import ProjectConfig
+logger = logging.getLogger(__name__)
 
 class CorpusAnalyzer:
     """Analyzes corpus composition and identifies imbalances."""
@@ -776,24 +777,24 @@ class CorpusBalancerCLI:
                 
                 if generate_report:
                     report_path = visualizer.create_balance_report(results)
-                    print(f"Report generated: {report_path}")
+                    logger.info(f"Report generated: {report_path}")
                 
                 if create_dashboard:
                     dashboard_path = visualizer.create_balance_dashboard(results)
-                    print(f"Dashboard generated: {dashboard_path}")
+                    logger.info(f"Dashboard generated: {dashboard_path}")
             
             # Print summary to console
-            print("\n=== Corpus Balance Summary ===")
-            print(f"Total Documents: {results['metadata']['total_documents']}")
-            print(f"Domain Entropy: {results['domain_analysis']['entropy']:.3f}")
-            print(f"Missing Domains: {len(results['domain_analysis']['missing_domains'])}")
+            logger.info("\n=== Corpus Balance Summary ===")
+            logger.info(f"Total Documents: {results['metadata']['total_documents']}")
+            logger.info(f"Domain Entropy: {results['domain_analysis']['entropy']:.3f}")
+            logger.info(f"Missing Domains: {len(results['domain_analysis']['missing_domains'])}")
             
             # Print imbalances
             for severity, issues in results['imbalance_detection'].items():
                 if issues:
-                    print(f"\n{severity.upper()} Issues:")
+                    logger.info(f"\n{severity.upper()} Issues:")
                     for issue in issues:
-                        print(f"  - {issue}")
+                        logger.info(f"  - {issue}")
             
             return 0
             
@@ -826,27 +827,27 @@ class CorpusBalancerCLI:
             execution_results = rebalancer.execute_rebalancing_plan(plan, dry_run)
             
             # Report results
-            print(f"\n=== Rebalancing Results ===")
-            print(f"Strategy: {strategy}")
-            print(f"Dry Run: {dry_run}")
-            print(f"Actions Completed: {len(execution_results['actions_completed'])}")
-            print(f"Actions Failed: {len(execution_results['actions_failed'])}")
+            logger.info(f"\n=== Rebalancing Results ===")
+            logger.info(f"Strategy: {strategy}")
+            logger.info(f"Dry Run: {dry_run}")
+            logger.info(f"Actions Completed: {len(execution_results['actions_completed'])}")
+            logger.warning(f"Actions Failed: {len(execution_results['actions_failed'])}")
             
             if execution_results['actions_completed']:
-                print("\nCompleted Actions:")
+                logger.info("\nCompleted Actions:")
                 for action in execution_results['actions_completed']:
-                    print(f"  - {action['type']} {action['domain']}: {action.get('message', 'Success')}")
+                    logger.info(f"  - {action['type']} {action['domain']}: {action.get('message', 'Success')}")
             
             if execution_results['actions_failed']:
-                print("\nFailed Actions:")
+                logger.warning("\nFailed Actions:")
                 for action in execution_results['actions_failed']:
-                    print(f"  - {action['type']} {action['domain']}: {action.get('error', 'Unknown error')}")
+                    logger.info(f"  - {action['type']} {action['domain']}: {action.get('error', 'Unknown error')}")
             
             # Generate report if output directory specified
             if output_dir:
                 visualizer = CorpusVisualizer(output_dir)
                 report_path = visualizer.create_balance_report(analysis_results, plan)
-                print(f"\nDetailed report: {report_path}")
+                logger.info(f"\nDetailed report: {report_path}")
             
             return 0
             
@@ -873,11 +874,11 @@ def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     results = analyzer.analyze_corpus_balance()
     
     if verbose:
-        print("\nCorpus Balance Analysis Results:")
-        print(f"Total documents: {results['metadata']['total_documents']}")
-        print("\nDomain Distribution:")
+        logger.info("\nCorpus Balance Analysis Results:")
+        logger.info(f"Total documents: {results['metadata']['total_documents']}")
+        logger.info("\nDomain Distribution:")
         for domain, count in results['domain_analysis']['distribution'].items():
-            print(f"  {domain}: {count}")
+            logger.info(f"  {domain}: {count}")
     
     return results
 
@@ -906,7 +907,7 @@ def main():
     with open(output_file, 'w') as f:
         json.dump(results, f, indent=2)
     
-    print(f"\nAnalysis results saved to: {output_file}")
+    logger.info(f"\nAnalysis results saved to: {output_file}")
 
 if __name__ == "__main__":
     main()

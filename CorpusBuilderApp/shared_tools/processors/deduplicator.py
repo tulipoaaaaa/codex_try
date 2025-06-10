@@ -19,7 +19,7 @@ from shared_tools.config.project_config import ProjectConfig
 
 # Set up file-based logging
 logging.basicConfig(filename='deduplication.log', level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
-print('Deduplicator script starting...')
+logger.info('Deduplicator script starting...')
 
 class Deduplicator:
     """Identify and remove duplicate content in the corpus"""
@@ -59,7 +59,7 @@ class Deduplicator:
             handler.setFormatter(formatter)
             self.logger.addHandler(handler)
         
-        print('Deduplicator __init__ called')
+        logger.info('Deduplicator __init__ called')
         self.logger.info('Deduplicator initialized')
     
     def scan_corpus(self, rebuild_index=False):
@@ -151,7 +151,7 @@ class Deduplicator:
         except Exception as e:
             self.logger.error(f"Error saving deduplication index: {e}")
         
-        print('scan_corpus called')
+        logger.info('scan_corpus called')
         return True
     
     def find_duplicates(self):
@@ -191,7 +191,7 @@ class Deduplicator:
             content_duplicates = self._find_content_duplicates()
             duplicates.extend(content_duplicates)
         
-        print('find_duplicates called')
+        logger.info('find_duplicates called')
         return duplicates
     
     def deduplicate(self, strategy='keep_first', output_file=None, token_loss_report=None):
@@ -212,7 +212,7 @@ class Deduplicator:
         domain_token_counts_before = self._get_domain_token_counts()
         total_tokens_before = sum(domain_token_counts_before.values())
         
-        print('Token count before deduplication:', domain_token_counts_before)
+        logger.info('Token count before deduplication:', domain_token_counts_before)
         
         # Find duplicates
         duplicates = self.find_duplicates()
@@ -266,7 +266,7 @@ class Deduplicator:
         domain_token_counts_after = self._get_domain_token_counts()
         total_tokens_after = sum(domain_token_counts_after.values())
         
-        print('Token count after deduplication:', domain_token_counts_after)
+        logger.info('Token count after deduplication:', domain_token_counts_after)
         
         # --- Token loss report ---
         token_loss_stats = {}
@@ -287,7 +287,7 @@ class Deduplicator:
             'tokens_lost': total_tokens_before - total_tokens_after,
             'percent_loss': ((total_tokens_before - total_tokens_after) / total_tokens_before * 100) if total_tokens_before > 0 else 0
         }
-        print('Token loss stats:', token_loss_stats)
+        logger.info('Token loss stats:', token_loss_stats)
         if token_loss_report:
             with open(token_loss_report, 'w') as f:
                 json.dump(token_loss_stats, f, indent=2)
@@ -298,7 +298,7 @@ class Deduplicator:
                 json.dump({'deduplicated': list(files_to_remove)}, f, indent=2)
             self.logger.info(f"Deduplication report saved to {output_file}")
         
-        print('deduplicate called')
+        logger.info('deduplicate called')
         return list(files_to_remove)
     
     def _compute_file_hash(self, file_path):
@@ -349,7 +349,7 @@ class Deduplicator:
     
     def _find_content_duplicates(self, min_text_length=1000):
         """Find files with similar content using datasketch MinHash and LSH (scalable version)."""
-        print('_find_content_duplicates (LSH) called')
+        logger.info('_find_content_duplicates (LSH) called')
         try:
             import sys
             from pathlib import Path
@@ -360,8 +360,8 @@ class Deduplicator:
             import hashlib
             
             corpus_manager = CorpusManager(self.corpus_dir)
-            print(f"[DEBUG] CorpusManager loading from: {corpus_manager.metadata_file}")
-            print(f"[DEBUG] Documents loaded: {len(corpus_manager.metadata.get('documents', {}))}")
+            logger.debug(f"[DEBUG] CorpusManager loading from: {corpus_manager.metadata_file}")
+            logger.debug(f"[DEBUG] Documents loaded: {len(corpus_manager.metadata.get('documents', {}))}")
             extractor = TextExtractor()
             documents = corpus_manager.metadata.get("documents", {})
             if not documents:
@@ -412,7 +412,7 @@ class Deduplicator:
                     self.logger.error(f"Error processing {doc_id}: {e}")
                     skipped += 1
 
-            print(f"[MinHashLSH] Valid docs: {valid}, Skipped: {skipped}")
+            logger.info(f"[MinHashLSH] Valid docs: {valid}, Skipped: {skipped}")
             if valid == 0:
                 self.logger.warning("All documents skipped — no MinHash input. Check extraction and metadata.")
                 return []
@@ -438,15 +438,15 @@ class Deduplicator:
                             "similarity_threshold": self.similarity_threshold
                         })
             self.logger.info(f"Found {len(groups)} content similarity duplicate groups (MinHashLSH)")
-            print(f"✅ MinHashLSH duplicate groups: {len(groups)}")
+            logger.info(f"✅ MinHashLSH duplicate groups: {len(groups)}")
             return groups
         except ImportError as e:
             self.logger.error(f"Error importing required modules for content similarity: {e}")
-            print(f"Error importing required modules for content similarity: {e}")
+            logger.warning(f"Error importing required modules for content similarity: {e}")
             return []
         except Exception as e:
             self.logger.error(f"Error finding content duplicates: {e}")
-            print(f"Error finding content duplicates: {e}")
+            logger.warning(f"Error finding content duplicates: {e}")
             return []
     
     def _get_domain_token_counts(self):
@@ -541,7 +541,7 @@ def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     duplicates = deduplicator.find_duplicates()
     
     if verbose:
-        print(f"Found {len(duplicates)} duplicate groups")
+        logger.info(f"Found {len(duplicates)} duplicate groups")
     
     return {
         'duplicates': duplicates,
@@ -569,14 +569,14 @@ def main():
         results = deduplicator.find_duplicates()
     
     # Print results
-    print(f"\nDeduplication Results:")
-    print(f"Found {len(results.get('duplicates', []))} duplicate groups")
+    logger.info(f"\nDeduplication Results:")
+    logger.info(f"Found {len(results.get('duplicates', []))} duplicate groups")
     
     if args.verbose:
         for dup in results.get('duplicates', []):
-            print(f"\nDuplicate Group:")
+            logger.info(f"\nDuplicate Group:")
             for file in dup.get('files', []):
-                print(f"  - {file}")
+                logger.info(f"  - {file}")
 
 if __name__ == "__main__":
     main()
