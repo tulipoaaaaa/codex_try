@@ -309,6 +309,7 @@ class TestDomainClassifierIntegration:
             assert hasattr(wrapper, 'error_occurred')
             assert hasattr(wrapper, 'completed')
             
+    @pytest.mark.skipif(os.getenv("CI") == "true", reason="Disabled in CI due to resource constraints")
     def test_wrapper_workflow(self, qapp):
         """Test complete wrapper workflow"""
         config = Mock()

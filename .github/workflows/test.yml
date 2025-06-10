@@ -27,7 +27,8 @@ jobs:
         run: ruff check .
       - name: Run tests
         env:
-          PYTEST_QT_STUBS: '1'
+          PYTEST_QT_STUBS: '0'
+          PYTEST_QT_API: 'pyside6'
         run: |
           pytest -m "not skip" --cov=. --cov-report=xml --cov-report=term --cov-fail-under=95
       - name: Upload coverage report

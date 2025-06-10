@@ -2,18 +2,15 @@ from PySide6.QtWidgets import (
     QWidget,
     QVBoxLayout,
     QHBoxLayout,
-    QTabWidget,
     QLabel,
     QProgressBar,
     QPushButton,
-    QComboBox,
-    QSpinBox,
-    QLineEdit,
     QGroupBox,
     QScrollArea,
 )
-from PySide6.QtCore import Qt, Slot as pyqtSlot, Signal as pyqtSignal
+from PySide6.QtCore import Qt, Signal as pyqtSignal
 from PySide6.QtGui import QFont
+import time
 
 from shared_tools.ui_wrappers.collectors.isda_wrapper import ISDAWrapper
 from shared_tools.ui_wrappers.collectors.github_wrapper import GitHubWrapper
@@ -30,9 +27,7 @@ from app.helpers.notifier import Notifier
 from app.ui.theme.theme_constants import (
     DEFAULT_FONT_SIZE,
     CARD_MARGIN,
-    BUTTON_COLOR_PRIMARY,
     BUTTON_COLOR_DANGER,
-    BUTTON_COLOR_GRAY,
 )
 
 
