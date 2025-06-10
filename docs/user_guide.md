@@ -71,11 +71,25 @@ Additional flags let you control which phases execute:
 - `--extract` – run enabled processors
 - `--balance` – run the corpus balancer
 - `--preview-only` – show selected modules without running them
+- `--series-ids` – FRED collector: comma separated series IDs
+- `--max-results` – FRED collector: limit number of data points
+- `--search-terms` – GitHub collector: repository search terms
+- `--topic` – GitHub collector: optional topic filter
+- `--max-repos` – GitHub collector: maximum repositories to fetch
+- `--query` – Annas collector: search query
+- `--output-dir` – output directory for Annas, SciDB or Web collectors
+- `export-corpus --dry-run` – preview export actions without writing files
 
 Preview all phases without executing them:
 ```bash
 python cli/execute_from_config.py --config path/to/config.yaml \
     --collect --extract --balance --preview-only
+```
+
+Dry run export example:
+```bash
+python CorpusBuilderApp/cli.py export-corpus --corpus-dir data/corpus \
+    --output-dir exports --dry-run
 ```
 
 Use `--version` to print the application version or `--matrix` to see which
