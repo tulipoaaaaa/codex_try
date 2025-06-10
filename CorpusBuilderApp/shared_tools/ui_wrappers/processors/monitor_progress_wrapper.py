@@ -7,36 +7,52 @@ import os
 import time
 import json
 from typing import Dict, List, Optional, Any, Callable
+from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, QTimer
 try:
-    from PySide6.QtCore import (
-        QObject,
-        QThread,
-        Signal as pyqtSignal,
-        Slot as pyqtSlot,
-        QTimer,
-        QMutex,
-    )
-    if os.environ.get("PYTEST_QT_STUBS") == "1":
-        def pyqtSlot(*args, **kwargs):  # type: ignore
-            def decorator(func):
-                return func
-
-            return decorator
-except Exception:  # pragma: no cover - allow stubs without Slot
-    from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, QTimer, QMutex
-
-    def pyqtSlot(*args, **kwargs):  # type: ignore[override]
+    from PySide6.QtCore import QMutex
+except Exception:  # pragma: no cover - fallback for stub environments
+    class QMutex:  # type: ignore
+        def lock(self):
+            pass
+        def unlock(self):
+            pass
+try:  # Handle stubs missing Slot
+    from PySide6.QtCore import Slot as pyqtSlot
+except Exception:  # pragma: no cover - fallback for stub environments
+    def pyqtSlot(*args, **kwargs):  # type: ignore
         def decorator(func):
             return func
-
         return decorator
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
-                           QProgressBar, QLabel, QTextEdit, QCheckBox, 
-                           QSpinBox, QGroupBox, QGridLayout, QComboBox,
-                           QTableWidget, QTableWidgetItem, QHeaderView,
-                           QTabWidget, QSplitter, QSlider, QListWidget)
-from PySide6.QtGui import QColor, QBrush, QPalette
-from PySide6.QtCore import Qt
+try:
+    from PySide6.QtWidgets import (
+        QWidget,
+        QVBoxLayout,
+        QHBoxLayout,
+        QPushButton,
+        QProgressBar,
+        QLabel,
+        QTextEdit,
+        QCheckBox,
+        QSpinBox,
+        QGroupBox,
+        QGridLayout,
+        QComboBox,
+        QTableWidget,
+        QTableWidgetItem,
+        QHeaderView,
+        QTabWidget,
+        QSplitter,
+        QSlider,
+        QListWidget,
+    )
+    from PySide6.QtGui import QColor, QBrush, QPalette
+    from PySide6.QtCore import Qt
+except Exception:  # pragma: no cover - fallback for stubs
+    QWidget = QVBoxLayout = QHBoxLayout = QPushButton = QProgressBar = QLabel = QTextEdit = QCheckBox = QSpinBox = QGroupBox = QGridLayout = QComboBox = QTableWidget = QTableWidgetItem = QHeaderView = QTabWidget = QSplitter = QSlider = QListWidget = object
+    QColor = QBrush = QPalette = object
+    class Qt:
+        Orientation = type("Orientation", (), {"Horizontal": 0})
+
 from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
 try:
     from shared_tools.processors.monitor_progress import MonitorProgress

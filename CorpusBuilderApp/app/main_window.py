@@ -47,6 +47,7 @@ from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBa
 from shared_tools.services.activity_log_service import ActivityLogService
 from shared_tools.services.task_history_service import TaskHistoryService
 from shared_tools.services.tab_audit_service import TabAuditService
+from shared_tools.services.task_queue_manager import TaskQueueManager
 
 class CryptoCorpusMainWindow(QMainWindow):
     """Main application window"""
@@ -66,6 +67,7 @@ class CryptoCorpusMainWindow(QMainWindow):
         # Services and wrappers
         self.activity_log_service = ActivityLogService()
         self.task_history_service = TaskHistoryService()
+        self.task_queue_manager = TaskQueueManager()
         self.balancer_wrapper = CorpusBalancerWrapper(self.config)
         self.balancer_wrapper.balance_completed.connect(self.on_balance_completed)
         
@@ -139,7 +141,11 @@ class CryptoCorpusMainWindow(QMainWindow):
             )
             # Dashboard tab
             self.logger.debug("Initializing DashboardTab...")
-            self.dashboard_tab = DashboardTab(self.config, self.activity_log_service)
+            self.dashboard_tab = DashboardTab(
+                self.config,
+                self.activity_log_service,
+                task_queue_manager=self.task_queue_manager,
+            )
             self.logger.debug("DashboardTab initialized successfully")
             self.tab_widget.addTab(self.dashboard_tab, "📊 Dashboard")
             # Collectors tab
