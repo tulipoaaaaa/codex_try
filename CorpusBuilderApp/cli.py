@@ -169,6 +169,55 @@ def main(argv: list[str] | None = None) -> int:
         check_corpus_structure.main(call_args)
         return 0
 
+    if argv and argv[0] == "import-corpus":
+        parser = argparse.ArgumentParser(
+            prog="import-corpus",
+            description="Import corpus files into configured corpus root",
+        )
+        parser.add_argument("--source-dir", required=True, help="Folder containing corpus files")
+        parser.add_argument("--config", required=True, help="Path to ProjectConfig YAML")
+        args = parser.parse_args(argv[1:])
+
+        from tools.check_corpus_structure import check_corpus_structure
+        from shared_tools.config.project_config import ProjectConfig
+        import shutil
+
+        cfg = ProjectConfig.from_yaml(args.config)
+        corpus_root = cfg.get_corpus_root()
+        source = Path(args.source_dir).expanduser().resolve()
+        if not source.exists():
+            print(f"[ERROR] Source directory not found: {source}")
+            return 1
+
+        try:
+            if corpus_root.exists():
+                for item in source.iterdir():
+                    dest = corpus_root / item.name
+                    if item.is_dir():
+                        shutil.copytree(item, dest, dirs_exist_ok=True)
+                    else:
+                        shutil.copy2(item, dest)
+            else:
+                shutil.copytree(source, corpus_root)
+        except Exception as exc:  # pragma: no cover - runtime guard
+            print(f"[ERROR] Failed to copy files: {exc}")
+            return 1
+
+        try:
+            check_corpus_structure(cfg, auto_fix=True)
+        except Exception as exc:  # pragma: no cover - best effort
+            print(f"[WARN] Validation issue: {exc}")
+
+        extracted = corpus_root / "processed" / "_extracted"
+        if extracted.exists():
+            for domain in sorted(d for d in extracted.iterdir() if d.is_dir()):
+                txt_count = len(list(domain.glob("*.txt")))
+                json_count = len(list(domain.glob("*.json")))
+                print(f"{domain.name}: {txt_count} txt, {json_count} json")
+
+        print(f"✅ Imported files to: {corpus_root}")
+        return 0
+
     if argv and argv[0] == "generate-default-config":
         gen_parser = argparse.ArgumentParser(
             prog="generate-default-config",
