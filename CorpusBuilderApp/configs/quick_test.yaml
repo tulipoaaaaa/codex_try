@@ -8,9 +8,6 @@ enabled_processors:
 
 environments:
   test:
-    directories:
-      corpus_root: ./test_data/corpus
-      raw_data_dir: ./test_data/raw
-      processed_dir: ./test_data/processed
-      metadata_dir: ./test_data/metadata
-      logs_dir: ./test_data/logs
+    corpus_dir: ./test_data/corpus
+    log_dir: ./test_data/logs
+    # cache_dir: ./test_data/cache   # optional

@@ -16,6 +16,8 @@ import multiprocessing
 import types
 from typing import Optional, List, Dict, Any, Tuple, Union
 
+logger = logging.getLogger(__name__)
+
 # ===== CRITICAL: Set Ghostscript environment FIRST, before any imports =====
 def setup_ghostscript_environment():
     """Setup Ghostscript environment for parallel processing."""
@@ -144,9 +146,7 @@ from .chart_image_extractor import ChartImageExtractor
 from .financial_symbol_processor import FinancialSymbolProcessor, AcademicPaperProcessor, MemoryOptimizer
 from ..utils.domain_utils import get_domain_for_file
 from ..utils.pdf_safe_open import safe_open_pdf
-from ..utils.metadata_normalizer import main as normalize_directory
 from shared_tools.processors.domain_classifier import DomainClassifier
-from shared_tools.utils.metadata_normalizer import normalize_metadata
 from .corruption_detector import detect_corruption
 from .language_confidence_detector import detect_language_confidence
 from .machine_translation_detector import detect_machine_translation
@@ -967,7 +967,7 @@ def normalize_metadata_in_directory(directory: Path) -> None:
             
             # Normalize metadata
             if 'metadata' in data:
-                data['metadata'] = normalize_metadata(data['metadata'])
+                data['metadata'] = normalize_metadata_file(data['metadata'])
             
             with open(json_file, 'w', encoding='utf-8') as f:
                 json.dump(data, f, indent=2, ensure_ascii=False)
