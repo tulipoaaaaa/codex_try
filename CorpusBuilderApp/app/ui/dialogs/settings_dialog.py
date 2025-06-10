@@ -8,6 +8,7 @@ from PySide6.QtCore import Qt, Signal as pyqtSignal, Slot as pyqtSlot
 from app.helpers.theme_manager import ThemeManager
 import json
 import os
+import logging
 
 class SettingsDialog(QDialog):
     """Dialog for application settings."""
@@ -17,6 +18,7 @@ class SettingsDialog(QDialog):
     
     def __init__(self, current_settings=None, parent=None):
         super().__init__(parent)
+        self.logger = logging.getLogger(self.__class__.__name__)
         self.current_settings = current_settings or {}
         self.setup_ui()
         self.load_current_settings()
@@ -238,7 +240,10 @@ class SettingsDialog(QDialog):
     def load_current_settings(self):
         """Load current settings into the dialog."""
         # General tab
-        self.env_selector.setCurrentText(self.current_settings.get('environment', 'test'))
+        env_setting = self.current_settings.get('environment', 'test')
+        if isinstance(env_setting, dict):
+            env_setting = 'test'  # Default to test if we got a dict
+        self.env_selector.setCurrentText(env_setting)
         self.python_path.setText(self.current_settings.get('python_path', ''))
         self.venv_path.setText('venv/')
         self.theme_selector.setCurrentText(self.current_settings.get('theme', 'System'))
@@ -373,12 +378,13 @@ class SettingsDialog(QDialog):
         try:
             with open(config_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-        except Exception:
+        except Exception as exc:
+            self.logger.info("Failed to load theme config: %s", exc)
             data = {}
         data['sound_enabled'] = self.sound_checkbox.isChecked()
         try:
             with open(config_path, 'w', encoding='utf-8') as f:
                 json.dump(data, f)
-        except Exception:
-            pass
+        except Exception as exc:
+            self.logger.info("Failed to save theme config: %s", exc)
         # Emit a signal or call a method to update sound_enabled in all tabs if needed

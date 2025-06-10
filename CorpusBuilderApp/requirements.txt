@@ -274,7 +274,7 @@ python-dateutil==2.9.0.post0
 python-docx==1.1.2
 python-dotenv==1.1.0
 pytz==2025.2
-pywin32==310
+pywin32==310; sys_platform == 'win32'
 PyYAML==6.0.2
 queuelib==1.8.0
 rank-bm25==0.2.2
@@ -335,7 +335,6 @@ pytest
 requests
 flite
 pyaudio
-markdownlint-cli
 pytest-qt
 pytest-mock
 pytest-xdist

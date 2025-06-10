@@ -5,6 +5,7 @@ from pathlib import Path
 import logging
 from shared_tools.config.domain_config import DOMAINS
 from typing import Dict, List, Optional, Any
+logger = logging.getLogger(__name__)
 
 class DomainsManager:
     """Manager for crypto-finance corpus domains, including classification, import/export, and category management."""
@@ -224,17 +225,17 @@ class DomainsManager:
         """Print corpus statistics to console"""
         stats = self.generate_corpus_stats()
         
-        print("\nCorpus Analysis:")
-        print(f"Total size: {stats['total_size_mb']:.2f} MB ({stats['total_size_gb']:.2f} GB)")
-        print(f"Total files: {stats['total_files']}")
+        logger.info("\nCorpus Analysis:")
+        logger.info(f"Total size: {stats['total_size_mb']:.2f} MB ({stats['total_size_gb']:.2f} GB)")
+        logger.info(f"Total files: {stats['total_files']}")
         
-        print("\nDomain breakdown:")
+        logger.info("\nDomain breakdown:")
         for domain, domain_stats in stats["domains"].items():
-            print(f"  {domain}:")
-            print(f"    Files: {domain_stats['total_files']} ({domain_stats['pdf_files']} PDFs, {domain_stats['epub_files']} EPUBs, {domain_stats['mobi_files']} MOBIs)")
-            print(f"    Metadata: {domain_stats['meta_files']} files")
-            print(f"    Extracted: {domain_stats['extracted_files']} text files")
-            print(f"    Size: {domain_stats['size_mb']:.2f} MB")
+            logger.info(f"  {domain}:")
+            logger.info(f"    Files: {domain_stats['total_files']} ({domain_stats['pdf_files']} PDFs, {domain_stats['epub_files']} EPUBs, {domain_stats['mobi_files']} MOBIs)")
+            logger.info(f"    Metadata: {domain_stats['meta_files']} files")
+            logger.info(f"    Extracted: {domain_stats['extracted_files']} text files")
+            logger.info(f"    Size: {domain_stats['size_mb']:.2f} MB")
 
     def classify_domain(self, domain: str, confidence_threshold: float = 0.7, use_ml_classification: bool = True, check_whois: bool = False) -> Dict[str, Any]:
         """Classify a domain and return its category and confidence."""

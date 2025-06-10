@@ -1,3 +1,8 @@
+"""
+Module: extractor_utils
+Purpose: Helper functions for text and metadata extraction.
+"""
+
 import re
 from pathlib import Path
 from typing import Dict, List, Optional, Union, Any
@@ -5,11 +10,15 @@ import json
 import hashlib
 from datetime import datetime
 import os
+<<<<<<< HEAD
 
 try:
     from shared_tools.project_config import ProjectConfig
 except ImportError:
     ProjectConfig = None
+=======
+from shared_tools.project_config import ProjectConfig
+>>>>>>> my-feature-branch
 
 def safe_filename(filename: str, max_length: int = 128) -> str:
     """Convert a string to a safe filename, truncated to max_length chars."""

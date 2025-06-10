@@ -1,10 +1,24 @@
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QTabWidget, 
-                             QLabel, QProgressBar, QPushButton, QCheckBox, 
-                             QSpinBox, QListWidget, QGroupBox, QFileDialog, QMessageBox)
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QTabWidget,
+    QLabel,
+    QProgressBar,
+    QPushButton,
+    QCheckBox,
+    QSpinBox,
+    QListWidget,
+    QGroupBox,
+    QFileDialog,
+    QMessageBox,
+)
 from PySide6.QtCore import Qt, Slot as pyqtSlot
+import logging
 from PySide6.QtGui import QIcon
 import os
 import shutil
+import time
 
 from shared_tools.ui_wrappers.processors.batch_nonpdf_extractor_enhanced_wrapper import BatchNonPDFExtractorEnhancedWrapper
 from shared_tools.ui_wrappers.processors.pdf_extractor_wrapper import PDFExtractorWrapper
@@ -27,12 +41,25 @@ from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBa
 from .corpus_manager_tab import NotificationManager
 from app.helpers.icon_manager import IconManager
 from app.helpers.notifier import Notifier
+from app.ui.widgets.section_header import SectionHeader
+from app.ui.theme.theme_constants import PAGE_MARGIN
+
+logger = logging.getLogger(__name__)
 
 
 class ProcessorsTab(QWidget):
-    def __init__(self, project_config, parent=None):
+    def __init__(
+        self,
+        project_config,
+        task_history_service=None,
+        task_queue_manager=None,
+        parent=None,
+    ):
         super().__init__(parent)
         self.project_config = project_config
+        self.task_history_service = task_history_service
+        self.task_queue_manager = task_queue_manager
+        self._task_ids = {}
         self.processor_wrappers = {}
         self.file_queue = []
         self.notification_manager = NotificationManager(self)
@@ -43,8 +70,13 @@ class ProcessorsTab(QWidget):
 
     def setup_ui(self):
         main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
+        main_layout.setSpacing(PAGE_MARGIN)
         icon_manager = IconManager()
-        
+
+        header = SectionHeader("Processors")
+        main_layout.addWidget(header)
+
         # Create tabs for different processor types with icons
         pdf_icon = icon_manager.get_icon_path('PDF document', by='Description') or icon_manager.get_icon_path('Main dashboard and analytics view', by='Function')
         text_icon = icon_manager.get_icon_path('Text Files', by='Description') or icon_manager.get_icon_path('File management and organization', by='Function')
@@ -73,6 +105,7 @@ class ProcessorsTab(QWidget):
         
         # Button for stopping all processors
         stop_all_btn = QPushButton("Stop All Processors")
+        stop_all_btn.setObjectName("danger")
         stop_all_btn.clicked.connect(self.stop_all_processors)
         status_layout.addWidget(stop_all_btn)
         
@@ -144,6 +177,7 @@ class ProcessorsTab(QWidget):
         if start_icon:
             self.pdf_start_btn.setIcon(QIcon(start_icon))
         self.pdf_stop_btn = QPushButton("Stop")
+        self.pdf_stop_btn.setObjectName("danger")
         stop_icon = icon_manager.get_icon_path('Stop operation control', by='Function')
         if stop_icon:
             self.pdf_stop_btn.setIcon(QIcon(stop_icon))
@@ -235,6 +269,7 @@ class ProcessorsTab(QWidget):
         if start_icon:
             self.text_start_btn.setIcon(QIcon(start_icon))
         self.text_stop_btn = QPushButton("Stop")
+        self.text_stop_btn.setObjectName("danger")
         stop_icon = icon_manager.get_icon_path('Stop operation control', by='Function')
         if stop_icon:
             self.text_stop_btn.setIcon(QIcon(stop_icon))
@@ -306,6 +341,7 @@ class ProcessorsTab(QWidget):
         batch_layout.addWidget(self.apply_to_all_btn)
         
         self.apply_to_selected_btn = QPushButton("Apply to Selected Domain")
+        self.apply_to_selected_btn.clicked.connect(self.apply_selected_domain)
         batch_layout.addWidget(self.apply_to_selected_btn)
         
         layout.addWidget(batch_group)
@@ -388,6 +424,7 @@ class ProcessorsTab(QWidget):
         if start_icon:
             self.batch_start_btn.setIcon(QIcon(start_icon))
         self.batch_stop_btn = QPushButton("Stop")
+        self.batch_stop_btn.setObjectName("danger")
         stop_icon = icon_manager.get_icon_path('Stop operation control', by='Function')
         if stop_icon:
             self.batch_stop_btn.setIcon(QIcon(stop_icon))
@@ -422,13 +459,15 @@ class ProcessorsTab(QWidget):
     def init_processors(self):
         """Initialize all processor wrappers with correct parameter types"""
         try:
-            print("DEBUG: Starting processor wrapper initialization...")
-            print(f"DEBUG: project_config type: {type(self.project_config)}")
+            logger.debug("Starting processor wrapper initialization...")
+            logger.debug("project_config type: %s", type(self.project_config))
             
             # Get both config object and config path
             config_object = self.project_config
-            config_path = getattr(self.project_config, 'config_path', str(self.project_config))
-            print(f"DEBUG: Using config_path: {config_path}")
+            config_path = getattr(
+                self.project_config, "config_path", str(self.project_config)
+            )
+            logger.debug("Using config_path: %s", config_path)
             
             # Wrappers that expect config_path (string)
 
@@ -453,37 +492,61 @@ class ProcessorsTab(QWidget):
             # Initialize path-based wrappers
             for name, wrapper_class in path_wrappers:
                 try:
-                    print(f"DEBUG: Initializing {wrapper_class.__name__} with config_path...")
+                    logger.debug(
+                        "Initializing %s with config_path...",
+                        wrapper_class.__name__,
+                    )
                     self.processor_wrappers[name] = wrapper_class(config_path)
-                    print(f"DEBUG: {wrapper_class.__name__} initialized successfully")
+                    logger.debug("%s initialized successfully", wrapper_class.__name__)
                 except Exception as e:
-                    print(f"ERROR: Failed to initialize {wrapper_class.__name__}: {e}")
+                    logger.error(
+                        "Failed to initialize %s: %s", wrapper_class.__name__, e
+                    )
                     self.processor_wrappers[name] = None
             
             # Initialize object-based wrappers
             for name, wrapper_class in object_wrappers:
                 try:
+<<<<<<< HEAD
                     print(f"DEBUG: Initializing {wrapper_class.__name__} with config_object...")
                     self.processor_wrappers[name] = wrapper_class(self.project_config)
                     print(f"DEBUG: {wrapper_class.__name__} initialized successfully")
+=======
+                    logger.debug(
+                        "Initializing %s with config_object...",
+                        wrapper_class.__name__,
+                    )
+                    self.processor_wrappers[name] = wrapper_class(config_object)
+                    logger.debug("%s initialized successfully", wrapper_class.__name__)
+>>>>>>> my-feature-branch
                 except Exception as e:
-                    print(f"ERROR: Failed to initialize {wrapper_class.__name__}: {e}")
+                    logger.error(
+                        "Failed to initialize %s: %s", wrapper_class.__name__, e
+                    )
                     self.processor_wrappers[name] = None
-            
-            print("DEBUG: Processor wrapper initialization completed")
+
+            if self.task_queue_manager:
+                for wrapper in self.processor_wrappers.values():
+                    if wrapper:
+                        wrapper.task_queue_manager = self.task_queue_manager
+
+            logger.debug("Processor wrapper initialization completed")
             
         except Exception as e:
-            print(f"ERROR: Failed to initialize processor wrappers: {e}")
+            logger.error("Failed to initialize processor wrappers: %s", e)
             # Fallback: create empty wrappers dict
-            self.processor_wrappers = {name: None for name in [
-                'pdf', 'text', 'balancer', 'quality', 'deduplicator', 
+            self.processor_wrappers = {
+                name: None
+                for name in [
+                'pdf', 'text', 'balancer', 'quality', 'deduplicator',
                 'domain', 'formula', 'chart', 'language', 'mt_detector', 'financial'
-            ]}
-            print("DEBUG: Using empty processor wrappers as fallback")
+                ]
+            }
+            logger.debug("Using empty processor wrappers as fallback")
 
     def connect_signals(self):
         """Connect signals with defensive checks"""
-        print("DEBUG: Setting up processor signal connections...")
+        logger.debug("Setting up processor signal connections...")
         # Connect PDF processor signals if they exist
         pdf_wrapper = self.processor_wrappers.get('pdf')
         if pdf_wrapper:
@@ -494,7 +557,7 @@ class ProcessorsTab(QWidget):
             if hasattr(pdf_wrapper, 'batch_completed'):
                 pdf_wrapper.batch_completed.connect(self.on_pdf_batch_completed)
             else:
-                print("DEBUG: PDFExtractorWrapper has no 'batch_completed' signal")
+                logger.debug("PDFExtractorWrapper has no 'batch_completed' signal")
         # Connect Text processor signals if they exist
         text_wrapper = self.processor_wrappers.get('text')
         if text_wrapper:
@@ -505,7 +568,7 @@ class ProcessorsTab(QWidget):
             if hasattr(text_wrapper, 'batch_completed'):
                 text_wrapper.batch_completed.connect(self.on_text_batch_completed)
             else:
-                print("DEBUG: TextExtractorWrapper has no 'batch_completed' signal")
+                logger.debug("TextExtractorWrapper has no 'batch_completed' signal")
         # Connect button signals
         if hasattr(self, 'pdf_start_btn'):
             self.pdf_start_btn.clicked.connect(self.start_pdf_processing)
@@ -515,7 +578,7 @@ class ProcessorsTab(QWidget):
             self.text_start_btn.clicked.connect(self.start_text_processing)
         if hasattr(self, 'text_stop_btn'):
             self.text_stop_btn.clicked.connect(self.stop_text_processing)
-        print("DEBUG: Processor signal connections completed")
+        logger.debug("Processor signal connections completed")
 
     def add_pdf_files(self):
         files, _ = QFileDialog.getOpenFileNames(
@@ -550,13 +613,15 @@ class ProcessorsTab(QWidget):
     def start_pdf_processing(self):
         """Start PDF processing with safety checks"""
         if not hasattr(self, 'pdf_file_list'):
-            print("DEBUG: PDF UI not fully initialized")
+            logger.debug("PDF UI not fully initialized")
+            self.processing_status_label.setText("PDF UI not fully initialized")
             return
         pdf_wrapper = self.processor_wrappers.get('pdf')
         if not pdf_wrapper:
-            print("DEBUG: PDF wrapper not available")
+            logger.debug("PDF wrapper not available")
+            self.processing_status_label.setText("PDF wrapper not available")
             return
-        print("DEBUG: PDF processing start requested")
+        logger.debug("PDF processing start requested")
         # Get files from list
         files_to_process = []
         for i in range(self.pdf_file_list.count()):
@@ -572,24 +637,32 @@ class ProcessorsTab(QWidget):
         # Update UI
         self.pdf_start_btn.setEnabled(False)
         self.pdf_stop_btn.setEnabled(True)
+        if self.task_history_service:
+            tid = f"processor_pdf_{int(time.time()*1000)}"
+            self._task_ids['pdf'] = tid
+            self.task_history_service.start_task(tid, 'PDF Processing', {'type': 'processing'})
         # Start processing
         pdf_wrapper.start_batch_processing(files_to_process)
 
     def stop_pdf_processing(self):
         self.processor_wrappers['pdf'].stop()
+        if self.task_history_service and 'pdf' in self._task_ids:
+            self.task_history_service.fail_task(self._task_ids.pop('pdf'), 'stopped')
         self.pdf_start_btn.setEnabled(True)
         self.pdf_stop_btn.setEnabled(False)
 
     def start_text_processing(self):
         """Start Text processing with safety checks"""
         if not hasattr(self, 'text_file_list'):
-            print("DEBUG: Text UI not fully initialized")
+            logger.debug("Text UI not fully initialized")
+            self.processing_status_label.setText("Text UI not fully initialized")
             return
         text_wrapper = self.processor_wrappers.get('text')
         if not text_wrapper:
-            print("DEBUG: Text wrapper not available")
+            logger.debug("Text wrapper not available")
+            self.processing_status_label.setText("Text wrapper not available")
             return
-        print("DEBUG: Text processing start requested")
+        logger.debug("Text processing start requested")
         # Get files from list
         files_to_process = []
         for i in range(self.text_file_list.count()):
@@ -604,43 +677,115 @@ class ProcessorsTab(QWidget):
         # Update UI
         self.text_start_btn.setEnabled(False)
         self.text_stop_btn.setEnabled(True)
+        if self.task_history_service:
+            tid = f"processor_text_{int(time.time()*1000)}"
+            self._task_ids['text'] = tid
+            self.task_history_service.start_task(tid, 'Text Processing', {'type': 'processing'})
         # Start processing
         text_wrapper.start_batch_processing(files_to_process)
 
     def stop_text_processing(self):
         self.processor_wrappers['text'].stop()
+        if self.task_history_service and 'text' in self._task_ids:
+            self.task_history_service.fail_task(self._task_ids.pop('text'), 'stopped')
         self.text_start_btn.setEnabled(True)
         self.text_stop_btn.setEnabled(False)
     
     def apply_advanced_processing(self):
         # Enable/disable processors based on UI selections
-        self.processor_wrappers['deduplicator'].set_enabled(
-            self.enable_deduplication.isChecked()
-        )
-        self.processor_wrappers['domain'].set_enabled(
-            self.enable_domain_classification.isChecked()
-        )
-        self.processor_wrappers['financial'].set_enabled(
-            self.enable_financial_symbols.isChecked()
-        )
-        self.processor_wrappers['language'].set_enabled(
-            self.enable_language_confidence.isChecked()
-        )
-        self.processor_wrappers['mt_detector'].set_enabled(
-            self.enable_mt_detection.isChecked()
-        )
         
-        # Start a complex batch operation that applies multiple processors
-        self.advanced_status.setText("Starting advanced processing...")
+        wrappers_to_run = []
+        mapping = [
+            ("deduplicator", self.enable_deduplication),
+            ("domain", self.enable_domain_classification),
+            ("financial", self.enable_financial_symbols),
+            ("language", self.enable_language_confidence),
+            ("mt_detector", self.enable_mt_detection),
+        ]
+
+        # Enable/disable wrappers if supported and collect the ones to run
+        for name, checkbox in mapping:
+            wrapper = self.processor_wrappers.get(name)
+            if not wrapper:
+                continue
+            if hasattr(wrapper, "set_enabled"):
+                wrapper.set_enabled(checkbox.isChecked())
+            if checkbox.isChecked():
+                wrappers_to_run.append(wrapper)
+
+        if not wrappers_to_run:
+            self.advanced_status.setText("No advanced processors enabled")
+            self.advanced_progress_bar.setValue(0)
+            return
+
+        self._advanced_wrappers = wrappers_to_run
+        self._current_advanced_index = 0
+
         self.advanced_progress_bar.setValue(0)
-        
-        # TODO: Implement complex batch processing with multiple processors
-        # For now, just simulate a basic operation
-        self.advanced_status.setText("Advanced processing in progress...")
-        
-        # This would be done with proper processing in the real implementation
-        self.advanced_progress_bar.setValue(100)
-        self.advanced_status.setText("Advanced processing completed")
+        self.advanced_status.setText("Starting advanced processing...")
+        self._start_next_advanced_processor()
+
+    @pyqtSlot()
+    def apply_selected_domain(self):
+        """Apply advanced processing to a user-selected domain."""
+        from PySide6.QtWidgets import QInputDialog
+        from shared_tools.utils.domain_utils import get_valid_domains
+
+        domains = get_valid_domains()
+        if not domains:
+            self.advanced_status.setText("No domains available")
+            return
+
+        domain, ok = QInputDialog.getItem(
+            self,
+            "Select Domain",
+            "Domain:",
+            domains,
+            0,
+            False,
+        )
+
+        if not ok or not domain:
+            return
+
+        wrappers_to_run = []
+        mapping = [
+            ("deduplicator", self.enable_deduplication),
+            ("domain", self.enable_domain_classification),
+            ("financial", self.enable_financial_symbols),
+            ("language", self.enable_language_confidence),
+            ("mt_detector", self.enable_mt_detection),
+        ]
+
+        for name, checkbox in mapping:
+            wrapper = self.processor_wrappers.get(name)
+            if not wrapper:
+                continue
+            if hasattr(wrapper, "set_enabled"):
+                wrapper.set_enabled(checkbox.isChecked())
+            if checkbox.isChecked():
+                wrappers_to_run.append(wrapper)
+
+        if not wrappers_to_run:
+            self.advanced_status.setText("No advanced processors enabled")
+            self.advanced_progress_bar.setValue(0)
+            return
+
+        self._advanced_wrappers = wrappers_to_run
+        self._current_advanced_index = 0
+        self._advanced_domain = domain
+
+        if self.task_queue_manager:
+            tid = f"adv_domain_{domain}_{int(time.time()*1000)}"
+            self._task_ids["selected_domain"] = tid
+            self.task_queue_manager.add_task(
+                tid,
+                {"name": "AdvancedDomain", "domain": domain},
+            )
+
+        self.advanced_progress_bar.setValue(0)
+        self.advanced_status.setText(f"Starting processing for domain '{domain}'...")
+        self._start_next_advanced_processor(domain=domain)
 
     def start_batch_processing(self):
         input_dir = self.input_dir_path.text()
@@ -723,6 +868,8 @@ class ProcessorsTab(QWidget):
     def on_pdf_batch_completed(self, results):
         self.pdf_start_btn.setEnabled(True)
         self.pdf_stop_btn.setEnabled(False)
+        if self.task_history_service and 'pdf' in self._task_ids:
+            self.task_history_service.complete_task(self._task_ids.pop('pdf'))
         
         # Update status
         success_count = results.get('success_count', 0)
@@ -736,6 +883,8 @@ class ProcessorsTab(QWidget):
     def on_text_batch_completed(self, results):
         self.text_start_btn.setEnabled(True)
         self.text_stop_btn.setEnabled(False)
+        if self.task_history_service and 'text' in self._task_ids:
+            self.task_history_service.complete_task(self._task_ids.pop('text'))
         
         # Update status
         success_count = results.get('success_count', 0)
@@ -748,6 +897,11 @@ class ProcessorsTab(QWidget):
     def stop_all_processors(self):
         for wrapper in self.processor_wrappers.values():
             wrapper.stop()
+
+        self._advanced_wrappers = []
+        self._current_advanced_index = 0
+        self.advanced_progress_bar.setValue(0)
+        self.advanced_status.setText("Advanced processing stopped")
             
         # Reset UI elements
         self.pdf_start_btn.setEnabled(True)
@@ -758,6 +912,66 @@ class ProcessorsTab(QWidget):
         self.batch_stop_btn.setEnabled(False)
         
         self.processing_status_label.setText("All processors stopped")
+
+    def _start_next_advanced_processor(self, domain=None):
+        if domain is not None:
+            self._advanced_domain = domain
+        domain = getattr(self, "_advanced_domain", None)
+
+        if self._current_advanced_index >= len(getattr(self, "_advanced_wrappers", [])):
+            self.advanced_progress_bar.setValue(100)
+            if domain:
+                self.advanced_status.setText(f"Processing for domain '{domain}' completed")
+            else:
+                self.advanced_status.setText("Advanced processing completed")
+            if self.task_queue_manager and "selected_domain" in self._task_ids:
+                self.task_queue_manager.update_task(self._task_ids.pop("selected_domain"), "completed", 100)
+            self._advanced_wrappers = []
+            return
+
+        wrapper = self._advanced_wrappers[self._current_advanced_index]
+
+        if hasattr(wrapper, "progress_updated"):
+            wrapper.progress_updated.connect(self._update_advanced_progress)
+        if hasattr(wrapper, "status_updated"):
+            wrapper.status_updated.connect(self.advanced_status.setText)
+        if hasattr(wrapper, "batch_completed"):
+            wrapper.batch_completed.connect(self._on_advanced_wrapper_completed)
+        elif hasattr(wrapper, "completed"):
+            wrapper.completed.connect(self._on_advanced_wrapper_completed)
+
+        if domain:
+            wrapper.start(domain=domain)
+        else:
+            wrapper.start()
+
+    def _update_advanced_progress(self, value):
+        total = len(self._advanced_wrappers)
+        base = (self._current_advanced_index / total) * 100
+        step = value / total
+        progress = int(base + step)
+        self.advanced_progress_bar.setValue(progress)
+        if self.task_queue_manager and "selected_domain" in self._task_ids:
+            self.task_queue_manager.update_task(
+                self._task_ids["selected_domain"], "running", progress
+            )
+
+    def _on_advanced_wrapper_completed(self, _results):
+        wrapper = self._advanced_wrappers[self._current_advanced_index]
+        try:
+            if hasattr(wrapper, "progress_updated"):
+                wrapper.progress_updated.disconnect(self._update_advanced_progress)
+            if hasattr(wrapper, "status_updated"):
+                wrapper.status_updated.disconnect(self.advanced_status.setText)
+            if hasattr(wrapper, "batch_completed"):
+                wrapper.batch_completed.disconnect(self._on_advanced_wrapper_completed)
+            elif hasattr(wrapper, "completed"):
+                wrapper.completed.disconnect(self._on_advanced_wrapper_completed)
+        except Exception as exc:
+            logger.warning("Failed to disconnect advanced wrapper signals: %s", exc)
+
+        self._current_advanced_index += 1
+        self._start_next_advanced_processor()
 
     def run_batch_operation(self, operation_type):
         selected_files = self.get_selected_files()

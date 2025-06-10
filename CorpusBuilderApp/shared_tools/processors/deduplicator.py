@@ -1,8 +1,12 @@
-# processors/deduplicator.py
+"""
+Module: deduplicator
+Purpose: Detects and removes duplicate documents within a corpus.
+"""
 import os
 import sys
 from pathlib import Path
 import logging
+logger = logging.getLogger(__name__)
 import hashlib
 import json
 import re
@@ -16,7 +20,15 @@ from datetime import datetime
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
 from shared_tools.storage.corpus_manager import CorpusManager
+<<<<<<< HEAD
 from shared_tools.project_config import ProjectConfig
+=======
+from shared_tools.config.project_config import ProjectConfig
+
+# Set up file-based logging
+logging.basicConfig(filename='deduplication.log', level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
+logger.info('Deduplicator script starting...')
+>>>>>>> my-feature-branch
 
 class Deduplicator:
     """Identify and remove duplicate content in the corpus"""
@@ -35,6 +47,7 @@ class Deduplicator:
         
         # Indexes for duplicate detection
         self.file_hashes = {}  # Maps file hash to file paths
+        self.sha256_index = {}  # Maps SHA256 hash to file paths
         self.title_index = {}  # Maps normalized title to document info
         self.minhash_index = {}  # Maps MinHash signatures to document info
         
@@ -48,6 +61,7 @@ class Deduplicator:
             for h in self.logger.handlers
         ):
             self.logger.addHandler(handler)
+<<<<<<< HEAD
 
         self.logger.info("Deduplicator initialized")
 
@@ -61,6 +75,11 @@ class Deduplicator:
                         self.processed_files.add(data.get("file"))
                     except Exception:
                         continue
+=======
+        
+        logger.info('Deduplicator __init__ called')
+        self.logger.info('Deduplicator initialized')
+>>>>>>> my-feature-branch
     
     def scan_corpus(self, rebuild_index=False):
         """Scan corpus directory to build duplicate indexes"""
@@ -76,6 +95,7 @@ class Deduplicator:
                 with open(index_path, 'r') as f:
                     index_data = json.load(f)
                     self.file_hashes = index_data.get('file_hashes', {})
+                    self.sha256_index = index_data.get('sha256_index', {})
                     self.title_index = index_data.get('title_index', {})
                     # MinHash index is rebuilt each time due to its structure
                     self.logger.info(f"Loaded existing deduplication index with {len(self.file_hashes)} entries")
@@ -87,8 +107,10 @@ class Deduplicator:
         # Build the index
         self.logger.info("Building deduplication index...")
         self.file_hashes = {}
+        self.sha256_index = {}
         self.title_index = {}
         self.minhash_index = {}
+        seen_hashes: set[str] = set()
         
         # Scan all files in the corpus directory
         all_files = list(self.corpus_dir.glob("**/*"))
@@ -109,6 +131,13 @@ class Deduplicator:
                 
             # Compute file hash
             file_hash = self._compute_file_hash(file_path)
+
+            sha256 = self._extract_sha256(file_path)
+            if sha256:
+                if sha256 in seen_hashes:
+                    self.logger.warning(f"Duplicate by SHA256 detected: {file_path}")
+                seen_hashes.add(sha256)
+                self.sha256_index.setdefault(sha256, []).append(str(file_path))
             
             if file_hash:
                 # Check if this hash already exists
@@ -144,6 +173,7 @@ class Deduplicator:
             with open(index_path, 'w') as f:
                 json.dump({
                     'file_hashes': self.file_hashes,
+                    'sha256_index': self.sha256_index,
                     'title_index': self.title_index
                 }, f, indent=2)
                 
@@ -151,7 +181,11 @@ class Deduplicator:
         except Exception as e:
             self.logger.error(f"Error saving deduplication index: {e}")
         
+<<<<<<< HEAD
         self.logger.info('scan_corpus called')
+=======
+        logger.info('scan_corpus called')
+>>>>>>> my-feature-branch
         return True
     
     def find_duplicates(self, file_paths: Optional[List[str]] = None, threshold: Optional[float] = None):
@@ -191,8 +225,16 @@ class Deduplicator:
                 return []
         
         duplicates = []
-        
-        # Find files with identical hashes
+
+        # Find files with identical hashes (SHA256 and legacy hashes)
+        for file_hash, file_paths in self.sha256_index.items():
+            if len(file_paths) > 1:
+                duplicates.append({
+                    'type': 'identical_hash',
+                    'hash': file_hash,
+                    'files': file_paths
+                })
+
         for file_hash, file_paths in self.file_hashes.items():
             if len(file_paths) > 1:
                 duplicates.append({
@@ -220,7 +262,11 @@ class Deduplicator:
             content_duplicates = self._find_content_duplicates()
             duplicates.extend(content_duplicates)
         
+<<<<<<< HEAD
         self.logger.info('find_duplicates called')
+=======
+        logger.info('find_duplicates called')
+>>>>>>> my-feature-branch
         return duplicates
     
     def deduplicate(self, file_paths: Optional[List[str]] = None, strategy: str = 'keep_first', output_file: Optional[str] = None, token_loss_report: Optional[str] = None):
@@ -241,9 +287,15 @@ class Deduplicator:
         # --- Token count before deduplication ---
         domain_token_counts_before = self._get_domain_token_counts()
         total_tokens_before = sum(domain_token_counts_before.values())
+<<<<<<< HEAD
 
         self.logger.info(f"Token count before deduplication: {domain_token_counts_before}")
 
+=======
+        
+        logger.info('Token count before deduplication:', domain_token_counts_before)
+        
+>>>>>>> my-feature-branch
         # Find duplicates
         duplicates = self.find_duplicates(file_paths)
         if not duplicates:
@@ -304,7 +356,11 @@ class Deduplicator:
         domain_token_counts_after = self._get_domain_token_counts()
         total_tokens_after = sum(domain_token_counts_after.values())
         
+<<<<<<< HEAD
         self.logger.info(f"Token count after deduplication: {domain_token_counts_after}")
+=======
+        logger.info('Token count after deduplication:', domain_token_counts_after)
+>>>>>>> my-feature-branch
         
         # --- Token loss report ---
         token_loss_stats = {}
@@ -325,7 +381,11 @@ class Deduplicator:
             'tokens_lost': total_tokens_before - total_tokens_after,
             'percent_loss': ((total_tokens_before - total_tokens_after) / total_tokens_before * 100) if total_tokens_before > 0 else 0
         }
+<<<<<<< HEAD
         self.logger.info(f"Token loss stats: {token_loss_stats}")
+=======
+        logger.info('Token loss stats:', token_loss_stats)
+>>>>>>> my-feature-branch
         if token_loss_report:
             with open(token_loss_report, 'w') as f:
                 json.dump(token_loss_stats, f, indent=2)
@@ -336,7 +396,11 @@ class Deduplicator:
                 json.dump({'deduplicated': list(files_to_remove)}, f, indent=2)
             self.logger.info(f"Deduplication report saved to {output_file}")
         
+<<<<<<< HEAD
         self.logger.info('Deduplicate completed')
+=======
+        logger.info('deduplicate called')
+>>>>>>> my-feature-branch
         return list(files_to_remove)
     
     def _compute_file_hash(self, file_path):
@@ -353,6 +417,21 @@ class Deduplicator:
         except Exception as e:
             self.logger.error(f"Error computing hash for {file_path}: {e}")
             return None
+
+    def _extract_sha256(self, file_path: Path) -> Optional[str]:
+        """Return SHA256 from associated metadata if available."""
+        candidates = [Path(f"{file_path}.meta"), Path(f"{file_path}.meta.json"), Path(f"{file_path}.json")]
+        for meta_path in candidates:
+            if meta_path.exists():
+                try:
+                    with open(meta_path, 'r') as f:
+                        data = json.load(f)
+                    sha = data.get("sha256")
+                    if sha:
+                        return sha
+                except Exception:
+                    continue
+        return None
     
     def _extract_title(self, file_path):
         """Extract title from file or associated metadata"""
@@ -364,8 +443,8 @@ class Deduplicator:
                 with open(meta_path, 'r') as f:
                     metadata = json.load(f)
                     return metadata.get('title')
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.exception("Unhandled exception in _extract_title: %s", exc)
         
         # If no metadata or no title in metadata, use filename
         return file_path.stem
@@ -387,7 +466,11 @@ class Deduplicator:
     
     def _find_content_duplicates(self, min_text_length=1000):
         """Find files with similar content using datasketch MinHash and LSH (scalable version)."""
+<<<<<<< HEAD
         self.logger.info('_find_content_duplicates (LSH) called')
+=======
+        logger.info('_find_content_duplicates (LSH) called')
+>>>>>>> my-feature-branch
         try:
             import sys
             from pathlib import Path
@@ -398,8 +481,13 @@ class Deduplicator:
             import hashlib
             
             corpus_manager = CorpusManager(self.corpus_dir)
+<<<<<<< HEAD
             self.logger.info(f"[DEBUG] CorpusManager loading from: {corpus_manager.metadata_file}")
             self.logger.info(f"[DEBUG] Documents loaded: {len(corpus_manager.metadata.get('documents', {}))}")
+=======
+            logger.debug(f"[DEBUG] CorpusManager loading from: {corpus_manager.metadata_file}")
+            logger.debug(f"[DEBUG] Documents loaded: {len(corpus_manager.metadata.get('documents', {}))}")
+>>>>>>> my-feature-branch
             extractor = TextExtractor()
             documents = corpus_manager.metadata.get("documents", {})
             if not documents:
@@ -450,7 +538,11 @@ class Deduplicator:
                     self.logger.error(f"Error processing {doc_id}: {e}")
                     skipped += 1
 
+<<<<<<< HEAD
             self.logger.info(f"[MinHashLSH] Valid docs: {valid}, Skipped: {skipped}")
+=======
+            logger.info(f"[MinHashLSH] Valid docs: {valid}, Skipped: {skipped}")
+>>>>>>> my-feature-branch
             if valid == 0:
                 self.logger.warning("All documents skipped — no MinHash input. Check extraction and metadata.")
                 return []
@@ -476,6 +568,7 @@ class Deduplicator:
                             "similarity_threshold": self.similarity_threshold
                         })
             self.logger.info(f"Found {len(groups)} content similarity duplicate groups (MinHashLSH)")
+<<<<<<< HEAD
             self.logger.info(f"✅ MinHashLSH duplicate groups: {len(groups)}")
             return groups
         except ImportError as e:
@@ -485,6 +578,17 @@ class Deduplicator:
         except Exception as e:
             self.logger.error(f"Error finding content duplicates: {e}")
             self.logger.info(f"Error finding content duplicates: {e}")
+=======
+            logger.info(f"✅ MinHashLSH duplicate groups: {len(groups)}")
+            return groups
+        except ImportError as e:
+            self.logger.error(f"Error importing required modules for content similarity: {e}")
+            logger.warning(f"Error importing required modules for content similarity: {e}")
+            return []
+        except Exception as e:
+            self.logger.error(f"Error finding content duplicates: {e}")
+            logger.warning(f"Error finding content duplicates: {e}")
+>>>>>>> my-feature-branch
             return []
     
     def _get_domain_token_counts(self):
@@ -504,15 +608,15 @@ class Deduplicator:
                             with open(extracted_meta_path, 'r') as f:
                                 ext_meta = json.load(f)
                                 token_count += ext_meta.get("tokens", 0)
-                        except:
-                            pass
+                        except Exception as exc:
+                            logger.exception("Unhandled exception in token count read: %s", exc)
                     elif extracted_path.exists():
                         try:
                             with open(extracted_path, 'r', encoding='utf-8', errors='ignore') as f:
                                 text = f.read()
                                 token_count += len(text.split())
-                        except:
-                            pass
+                        except Exception as exc:
+                            logger.exception("Unhandled exception in file read: %s", exc)
                 domain_token_counts[domain] = token_count
         return domain_token_counts
 
@@ -531,8 +635,8 @@ class Deduplicator:
                     tokens = ext_meta.get("tokens", 0)
                     if tokens:
                         return tokens
-            except:
-                pass
+            except Exception as exc:
+                logger.exception("Unhandled exception in meta token count: %s", exc)
         # 2. Try .txt file (count whitespace tokens)
         if extracted_path.exists():
             try:
@@ -541,8 +645,8 @@ class Deduplicator:
                     tokens = len(text.split())
                     if tokens:
                         return tokens
-            except:
-                pass
+            except Exception as exc:
+                logger.exception("Unhandled exception in text token count: %s", exc)
         # 3. Try .json file (nested token_count)
         extracted_json_path = extracted_dir / f"{file_path.stem}.json"
         if extracted_json_path.exists():
@@ -555,8 +659,8 @@ class Deduplicator:
                     token_count = eq.get("token_count", 0)
                     if token_count:
                         return token_count
-            except Exception as e:
-                pass
+            except Exception as exc:
+                logger.exception("Unhandled exception in json token count: %s", exc)
         return 0
 
     def _append_log(self, file_path: str, result: str) -> None:
@@ -598,7 +702,11 @@ def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     duplicates = deduplicator.find_duplicates()
 
     if verbose:
+<<<<<<< HEAD
         deduplicator.logger.info(f"Found {len(duplicates)} duplicate groups")
+=======
+        logger.info(f"Found {len(duplicates)} duplicate groups")
+>>>>>>> my-feature-branch
     
     return {
         'duplicates': duplicates,
@@ -614,17 +722,36 @@ def main():
     parser.add_argument('--verbose', action='store_true', help='Enable verbose output')
     args = parser.parse_args()
 
+<<<<<<< HEAD
     from shared_tools.project_config import ProjectConfig
     project = ProjectConfig.load(args.project_config)
     results = run_with_project_config(project, args.verbose)
     
     logger = logging.getLogger("deduplicator")
     logger.info("\nDeduplication Results:")
+=======
+    if args.project_config:
+        # Use project config
+        project = ProjectConfig.load(args.project_config)
+        results = run_with_project_config(project, args.verbose)
+    else:
+        # Use default configuration
+        deduplicator = Deduplicator(corpus_dir=args.corpus_dir)
+        deduplicator.scan_corpus()
+        results = deduplicator.find_duplicates()
+    
+    # Print results
+    logger.info(f"\nDeduplication Results:")
+>>>>>>> my-feature-branch
     logger.info(f"Found {len(results.get('duplicates', []))} duplicate groups")
     
     if args.verbose:
         for dup in results.get('duplicates', []):
+<<<<<<< HEAD
             logger.info("\nDuplicate Group:")
+=======
+            logger.info(f"\nDuplicate Group:")
+>>>>>>> my-feature-branch
             for file in dup.get('files', []):
                 logger.info(f"  - {file}")
 

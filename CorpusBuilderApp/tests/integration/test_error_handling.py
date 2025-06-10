@@ -1,9 +1,17 @@
 # tests/test_error_handling.py
 import pytest
 import asyncio
+<<<<<<< HEAD
 
 aiohttp = pytest.importorskip("aiohttp")
 requests = pytest.importorskip("requests")
+=======
+try:
+    import aiohttp
+except ImportError:  # pragma: no cover - optional
+    aiohttp = None
+import requests
+>>>>>>> my-feature-branch
 from unittest.mock import Mock, patch, AsyncMock
 import tempfile
 import os

@@ -342,6 +342,7 @@ QFrame[objectName="card"] QChartView {
     color: transparent; /* Hide the title since we have separate header */
 }
 
+<<<<<<< HEAD
 QFrame[objectName="stat-card"] {
     background-color: #ffffff;
     border: 1px solid #dcdcdc;
@@ -419,3 +420,16 @@ QLabel[objectName="status--info"] {
     text-transform: uppercase;
     letter-spacing: 0.05em;
 }
+=======
+QTableView::item:alternate, QTableWidget::item:alternate {
+    background-color: #F5F5F5;
+}
+QPushButton[objectName="danger"] {
+    background-color: #FF5459;
+    color: #FFFFFF;
+}
+QPushButton[objectName="danger"]:hover {
+    background-color: #E32F37;
+}
+
+>>>>>>> my-feature-branch

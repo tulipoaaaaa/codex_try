@@ -1,4 +1,4 @@
-# CryptoFinance Corpus Builder v3 - Installation Guide
+# Crypto Corpus Builder v3 - Installation Guide
 
 ## Prerequisites
 
@@ -63,6 +63,10 @@ AA_ACCOUNT_COOKIE=your_cookie_here
 # FRED API Key
 FRED_API_KEY=your_fred_key_here
 ```
+
+For a complete description of available environment variables and instructions
+on toggling between test and production modes, see
+[../docs/environment_config.md](../docs/environment_config.md).
 
 ### 6. Launch Application
 

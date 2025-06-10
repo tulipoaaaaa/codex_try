@@ -12,6 +12,8 @@ import re
 import json
 from pathlib import Path
 from typing import Dict, List, Optional, Union, Any
+import logging
+logger = logging.getLogger(__name__)
 
 # Try to load domains from config, else fallback
 try:
@@ -61,7 +63,7 @@ class DomainKeywordHelper:
                     config = json.load(f)
                     return config.get('domains', {})
             except Exception as e:
-                print(f"Warning: Could not load domains from {self.config_path}: {e}")
+                logger.warning(f"Warning: Could not load domains from {self.config_path}: {e}")
         
         # Fallback to module-level config
         if _CONFIG_DOMAINS is not None:
@@ -83,7 +85,7 @@ class DomainKeywordHelper:
                     config = json.load(f)
                     return config.get('keywords', DOMAIN_KEYWORDS)
             except Exception as e:
-                print(f"Warning: Could not load keywords from {self.config_path}: {e}")
+                logger.warning(f"Warning: Could not load keywords from {self.config_path}: {e}")
         return DOMAIN_KEYWORDS
     
     def get_valid_domains(self) -> List[str]:
@@ -114,52 +116,52 @@ def get_domain_for_file(file_path, text=None, debug=False):
         file_path_str = file_path
     file_path_str = os.path.normpath(file_path_str)
     if debug:
-        print(f"[DEBUG] get_domain_for_file called with:")
-        print(f"  file_path: {file_path_str}")
-        print(f"  valid_domains: {valid_domains}")
+        logger.debug(f"[DEBUG] get_domain_for_file called with:")
+        logger.info(f"  file_path: {file_path_str}")
+        logger.info(f"  valid_domains: {valid_domains}")
     # 1. Parent directory (lowercased)
     parent_dir = os.path.basename(os.path.dirname(file_path_str)).lower()
     if debug:
-        print(f"  Parent directory (lowercased): {parent_dir}")
+        logger.info(f"  Parent directory (lowercased): {parent_dir}")
     if parent_dir in valid_domains:
         if debug:
-            print(f"  ✅ Domain matched from parent directory: {parent_dir}")
+            logger.info(f"  ✅ Domain matched from parent directory: {parent_dir}")
         assigned_domain = parent_dir
         if debug:
-            print(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: {assigned_domain}")
+            logger.info(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: {assigned_domain}")
         assert isinstance(assigned_domain, str), "Assigned domain is not a string"
         return assigned_domain
     # 2. Partial match in parent directory
     for domain in valid_domains:
         if domain in parent_dir:
             if debug:
-                print(f"  ✅ Domain matched partially in parent directory: {domain}")
+                logger.info(f"  ✅ Domain matched partially in parent directory: {domain}")
             assigned_domain = domain
             if debug:
-                print(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: {assigned_domain}")
+                logger.info(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: {assigned_domain}")
             assert isinstance(assigned_domain, str), "Assigned domain is not a string"
             return assigned_domain
     # 3. All path components (lowercased)
     path_parts = file_path_str.replace('\\', '/').split('/')
     path_parts = [p.lower() for p in path_parts]
     if debug:
-        print(f"  Path parts: {path_parts}")
+        logger.info(f"  Path parts: {path_parts}")
     for part in path_parts:
         if part in valid_domains:
             if debug:
-                print(f"  ✅ Domain matched in path part: {part}")
+                logger.info(f"  ✅ Domain matched in path part: {part}")
             assigned_domain = part
             if debug:
-                print(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: {assigned_domain}")
+                logger.info(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: {assigned_domain}")
             assert isinstance(assigned_domain, str), "Assigned domain is not a string"
             return assigned_domain
         for domain in valid_domains:
             if domain in part:
                 if debug:
-                    print(f"  ✅ Domain matched partially in path part: {domain} in {part}")
+                    logger.info(f"  ✅ Domain matched partially in path part: {domain} in {part}")
                 assigned_domain = domain
                 if debug:
-                    print(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: {assigned_domain}")
+                    logger.info(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: {assigned_domain}")
                 assert isinstance(assigned_domain, str), "Assigned domain is not a string"
                 return assigned_domain
     # 4. Keyword matching (filename/text)
@@ -168,10 +170,10 @@ def get_domain_for_file(file_path, text=None, debug=False):
         for kw in keywords:
             if kw in fname:
                 if debug:
-                    print(f"  ✅ Domain keyword match in filename: {dom} via {kw}")
+                    logger.info(f"  ✅ Domain keyword match in filename: {dom} via {kw}")
                 assigned_domain = dom
                 if debug:
-                    print(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: {assigned_domain}")
+                    logger.info(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: {assigned_domain}")
                 assert isinstance(assigned_domain, str), "Assigned domain is not a string"
                 return assigned_domain
     if text:
@@ -180,15 +182,15 @@ def get_domain_for_file(file_path, text=None, debug=False):
             for kw in keywords:
                 if kw in text_lower:
                     if debug:
-                        print(f"  ✅ Domain keyword match in text: {dom} via {kw}")
+                        logger.info(f"  ✅ Domain keyword match in text: {dom} via {kw}")
                     assigned_domain = dom
                     if debug:
-                        print(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: {assigned_domain}")
+                        logger.info(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: {assigned_domain}")
                     assert isinstance(assigned_domain, str), "Assigned domain is not a string"
                     return assigned_domain
     if debug:
-        print("  ❌ No domain match found, returning 'unknown'")
-        print(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: unknown")
+        logger.warning("  ❌ No domain match found, returning 'unknown'")
+        logger.info(f"[FINAL] Path: {file_path_str}, Domains: {valid_domains}, Assigned: unknown")
     assigned_domain = "unknown"
     assert isinstance(assigned_domain, str), "Assigned domain is not a string"
     return assigned_domain 

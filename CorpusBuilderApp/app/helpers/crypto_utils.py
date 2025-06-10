@@ -1,8 +1,9 @@
-import base64
 import keyring
 from cryptography.fernet import Fernet, InvalidToken
 
-SERVICE_NAME = 'CryptoFinanceCorpusBuilder'
+# Reserved for secure config storage (future)
+
+SERVICE_NAME = 'CryptoCorpusBuilder'
 KEYRING_KEY = 'config_encryption_key'
 
 

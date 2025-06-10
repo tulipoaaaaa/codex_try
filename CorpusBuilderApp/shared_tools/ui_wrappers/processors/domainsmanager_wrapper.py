@@ -7,9 +7,9 @@ import os
 import json
 from typing import Dict, List, Optional, Any, Set
 from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Slot as pyqtSlot, QMutex
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
-                           QProgressBar, QLabel, QTextEdit, QFileDialog, QCheckBox, 
-                           QSpinBox, QGroupBox, QGridLayout, QComboBox, QListWidget,
+from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
+                           QProgressBar, QLabel, QTextEdit, QFileDialog, QCheckBox,
+                           QSpinBox, QDoubleSpinBox, QGroupBox, QGridLayout, QComboBox, QListWidget,
                            QSplitter, QTabWidget, QTableWidget, QTableWidgetItem,
                            QHeaderView, QLineEdit, QTreeWidget, QTreeWidgetItem)
 from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
@@ -1017,3 +1017,29 @@ class DomainsManagerWrapper(BaseWrapper, ProcessorWrapperMixin):
     def is_processing(self) -> bool:
         """Check if any operation is currently active"""
         return self.worker is not None and self.worker.isRunning()
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``."""
+        cfg = {}
+        if hasattr(self.config, 'get_processor_config'):
+            cfg = self.config.get_processor_config('domainsmanager') or {}
+        for k, v in cfg.items():
+            method = f'set_{k}'
+            if hasattr(self, method):
+                try:
+                    getattr(self, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via wrapper', k)
+            if hasattr(self.processor, method):
+                try:
+                    getattr(self.processor, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via processor', k)
+            if hasattr(self.processor, k):
+                setattr(self.processor, k, v)
+            elif hasattr(self, k):
+                setattr(self, k, v)
+        if cfg and hasattr(self, 'configuration_changed'):
+            self.configuration_changed.emit(cfg)

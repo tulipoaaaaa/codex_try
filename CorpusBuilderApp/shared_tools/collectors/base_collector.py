@@ -3,6 +3,8 @@ import os
 import logging
 import random
 import time
+import json
+import hashlib
 import requests
 from urllib.parse import urlparse
 from pathlib import Path
@@ -82,6 +84,17 @@ class BaseCollector:
         self._setup_domain_directories()
         self.output_dir = self.raw_data_dir
         self.session = requests.Session()
+
+        # Hash cache for optional deduplication
+        self.hash_cache_path = Path(getattr(config, 'get_metadata_dir', lambda: Path(config.metadata_dir))()) / 'seen_hashes.json'
+        self.hash_cache = {}
+        if self.hash_cache_path.exists():
+            try:
+                with open(self.hash_cache_path, 'r') as f:
+                    self.hash_cache = json.load(f)
+            except Exception as exc:  # pragma: no cover - non-critical load failure
+                self.logger.warning(f"Failed to load hash cache: {exc}")
+        self.skip_known_hashes = False
     
     def _setup_domain_directories(self):
         """Create domain-based directory structure based on config."""
@@ -161,21 +174,41 @@ class BaseCollector:
         # Download the file
         headers = {'User-Agent': self._get_random_user_agent()}
         
-        try:
-            self.logger.info(f"Downloading {url} to {filepath}")
-            response = requests.get(url, headers=headers, stream=True, timeout=30)
-            response.raise_for_status()
-            
-            with open(filepath, 'wb') as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:
-                        f.write(chunk)
-            
-            self.logger.info(f"Successfully downloaded {filepath}")
-            return filepath
-        except Exception as e:
-            self.logger.error(f"Error downloading {url}: {e}")
-            return None
+        for attempt in range(3):
+            try:
+                self.logger.info(f"Downloading {url} to {filepath}")
+                response = requests.get(url, headers=headers, stream=True, timeout=30)
+                response.raise_for_status()
+
+                if int(response.headers.get("Content-Length", 0)) > 100_000_000:
+                    self.logger.warning(f"Large file: {filename}")
+
+                with open(filepath, 'wb') as f:
+                    for chunk in response.iter_content(chunk_size=8192):
+                        if chunk:
+                            f.write(chunk)
+
+                sha256 = hashlib.sha256(filepath.read_bytes()).hexdigest()
+                self.logger.info(f"SHA256 for {filepath.name}: {sha256}")
+
+                if sha256 in self.hash_cache and self.skip_known_hashes:
+                    self.logger.info(f"Known file detected by hash: {filepath}")
+                    if filepath.exists():
+                        filepath.unlink()
+                    return None
+
+                if sha256 not in self.hash_cache:
+                    self.hash_cache[sha256] = str(filepath)
+                    self._save_hash_cache()
+
+                self.logger.info(f"Successfully downloaded {filepath}")
+                return filepath
+            except Exception as e:
+                if attempt == 2:
+                    self.logger.error(f"Download failed after 3 attempts: {e}")
+                    return None
+                self.logger.warning(f"Retry {attempt+1}/3 for {url}")
+                time.sleep(2)
     
     def _get_random_user_agent(self) -> str:
         """Return a random user agent string"""
@@ -187,3 +220,12 @@ class BaseCollector:
         delay = random.uniform(*self.delay_range)
         self.logger.debug(f"Waiting {delay:.2f}s before requesting from {domain}")
         time.sleep(delay)
+
+    def _save_hash_cache(self) -> None:
+        """Persist the global hash cache safely."""
+        try:
+            self.hash_cache_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(self.hash_cache_path, 'w') as f:
+                json.dump(self.hash_cache, f, indent=2)
+        except Exception as exc:  # pragma: no cover - non-critical save failure
+            self.logger.warning(f"Failed to update hash cache: {exc}")

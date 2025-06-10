@@ -9,6 +9,8 @@ class WebWrapper(BaseWrapper, CollectorWrapperMixin):
     
     def __init__(self, config):
         super().__init__(config)
+        self.project_config = config
+        self.name = "web"
         self.collector = None
         self.urls = []
         
@@ -31,3 +33,15 @@ class WebWrapper(BaseWrapper, CollectorWrapperMixin):
             'urls': self.urls
         })
         super().start(**kwargs)
+
+    def refresh_config(self):
+        """Reload configuration parameters such as URL list."""
+        cfg = self.config.get(f"collectors.{self.name}", {}) or {}
+        for key, value in cfg.items():
+            method = f"set_{key}"
+            if hasattr(self, method):
+                try:
+                    getattr(self, method)(value)
+                except Exception:
+                    continue
+

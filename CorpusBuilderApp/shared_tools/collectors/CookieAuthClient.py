@@ -1,4 +1,7 @@
-# CookieAuthClient.py - Balanced quality and PDF focus
+"""
+Module: CookieAuthClient
+Purpose: Handles authenticated PDF downloads using session cookies.
+"""
 import re
 import os
 import json
@@ -9,6 +12,7 @@ import requests
 from dotenv import load_dotenv
 import time
 import logging
+logger = logging.getLogger(__name__)
 
 class CookieAuthClient:
     """Client for Anna's Archive with focus on high-quality PDFs"""
@@ -20,7 +24,7 @@ class CookieAuthClient:
             self.download_dir = Path(download_dir)
         else:
             self.download_dir = Path("/workspace/data/corpus_1/temp")
-            print("WARNING: Using default (legacy) download directory. Please pass a harmonized output directory for proper domain-based organization.")
+            logger.warning("WARNING: Using default (legacy) download directory. Please pass a harmonized output directory for proper domain-based organization.")
         self.download_dir.mkdir(parents=True, exist_ok=True)
         
         # Use provided cookie or load from environment
@@ -30,7 +34,7 @@ class CookieAuthClient:
             self.account_cookie = os.getenv("AA_ACCOUNT_COOKIE")
             
         if not self.account_cookie:
-            print("WARNING: No account cookie provided or found in environment")
+            logger.warning("WARNING: No account cookie provided or found in environment")
         
         # Initialize session with browser-like headers
         self.session = requests.Session()
@@ -48,7 +52,7 @@ class CookieAuthClient:
                 domain="annas-archive.org",
                 path="/"
             )
-            print("Set aa_account_id2 authentication cookie")
+            logger.info("Set aa_account_id2 authentication cookie")
         
         # Verify authentication
         self.is_authenticated = self._verify_authentication()
@@ -61,18 +65,18 @@ class CookieAuthClient:
             
             # Check for authenticated indicators
             if "Downloaded files" in response.text:
-                print("[OK] Successfully authenticated with account cookie")
+                logger.info("[OK] Successfully authenticated with account cookie")
                 return True
             else:
-                print("[ERROR] Not authenticated - invalid or expired cookie")
+                logger.warning("[ERROR] Not authenticated - invalid or expired cookie")
                 return False
         except Exception as e:
-            print(f"Error verifying authentication: {e}")
+            logger.warning(f"Error verifying authentication: {e}")
             return False
     
     def search(self, query, extended_search=True):
         """Two-phase search: First try PDF-only, then try without filter if needed"""
-        print(f"Searching for: '{query}'")
+        logger.info(f"Searching for: '{query}'")
         
         # Phase 1: Try with PDF filter
         search_url = "https://annas-archive.org/search"
@@ -82,7 +86,7 @@ class CookieAuthClient:
         }
         
         try:
-            print("Searching for PDFs...")
+            logger.info("Searching for PDFs...")
             response = self.session.get(search_url, params=params, timeout=30)
             response.raise_for_status()
             
@@ -90,7 +94,7 @@ class CookieAuthClient:
             
             # If no results and extended_search is enabled, try without PDF filter
             if not results and extended_search:
-                print("No PDF results found. Trying without PDF filter...")
+                logger.info("No PDF results found. Trying without PDF filter...")
                 params = {"q": query}  # Remove PDF filter
                 
                 response = self.session.get(search_url, params=params, timeout=30)
@@ -103,17 +107,17 @@ class CookieAuthClient:
                 pdf_results = [r for r in all_results if r.get('is_pdf', False)]
                 
                 if pdf_results:
-                    print(f"Found {len(pdf_results)} PDF results in extended search")
+                    logger.info(f"Found {len(pdf_results)} PDF results in extended search")
                     results = pdf_results
                 else:
-                    print("No PDF results found even in extended search")
+                    logger.info("No PDF results found even in extended search")
             else:
-                print(f"Found {len(results)} PDF results in initial search")
+                logger.info(f"Found {len(results)} PDF results in initial search")
                 
             return results
             
         except Exception as e:
-            print(f"Error searching for '{query}': {e}")
+            logger.warning(f"Error searching for '{query}': {e}")
             return []
     
     def _parse_search_results(self, html_content, mark_pdf=False):
@@ -195,13 +199,13 @@ class CookieAuthClient:
     def download_file(self, md5, output_path=None):
         """Download PDF using its MD5 hash"""
         if not self.is_authenticated:
-            print("Cannot download - not authenticated")
+            logger.info("Cannot download - not authenticated")
             return None
         
         try:
             # First visit the details page to set up proper referrer
             detail_url = f"https://annas-archive.org/md5/{md5}"
-            print(f"Visiting details page: {detail_url}")
+            logger.info(f"Visiting details page: {detail_url}")
             
             detail_response = self.session.get(detail_url, timeout=30)
             detail_response.raise_for_status()
@@ -224,7 +228,7 @@ class CookieAuthClient:
             
             # Direct access to server 0 which usually works best
             download_url = f"https://annas-archive.org/fast_download/{md5}/0/0"
-            print(f"Downloading PDF from: {download_url}")
+            logger.info(f"Downloading PDF from: {download_url}")
             
             download_response = self.session.get(
                 download_url,
@@ -237,31 +241,31 @@ class CookieAuthClient:
             content_type = download_response.headers.get("Content-Type", "").lower()
             
             if "application/pdf" in content_type:
-                print(f"Received PDF content. Saving to file...")
+                logger.info(f"Received PDF content. Saving to file...")
                 with open(output_path, "wb") as f:
                     f.write(download_response.content)
                 
-                print(f"✅ PDF saved to: {output_path}")
+                logger.info(f"✅ PDF saved to: {output_path}")
                 
                 # Check if the PDF is valid
                 if self.check_file_validity(output_path):
                     return output_path
                 else:
-                    print("Downloaded file is not a valid PDF. Trying another server...")
+                    logger.info("Downloaded file is not a valid PDF. Trying another server...")
                     # Try to remove invalid file
                     try:
                         os.remove(output_path)
-                    except:
-                        pass
+                    except Exception as exc:
+                        logger.exception("Unhandled exception in remove invalid file: %s", exc)
             else:
                 # If we got HTML instead of PDF, check if it has membership wall
                 if "Become a member" in download_response.text:
-                    print("❌ Hit membership wall - authentication may have failed")
+                    logger.warning("❌ Hit membership wall - authentication may have failed")
                     return None
             
             # First server didn't work, try server 1
             alt_download_url = f"https://annas-archive.org/fast_download/{md5}/0/1"
-            print(f"Trying alternative server: {alt_download_url}")
+            logger.info(f"Trying alternative server: {alt_download_url}")
             
             alt_response = self.session.get(
                 alt_download_url,
@@ -274,27 +278,27 @@ class CookieAuthClient:
             alt_content_type = alt_response.headers.get("Content-Type", "").lower()
             
             if "application/pdf" in alt_content_type:
-                print(f"Received PDF from alternative server. Saving to file...")
+                logger.info(f"Received PDF from alternative server. Saving to file...")
                 with open(output_path, "wb") as f:
                     f.write(alt_response.content)
                 
                 # Check if the PDF is valid
                 if self.check_file_validity(output_path):
-                    print(f"✅ PDF saved to: {output_path}")
+                    logger.info(f"✅ PDF saved to: {output_path}")
                     return output_path
                 else:
-                    print("Downloaded file is not a valid PDF.")
+                    logger.info("Downloaded file is not a valid PDF.")
                     # Try to remove invalid file
                     try:
                         os.remove(output_path)
-                    except:
-                        pass
+                    except Exception as exc:
+                        logger.exception("Unhandled exception in remove invalid file: %s", exc)
             
-            print("❌ Could not download a valid PDF.")
+            logger.warning("❌ Could not download a valid PDF.")
             return None
             
         except Exception as e:
-            print(f"Error downloading file: {e}")
+            logger.warning(f"Error downloading file: {e}")
             return None
     
     def download_best_result(self, query, domain_dir=None):
@@ -310,14 +314,14 @@ class CookieAuthClient:
         results = self.search(query)
         
         if not results:
-            print("No PDF results found, cannot download")
+            logger.info("No PDF results found, cannot download")
             return None
             
         # Select the best result
         best_result = self.select_best_result(results)
         
         if not best_result:
-            print("Could not select a suitable result")
+            logger.info("Could not select a suitable result")
             return None
             
         # Create filepath with improved naming
@@ -348,7 +352,7 @@ class CookieAuthClient:
                 
             return downloaded_file
         else:
-            print("Download failed")
+            logger.warning("Download failed")
             return None
     
     def download_from_list(self, download_list, domain_dir=None):
@@ -368,7 +372,7 @@ class CookieAuthClient:
             if author:
                 search_query += f" {author}"
             
-            print(f"\n[{i+1}/{len(download_list)}] Processing: {search_query}")
+            logger.info(f"\n[{i+1}/{len(download_list)}] Processing: {search_query}")
             
             # Set up domain directory
             if domain:
@@ -381,11 +385,11 @@ class CookieAuthClient:
             search_results = self.search(search_query)
             
             if not search_results:
-                print(f"No PDF results found for: {search_query}")
+                logger.info(f"No PDF results found for: {search_query}")
                 
                 # Try with a broader query - just the title
                 if author and len(title.split()) >= 2:
-                    print(f"Trying with broader query: {title}")
+                    logger.info(f"Trying with broader query: {title}")
                     search_results = self.search(title)
                 
                 if not search_results:
@@ -399,7 +403,7 @@ class CookieAuthClient:
             best_result = self.select_best_result(search_results)
             
             if not best_result:
-                print(f"Could not select a suitable result for: {search_query}")
+                logger.info(f"Could not select a suitable result for: {search_query}")
                 results["failed"].append({
                     "item": item,
                     "reason": "No suitable result found"
@@ -422,7 +426,7 @@ class CookieAuthClient:
             
             while download_attempts < max_attempts and not downloaded_file:
                 if download_attempts > 0:
-                    print(f"Retry attempt...")
+                    logger.info(f"Retry attempt...")
                     time.sleep(3)  # Short wait before retrying
                     
                 downloaded_file = self.download_file(md5, filepath)
@@ -448,7 +452,7 @@ class CookieAuthClient:
                     "md5": md5
                 })
                 
-                print(f"✅ Successfully downloaded: {downloaded_file.name}")
+                logger.info(f"✅ Successfully downloaded: {downloaded_file.name}")
             else:
                 results["failed"].append({
                     "item": item,
@@ -456,36 +460,36 @@ class CookieAuthClient:
                     "md5": md5
                 })
                 
-                print(f"❌ Failed to download: {clean_title}")
+                logger.warning(f"❌ Failed to download: {clean_title}")
             
             # Add a short delay between downloads
             if i < len(download_list) - 1:
                 delay = 2
-                print(f"Waiting {delay} seconds before next download...")
+                logger.info(f"Waiting {delay} seconds before next download...")
                 time.sleep(delay)
         
         # Print summary
-        print("\n===== Download Summary =====")
-        print(f"Total items: {len(download_list)}")
-        print(f"Successful: {len(results['successful'])}")
-        print(f"Failed: {len(results['failed'])}")
+        logger.info("\n===== Download Summary =====")
+        logger.info(f"Total items: {len(download_list)}")
+        logger.info(f"Successful: {len(results['successful'])}")
+        logger.warning(f"Failed: {len(results['failed'])}")
         
         # Save results to file
         results_file = self.download_dir / "download_results.json"
         with open(results_file, 'w') as f:
             json.dump(results, f, indent=2)
         
-        print(f"Results saved to: {results_file}")
+        logger.info(f"Results saved to: {results_file}")
         
         return results
     
     def select_best_result(self, results):
         """Select the best PDF result based on quality indicators"""
         if not results:
-            print("No results to select from")
+            logger.info("No results to select from")
             return None
             
-        print(f"Selecting best result from {len(results)} options...")
+        logger.info(f"Selecting best result from {len(results)} options...")
         
         # Score each result based on quality indicators
         scored_results = []
@@ -533,43 +537,43 @@ class CookieAuthClient:
         scored_results.sort(key=lambda x: x[1], reverse=True)
         
         # Print top 3 scored results
-        print("\nTop results by quality score:")
+        logger.info("\nTop results by quality score:")
         for i, (result, score) in enumerate(scored_results[:min(3, len(scored_results))]):
             size_info = f"{result.get('size_mb', 0):.1f} MB" if result.get('size_mb', 0) > 0 else result.get('file_size', 'Unknown size')
-            print(f"Result #{i+1} (Score: {score}):")
-            print(f"  Title: {result.get('title', 'Unknown')}")
-            print(f"  Size: {size_info}")
-            print(f"  Info: {result.get('file_info', 'Unknown')}")
+            logger.info(f"Result #{i+1} (Score: {score}):")
+            logger.info(f"  Title: {result.get('title', 'Unknown')}")
+            logger.info(f"  Size: {size_info}")
+            logger.info(f"  Info: {result.get('file_info', 'Unknown')}")
             
         # Return the highest scored result
         best_result = scored_results[0][0]
-        print(f"\nSelected best result: {best_result.get('title', 'Unknown')}")
+        logger.info(f"\nSelected best result: {best_result.get('title', 'Unknown')}")
         return best_result
     
     def check_file_validity(self, filepath):
         """Check if file is a valid PDF"""
         if not os.path.exists(filepath):
-            print(f"File does not exist: {filepath}")
+            logger.info(f"File does not exist: {filepath}")
             return False
             
         try:
             # Check file size - reject extremely small files
             file_size = os.path.getsize(filepath)
             if file_size < 10000:  # Less than 10KB
-                print(f"File too small to be a valid PDF: {file_size/1024:.1f} KB")
+                logger.info(f"File too small to be a valid PDF: {file_size/1024:.1f} KB")
                 return False
                 
             with open(filepath, 'rb') as f:
                 header = f.read(4)  # First 4 bytes for PDF signature
                 
                 if not header.startswith(b'%PDF'):
-                    print(f"Invalid PDF file: {filepath}")
-                    print(f"Header: {header}")
+                    logger.info(f"Invalid PDF file: {filepath}")
+                    logger.info(f"Header: {header}")
                     return False
                     
             # If we reached here, file is a valid PDF
-            print(f"Valid PDF verified: {filepath.name} ({file_size/1024/1024:.2f} MB)")
+            logger.info(f"Valid PDF verified: {filepath.name} ({file_size/1024/1024:.2f} MB)")
             return True
         except Exception as e:
-            print(f"Error checking file validity: {e}")
+            logger.warning(f"Error checking file validity: {e}")
             return False

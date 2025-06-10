@@ -10,6 +10,8 @@ class GitHubWrapper(BaseWrapper, CollectorWrapperMixin):
     
     def __init__(self, config):
         super().__init__(config)
+        self.project_config = config
+        self.name = "github"
         self.collector = None
         self.search_terms = []
         self.topic = None
@@ -43,3 +45,22 @@ class GitHubWrapper(BaseWrapper, CollectorWrapperMixin):
             'topic': self.topic,
             'max_repos': self.max_repos
         })
+        super().start(**kwargs)
+
+    def refresh_config(self):
+        """Reload search parameters and API credentials from configuration."""
+        cfg = self.config.get(f"collectors.{self.name}", {}) or {}
+        for key, value in cfg.items():
+            method = f"set_{key}"
+            if hasattr(self, method):
+                try:
+                    getattr(self, method)(value)
+                except Exception:
+                    continue
+
+        if self.collector:
+            token = self.config.get("api_keys.github_token")
+            if token:
+                self.collector.api_key = token
+
+

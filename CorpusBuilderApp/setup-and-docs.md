@@ -1,10 +1,10 @@
-# CryptoFinance Corpus Builder v3 - Complete Package
+# Crypto Corpus Builder v3 - Complete Package
 
 ## Requirements File
 
 ```
 # File: requirements.txt
-# CryptoFinance Corpus Builder Dependencies
+# Crypto Corpus Builder Dependencies
 
 # Core UI Framework
 PySide6>=6.5,<7
@@ -80,7 +80,7 @@ mypy>=1.6.0
 ```python
 # File: setup.py
 """
-Setup script for CryptoFinance Corpus Builder
+Setup script for Crypto Corpus Builder
 """
 
 from setuptools import setup, find_packages
@@ -149,9 +149,9 @@ setup(
 ```batch
 @echo off
 REM File: launch_app.bat
-REM Windows launcher for CryptoFinance Corpus Builder
+REM Windows launcher for Crypto Corpus Builder
 
-echo Starting CryptoFinance Corpus Builder v3...
+echo Starting Crypto Corpus Builder v3...
 
 REM Check if virtual environment exists
 if exist "G:\venv\ai_trading_dev_1\Scripts\activate.bat" (
@@ -192,7 +192,7 @@ if errorlevel 1 (
 
 ```markdown
 # File: INSTALLATION.md
-# CryptoFinance Corpus Builder v3 - Installation Guide
+# Crypto Corpus Builder v3 - Installation Guide
 
 ## Prerequisites
 
@@ -247,6 +247,10 @@ FRED_API_KEY=your_fred_key_here
 
 # Other API keys as needed
 ```
+
+For more environment variable examples and details on switching between test
+and production, see
+[../docs/environment_config.md](../docs/environment_config.md).
 
 ### 5. Directory Structure
 
@@ -335,7 +339,7 @@ pytest tests/
 For GUI tests:
 
 ```bash
-pytest tests/ui/ --qt-api pyqt6
+pytest tests/ui/ --qt-api pyside6
 ```
 ```
 
@@ -348,7 +352,11 @@ pytest tests/ui/ --qt-api pyqt6
 ## Directory Structure
 
 ```
+<<<<<<< HEAD
 corpusbuilder/
+=======
+CryptoCorpusBuilder/
+>>>>>>> my-feature-branch
 ├── app/                          # Main application code
 │   ├── main.py                   # Application entry point
 │   ├── main_window.py            # Main window class

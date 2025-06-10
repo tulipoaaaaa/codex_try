@@ -1,12 +1,12 @@
 """
-Chart Manager for CryptoFinance Corpus Builder
+Chart Manager for Crypto Corpus Builder
 Centralizes chart styling, colors, and creation for consistency across the application.
 """
 
-from PySide6.QtGui import QColor, QPainter, QBrush
+from PySide6.QtGui import QColor, QPainter
 from PySide6.QtCharts import QChart, QChartView, QPieSeries, QBarSeries, QBarSet, QBarCategoryAxis, QValueAxis
 from PySide6.QtCore import Qt
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 
 
 class ChartManager:
@@ -95,7 +95,7 @@ class ChartManager:
         series = QPieSeries()
         
         for i, (label, value) in enumerate(data.items()):
-            slice_obj = series.append(f"{label} ({value:.1f}%)", value)
+            slice_obj = series.append(label, value)
             slice_obj.setLabelVisible(True)
             
             # Apply consistent colors
@@ -115,6 +115,15 @@ class ChartManager:
                 slice_obj.setLabelColor(QColor(255, 255, 255))  # Pure white for dark theme
             else:
                 slice_obj.setLabelColor(QColor(0, 0, 0))        # Pure black for light theme
+
+            # Attach count and percentage details to label and tooltip
+            domain_count = slice_obj.property("domain_count")
+            pct = round(slice_obj.percentage() * 100, 1)
+            slice_label = slice_obj.label()
+            slice_obj.setLabel(f"{slice_label} ({pct}%)")
+            slice_obj.setToolTip(
+                f"{slice_obj.label()}: {domain_count if domain_count is not None else 0} files ({slice_obj.percentage() * 100:.1f}%)"
+            )
         
         chart.addSeries(series)
         
@@ -236,24 +245,18 @@ class ChartManager:
         """Get consistent color for a status"""
         return self.STATUS_COLORS.get(status.lower(), self.BRAND_COLORS['primary'])
     
-    def update_chart_theme(self, chart_view: QChartView):
-        """Update an existing chart's theme"""
-        chart = chart_view.chart()
+    def apply_chart_theme(self, chart: QChart) -> None:
+        """Apply the current theme to a chart instance."""
         chart.setBackgroundBrush(QColor(self.background_color))
         chart.setTitleBrush(QColor(self.title_color))
-        
-        # Improve legend contrast
+
         legend = chart.legend()
         if legend:
             legend.setLabelColor(QColor(255, 255, 255))  # White text for better contrast
             legend.setBackgroundVisible(True)
-            legend.setColor(QColor(self.background_color))  # Match background
+            legend.setColor(QColor(self.background_color))
+
+    def update_chart_theme(self, chart_view: QChartView) -> None:
+        """Update an existing chart view's theme"""
+        self.apply_chart_theme(chart_view.chart())
     
-    def apply_white_legend_text(self, chart_view: QChartView):
-        """Apply white text to chart legends for better contrast"""
-        chart = chart_view.chart()
-        legend = chart.legend()
-        if legend:
-            legend.setLabelColor(QColor(255, 255, 255))  # White text
-            legend.setBackgroundVisible(True)
-            legend.setColor(QColor(self.background_color))  # Match chart background 

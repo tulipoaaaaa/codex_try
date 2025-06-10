@@ -100,6 +100,32 @@ class RecentActivity(CardWrapper):
             child = self.activities_layout.takeAt(0)
             if child.widget():
                 child.widget().deleteLater()
+
+    def add_activity(self, activity_dict):
+        """Insert a single activity widget at the top of the list."""
+        if "time" not in activity_dict:
+            ts = activity_dict.get("timestamp")
+            try:
+                dt = datetime.fromisoformat(ts) if ts else None
+                time_str = dt.strftime("%H:%M") if dt else ""
+            except Exception:
+                time_str = ""
+            activity_dict = {
+                "time": time_str,
+                "action": activity_dict.get("message", ""),
+                "status": activity_dict.get("source", "info"),
+                "details": activity_dict.get("details", ""),
+            }
+
+        widget = self.create_activity_widget(activity_dict)
+
+        insert_index = self.activities_layout.count() - 1
+        if insert_index >= 0:
+            item = self.activities_layout.itemAt(insert_index)
+            if item and not item.widget():
+                self.activities_layout.insertWidget(insert_index, widget)
+                return
+        self.activities_layout.insertWidget(0, widget)
     
     def create_activity_widget(self, activity):
         """Create a compact widget for a single activity"""

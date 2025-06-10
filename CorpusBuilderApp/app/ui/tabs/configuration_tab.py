@@ -22,9 +22,15 @@ import os
 import yaml
 from pathlib import Path
 from dotenv import load_dotenv, set_key
+<<<<<<< HEAD
 from app.helpers.crypto_utils import encrypt_value, decrypt_value
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
+=======
+from pydantic import ValidationError
+from app.ui.widgets.section_header import SectionHeader
+from app.ui.theme.theme_constants import PAGE_MARGIN
+>>>>>>> my-feature-branch
 
 
 class ConfigurationTab(QWidget):
@@ -43,7 +49,13 @@ class ConfigurationTab(QWidget):
 
     def setup_ui(self):
         main_layout = QVBoxLayout(self)
+<<<<<<< HEAD
 
+=======
+        main_layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
+        main_layout.setSpacing(PAGE_MARGIN)
+        
+>>>>>>> my-feature-branch
         # Create tabs for different configuration sections
         self.config_tabs = QTabWidget()
 
@@ -81,6 +93,7 @@ class ConfigurationTab(QWidget):
         buttons_layout.addWidget(self.reset_btn)
 
         self.default_btn = QPushButton("Reset to Defaults")
+        self.default_btn.setObjectName("danger")
         self.default_btn.clicked.connect(self.load_default_config)
         buttons_layout.addWidget(self.default_btn)
 
@@ -361,6 +374,7 @@ class ConfigurationTab(QWidget):
         )
 
         # Set up table properties
+<<<<<<< HEAD
         self.domains_table.horizontalHeader().setSectionResizeMode(
             QHeaderView.ResizeMode.Stretch
         )
@@ -371,6 +385,13 @@ class ConfigurationTab(QWidget):
             2, QHeaderView.ResizeMode.Stretch
         )
 
+=======
+        self.domains_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
+        self.domains_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.domains_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
+        self.domains_table.setAlternatingRowColors(True)
+        
+>>>>>>> my-feature-branch
         # Initialize with domains
         domains = [
             "Crypto Derivatives",
@@ -402,8 +423,13 @@ class ConfigurationTab(QWidget):
             self.domains_table.setItem(i, 0, QTableWidgetItem(domain))
             self.domains_table.setItem(i, 1, QTableWidgetItem(str(target)))
             self.domains_table.setItem(i, 2, QTableWidgetItem(desc))
+<<<<<<< HEAD
 
         layout.addWidget(QLabel("Domain Configuration:"))
+=======
+        
+        layout.addWidget(SectionHeader("Domain Configuration"))
+>>>>>>> my-feature-branch
         layout.addWidget(self.domains_table)
 
         # Domain options
@@ -549,9 +575,16 @@ class ConfigurationTab(QWidget):
 
         # If auto-save is enabled, save the current environment
         if self.auto_save.isChecked():
+<<<<<<< HEAD
             # This would save the current environment selection to the config
             pass
 
+=======
+            # Persist the selected environment using ProjectConfig
+            self.project_config.set('environment.active', env)
+            self.project_config.save()
+    
+>>>>>>> my-feature-branch
     def validate_domain_config(self):
         """Validate the domain configuration"""
         # Check that percentages add up to 100%
@@ -862,10 +895,91 @@ class ConfigurationTab(QWidget):
         try:
             with open(file_path, "r") as f:
                 config = yaml.safe_load(f)
-            # Here you can merge or overwrite the current config
-            # For now, we'll just print the imported config
-            print("Imported config:", config)
-            # TODO: Update the UI with the new config
+
+            if not isinstance(config, dict):
+                raise ValueError("Config file did not contain a dictionary")
+
+            # Environment
+            env_cfg = config.get("environment", {})
+            if isinstance(env_cfg, dict):
+                self.env_selector.setCurrentText(env_cfg.get("active", "test"))
+                self.config_path.setText(env_cfg.get("config_path", self.config_path.text()))
+                self.python_path.setText(env_cfg.get("python_path", self.python_path.text()))
+                self.venv_path.setText(env_cfg.get("venv_path", self.venv_path.text()))
+                self.temp_dir.setText(env_cfg.get("temp_dir", self.temp_dir.text()))
+                if "auto_save" in env_cfg:
+                    self.auto_save.setChecked(bool(env_cfg.get("auto_save")))
+            elif isinstance(env_cfg, str):
+                self.env_selector.setCurrentText(env_cfg)
+
+            # API keys
+            api_cfg = config.get("api_keys", {})
+            if isinstance(api_cfg, dict):
+                self.github_token.setText(api_cfg.get("github_token", ""))
+                self.aa_cookie.setText(api_cfg.get("aa_cookie", ""))
+                self.fred_key.setText(api_cfg.get("fred_key", ""))
+                self.bitmex_key.setText(api_cfg.get("bitmex_key", ""))
+                self.bitmex_secret.setText(api_cfg.get("bitmex_secret", ""))
+                self.arxiv_email.setText(api_cfg.get("arxiv_email", ""))
+
+            # Directories
+            dir_cfg = config.get("directories", {})
+            if isinstance(dir_cfg, dict):
+                self.corpus_root.setText(dir_cfg.get("corpus_root", self.corpus_root.text()))
+                self.raw_data_dir.setText(dir_cfg.get("raw_data_dir", self.raw_data_dir.text()))
+                self.processed_dir.setText(dir_cfg.get("processed_dir", self.processed_dir.text()))
+                self.metadata_dir.setText(dir_cfg.get("metadata_dir", self.metadata_dir.text()))
+                self.logs_dir.setText(dir_cfg.get("logs_dir", self.logs_dir.text()))
+                if "create_missing" in dir_cfg:
+                    self.create_missing.setChecked(bool(dir_cfg.get("create_missing")))
+                if "relative_paths" in dir_cfg:
+                    self.relative_paths.setChecked(bool(dir_cfg.get("relative_paths")))
+                if "validate_paths" in dir_cfg:
+                    self.validate_paths.setChecked(bool(dir_cfg.get("validate_paths")))
+
+            # Processing
+            proc_cfg = config.get("processing", {})
+            pdf_cfg = proc_cfg.get("pdf", {}) if isinstance(proc_cfg, dict) else {}
+            if isinstance(pdf_cfg, dict):
+                if "enable_ocr" in pdf_cfg:
+                    self.enable_ocr.setChecked(bool(pdf_cfg.get("enable_ocr")))
+                if "threads" in pdf_cfg:
+                    self.pdf_threads.setValue(int(pdf_cfg.get("threads")))
+                if "enable_formula" in pdf_cfg:
+                    self.enable_formula.setChecked(bool(pdf_cfg.get("enable_formula")))
+                if "enable_tables" in pdf_cfg:
+                    self.enable_tables.setChecked(bool(pdf_cfg.get("enable_tables")))
+
+            text_cfg = proc_cfg.get("text", {}) if isinstance(proc_cfg, dict) else {}
+            if isinstance(text_cfg, dict):
+                if "threads" in text_cfg:
+                    self.text_threads.setValue(int(text_cfg.get("threads")))
+                if "enable_language" in text_cfg:
+                    self.enable_language.setChecked(bool(text_cfg.get("enable_language")))
+                if "min_quality" in text_cfg:
+                    self.min_quality.setValue(int(text_cfg.get("min_quality")))
+                if "enable_deduplication" in text_cfg:
+                    self.enable_deduplication.setChecked(bool(text_cfg.get("enable_deduplication")))
+
+            adv_cfg = proc_cfg.get("advanced", {}) if isinstance(proc_cfg, dict) else {}
+            if isinstance(adv_cfg, dict):
+                if "batch_size" in adv_cfg:
+                    self.batch_size.setValue(int(adv_cfg.get("batch_size")))
+                if "max_retries" in adv_cfg:
+                    self.max_retries.setValue(int(adv_cfg.get("max_retries")))
+                if "timeout" in adv_cfg:
+                    self.timeout.setValue(int(adv_cfg.get("timeout")))
+
+            # Update ProjectConfig and revalidate
+            self.project_config.config = config
+            try:
+                self.project_config.revalidate()
+            except ValidationError as exc:
+                QMessageBox.warning(self, "Validation Error", str(exc))
+
+            # Notify others of imported configuration
+            self.configuration_saved.emit(config)
+
         except Exception as e:
             QMessageBox.critical(
                 self, "Import Error", f"Failed to import config: {str(e)}"

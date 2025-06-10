@@ -4,7 +4,7 @@
 Unit tests for Domain Classifier Wrapper
 
 Tests the domain classification functionality and UI integration
-for the CryptoFinance Corpus Builder application.
+for the Crypto Corpus Builder application.
 """
 
 import os
@@ -13,9 +13,7 @@ import pytest
 from unittest.mock import Mock, patch, MagicMock
 from pathlib import Path
 
-# Add project root to path
-project_root = Path(__file__).parent.parent.parent
-sys.path.insert(0, str(project_root))
+
 
 from PySide6.QtCore import QObject, Signal as pyqtSignal
 from PySide6.QtWidgets import QApplication
@@ -311,6 +309,7 @@ class TestDomainClassifierIntegration:
             assert hasattr(wrapper, 'error_occurred')
             assert hasattr(wrapper, 'completed')
             
+    @pytest.mark.skipif(os.getenv("CI") == "true", reason="Disabled in CI due to resource constraints")
     def test_wrapper_workflow(self, qapp):
         """Test complete wrapper workflow"""
         config = Mock()

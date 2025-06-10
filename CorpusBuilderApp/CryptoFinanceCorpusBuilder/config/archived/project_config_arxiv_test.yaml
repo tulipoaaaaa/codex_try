@@ -1,5 +1,0 @@
-corpus_dir: G:/ai_trading_dev/data/test_output/arvix_test
-raw_data_dir: G:/ai_trading_dev/data/test_output/arvix_test/raw_data
-pdf_extracted_dir: G:/ai_trading_dev/data/test_output/arvix_test/pdf_extracted
-nonpdf_extracted_dir: G:/ai_trading_dev/data/test_output/arvix_test/nonpdf_extracted
-cache_dir: G:/ai_trading_dev/data/test_output/arvix_test/cache 

@@ -4,6 +4,10 @@ from typing import Dict, List, Optional, Union, Any
 
 try:
     from shared_tools.project_config import ProjectConfig  # type: ignore
+<<<<<<< HEAD
+=======
+    
+>>>>>>> my-feature-branch
 except ImportError:
     ProjectConfig = None
 

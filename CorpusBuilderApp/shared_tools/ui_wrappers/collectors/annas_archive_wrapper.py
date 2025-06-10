@@ -9,6 +9,8 @@ class AnnasArchiveWrapper(BaseWrapper, CollectorWrapperMixin):
     
     def __init__(self, config):
         super().__init__(config)
+        self.project_config = config
+        self.name = "annas_archive"
         self.collector = None
         self.search_query = ""
         self.max_attempts = 5
@@ -37,3 +39,21 @@ class AnnasArchiveWrapper(BaseWrapper, CollectorWrapperMixin):
             'max_attempts': self.max_attempts
         })
         super().start(**kwargs)
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``. Safe to call multiple times."""
+        wrapper_cfg = self.config.get(f"collectors.{self.name}", {}) or {}
+
+        for key, value in wrapper_cfg.items():
+            method = f"set_{key}"
+            if hasattr(self, method):
+                try:
+                    getattr(self, method)(value)
+                except Exception:
+                    continue
+
+        if self.collector:
+            cookie = self.config.get("api_keys.annas_cookie")
+            if cookie:
+                setattr(self.collector, "cookie", cookie)
+

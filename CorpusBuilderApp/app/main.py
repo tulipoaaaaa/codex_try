@@ -1,14 +1,15 @@
 """
-CryptoFinance Corpus Builder v3 - Main Application Entry Point
+Crypto Corpus Builder v3 - Main Application Entry Point
 """
 
 import sys
 import os
+if os.getenv("HEADLESS", "0") == "1":
+    os.environ["QT_QPA_PLATFORM"] = "offscreen"
 import logging
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QMessageBox
-from PySide6.QtCore import QDir, QStandardPaths, QTimer
-from PySide6.QtGui import QIcon, QPalette, QColor
+from PySide6.QtCore import QTimer
 import traceback
 import json
 from dotenv import load_dotenv
@@ -22,6 +23,7 @@ sys.path.insert(0, str(current_dir))
 from main_window import CryptoCorpusMainWindow
 from shared_tools.project_config import ProjectConfig
 from app.helpers.theme_manager import ThemeManager
+from shared_tools.logging_config import setup_logging
 
 # Update theme config path to use the correct location
 THEME_CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'resources', 'styles', 'theme_config.json')
@@ -40,8 +42,8 @@ def save_user_theme(theme):
     try:
         with open(THEME_CONFIG_PATH, 'w', encoding='utf-8') as f:
             json.dump({'theme': theme}, f)
-    except Exception:
-        pass
+    except Exception as exc:
+        print(f"Failed to save user theme: {exc}")
 
 def load_user_sound_setting():
     if os.path.exists(THEME_CONFIG_PATH):
@@ -58,7 +60,7 @@ class CryptoCorpusApp(QApplication):
     
     def __init__(self, argv):
         super().__init__(argv)
-        self.setApplicationName("CryptoFinance Corpus Builder")
+        self.setApplicationName("Crypto Corpus Builder")
         self.setApplicationVersion("3.0.0")
         
         # Set up logging
@@ -93,16 +95,9 @@ class CryptoCorpusApp(QApplication):
         log_dir.mkdir(parents=True, exist_ok=True)
         
         log_file = log_dir / 'app.log'
-        
-        logging.basicConfig(
-            level=logging.INFO,
-            format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-            handlers=[
-                logging.FileHandler(log_file),
-                logging.StreamHandler()
-            ]
-        )
-        
+
+        setup_logging(log_file=log_file)
+
         self.logger = logging.getLogger('CryptoCorpusApp')
     
     def load_environment(self):

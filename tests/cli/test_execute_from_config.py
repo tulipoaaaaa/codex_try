@@ -3,11 +3,11 @@ from pathlib import Path as _Path, Path
 import types
 from typing import List
 import yaml
+import pytest
 
-# Add project root and package paths
-root = _Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(root))
-sys.path.insert(1, str(root / "CorpusBuilderApp"))
+pytestmark = pytest.mark.optional_dependency
+
+
 
 # Stub heavy dependencies required by imported modules
 qtcore = types.SimpleNamespace(QObject=object, Signal=lambda *a, **k: lambda *a, **k: None, QThread=object, QTimer=object)

@@ -3,7 +3,11 @@
 from setuptools import setup, find_packages
 
 setup(
+<<<<<<< HEAD
     name="corpusbuilder",
+=======
+    name="CryptoCorpusBuilder",
+>>>>>>> my-feature-branch
     version="3.0.0",
     description="A desktop application for building and managing a crypto-finance corpus",
     author="Your Name",

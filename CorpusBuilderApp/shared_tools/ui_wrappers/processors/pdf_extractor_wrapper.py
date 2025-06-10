@@ -1,4 +1,5 @@
 from PySide6.QtCore import Signal as pyqtSignal, QThread
+import time
 from ..base_wrapper import BaseWrapper, ProcessorWrapperMixin
 from shared_tools.processors.pdf_extractor import PDFExtractor
 from typing import List, Dict, Any
@@ -75,6 +76,7 @@ class PDFExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.enable_ocr = True
         self.extract_tables = True
         self.extract_formulas = True
+        self.worker_threads = 4
         
     def _create_target_object(self):
         """Create PDF extractor instance"""
@@ -82,7 +84,7 @@ class PDFExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
             self.extractor = PDFExtractor(
                 input_dir=str(self.config.raw_data_dir),
                 output_dir=str(self.config.pdf_extracted_dir),
-                num_workers=4
+                num_workers=self.worker_threads
             )
         return self.extractor
         
@@ -100,16 +102,25 @@ class PDFExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
     def set_formula_extraction(self, enabled):
         """Set formula extraction enabled/disabled"""
         self.extract_formulas = enabled
+
+    def set_worker_threads(self, count: int):
+        """Set the number of worker threads for processing"""
+        self.worker_threads = count
+        if self.extractor:
+            self.extractor.num_workers = count
         
     def start_batch_processing(self, files_to_process: List[str]):
         """Start batch processing of PDF files"""
         if self._is_running:
             self.status_updated.emit("Processing already in progress")
             return
-            
+
         self._is_running = True
         self.status_updated.emit(f"Starting PDF processing of {len(files_to_process)} files...")
-        
+        if self.task_history_service:
+            self._current_task_id = f"PDFExtractor_{int(time.time()*1000)}"
+            self.task_history_service.start_task(self._current_task_id, "PDF Batch")
+
         # Create extractor instance
         extractor = self._create_target_object()
         
@@ -137,3 +148,29 @@ class PDFExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
             return {"files_processed": self.extractor.files_processed,
                     "ocr_used_count": self.extractor.ocr_used_count}
         return {"files_processed": 0, "ocr_used_count": 0}
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``."""
+        cfg = {}
+        if hasattr(self.config, 'get_processor_config'):
+            cfg = self.config.get_processor_config('pdf_extractor') or {}
+        for k, v in cfg.items():
+            method = f'set_{k}'
+            if hasattr(self, method):
+                try:
+                    getattr(self, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via wrapper', k)
+            if hasattr(self.processor, method):
+                try:
+                    getattr(self.processor, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via processor', k)
+            if hasattr(self.processor, k):
+                setattr(self.processor, k, v)
+            elif hasattr(self, k):
+                setattr(self, k, v)
+        if cfg and hasattr(self, 'configuration_changed'):
+            self.configuration_changed.emit(cfg)

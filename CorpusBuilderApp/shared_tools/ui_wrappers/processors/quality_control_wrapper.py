@@ -85,9 +85,54 @@ class QualityControlWrapper(BaseWrapper, ProcessorWrapperMixin):
         """Handle progress updates from worker thread."""
         self.progress_updated.emit(progress)
         
-    def _on_status_updated(self, *args, **kwargs):
-        pass
-        
+    def _on_status_updated(self, message: str) -> None:
+        """Propagate status messages and update task history."""
+        # Re-emit the status message
+        self.status_updated.emit(message)
+
+        # Update task log if we have a task id
+        if getattr(self, "task_history_service", None) and getattr(self, "_task_id", None):
+            try:
+                self.task_history_service.update_task(self._task_id, details=message)
+            except Exception:
+                pass
+
+        # If a status widget is available, append the message for visibility
+        for attr in ("status_display", "status_widget", "status_list_widget"):
+            widget = getattr(self, attr, None)
+            if widget is not None and hasattr(widget, "append"):
+                if not hasattr(widget, "isVisible") or widget.isVisible():
+                    try:
+                        widget.append(message)
+                    except Exception:
+                        pass
+
+    def refresh_config(self):
+        """Reload parameters from ``self.config``."""
+        cfg = {}
+        if hasattr(self.config, 'get_processor_config'):
+            cfg = self.config.get_processor_config('quality_control') or {}
+        for k, v in cfg.items():
+            method = f'set_{k}'
+            if hasattr(self, method):
+                try:
+                    getattr(self, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via wrapper', k)
+            if hasattr(self.processor, method):
+                try:
+                    getattr(self.processor, method)(v)
+                    continue
+                except Exception:
+                    self.logger.debug('Failed to apply %s via processor', k)
+            if hasattr(self.processor, k):
+                setattr(self.processor, k, v)
+            elif hasattr(self, k):
+                setattr(self, k, v)
+        if cfg and hasattr(self, 'configuration_changed'):
+            self.configuration_changed.emit(cfg)
+
 class QCWorkerThread(QThread):
     """Worker thread for quality control processing."""
     

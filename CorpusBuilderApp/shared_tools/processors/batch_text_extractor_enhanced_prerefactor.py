@@ -1,3 +1,8 @@
+"""
+Module: batch_text_extractor_enhanced_prerefactor
+Purpose: Provides enhanced batch text extraction for PDFs.
+"""
+
 import os
 import sys
 import tempfile
@@ -22,7 +27,7 @@ def setup_ghostscript_environment():
     current_path = os.environ.get("PATH", "")
     if gs_bin not in current_path:
         os.environ["PATH"] = gs_bin + os.pathsep + current_path
-    print(f"Ghostscript setup: {gs_executable}")
+    logger.info(f"Ghostscript setup: {gs_executable}")
 
 # Setup Ghostscript FIRST
 setup_ghostscript_environment()
@@ -48,8 +53,12 @@ thread_local = threading.local()
 def get_worker_temp_dir():
     """Get unique temp directory for this worker thread."""
     if not hasattr(thread_local, 'temp_dir'):
+<<<<<<< HEAD
         env_temp = _PROJECT.get('environment.temp_dir', tempfile.gettempdir())
         base_temp = Path(env_temp) / 'temp_workers'
+=======
+        base_temp = "G:/ai_trading_dev/CryptoCorpusBuilder/temp_workers"
+>>>>>>> my-feature-branch
         thread_id = threading.get_ident()
         worker_id = f"pdf_worker_{thread_id}_{uuid.uuid4().hex[:8]}"
         unique_dir = os.path.join(base_temp, worker_id)
@@ -58,7 +67,7 @@ def get_worker_temp_dir():
         thread_local.worker_id = worker_id
         os.environ['TEMP'] = unique_dir
         os.environ['TMP'] = unique_dir
-        print(f"Worker {worker_id} using temp dir: {unique_dir}")
+        logger.info(f"Worker {worker_id} using temp dir: {unique_dir}")
     return thread_local.temp_dir
 
 def worker_initializer():
@@ -74,13 +83,17 @@ def worker_initializer():
     if gs_bin not in current_path:
         os.environ["PATH"] = gs_bin + os.pathsep + current_path
     worker_pid = os.getpid()
+<<<<<<< HEAD
     env_temp = _PROJECT.get('environment.temp_dir', tempfile.gettempdir())
     base_temp = Path(env_temp) / 'temp_workers'
+=======
+    base_temp = "G:/ai_trading_dev/CryptoCorpusBuilder/temp_workers"
+>>>>>>> my-feature-branch
     unique_temp = os.path.join(base_temp, f"pdf_worker_{worker_pid}_{uuid.uuid4().hex[:8]}")
     os.makedirs(unique_temp, exist_ok=True)
     os.environ['TEMP'] = unique_temp
     os.environ['TMP'] = unique_temp
-    print(f"Worker {worker_pid} initialized with Ghostscript and temp: {unique_temp}")
+    logger.info(f"Worker {worker_pid} initialized with Ghostscript and temp: {unique_temp}")
 
     def cleanup_temp():
         try:
@@ -89,9 +102,9 @@ def worker_initializer():
             time.sleep(0.5)
             if os.path.exists(unique_temp):
                 shutil.rmtree(unique_temp, ignore_errors=True)
-                print(f"Cleaned up temp dir: {unique_temp}")
+                logger.info(f"Cleaned up temp dir: {unique_temp}")
         except Exception as e:
-            print(f"Cleanup warning for {unique_temp}: {str(e)}")
+            logger.info(f"Cleanup warning for {unique_temp}: {str(e)}")
 
     atexit.register(cleanup_temp)
 
@@ -136,10 +149,12 @@ from tqdm import tqdm
 
 from .formula_extractor import FormulaExtractor
 from .chart_image_extractor import ChartImageExtractor
-from .finacial_symbol_processor import FinancialSymbolProcessor, AcademicPaperProcessor, MemoryOptimizer
+from .financial_symbol_processor import FinancialSymbolProcessor, AcademicPaperProcessor, MemoryOptimizer
 from ..utils.domain_utils import get_domain_for_file
 from ..utils.pdf_safe_open import safe_open_pdf
 from ..utils.metadata_normalizer import main as normalize_directory
+from shared_tools.processors.domain_classifier import DomainClassifier
+from shared_tools.utils.metadata_normalizer import normalize_metadata
 from .corruption_detector import detect_corruption
 from .language_confidence_detector import detect_language_confidence
 from .machine_translation_detector import detect_machine_translation
@@ -175,7 +190,11 @@ DOMAIN_THRESHOLDS = {
 }
 
 # --- Logging ---
+<<<<<<< HEAD
 log_dir = _PROJECT.get_logs_dir()
+=======
+log_dir = Path("G:/ai_trading_dev/CryptoCorpusBuilder/logs")
+>>>>>>> my-feature-branch
 log_dir.mkdir(parents=True, exist_ok=True)
 log_file = log_dir / "batch_text_extractor_enhanced_prerefactor.log"
 logging.basicConfig(
@@ -290,7 +309,7 @@ def extract_text_with_pdfminer(pdf_path: str) -> str:
     return text
 
 def extract_text_from_pdf(pdf_path: str) -> str:
-    print(f"[DEBUG] Entering extract_text_from_pdf for: {pdf_path}")
+    logger.debug(f"[DEBUG] Entering extract_text_from_pdf for: {pdf_path}")
     methods = [
         extract_text_with_pypdf2,
         extract_text_with_pymupdf,
@@ -300,9 +319,9 @@ def extract_text_from_pdf(pdf_path: str) -> str:
     best_score = 0
     for method in methods:
         try:
-            print(f"[DEBUG] Trying method: {method.__name__}")
+            logger.debug(f"[DEBUG] Trying method: {method.__name__}")
             text = method(pdf_path)
-            print(f"[DEBUG] Method {method.__name__} returned {len(text) if text else 0} characters")
+            logger.debug(f"[DEBUG] Method {method.__name__} returned {len(text) if text else 0} characters")
             if not text:
                 continue
             score = len(text.split())
@@ -310,10 +329,10 @@ def extract_text_from_pdf(pdf_path: str) -> str:
                 best_text = text
                 best_score = score
         except Exception as e:
-            print(f"[DEBUG] Exception in {method.__name__}: {e}")
+            logger.debug(f"[DEBUG] Exception in {method.__name__}: {e}")
             logger.warning(f"Text extraction method failed: {str(e)}")
             continue
-    print(f"[DEBUG] extract_text_from_pdf returning {len(best_text) if best_text else 0} characters")
+    logger.debug(f"[DEBUG] extract_text_from_pdf returning {len(best_text) if best_text else 0} characters")
     return best_text
 
 def extract_tables_from_pdf(pdf_path: str, timeout_seconds: int = 30, verbose: bool = False) -> list:
@@ -328,7 +347,7 @@ def extract_tables_from_pdf(pdf_path: str, timeout_seconds: int = 30, verbose: b
         with fitz.open(pdf_path) as doc:
             total_pages = len(doc)
             if verbose:
-                print(f"[{worker_id}] Processing {total_pages} pages from {os.path.basename(pdf_path)}")
+                logger.info(f"[{worker_id}] Processing {total_pages} pages from {os.path.basename(pdf_path)}")
             for batch_start in range(0, total_pages, 3):
                 batch_end = min(batch_start + 3, total_pages)
                 page_range = f"{batch_start + 1}-{batch_end}"
@@ -337,7 +356,7 @@ def extract_tables_from_pdf(pdf_path: str, timeout_seconds: int = 30, verbose: b
                         if attempt > 0:
                             time.sleep(0.5 * attempt)
                             if verbose:
-                                print(f"[{worker_id}] Retry {attempt} for pages {page_range}")
+                                logger.info(f"[{worker_id}] Retry {attempt} for pages {page_range}")
                         batch_tables = camelot.read_pdf(
                             pdf_path,
                             pages=page_range,
@@ -364,25 +383,25 @@ def extract_tables_from_pdf(pdf_path: str, timeout_seconds: int = 30, verbose: b
                                     'temp_dir': worker_temp
                                 })
                                 if verbose:
-                                    print(f"[{worker_id}] Page {table.page}: Table extracted with accuracy {table.accuracy:.2f}")
+                                    logger.info(f"[{worker_id}] Page {table.page}: Table extracted with accuracy {table.accuracy:.2f}")
                         break
                     except Exception as e:
                         error_msg = str(e).lower()
                         if 'ghostscript' in error_msg or 'image conversion' in error_msg:
                             if attempt < max_retries - 1:
                                 if verbose:
-                                    print(f"[{worker_id}] Ghostscript error on pages {page_range}, attempt {attempt + 1}: {str(e)}")
+                                    logger.info(f"[{worker_id}] Ghostscript error on pages {page_range}, attempt {attempt + 1}: {str(e)}")
                                 continue
                             else:
-                                print(f"[{worker_id}] Ghostscript error on pages {page_range} after {max_retries} attempts: {str(e)}")
+                                logger.info(f"[{worker_id}] Ghostscript error on pages {page_range} after {max_retries} attempts: {str(e)}")
                         else:
                             if verbose:
-                                print(f"[{worker_id}] Table extraction error on pages {page_range}: {str(e)}")
+                                logger.info(f"[{worker_id}] Table extraction error on pages {page_range}: {str(e)}")
                             break
     except Exception as e:
-        print(f"[{worker_id}] Error processing PDF {os.path.basename(pdf_path)}: {str(e)}")
+        logger.warning(f"[{worker_id}] Error processing PDF {os.path.basename(pdf_path)}: {str(e)}")
     if verbose:
-        print(f"[{worker_id}] Total tables extracted from {os.path.basename(pdf_path)}: {len(tables)}")
+        logger.info(f"[{worker_id}] Total tables extracted from {os.path.basename(pdf_path)}: {len(tables)}")
     return tables
 
 def extract_formulas_from_text(text: str) -> List[Dict]:
@@ -537,7 +556,8 @@ def resolve_indirect_object(obj):
         try:
             resolved = obj.get_object()
             return resolve_indirect_object(resolved)
-        except:
+        except Exception as exc:
+            logger.exception("Unhandled exception in resolve_indirect_object: %s", exc)
             return str(obj)
     elif isinstance(obj, dict):
         return {k: resolve_indirect_object(v) for k, v in obj.items()}
@@ -552,16 +572,16 @@ def process_pdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Optio
     worker_temp = get_worker_temp_dir()
     worker_id = getattr(thread_local, 'worker_id', 'unknown')
     try:
-        print(f"[DEBUG] process_pdf_file_enhanced: Starting for {file_path}")
+        logger.debug(f"[DEBUG] process_pdf_file_enhanced: Starting for {file_path}")
         if getattr(args, 'verbose', False):
-            print(f"[{worker_id}] Starting processing: {os.path.basename(file_path)}")
+            logger.info(f"[{worker_id}] Starting processing: {os.path.basename(file_path)}")
         
         # Extract text
         text = extract_text_from_pdf(file_path)
-        print(f"[DEBUG] process_pdf_file_enhanced: Extracted text length: {len(text) if text else 0}")
+        logger.debug(f"[DEBUG] process_pdf_file_enhanced: Extracted text length: {len(text) if text else 0}")
         
         if not text or len(text.strip()) < MIN_TOKEN_THRESHOLD:
-            print(f"[{worker_id}] Extracted text too short: {len(text.strip()) if text else 0} tokens (threshold: {MIN_TOKEN_THRESHOLD})")
+            logger.info(f"[{worker_id}] Extracted text too short: {len(text.strip()) if text else 0} tokens (threshold: {MIN_TOKEN_THRESHOLD})")
             return None
         
         # Get domain classification
@@ -677,7 +697,7 @@ def process_pdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Optio
         txt_path, json_path = write_outputs(args.output_dir, Path(file_path), text, metadata, quality, tables=tables, formulas=formula_results['formulas'])
         return result
     except Exception as e:
-        print(f"[{worker_id}] Error processing {os.path.basename(file_path)}: {str(e)}")
+        logger.warning(f"[{worker_id}] Error processing {os.path.basename(file_path)}: {str(e)}")
         return None
 
 def run_with_project_config(
@@ -910,15 +930,15 @@ def main():
         auto_normalize=not args.no_normalize
         )
     
-    print("\nExtraction Results:")
-    print(f"Processed files: {results['processed_files']}")
-    print(f"Successful extractions: {results['successful']}")
-    print(f"Failed extractions: {results['failed']}")
-    print(f"Low quality files: {results['low_quality']}")
+    logger.info("\nExtraction Results:")
+    logger.info(f"Processed files: {results['processed_files']}")
+    logger.info(f"Successful extractions: {results['successful']}")
+    logger.warning(f"Failed extractions: {results['failed']}")
+    logger.info(f"Low quality files: {results['low_quality']}")
     
     if args.verbose:
-        print("\nDetailed Results:")
-        print(json.dumps(results, indent=2))
+        logger.info("\nDetailed Results:")
+        logger.info(json.dumps(results, indent=2))
 
 if __name__ == "__main__":
     main()
@@ -928,18 +948,22 @@ def cleanup_worker_temp_dirs():
     """Clean up temporary directories created by workers."""
     try:
         import glob
+<<<<<<< HEAD
         env_temp = _PROJECT.get('environment.temp_dir', tempfile.gettempdir())
         base_temp = Path(env_temp) / 'temp_workers'
+=======
+        base_temp = "G:/ai_trading_dev/CryptoCorpusBuilder/temp_workers"
+>>>>>>> my-feature-branch
         worker_dirs = glob.glob(os.path.join(base_temp, "pdf_worker_*") )
         for worker_dir in worker_dirs:
             try:
                 import shutil
                 shutil.rmtree(worker_dir, ignore_errors=True)
-                print(f"Cleaned up temp dir: {worker_dir}")
-            except Exception:
-                pass
+                logger.info(f"Cleaned up temp dir: {worker_dir}")
+            except Exception as exc:
+                logger.exception("Unhandled exception in cleanup_worker_temp_dirs: %s", exc)
     except Exception as e:
-        print(f"Cleanup warning: {str(e)}") 
+        logger.info(f"Cleanup warning: {str(e)}") 
 
 def normalize_metadata_in_directory(directory: Path) -> None:
     """Normalize metadata in all JSON files in the directory."""
