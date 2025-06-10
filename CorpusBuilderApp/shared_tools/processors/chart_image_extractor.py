@@ -675,6 +675,7 @@ def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
 def main():
     """Main entry point when script is run directly"""
     import argparse
+    from shared_tools.project_config import ProjectConfig
     
     parser = argparse.ArgumentParser(description='Extract chart images from corpus')
     parser.add_argument('--corpus-dir', required=True, help='Corpus directory')
@@ -684,10 +685,6 @@ def main():
     
     if args.project_config:
         # Use project config
-<<<<<<< HEAD
-        from shared_tools.project_config import ProjectConfig
-=======
->>>>>>> my-feature-branch
         project = ProjectConfig.load(args.project_config)
         results = run_with_project_config(project, args.verbose)
     else:

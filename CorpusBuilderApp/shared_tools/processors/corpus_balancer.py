@@ -26,11 +26,8 @@ from plotly.subplots import make_subplots
 from ..utils.domain_utils import get_valid_domains, get_domain_for_file
 from ..utils.extractor_utils import safe_filename
 from shared_tools.project_config import ProjectConfig
-<<<<<<< HEAD
 from shared_tools.storage.corpus_manager import CorpusManager
-=======
 logger = logging.getLogger(__name__)
->>>>>>> my-feature-branch
 
 class CorpusAnalyzer:
     """Analyzes corpus composition and identifies imbalances."""

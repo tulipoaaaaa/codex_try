@@ -24,11 +24,8 @@ sys.modules.setdefault("PySide6.QtCore", qtcore)
 sys.modules.setdefault("dotenv", types.SimpleNamespace(load_dotenv=lambda *a, **k: None))
 
 import pytest
-<<<<<<< HEAD
-from shared_tools.cli import consolidate_corpus
-=======
 import cli.execute_from_config as efc
->>>>>>> my-feature-branch
+
 
 
 def test_cli_argument_parsing():

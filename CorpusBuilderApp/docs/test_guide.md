@@ -23,34 +23,7 @@ The table below lists all test modules and the directories or inputs they expect
 
 | Test File | Required Folder or Input | Description |
 |-----------|-------------------------|-------------|
-<<<<<<< HEAD
-| corpusbuilder/tests/deprecated/test_annas_library_collector.py | AA_ACCOUNT_COOKIE env var, config/test_config.yaml | Downloads PDFs from Anna's Archive |
-| corpusbuilder/tests/deprecated/test_api_collector.py | None (uses temp dirs) | Exercises generic API collector |
-| corpusbuilder/tests/deprecated/test_arxiv_collector.py | Internet access, config/test_config.yaml | Collects papers from arXiv |
-| corpusbuilder/tests/deprecated/test_arxiv_collector_projectconfig.py | config/master_config.yaml | Arxiv collector with ProjectConfig |
-| corpusbuilder/tests/deprecated/test_bitmex_collector.py | mock_bitmex_research.html file | Parses BitMEX research posts |
-| corpusbuilder/tests/deprecated/test_chunking_behavior.py | data/test_collect/chunking_tests/* | Chunking of CSV/py/ipynb/JSON files |
-| corpusbuilder/tests/deprecated/test_domain_keyword_helper.py | None | Domain keyword helper logic |
-| corpusbuilder/tests/deprecated/test_fred_collector.py | FRED_API_KEY env var, config/test_config.yaml | Downloads data from FRED |
-| corpusbuilder/tests/deprecated/test_general_web_collector.py | None | Web scraping collector |
-| corpusbuilder/tests/deprecated/test_github_collector.py | GitHub token env var, output dir | Clones GitHub repos |
-| corpusbuilder/tests/deprecated/test_github_collector_projectconfig.py | master_config.yaml | GitHub collector with ProjectConfig |
-| corpusbuilder/tests/deprecated/test_isda_collector.py | None | ISDA website collector |
-| corpusbuilder/tests/deprecated/test_pdf_extractor.py | tests/pdf_extraction/test_pdfs/ | Runs real PDF extraction |
-| corpusbuilder/tests/deprecated/test_processors.py | None | Processor integration tests |
-| corpusbuilder/tests/deprecated/test_quantopian_collector.py | None | Quantopian data collector |
-| corpusbuilder/tests/deprecated/test_repo_collector.py | config/test_config.yaml | Repository collector downloads |
-| corpusbuilder/tests/deprecated/test_scidb_collector.py | SciDB credentials | SciDB data fetch |
-| corpusbuilder/tests/deprecated/test_scidb_collector_projectconfig.py | master_config.yaml | SciDB collector with ProjectConfig |
-| corpusbuilder/tests/deprecated/test_web_collector.py | None | Generic website scraping |
-| corpusbuilder/tests/test_base_extractor.py | temp input/output dirs with sample text | Base extractor pipeline |
-| corpusbuilder/tests/test_bitmex_collector.py | mock_bitmex_research.html | Old BitMEX collector |
-| corpusbuilder/tests/test_collectors.py | temp dirs | Basic collector behaviours |
-| corpusbuilder/tests/test_corpus_balance.py | temp corpus with _extracted & low_quality | Corpus balancing analysis |
-| corpusbuilder/tests/test_extractor_utils.py | temp files | Utility functions |
-| corpusbuilder/tests/test_quality_config.py | config/quality_control_config.json | Model config validation |
-| corpusbuilder/tests/test_quality_control_config.py | config/quality_control_config.json | Quality control config validation |
-=======
+
 | CryptoCorpusBuilder/tests/deprecated/test_annas_library_collector.py | AA_ACCOUNT_COOKIE env var, config/test_config.yaml | Downloads PDFs from Anna's Archive |
 | CryptoCorpusBuilder/tests/deprecated/test_api_collector.py | None (uses temp dirs) | Exercises generic API collector |
 | CryptoCorpusBuilder/tests/deprecated/test_arxiv_collector.py | Internet access, config/test_config.yaml | Collects papers from arXiv |
@@ -77,7 +50,7 @@ The table below lists all test modules and the directories or inputs they expect
 | CryptoCorpusBuilder/tests/test_extractor_utils.py | temp files | Utility functions |
 | CryptoCorpusBuilder/tests/test_quality_config.py | config/quality_control_config.json | Model config validation |
 | CryptoCorpusBuilder/tests/test_quality_control_config.py | config/quality_control_config.json | Quality control config validation |
->>>>>>> my-feature-branch
+
 | tests/deprecated/test_corpus_management.py | temp corpus directories with sample file | Corpus manager UI integration |
 | tests/deprecated/test_data_collectors.py | API keys env vars; network access | Collector behaviours across services |
 | tests/deprecated/test_ui_integration.py | PySide6 installed | Basic UI widget integration |
