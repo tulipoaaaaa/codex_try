@@ -106,7 +106,6 @@ for mod in [
     "matplotlib",
     "matplotlib.pyplot",
     "seaborn",
-    "yaml",
     "requests",
     "pandas",
     "PyPDF2",
@@ -139,9 +138,10 @@ for mod in [
         setattr(module, "exceptions", exceptions_mod)
         setattr(module, "Session", lambda *a, **k: object())
     if mod == "yaml":
-        import json
-        setattr(module, "safe_dump", lambda data, fh: fh.write(json.dumps(data)))
-        setattr(module, "safe_load", lambda fh: json.load(fh))
+        import importlib
+        _real_yaml = importlib.import_module('yaml')
+        setattr(module, "safe_dump", lambda data, fh: _real_yaml.safe_dump(data, fh))
+        setattr(module, "safe_load", lambda fh: _real_yaml.safe_load(fh))
     if mod == "psutil":
         class _P:
             def __init__(self, *a, **k):
@@ -159,9 +159,7 @@ setattr(exceptions_ns, 'Timeout', Exception)
 setattr(exceptions_ns, 'HTTPError', Exception)
 setattr(requests_mod, 'exceptions', exceptions_ns)
 
-yaml_mod = sys.modules.setdefault('yaml', types.ModuleType('yaml'))
-setattr(yaml_mod, 'safe_dump', lambda *a, **k: '')
-setattr(yaml_mod, 'safe_load', lambda *a, **k: {})
+import yaml as yaml_mod
 
 bs4_mod = sys.modules.setdefault('bs4', types.ModuleType('bs4'))
 setattr(bs4_mod, 'BeautifulSoup', lambda *a, **k: None)
@@ -211,6 +209,9 @@ class DummyBaseModel:
     @classmethod
     def parse_obj(cls, obj):
         return cls()
+
+    def dict(self, *a, **k):
+        return {}
 
 setattr(pydantic_mod, 'BaseModel', DummyBaseModel)
 setattr(pydantic_mod, 'validator', lambda *a, **k: (lambda f: f))
