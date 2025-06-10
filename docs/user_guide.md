@@ -83,6 +83,12 @@ python CorpusBuilderApp/cli.py export-corpus --corpus-dir data/corpus --output-d
 ```
 If the Dashboard is open, you can also trigger an export from the **Tools** or **Corpus Manager** tab.
 
+## Tools
+
+- **check_corpus_structure.py** – validate the directories defined in your
+  `ProjectConfig`. Run it with `--config path/to/config.yaml` to check that the
+  raw, processed, metadata and logs folders exist and are writable.
+
 ## Troubleshooting
 - If a configuration fails to load, check the YAML syntax and file paths.
 - Logs are stored in the directory defined by `logs_dir` in your configuration.
