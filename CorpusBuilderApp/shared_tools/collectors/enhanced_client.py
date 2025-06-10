@@ -8,6 +8,8 @@ from bs4 import BeautifulSoup
 import requests  # type: ignore
 from dotenv import load_dotenv
 import time
+import logging
+logger = logging.getLogger(__name__)
 from selenium.webdriver.common.by import By
 import undetected_chromedriver as uc  # type: ignore
 from selenium.webdriver.chrome.options import Options
@@ -588,8 +590,8 @@ class CookieAuthClient:
                     pdf_file = self._wait_for_pdf_download(download_dir)
                     if pdf_file:
                         print(f"[Selenium] PDF downloaded via fast-download-link: {pdf_file}")
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.exception("Unhandled exception in download via fast-link: %s", exc)
             if not pdf_file:
                 # Try iframe
                 try:
@@ -600,8 +602,8 @@ class CookieAuthClient:
                     pdf_file = self._wait_for_pdf_download(download_dir)
                     if pdf_file:
                         print(f"[Selenium] PDF downloaded via iframe: {pdf_file}")
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.exception("Unhandled exception in download via iframe: %s", exc)
             if not pdf_file:
                 # Try all <a> links with 'download' or '.pdf'
                 links = driver.find_elements(By.TAG_NAME, "a")

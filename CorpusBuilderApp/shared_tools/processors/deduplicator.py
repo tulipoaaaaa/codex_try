@@ -3,6 +3,7 @@ import os
 import sys
 from pathlib import Path
 import logging
+logger = logging.getLogger(__name__)
 import hashlib
 import json
 import re
@@ -325,8 +326,8 @@ class Deduplicator:
                 with open(meta_path, 'r') as f:
                     metadata = json.load(f)
                     return metadata.get('title')
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.exception("Unhandled exception in _extract_title: %s", exc)
         
         # If no metadata or no title in metadata, use filename
         return file_path.stem
