@@ -9,6 +9,7 @@ import os
 import yaml
 from pathlib import Path
 from dotenv import load_dotenv, set_key
+from pydantic import ValidationError
 from app.helpers.crypto_utils import encrypt_value, decrypt_value
 
 
@@ -844,6 +845,13 @@ class ConfigurationTab(QWidget):
                     self.max_retries.setValue(int(adv_cfg.get("max_retries")))
                 if "timeout" in adv_cfg:
                     self.timeout.setValue(int(adv_cfg.get("timeout")))
+
+            # Update ProjectConfig and revalidate
+            self.project_config.config = config
+            try:
+                self.project_config.revalidate()
+            except ValidationError as exc:
+                QMessageBox.warning(self, "Validation Error", str(exc))
 
             # Notify others of imported configuration
             self.configuration_saved.emit(config)
