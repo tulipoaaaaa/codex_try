@@ -352,8 +352,8 @@ class CryptoCorpusMainWindow(QMainWindow):
         for key, value in settings.items():
             try:
                 self.config.set(key, value)
-            except Exception:
-                pass
+            except Exception as exc:
+                self.logger.error("Failed to set config %s: %s", key, exc)
         self.config.save()
     
     def export_corpus(self):

@@ -134,8 +134,8 @@ class CollectorConfigDialog(QDialog):
             if setter:
                 try:
                     setter(value)
-                except Exception:
-                    pass
+                except Exception as exc:
+                    print(f"Failed to set {attr}: {exc}")
             cfg[attr] = value
         self.project_config.set(f"collectors.{self.collector_name}", cfg)
         self.project_config.save()
