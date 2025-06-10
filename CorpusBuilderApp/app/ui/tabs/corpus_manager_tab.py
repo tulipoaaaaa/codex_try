@@ -408,7 +408,13 @@ class CorpusManagerTab(QWidget):
                 docs_path = QDir.homePath() + "/Documents"
                 self.set_root_directory(docs_path)
         except Exception as e:
-            print(f"Error setting root directory: {e}")
+            self.notification_manager.add_notification(
+                "root_dir_error",
+                "Directory Error",
+                str(e),
+                "error",
+                auto_hide=True,
+            )
             # Just use home directory as fallback
             self.set_root_directory(QDir.homePath())
             
@@ -520,7 +526,13 @@ class CorpusManagerTab(QWidget):
                 for key, value in metadata.items():
                     self.add_metadata_row(key, value)
             except Exception as e:
-                print(f"Error loading metadata: {e}")
+                self.notification_manager.add_notification(
+                    "metadata_load_error",
+                    "Metadata Load Error",
+                    str(e),
+                    "error",
+                    auto_hide=True,
+                )
         else:
             # If no metadata file exists, add some default fields
             default_fields = [
