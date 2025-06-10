@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import Dict, Any, Tuple, List
 import logging
+import hashlib
 import PyPDF2
 import fitz  # PyMuPDF
 from pdfminer.high_level import extract_text as pdfminer_extract
@@ -81,7 +82,23 @@ class PDFExtractor(BaseExtractor, TableMixin, FormulaMixin):
                 'table_count': len(tables),
                 'formula_count': len(formulas)
             }
-            
+
+            # Determine which extraction method provided the most text
+            method_lengths = {
+                'pypdf2': len(text_pypdf2),
+                'pymupdf': len(text_pymupdf),
+                'pdfminer': len(text_pdfminer),
+            }
+            metadata["selected_text_method"] = max(method_lengths, key=method_lengths.get)
+
+            # Compute SHA256 for the file
+            try:
+                with open(file_path, 'rb') as f:
+                    sha256 = hashlib.sha256(f.read()).hexdigest()
+                metadata["sha256"] = sha256
+            except Exception as exc:
+                self.logger.warning(f"SHA256 computation failed for {file_path}: {exc}")
+
             return text, metadata
             
         except Exception as e:
