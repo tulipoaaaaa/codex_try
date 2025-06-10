@@ -541,5 +541,16 @@ class BaseExtractorWrapper(BaseWrapper):
         return True
 
     def refresh_config(self):
-        """Reload parameters from ``self.config``. Placeholder for future use."""
-        pass
+        """Reload parameters from ``self.config``."""
+        try:
+            cfg = {}
+            if hasattr(self, "config") and hasattr(self.config, "get_processor_config"):
+                cfg = self.config.get_processor_config("base_extractor") or {}
+
+            self.set_configuration(cfg)
+            self.configuration_changed.emit(self.current_config)
+        except Exception as exc:
+            self.show_error(
+                "Configuration Error",
+                f"Failed to refresh configuration: {exc}",
+            )
