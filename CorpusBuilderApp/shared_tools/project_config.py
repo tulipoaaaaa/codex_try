@@ -61,6 +61,14 @@ class AutoBalanceConfig(BaseModel):
     start_balancing: bool = False
 
 
+class EnvironmentSettings(BaseModel):
+    """Runtime environment details."""
+    active: str = Field("test", description="Active environment name")
+    python_path: str = Field("", description="Path to Python interpreter")
+    venv_path: str = Field("", description="Path to virtual environment")
+    temp_dir: str = Field("", description="Temporary directory")
+
+
 COLLECTOR_SCHEMAS: Dict[str, Type[BaseModel]] = {
     "github": GitHubCollectorConfig,
     "arxiv": ArxivCollectorConfig,
@@ -82,7 +90,7 @@ def get_processor_schema(name: str) -> Optional[Type[BaseModel]]:
 
 class ProjectConfigSchema(BaseModel):
     """Schema for ProjectConfig YAML files."""
-    environment: str = Field(..., description="Current environment (production/test)")
+    environment: EnvironmentSettings = Field(default_factory=EnvironmentSettings, description="Runtime environment settings")
     environments: Dict[str, EnvironmentConfig] = Field(..., description="Environment-specific configurations")
     domains: Dict[str, DomainConfig] = Field(
         default_factory=lambda: {
@@ -343,6 +351,11 @@ class ProjectConfig:
     def revalidate(self) -> None:
         """Re-parse the current configuration using the schema."""
         self._parsed_config = self._schema.parse_obj(self.config)
+        # Ensure defaults like domains are present without dropping unknown keys
+        parsed_dict = self._parsed_config.dict()
+        for key, value in parsed_dict.items():
+            if key not in self.config:
+                self.config[key] = value
 
  # Directory helper methods
     def get_corpus_root(self) -> Path:
@@ -386,7 +399,12 @@ class ProjectConfig:
         """Return a basic default configuration dictionary."""
         config_dir = Path.home() / ".cryptofinance"
         return {
-            "environment": "test",
+            "environment": {
+                "active": "test",
+                "python_path": "",
+                "venv_path": "",
+                "temp_dir": "",
+            },
             "environments": {
                 "test": {
                     "corpus_dir": str(config_dir / "corpus"),
