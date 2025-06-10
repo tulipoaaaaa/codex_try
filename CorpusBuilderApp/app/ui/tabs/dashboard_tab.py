@@ -748,9 +748,9 @@ class DashboardTab(QWidget):
             stat_layout = QVBoxLayout(stat_container)
             stat_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
             stat_layout.setSpacing(2)
-        value_label = QLabel(value)
+            value_label = QLabel(value)
             value_label.setStyleSheet(f'color: {color}; font-size: 15px; font-weight: 700; text-align: center; background-color: transparent;')
-        value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
             label_widget = QLabel(label)
             label_widget.setStyleSheet('color: #C5C7C7; font-size: 10px; text-align: center; background-color: transparent;')
             label_widget.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -821,8 +821,8 @@ class DashboardTab(QWidget):
                             "details": a.get("details", ""),
                         }
                     )
-        except Exception:
-            pass
+            except Exception:
+                pass
 
     # --- Placeholder methods for actions ---
     def start_corpus_optimization(self):
