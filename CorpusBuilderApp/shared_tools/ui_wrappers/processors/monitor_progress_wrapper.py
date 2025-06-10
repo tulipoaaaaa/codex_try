@@ -7,14 +7,52 @@ import os
 import time
 import json
 from typing import Dict, List, Optional, Any, Callable
-from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Slot as pyqtSlot, QTimer, QMutex
-from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
-                           QProgressBar, QLabel, QTextEdit, QCheckBox, 
-                           QSpinBox, QGroupBox, QGridLayout, QComboBox,
-                           QTableWidget, QTableWidgetItem, QHeaderView,
-                           QTabWidget, QSplitter, QSlider, QListWidget)
+try:
+    from PySide6.QtCore import (
+        QObject,
+        QThread,
+        Signal as pyqtSignal,
+        Slot as pyqtSlot,
+        QTimer,
+        QMutex,
+    )
+except Exception:  # pragma: no cover - fallback for stubbed Qt
+    from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, QTimer
+
+    class QMutex:  # type: ignore
+        pass
+
+    def pyqtSlot(*args, **kwargs):
+        def _decorator(func):
+            return func
+        return _decorator
+from PySide6.QtWidgets import (
+    QWidget,
+    QVBoxLayout,
+    QHBoxLayout,
+    QPushButton,
+    QProgressBar,
+    QLabel,
+    QTextEdit,
+    QCheckBox,
+    QSpinBox,
+    QGroupBox,
+    QGridLayout,
+    QComboBox,
+    QTableWidget,
+    QTableWidgetItem,
+    QHeaderView,
+    QTabWidget,
+    QSplitter,
+    QSlider,
+    QListWidget,
+)
 from PySide6.QtGui import QColor, QBrush, QPalette
-from PySide6.QtCore import Qt
+try:
+    from PySide6.QtCore import Qt
+except Exception:  # pragma: no cover - fallback for stubbed Qt
+    class Qt:  # type: ignore
+        pass
 from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
 from shared_tools.processors.monitor_progress import MonitorProgress
 from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
