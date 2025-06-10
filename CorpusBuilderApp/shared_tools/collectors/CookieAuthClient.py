@@ -1,4 +1,7 @@
-# CookieAuthClient.py - Balanced quality and PDF focus
+"""
+Module: CookieAuthClient
+Purpose: Handles authenticated PDF downloads using session cookies.
+"""
 import re
 import os
 import json
@@ -252,8 +255,8 @@ class CookieAuthClient:
                     # Try to remove invalid file
                     try:
                         os.remove(output_path)
-                    except:
-                        pass
+                    except Exception as exc:
+                        logger.exception("Unhandled exception in remove invalid file: %s", exc)
             else:
                 # If we got HTML instead of PDF, check if it has membership wall
                 if "Become a member" in download_response.text:
@@ -288,8 +291,8 @@ class CookieAuthClient:
                     # Try to remove invalid file
                     try:
                         os.remove(output_path)
-                    except:
-                        pass
+                    except Exception as exc:
+                        logger.exception("Unhandled exception in remove invalid file: %s", exc)
             
             logger.warning("❌ Could not download a valid PDF.")
             return None

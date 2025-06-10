@@ -1,4 +1,7 @@
-# enhanced_client.py - COMPLETE FINAL FIXED VERSION
+"""
+Module: enhanced_client
+Purpose: Provides Selenium-based fallback PDF retrieval helpers.
+"""
 import re
 import os
 import json
@@ -469,8 +472,8 @@ class CookieAuthClient:
                         if text and len(text.strip()) > 50:  # At least some meaningful text
                             text_found = True
                             break
-                    except:
-                        continue
+                    except Exception as exc:
+                        logger.exception("Unhandled exception in text extraction: %s", exc)
                 
                 return True
                 
@@ -651,8 +654,8 @@ class CookieAuthClient:
             if driver:
                 try:
                     driver.quit()
-                except:
-                    pass
+                except Exception as exc:
+                    logger.exception("Unhandled exception in driver quit: %s", exc)
 
     def _wait_for_pdf_download(self, download_dir, timeout=90):
         """Wait for a PDF file to appear in the download directory."""

@@ -1,4 +1,7 @@
-# processors/deduplicator.py
+"""
+Module: deduplicator
+Purpose: Detects and removes duplicate documents within a corpus.
+"""
 import os
 import sys
 from pathlib import Path
@@ -466,15 +469,15 @@ class Deduplicator:
                             with open(extracted_meta_path, 'r') as f:
                                 ext_meta = json.load(f)
                                 token_count += ext_meta.get("tokens", 0)
-                        except:
-                            pass
+                        except Exception as exc:
+                            logger.exception("Unhandled exception in token count read: %s", exc)
                     elif extracted_path.exists():
                         try:
                             with open(extracted_path, 'r', encoding='utf-8', errors='ignore') as f:
                                 text = f.read()
                                 token_count += len(text.split())
-                        except:
-                            pass
+                          except Exception as exc:
+                              logger.exception("Unhandled exception in file read: %s", exc)
                 domain_token_counts[domain] = token_count
         return domain_token_counts
 
@@ -493,8 +496,8 @@ class Deduplicator:
                     tokens = ext_meta.get("tokens", 0)
                     if tokens:
                         return tokens
-            except:
-                pass
+            except Exception as exc:
+                logger.exception("Unhandled exception in meta token count: %s", exc)
         # 2. Try .txt file (count whitespace tokens)
         if extracted_path.exists():
             try:
@@ -503,8 +506,8 @@ class Deduplicator:
                     tokens = len(text.split())
                     if tokens:
                         return tokens
-            except:
-                pass
+            except Exception as exc:
+                logger.exception("Unhandled exception in text token count: %s", exc)
         # 3. Try .json file (nested token_count)
         extracted_json_path = extracted_dir / f"{file_path.stem}.json"
         if extracted_json_path.exists():
@@ -517,8 +520,8 @@ class Deduplicator:
                     token_count = eq.get("token_count", 0)
                     if token_count:
                         return token_count
-            except Exception as e:
-                pass
+              except Exception as exc:
+                  logger.exception("Unhandled exception in json token count: %s", exc)
         return 0
 
 def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
