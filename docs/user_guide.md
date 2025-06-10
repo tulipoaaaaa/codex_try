@@ -27,19 +27,19 @@ python CorpusBuilderApp/app/main.py
 The application window will open with tabs for configuration, collection and processing.
 
 ## Creating or Loading a Configuration
-The application expects a YAML configuration describing collectors, processors and corpus directories. A minimal example:
+The application expects a YAML configuration describing collectors, processors and directories. The preferred layout uses an `environment` key and an `environments` mapping:
 ```yaml
-enabled_collectors:
-  - github
-enabled_processors:
-  - pdf
-directories:
-  corpus_root: ./data/corpus
-  raw_data_dir: ./data/raw
-  processed_dir: ./data/processed
-  metadata_dir: ./data/metadata
-  logs_dir: ./data/logs
+environment: production  # or "test"
+
+environments:
+  production:
+    corpus_root: ./data/corpus
+    raw_data_dir: ./data/raw
+    processed_dir: ./data/processed
+    metadata_dir: ./data/metadata
+    logs_dir: ./data/logs
 ```
+Legacy `directories:` blocks are still supported for backward compatibility, but they may be removed in a future release.
 You can drag this file onto the **Configuration** tab or load it via the menu. To use the same configuration from the command line, pass `--config path/to/file.yaml`.
 
 ## Using the App (GUI)
