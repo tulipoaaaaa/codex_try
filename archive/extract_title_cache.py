@@ -1,3 +1,4 @@
+# DEPRECATED: Superseded by generate_title_cache.py
 import pandas as pd
 import re
 import datetime
