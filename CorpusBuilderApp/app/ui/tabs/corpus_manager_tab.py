@@ -37,6 +37,7 @@ from app.helpers.notifier import Notifier
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
 from app.ui.widgets.status_dot import StatusDot
+from app.ui.theme.theme_constants import PAGE_MARGIN
 from shared_tools.storage.corpus_manager import CorpusManager
 
 class NotificationManager(QWidget):
@@ -153,8 +154,8 @@ class CorpusManagerTab(QWidget):
         scroll_area.setWidget(container)
 
         main_layout = QVBoxLayout(container)
-        main_layout.setContentsMargins(16, 16, 16, 16)
-        main_layout.setSpacing(16)
+        main_layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
+        main_layout.setSpacing(PAGE_MARGIN)
 
         icon_manager = IconManager()
 
@@ -281,10 +282,11 @@ class CorpusManagerTab(QWidget):
         self.metadata_model = QStandardItemModel(0, 2)
         self.metadata_model.setHorizontalHeaderLabels(["Property", "Value"])
         self.metadata_table.setModel(self.metadata_model)
-        
+
         # Make the table more user-friendly
         self.metadata_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.Stretch)
         self.metadata_table.verticalHeader().setVisible(False)
+        self.metadata_table.setAlternatingRowColors(True)
         
         metadata_inner_layout.addWidget(self.metadata_table)
         
@@ -337,6 +339,7 @@ class CorpusManagerTab(QWidget):
         actions_layout.addWidget(move_card)
 
         self.batch_delete_btn = QPushButton("Delete")
+        self.batch_delete_btn.setObjectName("danger")
         delete_card = self.create_action_card("Delete Files", self.batch_delete_files, self.batch_delete_btn)
         actions_layout.addWidget(delete_card)
 
@@ -405,7 +408,13 @@ class CorpusManagerTab(QWidget):
                 docs_path = QDir.homePath() + "/Documents"
                 self.set_root_directory(docs_path)
         except Exception as e:
-            print(f"Error setting root directory: {e}")
+            self.notification_manager.add_notification(
+                "root_dir_error",
+                "Directory Error",
+                str(e),
+                "error",
+                auto_hide=True,
+            )
             # Just use home directory as fallback
             self.set_root_directory(QDir.homePath())
             
@@ -517,7 +526,13 @@ class CorpusManagerTab(QWidget):
                 for key, value in metadata.items():
                     self.add_metadata_row(key, value)
             except Exception as e:
-                print(f"Error loading metadata: {e}")
+                self.notification_manager.add_notification(
+                    "metadata_load_error",
+                    "Metadata Load Error",
+                    str(e),
+                    "error",
+                    auto_hide=True,
+                )
         else:
             # If no metadata file exists, add some default fields
             default_fields = [
