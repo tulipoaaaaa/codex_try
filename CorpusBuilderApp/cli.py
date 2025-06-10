@@ -107,6 +107,7 @@ def main(argv: list[str] | None = None) -> int:
             "  check-corpus --config file.yaml [--auto-fix] [--validate-metadata] [--check-integrity]"
         )
         print("  import-corpus --source-dir path --config file.yaml")
+        print("  stats --config file.yaml     Show domain stats in console")
         print("  --matrix     Show CLI/GUI feature parity")
         print("  --version    Show current version")
         return 0
