@@ -76,8 +76,7 @@ class DashboardTab(QWidget):
         header_layout = QVBoxLayout()
         header_layout.setContentsMargins(24, 16, 24, 4)
         header_row = QHBoxLayout()
-        title_label = QLabel('📊 Corpus Overview Dashboard')
-        title_label.setStyleSheet('background-color: transparent; font-size: 20px; font-weight: 700; color: #32B8C6; margin-bottom: 4px;')
+        title_label = SectionHeader('📊 Corpus Overview Dashboard')
         header_row.addWidget(title_label)
         header_row.addStretch()
         health_indicator = self.create_system_health_indicator()
@@ -249,8 +248,7 @@ class DashboardTab(QWidget):
         layout = QVBoxLayout(container)
         layout.setSpacing(4)
         layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('🖥️ System Status')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        header = SectionHeader('🖥️ System Status')
         layout.addWidget(header)
         resources = [('CPU', 45, '#32B8C6'), ('RAM', 67, '#E68161'), ('Disk', 23, '#22c55e')]
         for label, value, color in resources:
@@ -291,8 +289,7 @@ class DashboardTab(QWidget):
         layout = QVBoxLayout(container)
         layout.setSpacing(6)
         layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('🔔 Alerts')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        header = SectionHeader('🔔 Alerts')
         layout.addWidget(header)
         alerts = [('⚠️', 'Storage > 90%', '#E68161'), ('ℹ️', 'Update available', '#32B8C6'), ('✅', 'Backup current', '#22c55e')]
         for icon, text, color in alerts:
@@ -326,8 +323,7 @@ class DashboardTab(QWidget):
         main_layout = QVBoxLayout(container)
         main_layout.setSpacing(8)
         main_layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('📋 Recent Activity')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent;')
+        header = SectionHeader('📋 Recent Activity')
         main_layout.addWidget(header)
         scroll_area = QScrollArea()
         scroll_area.setWidgetResizable(True)
@@ -681,8 +677,7 @@ class DashboardTab(QWidget):
         ''')
         header_layout = QVBoxLayout()
         header_layout.setSpacing(2)
-        header_label = QLabel('📊 Quick Stats')
-        header_label.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent;')
+        header_label = SectionHeader('📊 Quick Stats')
         header_layout.addWidget(header_label)
         grid_layout = QGridLayout()
         grid_layout.setSpacing(16)
@@ -952,8 +947,7 @@ class DashboardTab(QWidget):
         main_layout = QVBoxLayout(container)
         main_layout.setSpacing(8)
         main_layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('📈 Performance Metrics')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        header = SectionHeader('📈 Performance Metrics')
         main_layout.addWidget(header)
         grid_layout = QGridLayout()
         grid_layout.setSpacing(16)
@@ -998,8 +992,7 @@ class DashboardTab(QWidget):
         main_layout = QVBoxLayout(container)
         main_layout.setSpacing(8)
         main_layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('📋 Task Queue')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent;')
+        header = SectionHeader('📋 Task Queue')
         main_layout.addWidget(header)
         
         # Top section with running tasks
@@ -1114,8 +1107,7 @@ class DashboardTab(QWidget):
         layout = QVBoxLayout(container)
         layout.setSpacing(8)
         layout.setContentsMargins(16, 16, 16, 16)
-        header = QLabel('🌍 Environment')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent;')
+        header = SectionHeader('🌍 Environment')
         layout.addWidget(header)
         info = [
             ('Python', '3.12.0'),
@@ -1156,8 +1148,7 @@ class DashboardTab(QWidget):
         layout = QVBoxLayout(container)
         layout.setSpacing(4)
         layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('🖥️ System Status')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        header = SectionHeader('🖥️ System Status')
         layout.addWidget(header)
         resources = [('CPU', 45, '#32B8C6'), ('RAM', 67, '#E68161'), ('Disk', 23, '#22c55e')]
         for label, value, color in resources:
@@ -1201,8 +1192,7 @@ class DashboardTab(QWidget):
         layout = QVBoxLayout(container)
         layout.setSpacing(6)
         layout.setContentsMargins(0, 0, 0, 0)
-        header = QLabel('🔔 Alerts')
-        header.setStyleSheet('color: #FFFFFF; font-size: 14px; font-weight: 600; background-color: transparent; margin-bottom: 8px;')
+        header = SectionHeader('🔔 Alerts')
         layout.addWidget(header)
         alerts = [('⚠️', 'Storage > 90%', '#E68161'), ('ℹ️', 'Update available', '#32B8C6'), ('✅', 'Backup current', '#22c55e')]
         for icon, text, color in alerts:
