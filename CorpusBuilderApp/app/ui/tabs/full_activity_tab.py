@@ -40,11 +40,12 @@ class FullActivityTab(QWidget):
     retry_requested = pyqtSignal(str)
     stop_requested = pyqtSignal(str)
 
-    def __init__(self, config, activity_log_service=None, task_history_service=None, parent=None):
+    def __init__(self, config, activity_log_service=None, task_history_service=None, task_queue_manager=None, parent=None):
         super().__init__(parent)
         self.config = config
         self.activity_log_service = activity_log_service
         self.task_source = task_history_service
+        self.task_queue_manager = task_queue_manager
         self.logger = logging.getLogger(self.__class__.__name__)
 
         # Apply shared UI theme settings
@@ -850,13 +851,21 @@ Progress: {activity.get('progress', 0)}%
                 task_id = self._get_task_id(activity)
 
                 if activity['status'] == 'error':
-                    # Simulate retrying the task
+                    # Reset local task info
                     activity['status'] = 'running'
                     activity['progress'] = 0
                     activity['start_time'] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
                     activity['duration_seconds'] = 0
                     if 'error_message' in activity:
                         del activity['error_message']
+
+                    if self.task_queue_manager:
+                        try:
+                            self.task_queue_manager.add_task(task_id, {
+                                "name": activity.get('action', task_id)
+                            })
+                        except Exception as exc:  # pragma: no cover
+                            self.logger.warning("Failed to queue retry for %s: %s", task_id, exc)
                     
                     # Update the UI
                     self.update_activity_table()
@@ -871,7 +880,7 @@ Progress: {activity.get('progress', 0)}%
                     self.stop_btn.setEnabled(True)
                     
                     self.logger.info(f"Retried task: {activity['action']}")
-
+                    
                     if activity.get('id'):
                         self.retry_requested.emit(str(activity['id']))
     
@@ -886,10 +895,15 @@ Progress: {activity.get('progress', 0)}%
                 task_id = self._get_task_id(activity)
 
                 if activity['status'] == 'running':
-                    # Simulate stopping the task
                     activity['status'] = 'stopped'
-                    activity['progress'] = activity.get('progress', 0)  # Keep current progress
+                    activity['progress'] = activity.get('progress', 0)
                     activity['details'] += " (Manually stopped by user)"
+
+                    if self.task_queue_manager:
+                        try:
+                            self.task_queue_manager.update_task(task_id, "stopped", activity['progress'])
+                        except Exception as exc:  # pragma: no cover
+                            self.logger.warning("Failed to stop task %s: %s", task_id, exc)
                     
                     # Update the UI
                     self.update_activity_table()

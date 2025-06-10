@@ -494,9 +494,10 @@ class CryptoCorpusMainWindow(QMainWindow):
             # Create new Full Activity tab
             if not self.full_activity_tab:
                 self.full_activity_tab = FullActivityTab(
-                self.config,
-                activity_log_service=self.activity_log_service,
-                task_history_service=self.task_history_service,
+                    self.config,
+                    activity_log_service=self.activity_log_service,
+                    task_history_service=self.task_history_service,
+                    task_queue_manager=self.task_queue_manager,
                 )
                 self.full_activity_tab.retry_requested.connect(self.on_retry_requested)
                 self.full_activity_tab.stop_requested.connect(self.on_stop_requested)
