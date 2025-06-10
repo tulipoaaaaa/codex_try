@@ -152,11 +152,30 @@ class CorpusBalancerWrapper(BaseWrapper, ProcessorWrapperMixin):
                 if ':' in desc:
                     domains_str = desc.split(':', 1)[1]
                     missing_domains = [d.strip() for d in domains_str.split(',')]
-        if missing_domains:
-            print("[CorpusBalancerWrapper] Would trigger collectors for: {}".format(missing_domains))
-            # TODO: Actually trigger collectors here
+        if not missing_domains:
+            self.status_updated.emit("No missing domains found for collection.")
+            return
+
+        started: list[str] = []
+        wrappers: dict[str, Any] = getattr(self, "collector_wrappers", {})
+
+        for name, wrapper in wrappers.items():
+            try:
+                if hasattr(wrapper, "set_search_terms"):
+                    existing = getattr(wrapper, "search_terms", []) or []
+                    for dom in missing_domains:
+                        if dom not in existing:
+                            existing.append(dom)
+                    wrapper.set_search_terms(existing)
+                wrapper.start()
+                started.append(name)
+            except Exception:
+                continue
+
+        if started:
+            self.status_updated.emit("Triggered collectors: " + ", ".join(started))
         else:
-            print("[CorpusBalancerWrapper] No missing domains found for collection.")
+            self.status_updated.emit("No collectors available to trigger")
 
     def balance_corpus(self):
         """Analyze domain imbalance and update collector configurations."""

@@ -385,10 +385,18 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         def __getattr__(self, name):
             return object
 
-    qtgui = _QtGui(QIcon=object, QAction=object, QFont=object, QColor=object,
-                   QTextCharFormat=object, QBrush=object, QDragEnterEvent=object,
-                   QDropEvent=object)
+    qtgui = _QtGui(
+        QIcon=object,
+        QAction=object,
+        QFont=object,
+        QColor=object,
+        QTextCharFormat=object,
+        QBrush=object,
+        QDragEnterEvent=object,
+        QDropEvent=object,
+    )
     qttest = types.SimpleNamespace(QTest=object)
+    qtcharts = types.SimpleNamespace()
     qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
     class _DummyCharts(types.ModuleType):
         def __getattr__(self, name):
