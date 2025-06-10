@@ -1,3 +1,4 @@
+# PROTOTYPE: Not integrated into app. Placeholder only.
 # sources/specific_collectors/new_source_collector.py
 from shared_tools.collectors.web_collector import WebCollector
 
