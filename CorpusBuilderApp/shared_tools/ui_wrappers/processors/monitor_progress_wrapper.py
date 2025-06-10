@@ -52,8 +52,14 @@ except Exception:  # pragma: no cover - fallback for stubs
     QColor = QBrush = QPalette = object
     class Qt:
         Orientation = type("Orientation", (), {"Horizontal": 0})
+
 from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
-from shared_tools.processors.monitor_progress import MonitorProgress
+try:
+    from shared_tools.processors.monitor_progress import MonitorProgress
+except Exception:  # pragma: no cover - optional dependency
+    class MonitorProgress:
+        def configure(self, *a, **k):
+            pass
 from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
 
 

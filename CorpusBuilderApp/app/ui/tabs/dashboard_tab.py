@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, Signal, QMargins
 from PySide6.QtGui import QColor, QPainter
+import sys
 from PySide6.QtCharts import QChart, QChartView, QPieSeries
 from datetime import datetime
 from app.ui.widgets.card_wrapper import CardWrapper
@@ -57,6 +58,7 @@ class DashboardTab(QWidget):
         self._init_ui()
         self.fix_all_label_backgrounds()
         self.stats_service.stats_updated.connect(self.update_overview_metrics)
+        self.stats_service.stats_updated.connect(lambda *_: self.update_environment_info())
         self.load_data()
         self.stats_service.refresh_stats()
 
@@ -664,11 +666,8 @@ class DashboardTab(QWidget):
         layout = container.body_layout
         layout.setContentsMargins(16, 12, 16, 12)
         layout.setSpacing(4)
-        env_info = [
-            ('Python', '3.11.2', '#32B8C6'),
-            ('Environment', 'Development', '#E68161'),
-            ('Last Update', '2 days ago', '#9ca3af')
-        ]
+        self.environment_labels = {}
+        env_info = self._build_env_info()
         for label, value, color in env_info:
             item_widget = QWidget()
             item_layout = QHBoxLayout(item_widget)
@@ -678,11 +677,37 @@ class DashboardTab(QWidget):
             label_widget.setStyleSheet('background-color: transparent; color: #C5C7C7; font-size: 11px; font-weight: 500;')
             value_widget = QLabel(value)
             value_widget.setStyleSheet(f'background-color: transparent; color: {color}; font-size: 11px; font-weight: 600;')
+            self.environment_labels[label] = value_widget
             item_layout.addWidget(label_widget)
             item_layout.addStretch()
             item_layout.addWidget(value_widget)
             layout.addWidget(item_widget)
         return container
+
+    def _build_env_info(self):
+        py_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+        environment = getattr(self.config, "environment", self.config.get("environment", ""))
+        last_updated = self.stats_service.stats.get("last_updated")
+        if not last_updated:
+            path = self.stats_service._stats_file()
+            if path and path.exists():
+                last_updated = datetime.fromtimestamp(path.stat().st_mtime).isoformat(timespec='seconds')
+        if not last_updated:
+            last_updated = "N/A"
+        return [
+            ("Python", py_version, "#32B8C6"),
+            ("Environment", environment, "#E68161"),
+            ("Last Update", last_updated, "#9ca3af"),
+        ]
+
+    def update_environment_info(self):
+        if not hasattr(self, "environment_labels"):
+            return
+        for label, value, color in self._build_env_info():
+            widget = self.environment_labels.get(label)
+            if widget:
+                widget.setText(str(value))
+                widget.setStyleSheet(f'background-color: transparent; color: {color}; font-size: 11px; font-weight: 600;')
 
     def create_wider_quick_stats(self):
         container = QFrame()
@@ -748,8 +773,9 @@ class DashboardTab(QWidget):
         self.recent_activity_widget = RecentActivity(self.config)
         self.recent_activity_widget.setObjectName('recent-activity-tall')
         right_column.addWidget(self.recent_activity_widget)
-        environment_card = self.create_environment_info_widget()
-        right_column.addWidget(environment_card)
+        self.environment_card = self.create_environment_info_widget()
+        right_column.addWidget(self.environment_card)
+        self.update_environment_info()
         return right_column
 
     def create_card_with_styling(self, title, object_name):
