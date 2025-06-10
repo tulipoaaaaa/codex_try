@@ -10,7 +10,6 @@ import yaml
 from pathlib import Path
 from dotenv import load_dotenv, set_key
 from pydantic import ValidationError
-from app.helpers.crypto_utils import encrypt_value, decrypt_value
 from app.ui.widgets.section_header import SectionHeader
 from app.ui.theme.theme_constants import PAGE_MARGIN
 
