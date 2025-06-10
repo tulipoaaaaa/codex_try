@@ -24,6 +24,7 @@ from PySide6.QtWidgets import (
     QScrollArea,
     QFrame,
     QGroupBox,
+    QProgressDialog,
 )
 from PySide6.QtGui import QAction, QStandardItemModel, QStandardItem, QDragEnterEvent, QDropEvent, QIcon
 from PySide6.QtCore import (
@@ -39,6 +40,7 @@ from PySide6.QtCore import (
     QTimer,
     QMutex,
 )
+import logging
 from shared_tools.storage.corpus_manager import CorpusManager
 from shared_tools.services.corpus_validator_service import CorpusValidatorService
 import os
@@ -148,6 +150,8 @@ class BatchMetadataEditor(QDialog):
 class CorpusManagerTab(QWidget):
     def __init__(self, project_config, activity_log_service=None, parent=None):
         super().__init__(parent)
+        self.logger = logging.getLogger(self.__class__.__name__)
+        self.progress_dialog = None
         self.notification_manager = NotificationManager(self)  # Initialize first
         self.project_config = project_config
         self.activity_log_service = activity_log_service
@@ -162,9 +166,10 @@ class CorpusManagerTab(QWidget):
         self.validator_service.validation_completed.connect(
             self.show_validation_results
         )
-        self.validator_service.validation_failed.connect(
-            lambda e: QMessageBox.critical(self, "Validation Error", e)
+        self.validator_service.validation_completed.connect(
+            self.on_validation_complete
         )
+        self.validator_service.validation_failed.connect(self.on_validation_failed)
         self.validator_service.validation_started.connect(
             lambda: self.notification_manager.add_notification(
                 "corpus_validate",
@@ -923,6 +928,18 @@ class CorpusManagerTab(QWidget):
 
     def validate_corpus_structure(self) -> None:
         """Trigger corpus structure validation via the service."""
+        self.validate_structure_btn.setEnabled(False)
+        self.progress_dialog = QProgressDialog(
+            "Running task...",
+            "Please wait...",
+            0,
+            0,
+            self,
+        )
+        self.progress_dialog.setWindowTitle("Progress")
+        self.progress_dialog.setWindowModality(Qt.WindowModal)
+        self.progress_dialog.setCancelButton(None)
+        self.progress_dialog.show()
         self.validator_service.validate_structure(
             validate_metadata=self.validate_metadata_cb.isChecked(),
             auto_fix=self.auto_fix_cb.isChecked(),
@@ -977,8 +994,23 @@ class CorpusManagerTab(QWidget):
     def rebalance_corpus(self):
         try:
             from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
-
             wrapper = CorpusBalancerWrapper(self.project_config)
+            wrapper.domain_processed.connect(self.on_domain_processed)
+            wrapper.balance_completed.connect(self.on_balancer_finished)
+
+            self.rebalance_btn.setEnabled(False)
+            self.progress_dialog = QProgressDialog(
+                "Running task...",
+                "Please wait...",
+                0,
+                0,
+                self,
+            )
+            self.progress_dialog.setWindowTitle("Progress")
+            self.progress_dialog.setWindowModality(Qt.WindowModal)
+            self.progress_dialog.setCancelButton(None)
+            self.progress_dialog.show()
+
             wrapper.start()
             if hasattr(self, "notification_manager"):
                 self.notification_manager.add_notification(
@@ -989,3 +1021,25 @@ class CorpusManagerTab(QWidget):
                 )
         except Exception as exc:  # pragma: no cover - best effort
             QMessageBox.critical(self, "Rebalance Error", str(exc))
+
+    def on_balancer_finished(self, _results: dict) -> None:
+        if self.progress_dialog:
+            self.progress_dialog.close()
+            self.progress_dialog = None
+        self.rebalance_btn.setEnabled(True)
+
+    def on_validation_complete(self, _results: dict | None = None) -> None:
+        if self.progress_dialog:
+            self.progress_dialog.close()
+            self.progress_dialog = None
+        self.validate_structure_btn.setEnabled(True)
+
+    def on_validation_failed(self, error: str) -> None:
+        self.on_validation_complete()
+        QMessageBox.critical(self, "Validation Error", error)
+
+    def on_domain_processed(self, domain_name: str) -> None:
+        self.logger.info(f"Rebalanced domain: {domain_name}")
+        self.notification_manager.add_notification(
+            f"domain_{domain_name}", f"✅ Rebalanced: {domain_name}"
+        )
