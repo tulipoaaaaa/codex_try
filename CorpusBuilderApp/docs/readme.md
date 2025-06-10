@@ -46,6 +46,9 @@ AA_ACCOUNT_COOKIE=your_anna_cookie
 FRED_API_KEY=your_fred_key
 ```
 
+See [../docs/environment_config.md](../docs/environment_config.md) for the full
+set of variables and instructions on selecting the active environment.
+
 ### Launch
 
 ```bash
