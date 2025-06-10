@@ -16,6 +16,7 @@ from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBa
 from app.helpers.icon_manager import IconManager
 from app.helpers.notifier import Notifier
 from shared_tools.services.corpus_stats_service import CorpusStatsService
+from shared_tools.services.auto_balance_service import AutoBalanceService
 
 
 class AdvancedNotificationManager(QObject):
@@ -79,10 +80,16 @@ class BalancerTab(QWidget):
         self.auto_analysis_enabled = False
         self.analysis_interval_minutes = 30
         self.last_analysis_time = 0
-        
+
+        self.auto_balance_service = AutoBalanceService(self.balancer, project_config)
+
         self.setup_ui()
         self.connect_signals()
         self.stats_service.refresh_stats()
+
+        # apply defaults from config
+        if project_config.get("auto_balance.enabled", False):
+            self.auto_balance_checkbox.setChecked(True)
         
     def setup_ui(self):
         """Initialize the enhanced user interface"""
@@ -172,6 +179,9 @@ class BalancerTab(QWidget):
         self.auto_analysis_checkbox = QCheckBox("Enable Automatic Re-analysis")
         self.auto_analysis_checkbox.toggled.connect(self.toggle_auto_analysis)
         periodic_layout.addWidget(self.auto_analysis_checkbox)
+        self.auto_balance_checkbox = QCheckBox("Enable Auto Balance Loop")
+        self.auto_balance_checkbox.toggled.connect(self.toggle_auto_balance_loop)
+        periodic_layout.addWidget(self.auto_balance_checkbox)
         
         interval_layout = QHBoxLayout()
         interval_layout.addWidget(QLabel("Analysis Interval (minutes):"))
@@ -294,7 +304,11 @@ class BalancerTab(QWidget):
         self.balancer.progress_updated.connect(self.overall_progress.setValue)
         self.balancer.status_updated.connect(self.update_status_display)
         self.balancer.balance_completed.connect(self.on_balance_completed)
-        
+
+        self.auto_balance_service.progress.connect(self.update_status_display)
+        self.auto_balance_service.loop_started.connect(lambda: self.update_status_display("Auto balance loop running"))
+        self.auto_balance_service.loop_stopped.connect(lambda: self.update_status_display("Auto balance loop stopped"))
+
         # Connect notification signals
         self.notification_manager.notification_requested.connect(self.show_notification)
         
@@ -319,6 +333,17 @@ class BalancerTab(QWidget):
         if self.auto_analysis_enabled:
             self.analysis_timer.stop()
             self.analysis_timer.start(minutes * 60 * 1000)
+
+    @pyqtSlot(bool)
+    def toggle_auto_balance_loop(self, enabled: bool):
+        """Start or stop the auto-balance service."""
+        if enabled:
+            self.status_label.setText("Starting auto balance loop...")
+            self.auto_balance_service.start()
+            self.show_notification("Auto Balance Enabled", "Automatic balancing started")
+        else:
+            self.auto_balance_service.stop()
+            self.show_notification("Auto Balance Disabled", "Auto balancing stopped")
             
     @pyqtSlot()
     def perform_periodic_analysis(self):
