@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, Signal, QMargins
 from PySide6.QtGui import QColor, QPainter
 from PySide6.QtCharts import QChart, QChartView, QPieSeries
+from datetime import datetime
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
 from app.ui.widgets.recent_activity import RecentActivity
@@ -35,17 +36,22 @@ class DashboardTab(QWidget):
     view_all_activity_requested = Signal()
     rebalance_requested = Signal()
 
-    def __init__(self, project_config, activity_log_service=None, parent=None):
+    def __init__(self, project_config, activity_log_service=None, task_history_service=None, parent=None):
         super().__init__(parent)
         self.config = project_config
         self.activity_log_service = activity_log_service
         self.metric_labels = {}
         self.stats_service = CorpusStatsService(project_config)
+        self.task_history_service = task_history_service
         self._init_ui()
         self.fix_all_label_backgrounds()
         self.stats_service.stats_updated.connect(self.update_overview_metrics)
         self.load_data()
         self.stats_service.refresh_stats()
+
+        if self.task_history_service:
+            self.task_history_service.task_added.connect(lambda *_: self.load_data())
+            self.task_history_service.task_updated.connect(lambda *_: self.load_data())
 
         if self.activity_log_service:
             self.activity_log_service.activity_added.connect(
@@ -84,12 +90,12 @@ class DashboardTab(QWidget):
         metrics_bar = QHBoxLayout()
         metrics_bar.setSpacing(32)
         metrics_bar.setContentsMargins(0, 4, 0, 12)
+        summary = self.stats_service.get_summary()
         stat_data = [
-            {"value": "2570", "label": "Total Docs", "unit": ""},
-            {"value": "0.08", "label": "Total Size", "unit": "GB"},
-            {"value": "4", "label": "Active Domains", "unit": ""},
-            {"value": "2.5%", "label": "Storage Usage", "unit": ""},
-            {"value": "3", "label": "Running Ops", "unit": ""},
+            {"value": summary.get("total_files", 0), "label": "Total Docs", "unit": ""},
+            {"value": f"{summary.get('total_size_mb', 0):.2f}", "label": "Total Size", "unit": "MB"},
+            {"value": summary.get("active_domains", 0), "label": "Active Domains", "unit": ""},
+            {"value": summary.get("total_tokens", 0), "label": "Total Tokens", "unit": ""},
         ]
         for stat in stat_data:
             card, _ = self.fix_metric_card_transparency(stat["label"], stat["value"], stat["unit"])
@@ -743,7 +749,30 @@ class DashboardTab(QWidget):
         return container
 
     def load_data(self):
-        pass  # All dummy data for now
+        summary = self.stats_service.get_summary()
+        self.update_overview_metrics(summary)
+
+        if self.task_history_service:
+            try:
+                activities = self.task_history_service.get_recent_tasks()
+                self.recent_activity_widget.clear_activities()
+                for a in activities:
+                    time_str = a.get("time", "")
+                    try:
+                        dt = datetime.fromisoformat(time_str)
+                        time_str = dt.strftime("%H:%M")
+                    except Exception:
+                        pass
+                    self.recent_activity_widget.add_activity(
+                        {
+                            "time": time_str,
+                            "action": a.get("action", ""),
+                            "status": a.get("status", "info"),
+                            "details": a.get("details", ""),
+                        }
+                    )
+            except Exception:
+                pass
 
     # --- Placeholder methods for actions ---
     def start_corpus_optimization(self):
@@ -764,6 +793,7 @@ class DashboardTab(QWidget):
         total_docs = stats.get("total_files") or stats.get("doc_count") or 0
         total_size = stats.get("total_size_mb") or stats.get("total_size") or 0
         active_domains = len(stats.get("domains", {}))
+        total_tokens = stats.get("total_tokens", 0)
 
         if "Total Docs" in self.metric_labels:
             self.metric_labels["Total Docs"].setText(str(total_docs))
@@ -775,6 +805,8 @@ class DashboardTab(QWidget):
             self.metric_labels["Total Size"].setText(size_text)
         if "Active Domains" in self.metric_labels:
             self.metric_labels["Active Domains"].setText(str(active_domains))
+        if "Total Tokens" in self.metric_labels:
+            self.metric_labels["Total Tokens"].setText(str(total_tokens))
 
     def fix_all_label_backgrounds(self):
         # Fix all existing QLabel widgets to have transparent background
@@ -789,28 +821,9 @@ class DashboardTab(QWidget):
 
     def get_real_domain_data(self):
         try:
-            if hasattr(self.config, 'domain_manager'):
-                domains = self.config.domain_manager.get_all_domains()
-            elif hasattr(self.config, 'domains'):
-                domains = self.config.domains
-            else:
-                import os
-                domain_path = os.path.join(self.config.project_root, 'domains')
-                if os.path.exists(domain_path):
-                    domains = [d for d in os.listdir(domain_path) if os.path.isdir(os.path.join(domain_path, d))]
-                else:
-                    domains = ['Crypto Derivatives', 'High Frequency Trading', 'Market Making', 'Regulation & Compliance', 'DeFi Protocols', 'Algorithmic Trading', 'Risk Management', 'Blockchain Infrastructure']
-            total = len(domains)
-            domain_data = {}
-            for i, domain in enumerate(domains):
-                percentage = max(5, 25 - i * 3)
-                domain_data[domain] = percentage
-            total_pct = sum(domain_data.values())
-            for domain in domain_data:
-                domain_data[domain] = round((domain_data[domain] / total_pct) * 100, 1)
-            return domain_data
+            return self.stats_service.get_domain_distribution()
         except Exception:
-            return {'Crypto Derivatives': 25.0, 'High Frequency Trading': 20.0, 'Market Making': 15.0, 'Regulation & Compliance': 12.0, 'DeFi Protocols': 10.0, 'Algorithmic Trading': 8.0, 'Risk Management': 6.0, 'Blockchain Infrastructure': 4.0}
+            return {}
 
     def create_large_pie_chart(self, domain_data):
         from PySide6.QtCore import Qt

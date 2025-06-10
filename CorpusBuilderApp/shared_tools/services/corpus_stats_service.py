@@ -4,6 +4,7 @@ import json
 import logging
 from pathlib import Path
 from typing import Optional, Dict
+from datetime import datetime
 
 from PySide6.QtCore import QObject, Signal as pyqtSignal
 
@@ -97,3 +98,67 @@ class CorpusStatsService(QObject):
                     size = float(data) if isinstance(data, (int, float)) else 0.0
                 summary[domain] = float(size)
         return summary
+
+    # ------------------------------------------------------------------
+    def get_summary(self) -> Dict[str, object]:
+        """Return basic corpus summary information."""
+        stats = self.stats if isinstance(self.stats, dict) else {}
+        return {
+            "total_files": stats.get("total_files") or stats.get("doc_count") or 0,
+            "total_size_mb": stats.get("total_size_mb") or stats.get("total_size") or 0,
+            "total_tokens": stats.get("total_tokens", 0),
+            "active_domains": len(stats.get("domains", {})),
+        }
+
+    # ------------------------------------------------------------------
+    def get_domain_distribution(self) -> Dict[str, float]:
+        """Return percent distribution of documents by domain."""
+        counts = self.get_domain_summary()
+        total = sum(counts.values())
+        if not total:
+            return {}
+        return {d: round((c / total) * 100, 2) for d, c in counts.items()}
+
+    # ------------------------------------------------------------------
+    def get_language_distribution(self, metadata_dir: Path | str) -> Dict[str, int]:
+        """Count documents by language from metadata JSON files."""
+        path = Path(metadata_dir)
+        counts: Dict[str, int] = {}
+        if not path.exists():
+            return counts
+        for meta in path.rglob("*.json"):
+            try:
+                with open(meta, "r", encoding="utf-8") as fh:
+                    data = json.load(fh)
+                lang = data.get("language") or data.get("lang")
+                if lang:
+                    counts[lang] = counts.get(lang, 0) + 1
+            except Exception:  # pragma: no cover - runtime guard
+                continue
+        return counts
+
+    # ------------------------------------------------------------------
+    def get_daily_document_counts(self, metadata_dir: Path | str) -> Dict[str, int]:
+        """Return mapping of ISO date to document count from metadata timestamps."""
+        path = Path(metadata_dir)
+        counts: Dict[str, int] = {}
+        if not path.exists():
+            return counts
+        for meta in path.rglob("*.json"):
+            try:
+                with open(meta, "r", encoding="utf-8") as fh:
+                    data = json.load(fh)
+                ts = (
+                    data.get("timestamp")
+                    or data.get("date")
+                    or data.get("created")
+                    or data.get("created_at")
+                )
+                if not ts:
+                    continue
+                dt = datetime.fromisoformat(str(ts))
+                day = dt.date().isoformat()
+                counts[day] = counts.get(day, 0) + 1
+            except Exception:  # pragma: no cover - runtime guard
+                continue
+        return counts

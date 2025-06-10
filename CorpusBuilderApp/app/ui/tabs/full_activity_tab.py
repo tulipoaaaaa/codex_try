@@ -557,12 +557,15 @@ class FullActivityTab(QWidget):
             self.logger.error(f"Error loading activity data: {e}")
     
     def update_metrics(self):
-        """Update the metric cards"""
-        # In production, this would fetch real data
-        # For demo, using mock data with some variation
-        
+        """Update the metric cards with real task history"""
+
         activities = self.get_activity_data()
         total_tasks = len(activities)
+
+        if self.task_source:
+            counts = self.task_source.get_recent_task_counts(days=7)
+            total_tasks = sum(counts.values()) or total_tasks
+
         success_count = len([a for a in activities if a['status'] == 'success'])
         success_rate = (success_count / total_tasks * 100) if total_tasks > 0 else 0
         active_count = len([a for a in activities if a['status'] == 'running'])
@@ -686,22 +689,40 @@ class FullActivityTab(QWidget):
             legend.setVisible(False)
     
     def update_trends_chart(self):
-        """Update the performance trends chart"""
-        # For demo, create a simple trends visualization
-        # In production, this would show actual performance metrics over time
+        """Update the performance trends chart with daily task counts."""
         chart = self.trends_chart.chart()
         chart.removeAllSeries()
-        
-        # Remove chart title since it's now in the consolidated header
+        for axis in chart.axes():
+            chart.removeAxis(axis)
+
+        counts = self.task_source.get_recent_task_counts(days=7) if self.task_source else {}
+        if not counts:
+            return
+        dates = sorted(counts.keys())
+
+        series = QBarSeries()
+        bar_set = QBarSet("Tasks")
+        for d in dates:
+            bar_set.append(counts[d])
+        series.append(bar_set)
+        chart.addSeries(series)
+
+        axis_x = QBarCategoryAxis()
+        axis_x.append(dates)
+        axis_x.setLabelsColor(QColor(255, 255, 255))
+        chart.addAxis(axis_x, Qt.AlignmentFlag.AlignBottom)
+        series.attachAxis(axis_x)
+
+        axis_y = QValueAxis()
+        axis_y.setRange(0, max(counts.values()) if counts else 1)
+        axis_y.setLabelsColor(QColor(255, 255, 255))
+        chart.addAxis(axis_y, Qt.AlignmentFlag.AlignLeft)
+        series.attachAxis(axis_y)
+
         chart.setTitle("")
-        
-        # Hide chart legend since we have custom legend below
         legend = chart.legend()
         if legend:
             legend.setVisible(False)
-        
-        # Mock trend data would go here
-        # This is a placeholder for the trend visualization
     
     def update_activity_table(self):
         """Update the detailed activity table"""

@@ -1,5 +1,5 @@
 from __future__ import annotations
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional, Dict
 from PySide6.QtCore import QObject, Signal as pyqtSignal
 
@@ -46,3 +46,37 @@ class TaskHistoryService(QObject):
         tasks = list(self._tasks.values())
         tasks.sort(key=lambda t: t.get("start_time", ""))
         return tasks[-n:]
+
+    # ------------------------------------------------------------------
+    def get_recent_tasks(self, limit: int = 5) -> list[dict]:
+        """Return simplified info for the most recent tasks."""
+        tasks = self.load_recent_tasks(limit)
+        result = []
+        for t in reversed(tasks):
+            result.append(
+                {
+                    "action": t.get("name", ""),
+                    "time": t.get("start_time", ""),
+                    "status": t.get("status", ""),
+                    "details": t.get("details", ""),
+                }
+            )
+        return result
+
+    # ------------------------------------------------------------------
+    def get_recent_task_counts(self, days: int = 7) -> Dict[str, int]:
+        """Return a mapping of date string to number of tasks started on that day."""
+        end = datetime.utcnow().date()
+        start = end - timedelta(days=days - 1)
+        counts: Dict[str, int] = {}
+        for t in self._tasks.values():
+            ts = t.get("start_time")
+            try:
+                dt = datetime.fromisoformat(str(ts))
+            except Exception:
+                continue
+            d = dt.date()
+            if start <= d <= end:
+                key = d.isoformat()
+                counts[key] = counts.get(key, 0) + 1
+        return counts
