@@ -1,6 +1,19 @@
 # codex_try
 
+
 [![Tests](https://github.com/OWNER/REPO/actions/workflows/test.yml/badge.svg)](https://github.com/OWNER/REPO/actions/workflows/test.yml)
+
+## Installation
+
+Install the runtime requirements and then the development extras:
+
+```bash
+pip install -r requirements.txt
+pip install -r requirements-dev.txt
+```
+
+These files are kept separate so the core application dependencies remain
+lightweight.
 
 ## Testing
 
