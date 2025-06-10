@@ -160,7 +160,9 @@ class CryptoCorpusMainWindow(QMainWindow):
             self.tab_widget.addTab(self.processors_tab, "⚙️ Processors")
             # Corpus Manager tab
             self.logger.debug("Initializing CorpusManagerTab...")
-            self.corpus_manager_tab = CorpusManagerTab(self.config)
+            self.corpus_manager_tab = CorpusManagerTab(
+                self.config, activity_log_service=self.activity_log_service
+            )
             self.logger.debug("CorpusManagerTab initialized successfully")
             self.tab_widget.addTab(self.corpus_manager_tab, "📁 Corpus Manager")
             # Balancer tab
