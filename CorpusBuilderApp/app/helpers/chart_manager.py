@@ -121,11 +121,9 @@ class ChartManager:
             pct = round(slice_obj.percentage() * 100, 1)
             slice_label = slice_obj.label()
             slice_obj.setLabel(f"{slice_label} ({pct}%)")
-            if domain_count is not None:
-                tooltip = f"{slice_label}:\n{domain_count} documents\n{pct}% of corpus"
-            else:
-                tooltip = f"{slice_label}:\n{pct}% of corpus"
-            slice_obj.setToolTip(tooltip)
+            slice_obj.setToolTip(
+                f"{slice_obj.label()}: {domain_count if domain_count is not None else 0} files ({slice_obj.percentage() * 100:.1f}%)"
+            )
         
         chart.addSeries(series)
         
