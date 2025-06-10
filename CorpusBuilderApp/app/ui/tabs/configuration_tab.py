@@ -70,6 +70,7 @@ class ConfigurationTab(QWidget):
         buttons_layout.addWidget(self.reset_btn)
         
         self.default_btn = QPushButton("Reset to Defaults")
+        self.default_btn.setObjectName("danger")
         self.default_btn.clicked.connect(self.load_default_config)
         buttons_layout.addWidget(self.default_btn)
         
