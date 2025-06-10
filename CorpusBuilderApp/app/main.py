@@ -40,8 +40,8 @@ def save_user_theme(theme):
     try:
         with open(THEME_CONFIG_PATH, 'w', encoding='utf-8') as f:
             json.dump({'theme': theme}, f)
-    except Exception:
-        pass
+    except Exception as exc:
+        print(f"Failed to save user theme: {exc}")
 
 def load_user_sound_setting():
     if os.path.exists(THEME_CONFIG_PATH):
