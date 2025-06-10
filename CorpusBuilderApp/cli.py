@@ -106,6 +106,20 @@ def main(argv: list[str] | None = None) -> int:
         print(PARITY_TABLE)
         return 0
 
+    SUPPORTED_COMMANDS = [
+        "generate-default-config",
+        "diff-corpus",
+        "export-corpus",
+        "check-corpus",
+        "import-corpus",
+        "sync-domain-config",
+        "sync-config",
+    ]
+
+    if not argv or "--help" in argv:
+        print("Supported commands: " + ", ".join(SUPPORTED_COMMANDS))
+        return 0
+
     if argv and argv[0] == "diff-corpus":
         diff_parser = argparse.ArgumentParser(prog="diff-corpus", description="Compare two corpus profiles")
         diff_parser.add_argument("--profile-a", required=True, help="Path to first corpus profile JSON")
