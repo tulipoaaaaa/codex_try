@@ -117,7 +117,9 @@ Use **Tools → Import Corpus** to load a previously exported ZIP archive. The s
 
 - **check_corpus_structure.py** – validate the directories defined in your
   `ProjectConfig`. Run it with `--config path/to/config.yaml` to check that the
-  raw, processed, metadata and logs folders exist and are writable.
+  raw, processed, metadata and logs folders exist and are writable. Use
+  `--auto-fix` to create any missing directories and `--check-integrity` to
+  scan sample files for corruption.
 
 ## Troubleshooting
 - If a configuration fails to load, check the YAML syntax and file paths.

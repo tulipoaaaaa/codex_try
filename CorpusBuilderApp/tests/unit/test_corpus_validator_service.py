@@ -84,8 +84,16 @@ def test_service_passes_flag(monkeypatch, tmp_path, qapp):
     cfg = DummyCfg(tmp_path)
     captured = {}
 
-    def fake_check(_cfg, *, validate_metadata=False):
-        captured["flag"] = validate_metadata
+    def fake_check(
+        _cfg,
+        *,
+        validate_metadata=False,
+        auto_fix=False,
+        check_integrity=False,
+    ):
+        captured["validate_metadata"] = validate_metadata
+        captured["auto_fix"] = auto_fix
+        captured["check_integrity"] = check_integrity
 
     monkeypatch.setattr(
         "shared_tools.services.corpus_validator_service.check_corpus_structure",
@@ -93,7 +101,35 @@ def test_service_passes_flag(monkeypatch, tmp_path, qapp):
     )
 
     service = CorpusValidatorService(cfg)
-    service.validate_structure(validate_metadata=True)
-    assert captured.get("flag") is True
+    service.validate_structure(
+        validate_metadata=True,
+        auto_fix=True,
+        check_integrity=True,
+    )
+    assert captured == {
+        "validate_metadata": True,
+        "auto_fix": True,
+        "check_integrity": True,
+    }
+
+
+def test_service_collects_errors(monkeypatch, tmp_path, qapp):
+    for sub in ["raw", "processed", "metadata", "logs"]:
+        (tmp_path / sub).mkdir()
+
+    cfg = DummyCfg(tmp_path)
+
+    def fake_check(_cfg, **_kwargs):
+        log = logging.getLogger("tools.check_corpus_structure")
+        log.error("boom")
+
+    monkeypatch.setattr(
+        "shared_tools.services.corpus_validator_service.check_corpus_structure",
+        fake_check,
+    )
+
+    service = CorpusValidatorService(cfg)
+    service.validate_structure()
+    assert service.results.get("errors") == ["boom"]
 
 
