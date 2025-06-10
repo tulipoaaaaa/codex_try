@@ -98,6 +98,19 @@ def cmd_diff_corpus(args: argparse.Namespace) -> int:
 def main(argv: list[str] | None = None) -> int:
     argv = list(argv) if argv is not None else sys.argv[1:]
 
+    if not argv or "--help" in argv:
+        print("Available CLI commands:")
+        print("  generate-default-config --output config.yaml")
+        print("  diff-corpus --profile-a file.json --profile-b file.json")
+        print("  export-corpus --corpus-dir path --output-dir path")
+        print(
+            "  check-corpus --config file.yaml [--auto-fix] [--validate-metadata] [--check-integrity]"
+        )
+        print("  import-corpus --source-dir path --config file.yaml")
+        print("  --matrix     Show CLI/GUI feature parity")
+        print("  --version    Show current version")
+        return 0
+
     if "--version" in argv:
         print(__version__)
         return 0
@@ -180,7 +193,7 @@ def main(argv: list[str] | None = None) -> int:
         args = parser.parse_args(argv[1:])
 
         from tools.check_corpus_structure import check_corpus_structure
-        from shared_tools.config.project_config import ProjectConfig
+        from shared_tools.project_config import ProjectConfig
         import shutil
 
         cfg = ProjectConfig.from_yaml(args.config)
