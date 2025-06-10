@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# NOTE: Prototype utility script – not used in normal application runtime.
 """Integration audit after refactor.
 
 This script performs a lightweight audit of core service and UI
