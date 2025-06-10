@@ -8,7 +8,6 @@ from PySide6.QtWidgets import (
     QGridLayout,
     QLabel,
     QPushButton,
-    QProgressBar,
     QScrollArea,
     QSizePolicy,
     QFrame
@@ -32,6 +31,7 @@ from app.ui.theme.theme_constants import (
     BUTTON_COLOR_GRAY,
 )
 from shared_tools.services.corpus_stats_service import CorpusStatsService
+from app.ui.utils.ui_helpers import create_styled_progress_bar
 import os
 
 ICON_PATH = os.path.join(os.path.dirname(__file__), '../../resources/icons')
@@ -139,11 +139,7 @@ class DashboardTab(QWidget):
             label = QLabel(op[0])
             label.setStyleSheet("background-color: transparent; font-size: 14px; color: #f9fafb;")
             row.addWidget(label)
-            bar = QProgressBar()
-            bar.setValue(op[1])
-            bar.setFixedHeight(8)
-            bar.setStyleSheet("QProgressBar { background-color: #2d3748; border-radius: 4px; } QProgressBar::chunk { background-color: #32B8C6; border-radius: 4px; }")
-            bar.setTextVisible(False)
+            bar = create_styled_progress_bar(op[1], "#32B8C6", height=8)
             row.addWidget(bar)
             ops_layout.addLayout(row)
         center_col.addWidget(ops_card)
@@ -266,15 +262,8 @@ class DashboardTab(QWidget):
             label_widget = QLabel(label)
             label_widget.setFixedWidth(35)
             label_widget.setStyleSheet('color: #f9fafb; font-size: 12px; background-color: transparent;')
-            progress_bar = QProgressBar()
-            progress_bar.setValue(value)
-            progress_bar.setFixedHeight(6)
+            progress_bar = create_styled_progress_bar(value, color, height=6)
             progress_bar.setFixedWidth(80)
-            progress_bar.setTextVisible(False)
-            progress_bar.setStyleSheet(f'''
-                QProgressBar {{ background-color: #2d3748; border-radius: 3px; }}
-                QProgressBar::chunk {{ background-color: {color}; border-radius: 3px; }}
-            ''')
             percent_label = QLabel(f'{value}%')
             percent_label.setStyleSheet('color: #f9fafb; font-size: 12px; font-weight: 600; background-color: transparent;')
             percent_label.setFixedWidth(30)
@@ -431,14 +420,7 @@ class DashboardTab(QWidget):
             task_layout.setSpacing(2)
             name_label = QLabel(task_name)
             name_label.setStyleSheet('color: #f9fafb; font-size: 10px; background-color: transparent;')
-            progress_bar = QProgressBar()
-            progress_bar.setValue(progress)
-            progress_bar.setFixedHeight(4)
-            progress_bar.setTextVisible(False)
-            progress_bar.setStyleSheet(f'''
-                QProgressBar {{ background-color: #2d3748; border-radius: 2px; }}
-                QProgressBar::chunk {{ background-color: {color}; border-radius: 2px; }}
-            ''')
+            progress_bar = create_styled_progress_bar(progress, color, height=4)
             task_layout.addWidget(name_label)
             task_layout.addWidget(progress_bar)
             main_layout.addWidget(task_container)
@@ -1039,14 +1021,7 @@ class DashboardTab(QWidget):
             task_layout.setSpacing(2)
             name_label = QLabel(task_name)
             name_label.setStyleSheet('color: #f9fafb; font-size: 10px; background-color: transparent;')
-            progress_bar = QProgressBar()
-            progress_bar.setValue(progress)
-            progress_bar.setFixedHeight(4)
-            progress_bar.setTextVisible(False)
-            progress_bar.setStyleSheet(f'''
-                QProgressBar {{ background-color: #2d3748; border-radius: 2px; }}
-                QProgressBar::chunk {{ background-color: {color}; border-radius: 2px; }}
-            ''')
+            progress_bar = create_styled_progress_bar(progress, color, height=4)
             task_layout.addWidget(name_label)
             task_layout.addWidget(progress_bar)
             top_layout.addWidget(task_container)
@@ -1194,15 +1169,8 @@ class DashboardTab(QWidget):
             label_widget = QLabel(label)
             label_widget.setFixedWidth(35)
             label_widget.setStyleSheet('color: #f9fafb; font-size: 12px; background-color: transparent;')
-            progress_bar = QProgressBar()
-            progress_bar.setValue(value)
-            progress_bar.setFixedHeight(6)
+            progress_bar = create_styled_progress_bar(value, color, height=6)
             progress_bar.setFixedWidth(80)
-            progress_bar.setTextVisible(False)
-            progress_bar.setStyleSheet(f'''
-                QProgressBar {{ background-color: #2d3748; border-radius: 3px; }}
-                QProgressBar::chunk {{ background-color: {color}; border-radius: 3px; }}
-            ''')
             percent_label = QLabel(f'{value}%')
             percent_label.setStyleSheet('color: #f9fafb; font-size: 12px; font-weight: 600; background-color: transparent;')
             percent_label.setFixedWidth(30)
