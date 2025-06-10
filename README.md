@@ -34,3 +34,17 @@ ln -s ../../scripts/pre_push.sh .git/hooks/pre-push
 
 The script will run `ruff` if it is installed, or fall back to `flake8`. It then
 executes `pytest`. The push will be blocked if any of these steps fail.
+
+## 🖥️ Running GUI on Linux or headless environments
+
+Install Qt system dependencies:
+
+```bash
+sudo apt install libegl1 libxcb-icccm4 libxkbcommon-x11-0
+```
+
+Launch the application with offscreen rendering:
+
+```bash
+HEADLESS=1 python app/main.py
+```

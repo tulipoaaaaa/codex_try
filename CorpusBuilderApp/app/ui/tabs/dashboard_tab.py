@@ -13,22 +13,15 @@ from PySide6.QtWidgets import (
     QFrame
 )
 from PySide6.QtCore import Qt, Signal, QMargins
-from PySide6.QtGui import QPixmap, QColor, QPainter
+from PySide6.QtGui import QColor, QPainter
 from PySide6.QtCharts import QChart, QChartView, QPieSeries
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
-from app.ui.widgets.status_dot import StatusDot
-from app.ui.widgets.corpus_statistics import CorpusStatistics
-from app.ui.widgets.domain_distribution import DomainDistribution
-from app.ui.widgets.active_operations import ActiveOperations
 from app.ui.widgets.recent_activity import RecentActivity
 from app.ui.widgets.activity_log import ActivityLog
 from app.ui.theme.theme_constants import (
-    CARD_MARGIN,
-    CARD_PADDING,
     BUTTON_COLOR_PRIMARY,
-    BUTTON_COLOR_DANGER,
-    BUTTON_COLOR_GRAY,
+    CARD_BORDER_COLOR,
 )
 from shared_tools.services.corpus_stats_service import CorpusStatsService
 from app.ui.utils.ui_helpers import create_styled_progress_bar
@@ -208,9 +201,7 @@ class DashboardTab(QWidget):
         return metric_widget, value_label
 
     def create_giant_pie_chart(self, domain_data):
-        from PySide6.QtCharts import QChart, QChartView, QPieSeries
-        from PySide6.QtGui import QColor, QPainter
-        from PySide6.QtCore import Qt, QMargins
+        from PySide6.QtCore import Qt
         chart = QChart()
         chart.setBackgroundBrush(QColor('transparent'))
         chart.setMargins(QMargins(0, 0, 0, 0))
@@ -818,13 +809,11 @@ class DashboardTab(QWidget):
             for domain in domain_data:
                 domain_data[domain] = round((domain_data[domain] / total_pct) * 100, 1)
             return domain_data
-        except Exception as e:
+        except Exception:
             return {'Crypto Derivatives': 25.0, 'High Frequency Trading': 20.0, 'Market Making': 15.0, 'Regulation & Compliance': 12.0, 'DeFi Protocols': 10.0, 'Algorithmic Trading': 8.0, 'Risk Management': 6.0, 'Blockchain Infrastructure': 4.0}
 
     def create_large_pie_chart(self, domain_data):
-        from PySide6.QtCharts import QChart, QChartView, QPieSeries
-        from PySide6.QtGui import QColor, QPainter
-        from PySide6.QtCore import Qt, QMargins
+        from PySide6.QtCore import Qt
         chart = QChart()
         chart.setBackgroundBrush(QColor('transparent'))
         chart.setMargins(QMargins(0, 0, 0, 0))
@@ -911,9 +900,6 @@ class DashboardTab(QWidget):
         return container
 
     def create_huge_pie_chart_up_left(self, domain_data):
-        from PySide6.QtCharts import QChart, QChartView, QPieSeries
-        from PySide6.QtGui import QColor, QPainter
-        from PySide6.QtCore import Qt, QMargins
         chart = QChart()
         chart.setBackgroundBrush(QColor('transparent'))
         chart.setMargins(QMargins(0, 0, 0, 0))
