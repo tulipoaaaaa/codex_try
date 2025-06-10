@@ -14,6 +14,7 @@ from collections import defaultdict, Counter
 from .formula_extractor import FormulaExtractor
 from .chart_image_extractor import ChartImageExtractor
 from shared_tools.config.project_config import ProjectConfig
+logger = logging.getLogger(__name__)
 
 class FinancialSymbolProcessor:
     """Process and preserve financial symbols, tickers, and mathematical notation."""
@@ -771,12 +772,12 @@ def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     results = processor.process_directory(project.get_input_dir())
     
     if verbose:
-        print("\nFinancial Symbol Processing Results:")
-        print(f"Processed files: {len(results['processed_files'])}")
-        print(f"Total symbols found: {results['total_symbols']}")
-        print("\nSymbol types found:")
+        logger.info("\nFinancial Symbol Processing Results:")
+        logger.info(f"Processed files: {len(results['processed_files'])}")
+        logger.info(f"Total symbols found: {results['total_symbols']}")
+        logger.info("\nSymbol types found:")
         for symbol_type, count in results['symbol_counts'].items():
-            print(f"  {symbol_type}: {count}")
+            logger.info(f"  {symbol_type}: {count}")
     
     return results
 
@@ -804,7 +805,7 @@ def main():
     with open(output_file, 'w') as f:
         json.dump(results, f, indent=2)
     
-    print(f"\nProcessing results saved to: {output_file}")
+    logger.info(f"\nProcessing results saved to: {output_file}")
 
 if __name__ == "__main__":
     main()

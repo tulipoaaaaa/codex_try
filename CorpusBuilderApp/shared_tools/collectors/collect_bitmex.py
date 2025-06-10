@@ -10,6 +10,7 @@ from pathlib import Path
 from .base_collector import BaseCollector
 from shared_tools.utils.domain_utils import get_domain_for_file
 from typing import Union
+logger = logging.getLogger(__name__)
 
 class UpdatedBitMEXCollector(BaseCollector):
     def __init__(self, config: Union[str, 'ProjectConfig'], delay_range: tuple = (2, 5)):
@@ -185,7 +186,7 @@ class UpdatedBitMEXCollector(BaseCollector):
                 before_count = len(all_posts)
                 all_posts = [p for p in all_posts if self._normalize_title(p.get('title', '')) not in self.titles_cache]
                 skipped = before_count - len(all_posts)
-                print(f"Deduplication: Skipped {skipped} results already in the existing titles cache.")
+                logger.info(f"Deduplication: Skipped {skipped} results already in the existing titles cache.")
             
             self._save_metadata(all_posts)
             processed_posts = self._process_posts(all_posts, keywords=keywords)
@@ -222,7 +223,7 @@ class UpdatedBitMEXCollector(BaseCollector):
                             self.logger.info(f"Skipping post '{post.get('title','')}' ({url}) - no keywords found.")
                             continue
                         else:
-                            print(f"Keywords found in post '{post.get('title','')}' ({url}): {found_keywords}")
+                            logger.info(f"Keywords found in post '{post.get('title','')}' ({url}): {found_keywords}")
                     pdf_links = []
                     for link in content_elem.find_all('a', href=True):
                         href = link['href']
@@ -262,7 +263,7 @@ def run_bitmex_collector(args, source_config, base_dir):
         source_dir.mkdir(parents=True, exist_ok=True)
     bitmex_keywords = getattr(args, 'bitmex_keywords', None)
     if bitmex_keywords:
-        print(f"BitMEX keyword filter enabled: {bitmex_keywords}")
+        logger.info(f"BitMEX keyword filter enabled: {bitmex_keywords}")
     # Deduplication: load existing titles cache
     titles_cache = set()
     existing_titles_path = getattr(args, 'existing_titles', None)
@@ -274,48 +275,48 @@ def run_bitmex_collector(args, source_config, base_dir):
     def normalize_title(title):
         return re.sub(r'[^\w\s]', '', str(title).lower()).strip()
     try:
-        print("\nStarting updated BitMEX collector test...")
+        logger.info("\nStarting updated BitMEX collector test...")
         collector = UpdatedBitMEXCollector(source_dir)
         results = collector.collect(max_pages=getattr(args, 'bitmex_max_pages', 1), keywords=bitmex_keywords)
-        print(f"\n===== Updated BitMEXCollector Results =====")
-        print(f"Collected {len(results)} research posts")
+        logger.info(f"\n===== Updated BitMEXCollector Results =====")
+        logger.info(f"Collected {len(results)} research posts")
         if results:
             show_count = min(3, len(results))
             for i, post in enumerate(results[:show_count]):
-                print(f"\nPost #{i+1}:")
-                print(f"  Title: {post.get('title')}")
-                print(f"  URL: {post.get('url')}")
+                logger.info(f"\nPost #{i+1}:")
+                logger.info(f"  Title: {post.get('title')}")
+                logger.info(f"  URL: {post.get('url')}")
                 pdfs = post.get('pdfs', [])
-                print(f"  PDF Count: {len(pdfs)}")
+                logger.info(f"  PDF Count: {len(pdfs)}")
                 for j, pdf in enumerate(pdfs[:2]):
-                    print(f"    PDF #{j+1}: {pdf.get('filename')}")
+                    logger.info(f"    PDF #{j+1}: {pdf.get('filename')}")
                     filepath = pdf.get('filepath', '')
                     if filepath and os.path.exists(filepath):
                         size_kb = os.path.getsize(filepath) / 1024
-                        print(f"    Size: {size_kb:.2f} KB")
-                        print(f"    Exists: Yes")
+                        logger.info(f"    Size: {size_kb:.2f} KB")
+                        logger.info(f"    Exists: Yes")
                     else:
-                        print(f"    Exists: No")
+                        logger.info(f"    Exists: No")
                 html_path = post.get('saved_html_path', '')
                 if html_path and os.path.exists(html_path):
                     size_kb = os.path.getsize(html_path) / 1024
-                    print(f"  HTML saved: Yes ({size_kb:.2f} KB)")
+                    logger.info(f"  HTML saved: Yes ({size_kb:.2f} KB)")
                 else:
-                    print(f"  HTML saved: No")
-        print("\n===== Test Directory Contents =====")
+                    logger.info(f"  HTML saved: No")
+        logger.info("\n===== Test Directory Contents =====")
         for root, dirs, files in os.walk(source_dir):
             level = root.replace(str(source_dir), '').count(os.sep)
             indent = ' ' * 4 * level
-            print(f"{indent}{os.path.basename(root)}/")
+            logger.info(f"{indent}{os.path.basename(root)}/")
             sub_indent = ' ' * 4 * (level + 1)
             for f in files[:5]:
                 filepath = os.path.join(root, f)
                 size_kb = os.path.getsize(filepath) / 1024
-                print(f"{sub_indent}{f} ({size_kb:.2f} KB)")
+                logger.info(f"{sub_indent}{f} ({size_kb:.2f} KB)")
             if len(files) > 5:
-                print(f"{sub_indent}...and {len(files)-5} more files")
+                logger.info(f"{sub_indent}...and {len(files)-5} more files")
     except Exception as e:
-        print(f"Error in BitMEX collector: {e}")
+        logger.warning(f"Error in BitMEX collector: {e}")
         import traceback
         traceback.print_exc()
     return None
@@ -333,8 +334,8 @@ if __name__ == "__main__":
     keywords = args.bitmex_keywords if args.bitmex_keywords else None
     collector = UpdatedBitMEXCollector(args.output_dir)
     results = collector.collect(max_pages=args.bitmex_max_pages, keywords=keywords)
-    print(f"\nCollected {len(results)} BitMEX research posts. Output dir: {args.output_dir}")
+    logger.info(f"\nCollected {len(results)} BitMEX research posts. Output dir: {args.output_dir}")
     if results:
-        print(f"First post: {results[0].get('title','N/A')}")
+        logger.info(f"First post: {results[0].get('title','N/A')}")
 
 BitMEXCollector = UpdatedBitMEXCollector 

@@ -80,7 +80,7 @@ class CookieAuthClient:
     
     def search(self, query, content_type="book", language="en", ext="pdf"):
         """FIXED: Form-based search with proper checkbox handling"""
-        print(f"Searching for: '{query}'")
+        logger.info(f"Searching for: '{query}'")
         
         try:
             # Step 1: Navigate to search page 
@@ -290,9 +290,9 @@ class CookieAuthClient:
 
     def download_file(self, md5, output_path=None, query=None):
         if not self.is_authenticated:
-            print("Not authenticated.")
+            logger.info("Not authenticated.")
             return None
-        print(f"Download started for {md5}.")
+        logger.info(f"Download started for {md5}.")
         try:
             detail_url = f"https://annas-archive.org/md5/{md5}"
             detail_response = self.session.get(detail_url)
@@ -311,7 +311,7 @@ class CookieAuthClient:
                     'download_date': str(datetime.datetime.now()),
                     'query': query or ''
                 })
-                print(f"Download complete for {md5}.")
+                logger.info(f"Download complete for {md5}.")
                 return success
             success = self._try_standard_download(md5, detail_url, output_path)
             if success:
@@ -323,12 +323,12 @@ class CookieAuthClient:
                     'download_date': str(datetime.datetime.now()),
                     'query': query or ''
                 })
-                print(f"Download complete for {md5}.")
+                logger.info(f"Download complete for {md5}.")
                 return success
-            print(f"Download failed for {md5}.")
+            logger.warning(f"Download failed for {md5}.")
             return None
         except Exception:
-            print(f"Error downloading file {md5}.")
+            logger.warning(f"Error downloading file {md5}.")
             return None
     
     def _try_no_redirect_download(self, md5, detail_url, output_path):
@@ -486,9 +486,9 @@ class CookieAuthClient:
         Accepts a full search query, performs the same search, result parsing, best result selection, and download attempts.
         """
         if not self.is_authenticated:
-            print("Not authenticated.")
+            logger.info("Not authenticated.")
             return None
-        print(f"[Selenium] Download started for query: {query}")
+        logger.info(f"[Selenium] Download started for query: {query}")
         base_url = "https://annas-archive.org"
         search_url = f"{base_url}/search"
         download_dir = str(self.download_dir.resolve())
@@ -560,7 +560,7 @@ class CookieAuthClient:
                 except Exception:
                     continue
             if not results:
-                print("[Selenium] No results found for the query.")
+                logger.info("[Selenium] No results found for the query.")
                 return None
             results.sort(key=lambda x: x["quality_score"], reverse=True)
             best_result = results[0]
@@ -578,7 +578,7 @@ class CookieAuthClient:
             # Check if PDF downloaded
             pdf_file = self._wait_for_pdf_download(download_dir)
             if pdf_file:
-                print(f"[Selenium] PDF downloaded via fast_download: {pdf_file}")
+                logger.info(f"[Selenium] PDF downloaded via fast_download: {pdf_file}")
             else:
                 # Try <a class='fast-download-link'>
                 driver.get(detail_url)
@@ -589,7 +589,7 @@ class CookieAuthClient:
                     time.sleep(2)
                     pdf_file = self._wait_for_pdf_download(download_dir)
                     if pdf_file:
-                        print(f"[Selenium] PDF downloaded via fast-download-link: {pdf_file}")
+                        logger.info(f"[Selenium] PDF downloaded via fast-download-link: {pdf_file}")
                 except Exception as exc:
                     logger.exception("Unhandled exception in download via fast-link: %s", exc)
             if not pdf_file:
@@ -601,7 +601,7 @@ class CookieAuthClient:
                     time.sleep(2)
                     pdf_file = self._wait_for_pdf_download(download_dir)
                     if pdf_file:
-                        print(f"[Selenium] PDF downloaded via iframe: {pdf_file}")
+                        logger.info(f"[Selenium] PDF downloaded via iframe: {pdf_file}")
                 except Exception as exc:
                     logger.exception("Unhandled exception in download via iframe: %s", exc)
             if not pdf_file:
@@ -616,12 +616,12 @@ class CookieAuthClient:
                             time.sleep(2)
                             pdf_file = self._wait_for_pdf_download(download_dir)
                             if pdf_file:
-                                print(f"[Selenium] PDF downloaded via generic link: {pdf_file}")
+                                logger.info(f"[Selenium] PDF downloaded via generic link: {pdf_file}")
                                 break
                         except Exception:
                             continue
             if not pdf_file:
-                print("[Selenium] All download attempts failed.")
+                logger.warning("[Selenium] All download attempts failed.")
                 return None
             # Save with normalized filename
             author = "Unknown"
@@ -642,10 +642,10 @@ class CookieAuthClient:
             }
             with open(meta_path, 'w', encoding='utf-8') as f:
                 json.dump(meta_dict, f, indent=2)
-            print(f"[Selenium] Download and metadata complete: {final_path}")
+            logger.info(f"[Selenium] Download and metadata complete: {final_path}")
             return str(final_path)
         except Exception as e:
-            print(f"[Selenium] Error: {e}")
+            logger.warning(f"[Selenium] Error: {e}")
             return None
         finally:
             if driver:
@@ -685,13 +685,13 @@ class CookieAuthClient:
         results = self.search(query, ext=prefer_format)
         
         if not results:
-            print("No results found, cannot download")
+            logger.info("No results found, cannot download")
             return None
             
         best_result = self.select_best_result(results, prefer_format)
         
         if not best_result:
-            print("Could not select a suitable result")
+            logger.info("Could not select a suitable result")
             return None
             
         title = best_result.get('title', 'Unknown')
@@ -718,13 +718,13 @@ class CookieAuthClient:
                 
             return downloaded_file
         else:
-            print("Download failed")
+            logger.warning("Download failed")
             return None
     
     def select_best_result(self, results, prefer_format="pdf"):
         """Select the best result from search results"""
         if not results:
-            print("No results to select from")
+            logger.info("No results to select from")
             return None
             
         if results:
@@ -735,7 +735,7 @@ class CookieAuthClient:
     def check_file_validity(self, filepath):
         """Check if a file appears to be valid"""
         if not os.path.exists(filepath):
-            print(f"File does not exist: {filepath}")
+            logger.info(f"File does not exist: {filepath}")
             return False
             
         try:
@@ -743,28 +743,28 @@ class CookieAuthClient:
                 header = f.read(8)
                 
                 if filepath.suffix.lower() == '.pdf' and not header.startswith(b'%PDF'):
-                    print(f"Invalid PDF file: {filepath}")
+                    logger.info(f"Invalid PDF file: {filepath}")
                     return False
                 elif filepath.suffix.lower() == '.epub' and not header.startswith(b'PK\x03\x04'):
-                    print(f"Invalid EPUB file: {filepath}")
+                    logger.info(f"Invalid EPUB file: {filepath}")
                     return False
                     
             return True
         except Exception as e:
-            print(f"Error checking file validity: {e}")
+            logger.warning(f"Error checking file validity: {e}")
             return False
     
     def download_scidb_doi(self, doi, domain=None):
         """Download a paper using its DOI from SciDB (requests first, Selenium fallback)"""
         if not self.is_authenticated:
-            print("Cannot download - not authenticated")
+            logger.info("Cannot download - not authenticated")
             return None
 
         if not self.account_cookie:
-            print("Cannot download - no account cookie provided")
+            logger.info("Cannot download - no account cookie provided")
             return None
 
-        print(f"[Requests] Attempting HTML-only download for DOI: {doi}")
+        logger.info(f"[Requests] Attempting HTML-only download for DOI: {doi}")
         base_url = "https://annas-archive.org"
         direct_url = f"{base_url}/scidb/{doi}/"
 
@@ -793,7 +793,7 @@ class CookieAuthClient:
                         pdf_url = unquote(file_url)
             # 3. If found, try to download
             if pdf_url:
-                print(f"[Requests] Found PDF link: {pdf_url}")
+                logger.info(f"[Requests] Found PDF link: {pdf_url}")
                 pdf_response = self.session.get(pdf_url, headers={"Referer": direct_url}, stream=True, timeout=60)
                 content_type = pdf_response.headers.get("Content-Type", "").lower()
                 if "application/pdf" in content_type or "application/octet-stream" in content_type:
@@ -808,25 +808,25 @@ class CookieAuthClient:
                         with open(temp_pdf_path, 'rb') as f:
                             header = f.read(8)
                             if header.startswith(b'%PDF'):
-                                print(f"[Requests] Successfully downloaded PDF for DOI: {doi}")
+                                logger.info(f"[Requests] Successfully downloaded PDF for DOI: {doi}")
                                 pdf_file = temp_pdf_path
                                 method = 'requests'
                     else:
                         os.remove(temp_pdf_path)
                         pdf_file = None
                 else:
-                    print(f"[Requests] Content-Type not PDF: {content_type}")
+                    logger.info(f"[Requests] Content-Type not PDF: {content_type}")
                     pdf_file = None
             else:
-                print(f"[Requests] No direct PDF link found on page for DOI: {doi}")
+                logger.info(f"[Requests] No direct PDF link found on page for DOI: {doi}")
                 pdf_file = None
         except Exception as e:
-            print(f"[Requests] Error during HTML-only download for DOI {doi}: {e}")
+            logger.warning(f"[Requests] Error during HTML-only download for DOI {doi}: {e}")
             pdf_file = None
 
         # --- Step 2: If requests failed, fall back to Selenium ---
         if not pdf_file or not os.path.exists(pdf_file):
-            print(f"[Requests] HTML-only download failed, falling back to Selenium for DOI: {doi}")
+            logger.warning(f"[Requests] HTML-only download failed, falling back to Selenium for DOI: {doi}")
             options = uc.ChromeOptions()
             options.add_argument('--no-sandbox')
             options.add_argument('--disable-dev-shm-usage')
@@ -854,9 +854,9 @@ class CookieAuthClient:
                 }
                 try:
                     driver.add_cookie(cookie_dict)
-                    print("[Selenium] Successfully set authentication cookie")
+                    logger.info("[Selenium] Successfully set authentication cookie")
                 except Exception as cookie_error:
-                    print(f"[Selenium] Error setting cookie: {cookie_error}")
+                    logger.warning(f"[Selenium] Error setting cookie: {cookie_error}")
                     return None
                 driver.get(direct_url)
                 time.sleep(3)
@@ -866,10 +866,10 @@ class CookieAuthClient:
                     try:
                         download_link = driver.find_element(By.PARTIAL_LINK_TEXT, "Download")
                     except NoSuchElementException:
-                        print(f"[Selenium] No Download link found for DOI: {doi}")
+                        logger.info(f"[Selenium] No Download link found for DOI: {doi}")
                         return None
                 download_link.click()
-                print(f"[Selenium] Clicked Download for DOI: {doi}")
+                logger.info(f"[Selenium] Clicked Download for DOI: {doi}")
                 time_waited = 0
                 while time_waited < 60:
                     files = [f for f in os.listdir(download_dir) if f.lower().endswith('.pdf')]
@@ -884,21 +884,21 @@ class CookieAuthClient:
                     time.sleep(2)
                     time_waited += 2
                 if not pdf_file or not os.path.exists(pdf_file):
-                    print(f"[Selenium] PDF file not found after download for DOI: {doi}")
+                    logger.info(f"[Selenium] PDF file not found after download for DOI: {doi}")
                     return None
                 with open(pdf_file, 'rb') as f:
                     header = f.read(8)
                     if not header.startswith(b'%PDF'):
-                        print(f"[Selenium] Downloaded file for DOI {doi} is not a valid PDF")
+                        logger.info(f"[Selenium] Downloaded file for DOI {doi} is not a valid PDF")
                         os.remove(pdf_file)
                         return None
                 if os.path.getsize(pdf_file) < 10000:
-                    print(f"[Selenium] Downloaded file for DOI {doi} is too small")
+                    logger.info(f"[Selenium] Downloaded file for DOI {doi} is too small")
                     os.remove(pdf_file)
                     return None
                 method = 'selenium'
             except Exception as e:
-                print(f"[Selenium] Error during download process for DOI {doi}: {e}")
+                logger.warning(f"[Selenium] Error during download process for DOI {doi}: {e}")
                 if pdf_file and os.path.exists(pdf_file) and os.path.getsize(pdf_file) > 10000:
                     method = 'selenium'
                     # continue to metadata extraction
@@ -909,7 +909,7 @@ class CookieAuthClient:
                     try:
                         driver.quit()
                     except Exception as quit_error:
-                        print(f"[Selenium] Error quitting driver: {quit_error}")
+                        logger.warning(f"[Selenium] Error quitting driver: {quit_error}")
                         pass
         else:
             method = 'requests'
@@ -967,8 +967,8 @@ class CookieAuthClient:
             meta_file = new_filepath + ".meta"
             with open(meta_file, 'w', encoding='utf-8') as f:
                 json.dump(meta, f, indent=2)
-            print(f"✅ [{method.upper()}] Downloaded: {new_filepath}")
+            logger.info(f"✅ [{method.upper()}] Downloaded: {new_filepath}")
             return new_filepath
         except Exception as e:
-            print(f"[Meta] Error during metadata extraction/renaming for DOI {doi}: {e}")
+            logger.warning(f"[Meta] Error during metadata extraction/renaming for DOI {doi}: {e}")
             return None

@@ -2,6 +2,8 @@ import pandas as pd
 import re
 import datetime
 import os
+import logging
+logger = logging.getLogger(__name__)
 
 # Normalization function: lowercase, remove punctuation, trim whitespace
 def normalize_title(title):
@@ -21,4 +23,4 @@ with open(cache_file, 'w', encoding='utf-8') as f:
     for title in sorted(titles):
         f.write(f"{title}\n")
 
-print(f"Created cache with {len(titles)} unique titles at {cache_file}") 
+logger.info(f"Created cache with {len(titles)} unique titles at {cache_file}") 
