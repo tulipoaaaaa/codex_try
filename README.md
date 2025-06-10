@@ -17,6 +17,12 @@ minimal Docker or PyInstaller builds use `requirements.runtime.txt` instead,
 which only includes the packages needed at runtime. The optional
 `requirements-dev.txt` file adds linting and test tools.
 
+## Environment configuration
+
+See [docs/environment_config.md](docs/environment_config.md) for the list of
+required environment variables and details on switching between test and
+production modes.
+
 ## Testing
 
 The test suite can run without PySide6 installed by setting the environment
