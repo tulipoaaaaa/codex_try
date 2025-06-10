@@ -733,12 +733,10 @@ QLabel[objectName^="status-dot-"] {
 QLabel[objectName="status-dot-active"] { background: #10b981; }
 QLabel[objectName="status-dot-processing"] { background: #06b6d4; }
 QLabel[objectName="status-dot-idle"] { background: #6b7280; }
-<<<<<<< HEAD
 QLabel[objectName="status-dot-success"]  { background: #10b981; }
 QLabel[objectName="status-dot-error"]    { background: #ef4444; }
 QLabel[objectName="status-dot-warning"]  { background: #f59e0b; }
 QLabel[objectName="status-dot-info"]     { background: #06b6d4; }
-=======
 
 QTableView::item:alternate, QTableWidget::item:alternate {
     background-color: #1d232a;
@@ -750,4 +748,3 @@ QPushButton[objectName="danger"] {
 QPushButton[objectName="danger"]:hover {
     background-color: #e74c3c;
 }
->>>>>>> my-feature-branch
