@@ -741,8 +741,30 @@ class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
                 
     def _export_history_json(self, filename: str):
         """Export history to JSON format"""
-        # TODO: Implement JSON export logic
-        pass
+        headers = [
+            "Task ID",
+            "Name",
+            "Status",
+            "Start Time",
+            "Duration",
+            "Result",
+            "Error",
+        ]
+
+        rows = []
+        for row in range(self.history_table.rowCount()):
+            row_data = {}
+            for col in range(self.history_table.columnCount()):
+                item = self.history_table.item(row, col)
+                value = item.text() if item else ""
+                if col < len(headers):
+                    row_data[headers[col]] = value
+                else:
+                    row_data[str(col)] = value
+            rows.append(row_data)
+
+        with open(filename, "w", encoding="utf-8") as f:
+            json.dump(rows, f, ensure_ascii=False, indent=2)
 
     def refresh_config(self):
         """Reload parameters from ``self.config``. Placeholder for future use."""
