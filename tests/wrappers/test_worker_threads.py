@@ -4,6 +4,8 @@ from pathlib import Path
 from types import SimpleNamespace
 import pytest
 
+pytestmark = pytest.mark.optional_dependency
+
 
 
 # Stub heavy third-party dependencies

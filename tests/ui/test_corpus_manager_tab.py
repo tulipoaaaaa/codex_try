@@ -3,6 +3,8 @@ import pytest
 from PySide6.QtCore import QObject, Signal as pyqtSignal
 from PySide6.QtWidgets import QPushButton
 
+pytestmark = pytest.mark.optional_dependency
+
 from app.ui.tabs import corpus_manager_tab as cmt
 
 
