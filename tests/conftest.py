@@ -218,7 +218,10 @@ setattr(pydantic_mod, 'field_validator', lambda *a, **k: (lambda f: f))
 setattr(pydantic_mod, 'Field', lambda *a, **k: None)
 setattr(pydantic_mod, 'ValidationError', type('ValidationError', (Exception,), {}))
 
+import importlib.machinery
+
 psutil_mod = sys.modules.setdefault('psutil', types.ModuleType('psutil'))
+setattr(psutil_mod, '__spec__', importlib.machinery.ModuleSpec('psutil', loader=None))
 setattr(psutil_mod, 'Process', lambda *a, **k: None)
 
 if "langdetect" not in sys.modules:
