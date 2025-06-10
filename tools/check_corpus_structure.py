@@ -1,4 +1,7 @@
-"""Utility to validate corpus folder structure for the active ProjectConfig."""
+"""
+Module: check_corpus_structure
+Purpose: Utility to validate corpus folder structure for the active ProjectConfig.
+"""
 
 import argparse
 import logging
@@ -86,3 +89,6 @@ def main(argv: Iterable[str] | None = None) -> None:
 
 if __name__ == "__main__":
     main()
+
+# Example usage:
+# python tools/check_corpus_structure.py --config examples/project_config.yaml
