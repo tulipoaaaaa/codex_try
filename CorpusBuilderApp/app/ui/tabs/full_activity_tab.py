@@ -840,7 +840,8 @@ Progress: {activity.get('progress', 0)}%
         return activity.get("task_id") or f"TASK_{hash(activity.get('action', '')) % 10000:04d}"
     
     def retry_task(self):
-        print("[DEBUG] Retry button clicked")
+        """Handle the retry action for the selected task."""
+        self.logger.debug("Retry button clicked")
         current_row = self.activity_table.currentRow()
         if current_row >= 0:
             activities = self.get_activity_data()
@@ -875,7 +876,8 @@ Progress: {activity.get('progress', 0)}%
                         self.retry_requested.emit(str(activity['id']))
     
     def stop_task(self):
-        print("[DEBUG] Stop button clicked")
+        """Handle the stop action for the selected task."""
+        self.logger.debug("Stop button clicked")
         current_row = self.activity_table.currentRow()
         if current_row >= 0:
             activities = self.get_activity_data()
@@ -908,7 +910,8 @@ Progress: {activity.get('progress', 0)}%
                         self.stop_requested.emit(str(activity['id']))
     
     def view_task_logs(self):
-        print("[DEBUG] View Logs button clicked")
+        """Display detailed logs for the selected task."""
+        self.logger.debug("View Logs button clicked")
         current_row = self.activity_table.currentRow()
         if current_row >= 0:
             activities = self.get_activity_data()
