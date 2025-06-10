@@ -608,6 +608,7 @@ class FullActivityTab(QWidget):
         
         for status, count in status_counts.items():
             slice_obj = series.append(f"{status.title()} ({count})", count)
+            slice_obj.setProperty("domain_count", count)
             if status in colors:
                 slice_obj.setBrush(QColor(colors[status]))
             

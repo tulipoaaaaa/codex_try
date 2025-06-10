@@ -247,6 +247,7 @@ class AnalyticsTab(QWidget):
         for i, domain in enumerate(domains):
             count = counts.get(domain, 0)
             slice_obj = series.append(f"{domain}", count)
+            slice_obj.setProperty("domain_count", count)
             slice_obj.setColor(palette[i % len(palette)])
             slice_obj.setLabelVisible(False)
             slice_obj.setBorderColor(QColor("#0f1419"))
