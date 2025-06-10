@@ -81,7 +81,8 @@ def test_environment_change_auto_saved(monkeypatch, mock_project_config, tmp_pat
     assert ("environment.active", "production") in recorded
     assert saved
 
-def test_import_config_populates_fields(tmp_path, qtbot, mock_project_config):
+@pytest.mark.parametrize("use_old", [True, False])
+def test_import_config_populates_fields(tmp_path, qtbot, mock_project_config, use_old):
     cfg = _make_config(mock_project_config, tmp_path)
     tab = ConfigurationTab(cfg)
     qtbot.addWidget(tab)
@@ -93,9 +94,13 @@ def test_import_config_populates_fields(tmp_path, qtbot, mock_project_config):
             "python_path": "/usr/bin/python",
         },
         "api_keys": {"fred_key": "abc"},
-        "directories": {"corpus_root": "/data"},
         "processing": {"pdf": {"enable_ocr": False}},
     }
+    if use_old:
+        config_data["directories"] = {"corpus_root": "/data"}
+    else:
+        config_data["environments"] = {"production": {"corpus_root": "/data"}}
+
     config_file = tmp_path / "import.yaml"
     import yaml
     config_file.write_text(yaml.safe_dump(config_data))
