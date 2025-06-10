@@ -64,8 +64,20 @@ def sync_domains(force_sync=False):
                         del new_domains[domain][key]
             # In safe mode, preserve existing search_terms and extra fields
             if not force_sync:
-                # Only update allocation, add missing properties, never delete or overwrite search_terms
-                pass
+                # Only update allocation and add new properties
+                for key, value in ref_cfg.items():
+                    if key in ("allocation", "target_weight"):
+                        target = ref_cfg.get("target_weight", value)
+                        if new_domains[domain].get("allocation") != target:
+                            LOG.append(
+                                f"[UPDATE] Domain '{domain}' allocation changed: {new_domains[domain].get('allocation')} -> {target}"
+                            )
+                            new_domains[domain]["allocation"] = target
+                    elif key not in new_domains[domain]:
+                        LOG.append(
+                            f"[ADD] Property '{key}' added to domain '{domain}': {value}"
+                        )
+                        new_domains[domain][key] = value
             # In force mode, replace search_terms if present in reference
             if force_sync and 'search_terms' in ref_cfg:
                 if new_domains[domain].get('search_terms') != ref_cfg['search_terms']:
