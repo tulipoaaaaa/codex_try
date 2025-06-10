@@ -9,6 +9,8 @@ import json
 from pathlib import Path
 from typing import Iterable
 
+from shared_tools.processors.corruption_detector import CorruptionDetector
+
 from shared_tools.project_config import ProjectConfig
 
 logger = logging.getLogger(__name__)
@@ -62,7 +64,13 @@ def validate_metadata_files(cfg: ProjectConfig) -> None:
             )
 
 
-def check_corpus_structure(config: ProjectConfig, *, validate_metadata: bool = False) -> None:
+def check_corpus_structure(
+    config: ProjectConfig,
+    *,
+    validate_metadata: bool = False,
+    auto_fix: bool = False,
+    check_integrity: bool = False,
+) -> None:
     """Validate corpus directory layout for the active environment.
 
     Parameters
@@ -71,6 +79,10 @@ def check_corpus_structure(config: ProjectConfig, *, validate_metadata: bool = F
         Active :class:`ProjectConfig` instance.
     validate_metadata:
         When ``True`` also run :func:`validate_metadata_files`.
+    auto_fix:
+        When ``True`` create any missing directories before logging warnings.
+    check_integrity:
+        When ``True`` sample domain files with :class:`CorruptionDetector`.
     """
     corpus_root = Path(config.get_corpus_dir())
     logger.info("Corpus root: %s", corpus_root)
@@ -86,8 +98,16 @@ def check_corpus_structure(config: ProjectConfig, *, validate_metadata: bool = F
 
     for name, path in required.items():
         if not path.exists():
+            if auto_fix:
+                try:
+                    path.mkdir(parents=True, exist_ok=True)
+                    logger.info("Created missing directory %s", path)
+                except Exception as exc:  # pragma: no cover - best effort
+                    logger.warning("Failed to create %s: %s", path, exc)
             logger.warning("Missing directory %s", path)
-            continue
+            if not path.exists():
+                # could not create
+                continue
         if not path.is_dir():
             logger.warning("Path is not a directory: %s", path)
             continue
@@ -101,11 +121,31 @@ def check_corpus_structure(config: ProjectConfig, *, validate_metadata: bool = F
         else:
             missing = [d for d in domains if not (path / d).exists()]
             if missing:
+                if auto_fix:
+                    for d in missing:
+                        try:
+                            (path / d).mkdir(parents=True, exist_ok=True)
+                            logger.info("Created missing domain %s in %s", d, path)
+                        except Exception as exc:  # pragma: no cover - best effort
+                            logger.warning("Failed to create domain %s in %s: %s", d, path, exc)
                 logger.warning(
                     "Missing domain directories in %s: %s",
                     path,
                     ", ".join(missing),
                 )
+
+        if check_integrity and path.name in {"raw", "processed"}:
+            detector = CorruptionDetector()
+            for domain_dir in domain_subs:
+                samples = [f for f in domain_dir.iterdir() if f.is_file()][:3]
+                for sample in samples:
+                    try:
+                        text = sample.read_text(errors="ignore")
+                        result = detector.detect(text)
+                        if result.get("is_corrupted"):
+                            logger.warning("File appears corrupted: %s", sample)
+                    except Exception as exc:  # pragma: no cover - best effort
+                        logger.warning("Integrity check failed for %s: %s", sample, exc)
 
     if validate_metadata:
         validate_metadata_files(config)
@@ -119,6 +159,16 @@ def parse_args(argv: Iterable[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="Also validate metadata JSON files",
     )
+    parser.add_argument(
+        "--auto-fix",
+        action="store_true",
+        help="Create missing directories before checking",
+    )
+    parser.add_argument(
+        "--check-integrity",
+        action="store_true",
+        help="Sample files with CorruptionDetector",
+    )
     return parser.parse_args(list(argv) if argv is not None else None)
 
 
@@ -126,7 +176,12 @@ def main(argv: Iterable[str] | None = None) -> None:
     args = parse_args(argv)
     logging.basicConfig(level=logging.INFO)
     cfg = ProjectConfig.from_yaml(args.config)
-    check_corpus_structure(cfg, validate_metadata=args.validate_metadata)
+    check_corpus_structure(
+        cfg,
+        validate_metadata=args.validate_metadata,
+        auto_fix=args.auto_fix,
+        check_integrity=args.check_integrity,
+    )
 
 
 if __name__ == "__main__":

@@ -40,7 +40,13 @@ class CorpusValidatorService(QObject):
         self.results: Dict[str, object] = {}
 
     # ------------------------------------------------------------------
-    def validate_structure(self, validate_metadata: bool = False) -> None:
+    def validate_structure(
+        self,
+        validate_metadata: bool = False,
+        *,
+        auto_fix: bool = False,
+        check_integrity: bool = False,
+    ) -> None:
         """Run corpus structure validation and emit results."""
         self.validation_started.emit()
         handler = _LogCaptureHandler()
@@ -49,12 +55,21 @@ class CorpusValidatorService(QObject):
         prev_level = target_logger.level
         target_logger.setLevel(logging.INFO)
         try:
-            check_corpus_structure(self.project_config, validate_metadata=validate_metadata)
+            check_corpus_structure(
+                self.project_config,
+                validate_metadata=validate_metadata,
+                auto_fix=auto_fix,
+                check_integrity=check_integrity,
+            )
             messages = [
                 {"level": r.levelname.lower(), "message": r.getMessage()}
                 for r in handler.records
             ]
-            self.results = {"messages": messages}
+            errors = [r.getMessage() for r in handler.records if r.levelno >= logging.ERROR]
+            result_payload = {"messages": messages}
+            if errors:
+                result_payload["errors"] = errors
+            self.results = result_payload
             self.validation_completed.emit(self.results)
             if self.activity_log_service:
                 for msg in messages:
