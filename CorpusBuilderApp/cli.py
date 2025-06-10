@@ -135,6 +135,83 @@ def main(argv: list[str] | None = None) -> int:
         export_corpus.main(call_args)
         return 0
 
+    if argv and argv[0] == "check-corpus":
+        check_parser = argparse.ArgumentParser(
+            prog="check-corpus",
+            description="Validate corpus folder structure",
+        )
+        check_parser.add_argument("--config", required=True, help="Path to ProjectConfig YAML")
+        check_parser.add_argument(
+            "--validate-metadata",
+            action="store_true",
+            help="Also validate metadata JSON files",
+        )
+        check_parser.add_argument(
+            "--auto-fix",
+            action="store_true",
+            help="Create missing directories before checking",
+        )
+        check_parser.add_argument(
+            "--check-integrity",
+            action="store_true",
+            help="Sample files with CorruptionDetector",
+        )
+        chk_args = check_parser.parse_args(argv[1:])
+        from tools import check_corpus_structure
+
+        call_args = ["--config", chk_args.config]
+        if chk_args.validate_metadata:
+            call_args.append("--validate-metadata")
+        if chk_args.auto_fix:
+            call_args.append("--auto-fix")
+        if chk_args.check_integrity:
+            call_args.append("--check-integrity")
+        check_corpus_structure.main(call_args)
+        return 0
+
+    if argv and argv[0] == "generate-default-config":
+        gen_parser = argparse.ArgumentParser(
+            prog="generate-default-config",
+            description="Generate a sample ProjectConfig YAML",
+        )
+        gen_parser.add_argument(
+            "--output",
+            default="config.schema.yaml",
+            help="Output path for generated YAML",
+        )
+        gen_args = gen_parser.parse_args(argv[1:])
+        from shared_tools.project_config import ProjectConfig
+        import yaml
+
+        default = ProjectConfig.create_default_config_object()
+        with open(gen_args.output, "w", encoding="utf-8") as out:
+            yaml.safe_dump(default, out, sort_keys=False)
+        print(f"Config written to {gen_args.output}")
+        return 0
+
+    if argv and argv[0] == "sync-config":
+        sync_parser = argparse.ArgumentParser(
+            prog="sync-config",
+            description="Developer tool to sync domain_config.py with balancer_config.yaml",
+        )
+        sync_parser.add_argument("--force", action="store_true", help="Force synchronization without prompt")
+        sync_args = sync_parser.parse_args(argv[1:])
+        from shared_tools.utils import config_sync
+
+        if not sync_args.force:
+            confirm = input("Sync domain_config.py with balancer_config.yaml? [y/N] ")
+            if confirm.strip().lower() not in {"y", "yes"}:
+                print("Aborted.")
+                return 0
+        try:
+            log_entries = config_sync.sync_domains(force_sync=sync_args.force)
+            for entry in log_entries:
+                print(entry)
+        except Exception as exc:  # pragma: no cover - developer tool
+            print(f"[ERROR] {exc}")
+            return 1
+        return 0
+
     parser = argparse.ArgumentParser(description="Crypto Corpus Builder CLI")
     parser.add_argument("--collector", required=True, choices=["fred", "github", "annas", "scidb", "web"], help="Collector to run")
     parser.add_argument("--config", required=True, help="Path to config YAML")

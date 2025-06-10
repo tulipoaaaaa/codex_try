@@ -1,7 +1,5 @@
-"""
-Module: gen_config_schema
-Purpose: Generate a default ProjectConfig YAML schema.
-"""
+# Utility script to generate a sample ProjectConfig YAML.
+# Not used in runtime – useful for onboarding and CI.
 
 from shared_tools.project_config import ProjectConfig
 import yaml
