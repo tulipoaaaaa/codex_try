@@ -47,6 +47,8 @@ You can drag this file onto the **Configuration** tab or load it via the menu. T
 - **Processors** – run batch processors on downloaded files.
 - **Corpus Manager** – browse and edit corpus contents.
 - **Balancer** – rebalance the corpus to match target allocations.
+- During rebalancing and corpus validation, a progress dialog shows task status
+  and the action buttons are disabled until the job completes.
 - **Analytics** – view statistics and keyword trends.
 - **Logs** – monitor activity and errors.
 The status bar displays queue information so you can track running tasks.
