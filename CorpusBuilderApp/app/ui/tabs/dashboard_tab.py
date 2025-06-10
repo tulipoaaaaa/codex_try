@@ -756,13 +756,13 @@ class DashboardTab(QWidget):
     def create_card_with_styling(self, title, object_name):
         container = CardWrapper(title)
         container.setObjectName(object_name)
-        container.setStyleSheet("""
-            QFrame[objectName="stat-card"] {
+        container.setStyleSheet(f"""
+            QFrame[objectName="{object_name}"] {{
                 background-color: #1a1f2e;
                 border: 1px solid #2d3748;
                 border-radius: 12px;
                 padding: 20px;
-            }
+            }}
         """)
         return container
 
