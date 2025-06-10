@@ -105,6 +105,7 @@ Useful flags:
 - `--query` – Annas collector: search query
 - `--output-dir` – output directory for Annas, SciDB or Web collectors
 - `export-corpus --dry-run` – preview export actions without writing files
+- `--version-tag`     Optional version label used in the exported archive filename
 
 Example preview run:
 ```bash
