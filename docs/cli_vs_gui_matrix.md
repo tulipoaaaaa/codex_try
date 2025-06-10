@@ -13,9 +13,10 @@ The table below outlines which parts of the project are available via command-li
 | Theme and notification settings | ❌ | ✅ |
 | Configuration management | ✅ (via YAML) | ✅ (via settings tabs) |
 | View logs | ✅ (console) | ✅ (dedicated tab) |
-| Start individual collectors with custom arguments | ✅ | ❌ |
+| Start individual collectors with custom arguments | ✅ | ✅ |
 | diff-corpus command | ✅ | ❌ |
-| export-corpus command | ✅ | ❌ |
+| export-corpus command | ✅ | ✅ |
+| Import corpus action | ❌ | ✅ |
 | --matrix option | ✅ | ❌ |
 | --version option | ✅ | ❌ |
 
