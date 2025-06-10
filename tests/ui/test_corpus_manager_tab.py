@@ -1,4 +1,5 @@
 import types
+import os
 import pytest
 from PySide6.QtCore import QObject, Signal as pyqtSignal, QDir
 from PySide6.QtWidgets import QPushButton
