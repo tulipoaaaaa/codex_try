@@ -1,0 +1,7 @@
+PySide6
+qdarktheme
+PyYAML
+python-dotenv
+requests
+PyPDF2
+pydantic

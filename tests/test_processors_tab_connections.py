@@ -2,6 +2,8 @@ import sys
 import types
 import pytest
 
+pytestmark = pytest.mark.optional_dependency
+
 from PySide6.QtWidgets import QApplication
 
 # Stub heavy wrapper modules before importing the tab module

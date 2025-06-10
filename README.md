@@ -5,15 +5,17 @@
 
 ## Installation
 
-Install the runtime requirements and then the development extras:
+Install the full development requirements and then any development extras:
 
 ```bash
 pip install -r requirements.txt
 pip install -r requirements-dev.txt
 ```
 
-These files are kept separate so the core application dependencies remain
-lightweight.
+`requirements.txt` contains all runtime and development dependencies. For
+minimal Docker or PyInstaller builds use `requirements.runtime.txt` instead,
+which only includes the packages needed at runtime. The optional
+`requirements-dev.txt` file adds linting and test tools.
 
 ## Testing
 

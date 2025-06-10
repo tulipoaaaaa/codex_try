@@ -1,5 +1,8 @@
 import sys
 import types
+import pytest
+
+pytestmark = pytest.mark.optional_dependency
 
 class DummySignal:
     def __init__(self, *a, **k):

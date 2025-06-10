@@ -29,6 +29,20 @@ import sys
 from pathlib import Path
 from dotenv import load_dotenv
 
+from CorpusBuilderApp import __version__
+
+PARITY_TABLE = """
+CLI Command          | GUI Equivalent
+---------------------+--------------------------
+--collector fred     | Collectors -> FRED
+--collector github   | Collectors -> GitHub
+--collector annas    | Collectors -> Annas
+--collector scidb    | Collectors -> SciDB
+--collector web      | Collectors -> General Web
+diff-corpus          | Tools -> Diff Corpus Profiles
+export-corpus        | Tools -> Export Corpus
+"""
+
 sys.path.append(str(Path(__file__).resolve().parent.parent))
 import json
 
@@ -82,6 +96,14 @@ def cmd_diff_corpus(args: argparse.Namespace) -> int:
 
 def main(argv: list[str] | None = None) -> int:
     argv = list(argv) if argv is not None else sys.argv[1:]
+
+    if "--version" in argv:
+        print(__version__)
+        return 0
+
+    if "--matrix" in argv:
+        print(PARITY_TABLE)
+        return 0
 
     if argv and argv[0] == "diff-corpus":
         diff_parser = argparse.ArgumentParser(prog="diff-corpus", description="Compare two corpus profiles")

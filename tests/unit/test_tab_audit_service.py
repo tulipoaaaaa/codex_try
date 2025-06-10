@@ -1,7 +1,10 @@
 import os
+import pytest
 
 # Ensure Qt is stubbed
 os.environ.setdefault("PYTEST_QT_STUBS", "1")
+
+pytestmark = pytest.mark.optional_dependency
 
 from shared_tools.services.tab_audit_service import TabAuditService
 
