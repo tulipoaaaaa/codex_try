@@ -18,6 +18,7 @@ from app.helpers.chart_manager import ChartManager
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
 from shared_tools.services.corpus_stats_service import CorpusStatsService
+from app.ui.theme.theme_constants import PAGE_MARGIN
 
 import datetime
 
@@ -48,8 +49,8 @@ class AnalyticsTab(QWidget):
         scroll.setWidget(container)
 
         main_layout = QVBoxLayout(container)
-        main_layout.setSpacing(32)
-        main_layout.setContentsMargins(32, 32, 32, 32)
+        main_layout.setSpacing(PAGE_MARGIN)
+        main_layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
         
         # Page header
         header = SectionHeader("Analytics")

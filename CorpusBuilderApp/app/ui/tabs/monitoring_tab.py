@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QProgressBar
+from app.ui.theme.theme_constants import PAGE_MARGIN
 from PySide6.QtCore import Slot
 from shared_tools.ui_wrappers.processors.monitor_progress_wrapper import MonitorProgressWrapper
 from shared_tools.services.system_monitor import SystemMonitor
@@ -7,6 +8,8 @@ class MonitoringTab(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         layout = QVBoxLayout(self)
+        layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
+        layout.setSpacing(PAGE_MARGIN)
 
         # Progress widget provided by the shared wrapper
         self.monitor_widget = MonitorProgressWrapper()
