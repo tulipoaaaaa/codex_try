@@ -7,7 +7,29 @@ import os
 import time
 import json
 from typing import Dict, List, Optional, Any, Callable
-from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Slot as pyqtSlot, QTimer, QMutex
+try:
+    from PySide6.QtCore import (
+        QObject,
+        QThread,
+        Signal as pyqtSignal,
+        Slot as pyqtSlot,
+        QTimer,
+        QMutex,
+    )
+    if os.environ.get("PYTEST_QT_STUBS") == "1":
+        def pyqtSlot(*args, **kwargs):  # type: ignore
+            def decorator(func):
+                return func
+
+            return decorator
+except Exception:  # pragma: no cover - allow stubs without Slot
+    from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, QTimer, QMutex
+
+    def pyqtSlot(*args, **kwargs):  # type: ignore[override]
+        def decorator(func):
+            return func
+
+        return decorator
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
                            QProgressBar, QLabel, QTextEdit, QCheckBox, 
                            QSpinBox, QGroupBox, QGridLayout, QComboBox,
@@ -16,7 +38,12 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
 from PySide6.QtGui import QColor, QBrush, QPalette
 from PySide6.QtCore import Qt
 from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
-from shared_tools.processors.monitor_progress import MonitorProgress
+try:
+    from shared_tools.processors.monitor_progress import MonitorProgress
+except Exception:  # pragma: no cover - optional dependency
+    class MonitorProgress:
+        def configure(self, *a, **k):
+            pass
 from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
 
 
