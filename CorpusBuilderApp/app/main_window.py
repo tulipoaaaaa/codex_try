@@ -2,13 +2,35 @@
 Main window for Crypto Corpus Builder
 """
 
-from PySide6.QtWidgets import (QMainWindow, QTabWidget, QVBoxLayout, QWidget, 
-                             QStatusBar, QMenuBar, QToolBar, QProgressBar, 
-                             QLabel, QSplitter, QMessageBox, QHBoxLayout, QPushButton, QMenu, QDialog, QLineEdit, QComboBox, QTableWidget, QTableWidgetItem, QHeaderView)
+from PySide6.QtWidgets import (
+    QMainWindow,
+    QTabWidget,
+    QVBoxLayout,
+    QWidget,
+    QStatusBar,
+    QMenuBar,
+    QToolBar,
+    QProgressBar,
+    QLabel,
+    QSplitter,
+    QMessageBox,
+    QHBoxLayout,
+    QPushButton,
+    QMenu,
+    QDialog,
+    QLineEdit,
+    QComboBox,
+    QTableWidget,
+    QTableWidgetItem,
+    QHeaderView,
+    QFileDialog,
+)
 from PySide6.QtCore import Qt, QTimer, Signal as pyqtSignal, QThread, QSize
 from PySide6.QtGui import QAction, QIcon, QPixmap
 import logging
 from pathlib import Path
+import shutil
+import zipfile
 
 # Import all tab widgets
 from ui.tabs.dashboard_tab import DashboardTab
@@ -330,19 +352,105 @@ class CryptoCorpusMainWindow(QMainWindow):
         for key, value in settings.items():
             try:
                 self.config.set(key, value)
-            except Exception:
-                pass
+            except Exception as exc:
+                self.logger.error("Failed to set config %s: %s", key, exc)
         self.config.save()
     
     def export_corpus(self):
         """Export corpus data"""
-        # TODO: Implement corpus export
-        QMessageBox.information(self, "Export", "Corpus export functionality coming soon!")
-    
+        corpus_dir = None
+        if hasattr(self.config, "get_corpus_dir"):
+            try:
+                corpus_dir = Path(self.config.get_corpus_dir())
+            except Exception:  # pragma: no cover - defensive
+                corpus_dir = None
+
+        if not corpus_dir or not corpus_dir.exists():
+            QMessageBox.critical(self, "Export Error", "Corpus directory not found")
+            return
+
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Export Corpus",
+            "corpus_export.zip",
+            "ZIP Files (*.zip);;All Files (*)",
+        )
+
+        if not file_path:
+            return
+
+        if not file_path.endswith(".zip"):
+            file_path += ".zip"
+
+        archive_base = str(Path(file_path).with_suffix(""))
+
+        try:
+            shutil.make_archive(archive_base, "zip", corpus_dir)
+            QMessageBox.information(
+                self,
+                "Export Complete",
+                f"Corpus exported to {file_path}",
+            )
+            if self.activity_log_service:
+                self.activity_log_service.log("Corpus", f"Exported corpus to {file_path}")
+        except Exception as exc:  # pragma: no cover - runtime guard
+            self.logger.error("Corpus export failed: %s", exc)
+            QMessageBox.critical(
+                self,
+                "Export Error",
+                f"Failed to export corpus: {exc}",
+            )
+
     def import_corpus(self):
         """Import corpus data"""
-        # TODO: Implement corpus import
-        QMessageBox.information(self, "Import", "Corpus import functionality coming soon!")
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Import Corpus",
+            "",
+            "ZIP Files (*.zip);;All Files (*)",
+        )
+
+        if not file_path:
+            return
+
+        corpus_dir = None
+        if hasattr(self.config, "get_corpus_dir"):
+            try:
+                corpus_dir = Path(self.config.get_corpus_dir())
+            except Exception:  # pragma: no cover - defensive
+                corpus_dir = None
+
+        if not corpus_dir:
+            QMessageBox.critical(self, "Import Error", "Corpus directory not configured")
+            return
+
+        corpus_dir.mkdir(parents=True, exist_ok=True)
+
+        try:
+            with zipfile.ZipFile(file_path, "r") as zip_ref:
+                zip_ref.extractall(corpus_dir)
+
+            QMessageBox.information(
+                self,
+                "Import Complete",
+                f"Corpus imported from {file_path}",
+            )
+            if self.activity_log_service:
+                self.activity_log_service.log("Corpus", f"Imported corpus from {file_path}")
+            if getattr(self, "corpus_manager_tab", None) and hasattr(
+                self.corpus_manager_tab, "refresh_file_view"
+            ):
+                try:
+                    self.corpus_manager_tab.refresh_file_view()
+                except Exception:  # pragma: no cover - defensive
+                    pass
+        except Exception as exc:  # pragma: no cover - runtime guard
+            self.logger.error("Corpus import failed: %s", exc)
+            QMessageBox.critical(
+                self,
+                "Import Error",
+                f"Failed to import corpus: {exc}",
+            )
     
     def show_about(self):
         """Show about dialog"""

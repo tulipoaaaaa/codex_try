@@ -151,3 +151,40 @@ def test_error_handled(qapp, monkeypatch, dummy_config):
     wrapper.start_balancing()
     assert errors == ["boom"]
     assert not wrapper.is_running()
+
+
+class MissingDomainBalancer(DummyBalancer):
+    def analyze_corpus(self):
+        return {
+            "recommendations": [
+                {
+                    "action": "collect_data",
+                    "description": "Collect data for missing domains: foo, bar",
+                }
+            ]
+        }
+
+
+class DummyCollector:
+    def __init__(self):
+        self.started = False
+        self.search_terms = []
+
+    def set_search_terms(self, terms):
+        self.search_terms = terms
+
+    def start(self):
+        self.started = True
+
+
+def test_collect_for_missing_domains_triggers_collectors(qapp, monkeypatch, dummy_config):
+    monkeypatch.setattr(cbw, "CorpusBalancer", MissingDomainBalancer)
+    wrapper = cbw.CorpusBalancerWrapper(dummy_config)
+    c1 = DummyCollector()
+    c2 = DummyCollector()
+    wrapper.collector_wrappers = {"c1": c1, "c2": c2}
+
+    wrapper.collect_for_missing_domains()
+
+    assert c1.started and c2.started
+    assert "foo" in c1.search_terms and "bar" in c1.search_terms

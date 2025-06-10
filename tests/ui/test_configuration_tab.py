@@ -78,3 +78,31 @@ def test_environment_change_auto_saved(monkeypatch, mock_project_config, tmp_pat
 
     assert ("environment.active", "production") in recorded
     assert saved
+
+def test_import_config_populates_fields(tmp_path, qtbot, mock_project_config):
+    cfg = _make_config(mock_project_config, tmp_path)
+    tab = ConfigurationTab(cfg)
+    qtbot.addWidget(tab)
+
+    config_data = {
+        "environment": {
+            "active": "production",
+            "config_path": "cfg.yaml",
+            "python_path": "/usr/bin/python",
+        },
+        "api_keys": {"fred_key": "abc"},
+        "directories": {"corpus_root": "/data"},
+        "processing": {"pdf": {"enable_ocr": False}},
+    }
+    config_file = tmp_path / "import.yaml"
+    import yaml
+    config_file.write_text(yaml.safe_dump(config_data))
+
+    with qtbot.waitSignal(tab.configuration_saved, timeout=1000):
+        tab.import_config_file(str(config_file))
+
+    assert tab.env_selector.currentText() == "production"
+    assert tab.config_path.text() == "cfg.yaml"
+    assert tab.fred_key.text() == "abc"
+    assert tab.corpus_root.text() == "/data"
+    assert not tab.enable_ocr.isChecked()

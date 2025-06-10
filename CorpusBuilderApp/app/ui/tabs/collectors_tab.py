@@ -72,8 +72,8 @@ class CollectorsTab(QWidget):
                     if hasattr(wrapper, method):
                         try:
                             getattr(wrapper, method)(value)
-                        except Exception:
-                            pass
+                        except Exception as exc:
+                            print(f"Failed to apply {method} on {name}: {exc}")
         
         # Setup UI
         self.setup_ui()

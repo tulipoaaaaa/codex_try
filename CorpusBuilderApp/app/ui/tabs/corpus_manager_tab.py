@@ -777,10 +777,28 @@ class CorpusManagerTab(QWidget):
         if event.mimeData().hasUrls():
             event.acceptProposedAction()
     def dropEvent(self, event):
+        dest_dir = self.path_input.text()
+        added = []
         for url in event.mimeData().urls():
             file_path = url.toLocalFile()
-            # Add file to file browser (implement as needed)
-            pass
+            if os.path.isfile(file_path):
+                dest = os.path.join(dest_dir, os.path.basename(file_path))
+                try:
+                    shutil.copy(file_path, dest)
+                    added.append(dest)
+                except Exception as exc:  # pragma: no cover - defensive
+                    QMessageBox.critical(self, "Copy Error", str(exc))
+
+        if added:
+            self.notification_manager.add_notification(
+                "files_dropped",
+                "Files Added",
+                f"Added {len(added)} file(s)",
+                "success",
+                auto_hide=True,
+            )
+            if self.sound_enabled:
+                Notifier.notify("Files Added", f"Added {len(added)} file(s)", level="success")
         self.refresh_file_view()
 
     def batch_copy_files(self):
