@@ -4,11 +4,12 @@ Crypto Corpus Builder v3 - Main Application Entry Point
 
 import sys
 import os
+if os.getenv("HEADLESS", "0") == "1":
+    os.environ["QT_QPA_PLATFORM"] = "offscreen"
 import logging
 from pathlib import Path
 from PySide6.QtWidgets import QApplication, QMessageBox
-from PySide6.QtCore import QDir, QStandardPaths, QTimer
-from PySide6.QtGui import QIcon, QPalette, QColor
+from PySide6.QtCore import QTimer
 import traceback
 import json
 from dotenv import load_dotenv
