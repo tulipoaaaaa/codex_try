@@ -85,8 +85,27 @@ class QualityControlWrapper(BaseWrapper, ProcessorWrapperMixin):
         """Handle progress updates from worker thread."""
         self.progress_updated.emit(progress)
         
-    def _on_status_updated(self, *args, **kwargs):
-        pass
+    def _on_status_updated(self, message: str) -> None:
+        """Propagate status messages and update task history."""
+        # Re-emit the status message
+        self.status_updated.emit(message)
+
+        # Update task log if we have a task id
+        if getattr(self, "task_history_service", None) and getattr(self, "_task_id", None):
+            try:
+                self.task_history_service.update_task(self._task_id, details=message)
+            except Exception:
+                pass
+
+        # If a status widget is available, append the message for visibility
+        for attr in ("status_display", "status_widget", "status_list_widget"):
+            widget = getattr(self, attr, None)
+            if widget is not None and hasattr(widget, "append"):
+                if not hasattr(widget, "isVisible") or widget.isVisible():
+                    try:
+                        widget.append(message)
+                    except Exception:
+                        pass
 
     def refresh_config(self):
         """Reload parameters from ``self.config``. Placeholder for future use."""
