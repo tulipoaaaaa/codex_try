@@ -376,12 +376,13 @@ class SettingsDialog(QDialog):
         try:
             with open(config_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
-        except Exception:
+        except Exception as exc:
+            print(f"Failed to load theme config: {exc}")
             data = {}
         data['sound_enabled'] = self.sound_checkbox.isChecked()
         try:
             with open(config_path, 'w', encoding='utf-8') as f:
                 json.dump(data, f)
-        except Exception:
-            pass
+        except Exception as exc:
+            print(f"Failed to save theme config: {exc}")
         # Emit a signal or call a method to update sound_enabled in all tabs if needed
