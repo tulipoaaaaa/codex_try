@@ -23,6 +23,7 @@ from shared_tools.ui_wrappers.collectors.scidb_wrapper import SciDBWrapper
 from shared_tools.ui_wrappers.collectors.web_wrapper import WebWrapper
 
 from app.ui.widgets.collector_card import CollectorCard
+from app.ui.widgets.section_header import SectionHeader
 from app.helpers.notifier import Notifier
 from app.ui.theme.theme_constants import (
     DEFAULT_FONT_SIZE,
@@ -91,7 +92,10 @@ class CollectorsTab(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
         layout.setSpacing(PAGE_MARGIN)
-        
+
+        header = SectionHeader("Collectors")
+        layout.addWidget(header)
+
         # Status section
         status_group = QGroupBox("Collection Status")
         status_layout = QVBoxLayout(status_group)
