@@ -5,6 +5,7 @@ Crypto Corpus Builder - Project-wide CLI
 Usage:
   python cli.py --collector <name> --config <config.yaml> [--args ...]
   python cli.py diff-corpus --profile-a <profile1.json> --profile-b <profile2.json>
+  python cli.py export-corpus --corpus-dir <corpus> --output-dir <outdir> [--version-tag v]
 
 Supported collectors:
   fred        - FRED (Federal Reserve Economic Data)
@@ -18,6 +19,7 @@ Examples:
   python cli.py --collector github --config shared_tools/test_config.yaml --search-terms bitcoin trading
   python cli.py --collector annas --config shared_tools/test_config.yaml --query "Mastering Bitcoin"
   python cli.py diff-corpus --profile-a profile1.json --profile-b profile2.json
+  python cli.py export-corpus --corpus-dir data/corpus --output-dir data/exports
 
 All API keys and credentials are loaded from .env or environment variables.
 """
@@ -87,6 +89,29 @@ def main(argv: list[str] | None = None) -> int:
         diff_parser.add_argument("--profile-b", required=True, help="Path to second corpus profile JSON")
         diff_args = diff_parser.parse_args(argv[1:])
         return cmd_diff_corpus(diff_args)
+
+    if argv and argv[0] == "export-corpus":
+        export_parser = argparse.ArgumentParser(
+            prog="export-corpus",
+            description="Create versioned corpus export archive",
+        )
+        export_parser.add_argument("--corpus-dir", required=True, help="Path to corpus root directory")
+        export_parser.add_argument("--output-dir", required=True, help="Directory to write export archive")
+        export_parser.add_argument("--dry-run", action="store_true", help="Preview actions without writing files")
+        export_parser.add_argument("--version-tag", help="Optional version tag for archive filename")
+        exp_args = export_parser.parse_args(argv[1:])
+
+        from tools import export_corpus
+        name = "corpus_export"
+        if exp_args.version_tag:
+            name += f"_{exp_args.version_tag}"
+        name += ".zip"
+        output = Path(exp_args.output_dir) / name
+        call_args = ["--corpus-root", exp_args.corpus_dir, "--output", str(output)]
+        if exp_args.dry_run:
+            call_args.append("--dry-run")
+        export_corpus.main(call_args)
+        return 0
 
     parser = argparse.ArgumentParser(description="Crypto Corpus Builder CLI")
     parser.add_argument("--collector", required=True, choices=["fred", "github", "annas", "scidb", "web"], help="Collector to run")

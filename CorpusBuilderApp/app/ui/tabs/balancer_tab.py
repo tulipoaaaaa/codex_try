@@ -3,19 +3,19 @@ Enhanced Corpus Balancer Tab with Re-analysis and Periodic Monitoring
 Provides comprehensive corpus balancing with automatic re-analysis capabilities
 """
 
-import os
 import time
-from typing import Dict, List, Optional, Any
+from typing import Dict
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QGroupBox,
                            QLabel, QPushButton, QProgressBar, QSpinBox,
                            QTableWidget, QTableWidgetItem, QHeaderView,
                            QComboBox, QCheckBox, QMessageBox, QSlider,
-                           QSystemTrayIcon, QMenu, QStatusBar)
+                           QSystemTrayIcon)
 from PySide6.QtCore import Qt, Slot as pyqtSlot, QTimer, Signal as pyqtSignal, QObject
-from PySide6.QtGui import QColor, QBrush, QPalette, QIcon, QAction
+from PySide6.QtGui import QColor, QBrush, QIcon
 from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
 from app.helpers.icon_manager import IconManager
 from app.helpers.notifier import Notifier
+from shared_tools.services.corpus_stats_service import CorpusStatsService
 
 
 class AdvancedNotificationManager(QObject):
@@ -67,6 +67,9 @@ class BalancerTab(QWidget):
         self.balancer = CorpusBalancerWrapper(project_config)
         self.notification_manager = AdvancedNotificationManager(self)
         self.sound_enabled = True  # Will be set from user settings
+
+        self.stats_service = CorpusStatsService(project_config)
+        self.stats_service.stats_updated.connect(self.update_balancer_view)
         
         # Periodic analysis timer
         self.analysis_timer = QTimer()
@@ -79,7 +82,7 @@ class BalancerTab(QWidget):
         
         self.setup_ui()
         self.connect_signals()
-        self.refresh_corpus_stats()
+        self.stats_service.refresh_stats()
         
     def setup_ui(self):
         """Initialize the enhanced user interface"""
@@ -329,7 +332,7 @@ class BalancerTab(QWidget):
     def reanalyze_corpus(self):
         """Re-analyze corpus after changes"""
         self.status_label.setText("Re-analyzing corpus...")
-        self.refresh_corpus_stats()
+        self.stats_service.refresh_stats()
         
         # Check for significant changes
         changes_detected = self.detect_corpus_changes()
@@ -375,68 +378,67 @@ class BalancerTab(QWidget):
         return balance_score
         
     def refresh_corpus_stats(self):
-        """Enhanced corpus statistics refresh with balance scoring"""
+        """Request updated corpus statistics."""
         self.status_label.setText("Fetching corpus statistics...")
-        
-        # Simulate enhanced statistics
-        total_docs = 1250
-        domain_counts = {
-            "Crypto Derivatives": 320,
-            "High Frequency Trading": 180,
-            "Risk Management": 175,
-            "Market Microstructure": 160,
-            "DeFi": 200,
-            "Portfolio Construction": 100,
-            "Valuation Models": 75,
-            "Regulation & Compliance": 40,
-        }
-        
-        # Update table with enhanced status indicators
+        self.stats_service.refresh_stats()
+
+    def update_balancer_view(self, stats: dict) -> None:
+        """Update table and labels using provided corpus stats."""
+        domains = stats.get("domains", {}) if isinstance(stats, dict) else {}
+        domain_counts: Dict[str, int] = {}
+        for name, info in domains.items():
+            if isinstance(info, dict):
+                count = (
+                    info.get("total_files")
+                    or info.get("pdf_files")
+                    or info.get("count")
+                    or 0
+                )
+            else:
+                count = int(info) if isinstance(info, (int, float)) else 0
+            domain_counts[name] = count
+        total_docs = sum(domain_counts.values())
+
         for i in range(self.domain_table.rowCount()):
             domain = self.domain_table.item(i, 0).text()
             target_text = self.domain_table.item(i, 1).text()
-            target = float(target_text.strip('%'))
+            target = float(target_text.strip("%"))
             count = domain_counts.get(domain, 0)
-            percentage = (count / total_docs) * 100 if total_docs > 0 else 0
-            
-            # Update current percentage
+            percentage = (count / total_docs) * 100 if total_docs else 0
+
             self.domain_table.setItem(i, 2, QTableWidgetItem(f"{percentage:.1f}%"))
-            
-            # Update document count
             self.domain_table.setItem(i, 3, QTableWidgetItem(str(count)))
-            
-            # Update progress bar with enhanced styling
+
             progress = self.domain_table.cellWidget(i, 4)
-            progress.setValue(int(percentage))
-            
-            # Enhanced status indicators
+            if isinstance(progress, QProgressBar):
+                progress.setValue(int(percentage))
+
             deviation = abs(percentage - target)
             if deviation <= 1:
                 status = "Optimal"
                 progress.setObjectName("progress-on-target")
-                status_color = QColor(50, 184, 198)  # Brand color for optimal
+                status_color = QColor(50, 184, 198)
             elif deviation <= 3:
                 status = "Good"
                 progress.setObjectName("progress-good")
-                status_color = QColor(230, 129, 97)  # Orange for good
+                status_color = QColor(230, 129, 97)
             else:
                 status = "Needs Attention"
                 progress.setObjectName("progress-needs-attention")
-                status_color = QColor(255, 84, 89)  # Red for needs attention
-                
-            # Update status column
+                status_color = QColor(255, 84, 89)
+
             status_item = QTableWidgetItem(status)
             status_item.setBackground(QBrush(status_color))
             status_item.setForeground(QBrush(QColor(255, 255, 255)))
             self.domain_table.setItem(i, 5, status_item)
-            
-        # Update summary statistics
+
         balance_score = self.calculate_balance_score()
         self.total_docs_label.setText(f"Total Documents: {total_docs}")
         self.balance_score_label.setText(f"Balance Score: {balance_score:.1f}%")
-        
         current_time = time.strftime("%H:%M:%S", time.localtime())
-        self.status_label.setText(f"Corpus contains {total_docs} documents - Updated: {current_time}")
+        self.status_label.setText(
+            f"Corpus contains {total_docs} documents - Updated: {current_time}"
+        )
         
     def analyze_corpus_balance(self):
         """Enhanced corpus balance analysis with detailed recommendations"""
@@ -623,7 +625,7 @@ class BalancerTab(QWidget):
         self.status_label.setText(f"Balancing completed at {completion_time}")
         
         # Refresh statistics
-        self.refresh_corpus_stats()
+        self.stats_service.refresh_stats()
         
         # Show detailed completion message
         completion_msg = f"""Corpus balancing completed successfully!\n\nResults Summary:\n• Documents moved: {moved_count}\n• Documents classified: {classified_count}\n• Processing errors: {errors_count}\n• Processing time: {processing_time:.1f} seconds\n• New balance score: {self.calculate_balance_score():.1f}%\n\nThe corpus distribution has been optimized according to target percentages."""
