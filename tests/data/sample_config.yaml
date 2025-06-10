@@ -1,0 +1,6 @@
+directories:
+  corpus_root: ./tests/tmp_corpus
+  raw_data_dir: ./tests/tmp_corpus/raw
+  processed_dir: ./tests/tmp_corpus/processed
+  metadata_dir: ./tests/tmp_corpus/metadata
+  logs_dir: ./tests/tmp_corpus/logs
