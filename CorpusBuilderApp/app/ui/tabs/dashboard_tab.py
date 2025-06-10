@@ -230,8 +230,10 @@ class DashboardTab(QWidget):
         chart.setMargins(QMargins(0, 0, 0, 0))
         colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
         series = QPieSeries()
+        counts = self.stats_service.get_domain_summary()
         for i, (domain, percentage) in enumerate(domain_data.items()):
             slice_obj = series.append(f'{domain[:12]}', percentage)
+            slice_obj.setProperty("domain_count", counts.get(domain, 0))
             color = colors[i % len(colors)]
             slice_obj.setBrush(QColor(color))
             slice_obj.setBorderColor(QColor('#1a1f2e'))
@@ -1027,8 +1029,10 @@ class DashboardTab(QWidget):
         chart.setMargins(QMargins(0, 0, 0, 0))
         colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
         series = QPieSeries()
+        counts = self.stats_service.get_domain_summary()
         for i, (domain, percentage) in enumerate(domain_data.items()):
             slice_obj = series.append(f'{domain[:15]}', percentage)
+            slice_obj.setProperty("domain_count", counts.get(domain, 0))
             color = colors[i % len(colors)]
             slice_obj.setBrush(QColor(color))
             slice_obj.setBorderColor(QColor('#1a1f2e'))
@@ -1114,8 +1118,10 @@ class DashboardTab(QWidget):
         chart.setMargins(QMargins(0, 0, 0, 0))
         colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
         series = QPieSeries()
+        counts = self.stats_service.get_domain_summary()
         for i, (domain, percentage) in enumerate(domain_data.items()):
             slice_obj = series.append(f'{domain[:6]}', percentage)
+            slice_obj.setProperty("domain_count", counts.get(domain, 0))
             color = colors[i % len(colors)]
             slice_obj.setBrush(QColor(color))
             slice_obj.setBorderColor(QColor('#1a1f2e'))
