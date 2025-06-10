@@ -95,7 +95,7 @@ class ChartManager:
         series = QPieSeries()
         
         for i, (label, value) in enumerate(data.items()):
-            slice_obj = series.append(f"{label} ({value:.1f}%)", value)
+            slice_obj = series.append(label, value)
             slice_obj.setLabelVisible(True)
             
             # Apply consistent colors
@@ -115,6 +115,17 @@ class ChartManager:
                 slice_obj.setLabelColor(QColor(255, 255, 255))  # Pure white for dark theme
             else:
                 slice_obj.setLabelColor(QColor(0, 0, 0))        # Pure black for light theme
+
+            # Attach count and percentage details to label and tooltip
+            domain_count = slice_obj.property("domain_count")
+            pct = round(slice_obj.percentage() * 100, 1)
+            slice_label = slice_obj.label()
+            slice_obj.setLabel(f"{slice_label} ({pct}%)")
+            if domain_count is not None:
+                tooltip = f"{slice_label}:\n{domain_count} documents\n{pct}% of corpus"
+            else:
+                tooltip = f"{slice_label}:\n{pct}% of corpus"
+            slice_obj.setToolTip(tooltip)
         
         chart.addSeries(series)
         
