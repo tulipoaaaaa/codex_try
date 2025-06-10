@@ -2,6 +2,8 @@ import fitz
 from PIL import Image
 import pytesseract
 from io import BytesIO
+import logging
+logger = logging.getLogger(__name__)
 
 
 def extract_formulas_via_ocr(pdf_path):
@@ -16,8 +18,8 @@ def extract_formulas_via_ocr(pdf_path):
         ocr_text = pytesseract.image_to_string(img, config='--psm 6')
         # Simple heuristic: look for math symbols or patterns
         if any(sym in ocr_text for sym in ['=', '\\frac', '\\sum', '\\int', '+', '-', '*', '/', '^']):
-            print(f"Page {page_num+1} - Mathematical content detected:")
-            print(ocr_text[:500])  # Print first 500 chars for review
+            logger.info(f"Page {page_num+1} - Mathematical content detected:")
+            logger.info(ocr_text[:500])  # Print first 500 chars for review
             formulas.append({
                 'page': page_num + 1,
                 'ocr_text': ocr_text,

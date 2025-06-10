@@ -22,6 +22,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')
 
 from .base_collector import BaseCollector
 from .enhanced_client import CookieAuthClient
+logger = logging.getLogger(__name__)
 
 class SciDBCollector(BaseCollector):
     """Collector for SciDB academic papers with focus on finance and crypto"""
@@ -482,14 +483,14 @@ def main():
             doi_list = json.load(f)
         
         collected_papers = collector.collect_by_doi(doi_list)
-        print(f"Collected {len(collected_papers)} papers by DOI")
+        logger.info(f"Collected {len(collected_papers)} papers by DOI")
     
     else:
-        print("Error: --doi-list must be provided")
+        logger.warning("Error: --doi-list must be provided")
         sys.exit(1)
     
     # Print summary of collected papers
-    print("\nCollection Summary:")
+    logger.info("\nCollection Summary:")
     by_domain = {}
     for paper in collected_papers:
         domain = paper.get('domain', 'unknown')
@@ -498,7 +499,7 @@ def main():
         by_domain[domain] += 1
     
     for domain, count in sorted(by_domain.items()):
-        print(f"  {domain}: {count} papers")
+        logger.info(f"  {domain}: {count} papers")
 
 if __name__ == "__main__":
     main()

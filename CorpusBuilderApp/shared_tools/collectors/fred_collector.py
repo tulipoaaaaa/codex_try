@@ -10,6 +10,8 @@ from typing import List, Dict, Optional, Union, Any
 from shared_tools.collectors.base_collector import BaseCollector
 from dotenv import load_dotenv
 import requests
+import logging
+logger = logging.getLogger(__name__)
 
 class FREDCollector(BaseCollector):
     """Collector for FRED (Federal Reserve Economic Data)"""
@@ -431,4 +433,4 @@ if __name__ == "__main__":
         max_results=args.max_results
     )
     
-    print(f"Collected {len(results)} FRED records. Output dir: {collector.fred_dir}")
+    logger.info(f"Collected {len(results)} FRED records. Output dir: {collector.fred_dir}")
