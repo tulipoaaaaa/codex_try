@@ -14,19 +14,11 @@ from PySide6.QtWidgets import (
     QLabel,
     QSplitter,
     QMessageBox,
-    QHBoxLayout,
-    QPushButton,
     QMenu,
-    QDialog,
-    QLineEdit,
-    QComboBox,
-    QTableWidget,
-    QTableWidgetItem,
-    QHeaderView,
     QFileDialog,
 )
-from PySide6.QtCore import Qt, QTimer, Signal as pyqtSignal, QThread, QSize
-from PySide6.QtGui import QAction, QIcon, QPixmap
+from PySide6.QtCore import Qt, QTimer, Signal as pyqtSignal, QThread
+from PySide6.QtGui import QAction, QIcon
 import logging
 from pathlib import Path
 import shutil
