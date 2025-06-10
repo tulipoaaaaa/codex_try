@@ -1,3 +1,8 @@
+"""
+Module: monitor_progress
+Purpose: Tracks corpus processing metrics and generates status reports.
+"""
+
 import os
 import json
 import time
@@ -42,8 +47,8 @@ class CorpusMonitor:
         if self.history_file.exists():
             try:
                 self.history = pd.read_csv(self.history_file).to_dict('records')
-            except:
-                pass
+            except Exception as exc:
+                logger.exception("Unhandled exception in load history: %s", exc)
     
     def log_error(self, error_type, file_path, domain, details):
         entry = {

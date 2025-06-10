@@ -1,3 +1,8 @@
+"""
+Module: batch_text_extractor_enhanced_prerefactor
+Purpose: Provides enhanced batch text extraction for PDFs.
+"""
+
 import os
 import sys
 import tempfile
@@ -532,7 +537,8 @@ def resolve_indirect_object(obj):
         try:
             resolved = obj.get_object()
             return resolve_indirect_object(resolved)
-        except:
+        except Exception as exc:
+            logger.exception("Unhandled exception in resolve_indirect_object: %s", exc)
             return str(obj)
     elif isinstance(obj, dict):
         return {k: resolve_indirect_object(v) for k, v in obj.items()}

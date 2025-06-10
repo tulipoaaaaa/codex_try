@@ -73,6 +73,7 @@ scipy_stats.chi2_contingency = lambda *a, **k: (None, None, None, None)
 sys.modules["scipy.stats"] = scipy_stats
 
 from shared_tools.ui_wrappers.processors import corpus_balancer_wrapper as cbw
+cbw.pyqtSignal = lambda *a, **k: _Signal()
 
 class DummyBalancer:
     def __init__(self, *a, **k):

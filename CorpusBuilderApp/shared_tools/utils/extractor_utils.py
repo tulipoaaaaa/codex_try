@@ -1,3 +1,8 @@
+"""
+Module: extractor_utils
+Purpose: Helper functions for text and metadata extraction.
+"""
+
 import re
 from pathlib import Path
 from typing import Dict, List, Optional, Union, Any

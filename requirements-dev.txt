@@ -37,6 +37,7 @@ uvicorn==0.27.0.post1
 coverage
 pytest-qt
 pytest-xvfb
+pytest-cov
 types-PyYAML
 types-requests
 pip-audit

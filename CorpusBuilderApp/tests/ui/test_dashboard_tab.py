@@ -1,6 +1,11 @@
+import sys
 import pytest
 from PySide6.QtWidgets import QApplication, QFrame
 from PySide6.QtCore import Qt
+
+pytestmark = pytest.mark.skipif(
+    "PySide6.QtWidgets" not in sys.modules, reason="GUI not available"
+)
 
 from app.ui.tabs.dashboard_tab import DashboardTab
 
