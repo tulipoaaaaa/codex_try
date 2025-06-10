@@ -83,6 +83,8 @@ Key commands include:
 - `diff-corpus` – compare two corpus profile JSON files
 - Pipeline execution via `execute_from_config.py`
 
+For a complete comparison of what the command line and GUI each offer, see [docs/cli_vs_gui_matrix.md](docs/cli_vs_gui_matrix.md).
+
 Useful flags:
 
 - `--version` – print the application version
