@@ -83,6 +83,8 @@ Key commands include:
 
 - `export-corpus` – archive a corpus for distribution
 - `diff-corpus` – compare two corpus profile JSON files
+- `generate-default-config` – write a template ProjectConfig YAML
+- `sync-domain-config` – update domain_config.py from balancer_config
 - Pipeline execution via `execute_from_config.py`
 
 For a complete comparison of what the command line and GUI each offer, see [docs/cli_vs_gui_matrix.md](docs/cli_vs_gui_matrix.md).

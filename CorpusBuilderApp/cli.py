@@ -180,13 +180,34 @@ def main(argv: list[str] | None = None) -> int:
             help="Output path for generated YAML",
         )
         gen_args = gen_parser.parse_args(argv[1:])
+
         from shared_tools.project_config import ProjectConfig
         import yaml
 
         default = ProjectConfig.create_default_config_object()
         with open(gen_args.output, "w", encoding="utf-8") as out:
             yaml.safe_dump(default, out, sort_keys=False)
-        print(f"Config written to {gen_args.output}")
+        print(f"✅ Default config saved to {gen_args.output}")
+        return 0
+
+    if argv and argv[0] == "sync-domain-config":
+        sync_parser = argparse.ArgumentParser(
+            prog="sync-domain-config",
+            description="Sync domain_config.py with balancer_config.yaml",
+        )
+        sync_parser.add_argument("--config", required=True, help="Path to balancer_config.yaml")
+        sync_parser.add_argument("--force-sync", action="store_true", help="Force replace all properties")
+        sync_args = sync_parser.parse_args(argv[1:])
+
+        from shared_tools.utils.config_sync import sync_domains
+
+        try:
+            log_entries = sync_domains(force_sync=sync_args.force_sync)
+            for entry in log_entries:
+                print(entry)
+        except Exception as exc:  # pragma: no cover - developer tool
+            print(f"[ERROR] {exc}")
+            return 1
         return 0
 
     if argv and argv[0] == "sync-config":

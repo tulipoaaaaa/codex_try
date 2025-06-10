@@ -60,6 +60,14 @@ To compare corpus profiles use:
 ```bash
 python CorpusBuilderApp/cli.py diff-corpus --profile-a snapshot1.json --profile-b snapshot2.json
 ```
+Generate a template configuration:
+```bash
+python CorpusBuilderApp/cli.py generate-default-config --output config.yaml
+```
+Sync extractor domains with the balancer reference:
+```bash
+python CorpusBuilderApp/cli.py sync-domain-config --config config/balancer_config.yaml
+```
 You can run collectors, processors and the corpus balancer headlessly with
 `cli/execute_from_config.py`:
 ```bash
