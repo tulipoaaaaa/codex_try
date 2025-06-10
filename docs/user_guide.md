@@ -56,15 +56,30 @@ The project also provides command-line tools. For example, export a corpus:
 ```bash
 python CorpusBuilderApp/cli.py export-corpus --corpus-dir data/corpus --output-dir data/exports
 ```
+To compare corpus profiles use:
+```bash
+python CorpusBuilderApp/cli.py diff-corpus --profile-a snapshot1.json --profile-b snapshot2.json
+```
 You can run collectors and processors headlessly with `cli/execute_from_config.py`:
 ```bash
 python cli/execute_from_config.py --config path/to/config.yaml --run-all
 ```
 
+Use `--version` to print the application version or `--matrix` to see which
+features are available in the CLI versus the GUI:
+```bash
+python CorpusBuilderApp/cli.py --version
+python CorpusBuilderApp/cli.py --matrix
+```
+The `--version` flag outputs the package version number. The `--matrix` flag
+prints a table comparing CLI commands to GUI actions.
+See [CLI vs GUI feature matrix](cli_vs_gui_matrix.md) for details.
+
 ## Exporting the Corpus
 Create a versioned ZIP archive with manifest using the CLI:
 ```bash
 python CorpusBuilderApp/cli.py export-corpus --corpus-dir data/corpus --output-dir data/exports
+python CorpusBuilderApp/cli.py export-corpus --corpus-dir data/corpus --output-dir exports/ --version-tag v1.2.0
 ```
 If the Dashboard is open, you can also trigger an export from the **Tools** or **Corpus Manager** tab.
 
