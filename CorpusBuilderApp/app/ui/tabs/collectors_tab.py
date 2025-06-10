@@ -25,6 +25,7 @@ from shared_tools.ui_wrappers.collectors.web_wrapper import WebWrapper
 from app.ui.widgets.collector_card import CollectorCard
 from app.ui.widgets.section_header import SectionHeader
 from app.helpers.notifier import Notifier
+from app.ui.dialogs.collector_config_dialog import CollectorConfigDialog
 from app.ui.theme.theme_constants import (
     DEFAULT_FONT_SIZE,
     CARD_MARGIN,
@@ -201,7 +202,23 @@ class CollectorsTab(QWidget):
         self.project_config.save()
 
     def configure_collector(self, name: str) -> None:
-        Notifier.notify("Configure", f"Configuration for {name} not implemented")
+        wrapper = self.collector_wrappers.get(name)
+        if wrapper is None:
+            return
+        self.show_config_dialog(wrapper)
+
+    def show_config_dialog(self, wrapper) -> None:
+        dialog = CollectorConfigDialog(
+            wrapper.name,
+            self.project_config,
+            wrapper,
+            self,
+        )
+        if dialog.exec():
+            try:
+                wrapper.refresh_config()
+            except Exception:
+                pass
 
     def show_logs(self, name: str) -> None:
         Notifier.notify("Logs", f"Logs for {name} not implemented")
