@@ -11,6 +11,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtCore import Qt, Signal as pyqtSignal
 from PySide6.QtGui import QFont
 import time
+import logging
 
 from shared_tools.ui_wrappers.collectors.isda_wrapper import ISDAWrapper
 from shared_tools.ui_wrappers.collectors.github_wrapper import GitHubWrapper
@@ -50,6 +51,7 @@ class CollectorsTab(QWidget):
     ) -> None:
         super().__init__(parent)
         self.project_config = project_config
+        self.logger = logging.getLogger(self.__class__.__name__)
         self.task_history_service = task_history_service
         self.task_queue_manager = task_queue_manager
         self._task_ids: dict[str, str] = {}
@@ -82,7 +84,7 @@ class CollectorsTab(QWidget):
                         try:
                             getattr(wrapper, method)(value)
                         except Exception as exc:
-                            print(f"Failed to apply {method} on {name}: {exc}")
+                            self.logger.info("Failed to apply %s on %s: %s", method, name, exc)
         
         # Setup UI
         self.setup_ui()

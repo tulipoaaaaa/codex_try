@@ -149,34 +149,22 @@ class ActiveOperations(CardWrapper):
             return f"{duration.seconds}s"
     
     def get_active_operations(self):
-        """Get list of active operations"""
-        # In a real application, this would query the actual system
-        # For demo purposes, return mock data
-        
-        now = datetime.now()
-        
-        return [
-            {
-                'name': 'GitHub Collector',
-                'status': 'Running',
-                'progress': 67,
-                'details': 'Processing repositories: 45/67 completed',
-                'start_time': now - timedelta(minutes=12)
-            },
-            {
-                'name': 'arXiv Processor',
-                'status': 'Running',
-                'progress': 89,
-                'details': 'Extracting text from PDFs: 234/263 files',
-                'start_time': now - timedelta(minutes=8)
-            },
-            {
-                'name': 'Domain Rebalancer',
-                'status': 'Paused',
-                'details': 'Waiting for user confirmation on allocation changes',
-                'start_time': now - timedelta(minutes=45)
-            }
-        ]
+        """Return active operations from ``TaskQueueManager`` if available."""
+        if hasattr(self, "task_queue_manager") and self.task_queue_manager:
+            try:
+                operations = []
+                for tid, info in self.task_queue_manager.tasks.items():
+                    operations.append({
+                        "name": info.get("name", tid),
+                        "status": info.get("status", "pending"),
+                        "progress": info.get("progress", 0),
+                        "details": info.get("details", ""),
+                        "start_time": info.get("start_time", datetime.now()),
+                    })
+                return operations
+            except Exception as exc:  # pragma: no cover
+                self.logger.warning("Failed to retrieve operations: %s", exc)
+        return []
 
 
 class ActiveOperationsWidget(ActiveOperations):
