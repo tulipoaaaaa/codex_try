@@ -372,36 +372,30 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         QMenu=QMenu,
         QDateEdit=QDateEdit,
         QSplitter=QSplitter,
-        QMenu=QMenu,
-        QScrollArea=QScrollArea,
-        QDateEdit=QDateEdit,
-        QTableWidgetItem=QTableWidgetItem,
         QInputDialog=QInputDialog,
         QSlider=QSlider,
         QFont=QFont,
         QSizePolicy=QSizePolicy,
-        QHeaderView=QHeaderView,
-        QFileSystemModel=QFileSystemModel,
         QFileDialog=QFileDialog,
         QMessageBox=QMessageBox,
         QSystemTrayIcon=QSystemTrayIcon,
-        QInputDialog=QInputDialog,
-        QSlider=QSlider,
-        QHeaderView=QHeaderView,
-        QSizePolicy=QSizePolicy,
-        QDateEdit=QDateEdit,
-        QMenu=QMenu,
-        QFileSystemModel=QFileSystemModel,
-        QDialog=QDialog,
     )
     class _QtGui(types.SimpleNamespace):
         def __getattr__(self, name):
             return object
 
-    qtgui = _QtGui(QIcon=object, QAction=object, QFont=object, QColor=object,
-                   QTextCharFormat=object, QBrush=object, QDragEnterEvent=object,
-                   QDropEvent=object)
+    qtgui = _QtGui(
+        QIcon=object,
+        QAction=object,
+        QFont=object,
+        QColor=object,
+        QTextCharFormat=object,
+        QBrush=object,
+        QDragEnterEvent=object,
+        QDropEvent=object,
+    )
     qttest = types.SimpleNamespace(QTest=object)
+    qtcharts = types.SimpleNamespace()
     qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
     sys.modules['PySide6'] = types.SimpleNamespace(
         QtCore=qtcore,
