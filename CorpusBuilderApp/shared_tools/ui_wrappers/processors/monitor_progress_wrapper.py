@@ -192,9 +192,12 @@ class ProgressMonitoringWorker(QThread):
 class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
     """UI Wrapper for Progress Monitoring"""
 
-    def __init__(self, task_queue_manager=None, parent=None):
+    def __init__(self, config=None, task_queue_manager=None, parent=None):
         super().__init__(parent)
+        self.config = config
+        self.task_queue_manager = task_queue_manager
         self.monitoring_worker = None
+        self.monitor_config: Dict[str, Any] = {}
         self.monitored_tasks = {}
         self.task_widgets = {}
         self.monitoring_enabled = False
@@ -847,5 +850,45 @@ class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
             json.dump(rows, f, ensure_ascii=False, indent=2)
 
     def refresh_config(self):
-        """Reload parameters from ``self.config``. Placeholder for future use."""
-        pass
+        """Reload parameters from ``self.config`` and update the worker."""
+        if not getattr(self, "config", None):
+            return
+
+        try:
+            cfg = self.config.get_processor_config("monitor_progress") or {}
+        except Exception:  # pragma: no cover - defensive
+            cfg = {}
+
+        if not isinstance(cfg, dict):  # pragma: no cover - sanity check
+            cfg = {}
+
+        # Update local configuration
+        self.monitor_config.update(cfg)
+
+        # Update UI controls if present
+        if hasattr(self, "update_interval_slider"):
+            if "update_interval" in cfg:
+                try:
+                    self.update_interval_slider.setValue(int(cfg["update_interval"]))
+                except Exception:  # pragma: no cover - invalid value
+                    pass
+        if hasattr(self, "enable_notifications_cb"):
+            self.enable_notifications_cb.setChecked(cfg.get("enable_notifications", self.enable_notifications_cb.isChecked()))
+        if hasattr(self, "log_progress_cb"):
+            self.log_progress_cb.setChecked(cfg.get("log_progress", self.log_progress_cb.isChecked()))
+        if hasattr(self, "track_memory_cb"):
+            self.track_memory_cb.setChecked(cfg.get("track_memory", self.track_memory_cb.isChecked()))
+        if hasattr(self, "track_cpu_cb"):
+            self.track_cpu_cb.setChecked(cfg.get("track_cpu", self.track_cpu_cb.isChecked()))
+
+        # Apply to running worker
+        if self.monitoring_worker:
+            self.monitoring_worker.monitor_config.update(cfg)
+            if self.monitoring_worker.isRunning():
+                self.monitoring_worker.monitor.configure(
+                    update_interval=self.monitoring_worker.monitor_config.get("update_interval", 1.0),
+                    enable_notifications=self.monitoring_worker.monitor_config.get("enable_notifications", True),
+                    log_progress=self.monitoring_worker.monitor_config.get("log_progress", True),
+                    track_memory=self.monitoring_worker.monitor_config.get("track_memory", True),
+                    track_cpu=self.monitoring_worker.monitor_config.get("track_cpu", True),
+                )
