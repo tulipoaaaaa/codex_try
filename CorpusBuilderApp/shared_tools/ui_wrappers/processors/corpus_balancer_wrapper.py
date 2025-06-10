@@ -70,8 +70,8 @@ class CorpusBalancerWrapper(BaseWrapper, ProcessorWrapperMixin):
     domain_processed = pyqtSignal(str, int, int)  # domain, current, target
     balance_completed = pyqtSignal(dict)  # Balance results
     
-    def __init__(self, config):
-        super().__init__(config)
+    def __init__(self, config, test_mode: bool = False):
+        super().__init__(config, test_mode=test_mode)
         self.balancer = None
         self.target_allocations = {}
         
