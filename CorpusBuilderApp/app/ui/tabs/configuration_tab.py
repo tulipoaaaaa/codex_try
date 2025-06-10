@@ -489,8 +489,9 @@ class ConfigurationTab(QWidget):
         
         # If auto-save is enabled, save the current environment
         if self.auto_save.isChecked():
-            # This would save the current environment selection to the config
-            pass
+            # Persist the selected environment using ProjectConfig
+            self.project_config.set('environment.active', env)
+            self.project_config.save()
     
     def validate_domain_config(self):
         """Validate the domain configuration"""
