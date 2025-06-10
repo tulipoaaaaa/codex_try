@@ -242,10 +242,13 @@ class SettingsDialog(QDialog):
         # General tab
         env_setting = self.current_settings.get('environment', 'test')
         if isinstance(env_setting, dict):
-            env_setting = 'test'  # Default to test if we got a dict
-        self.env_selector.setCurrentText(env_setting)
-        self.python_path.setText(self.current_settings.get('python_path', ''))
-        self.venv_path.setText('venv/')
+            self.env_selector.setCurrentText(env_setting.get('active', 'test'))
+            self.python_path.setText(env_setting.get('python_path', ''))
+            self.venv_path.setText(env_setting.get('venv_path', 'venv/'))
+        else:
+            self.env_selector.setCurrentText(env_setting)
+            self.python_path.setText(self.current_settings.get('python_path', ''))
+            self.venv_path.setText('venv/')
         self.theme_selector.setCurrentText(self.current_settings.get('theme', 'System'))
         self.show_tooltips.setChecked(self.current_settings.get('show_tooltips', True))
         self.auto_refresh.setChecked(self.current_settings.get('auto_refresh', True))
@@ -273,9 +276,11 @@ class SettingsDialog(QDialog):
         """Get the settings from the dialog."""
         return {
             # General
-            'environment': self.env_selector.currentText(),
-            'python_path': self.python_path.text(),
-            'venv_path': self.venv_path.text(),
+            'environment': {
+                'active': self.env_selector.currentText(),
+                'python_path': self.python_path.text(),
+                'venv_path': self.venv_path.text(),
+            },
             'theme': self.theme_selector.currentText(),
             'show_tooltips': self.show_tooltips.isChecked(),
             'auto_refresh': self.auto_refresh.isChecked(),

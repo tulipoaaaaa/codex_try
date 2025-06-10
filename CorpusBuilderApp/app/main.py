@@ -156,7 +156,12 @@ class CryptoCorpusApp(QApplication):
         config_path = config_dir / "config.yaml"
         
         default_config = {
-            'environment': 'test',
+            'environment': {
+                'active': 'test',
+                'python_path': '',
+                'venv_path': '',
+                'temp_dir': ''
+            },
             'environments': {
                 'test': {
                     'corpus_dir': str(config_dir / 'corpus'),
