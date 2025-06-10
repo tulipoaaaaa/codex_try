@@ -1,7 +1,6 @@
 import sys
 import types
-import yaml
-import json
+import importlib
 from pathlib import Path
 
 # Stub heavy modules before importing CLI
@@ -20,21 +19,21 @@ for mod in [
 ]:
     sys.modules.setdefault(mod, types.ModuleType(mod))
 
-from CorpusBuilderApp import cli  # noqa: E402
+# Restore real PyYAML for this test
+sys.modules.pop("yaml", None)
+yaml = importlib.import_module("yaml")
+
+import CorpusBuilderApp.cli as cli  # noqa: E402
 
 
-def test_generate_default_config(tmp_path: Path, monkeypatch):
-    out_file = tmp_path / "cfg.yaml"
-    monkeypatch.setattr(
-        yaml,
-        "safe_dump",
-        lambda data, fh, sort_keys=False: fh.write(json.dumps(data)),
-    )
-    monkeypatch.setattr(yaml, "safe_load", lambda text: json.loads(text))
-    result = cli.main(["generate-default-config", "--output", str(out_file)])
-    assert result == 0
-    assert out_file.exists()
-    data = yaml.safe_load(out_file.read_text(encoding="utf-8"))
+def test_generate_default_config(tmp_path: Path):
+    cfg_path = tmp_path / "cfg.yaml"
+
+    exit_code = cli.main(["generate-default-config", "--output", str(cfg_path)])
+    assert exit_code == 0
+    assert cfg_path.exists()
+
+    with open(cfg_path, "r", encoding="utf-8") as fh:
+        data = yaml.safe_load(fh)
     assert isinstance(data, dict)
     assert "environment" in data
-
