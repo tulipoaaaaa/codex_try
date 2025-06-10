@@ -119,6 +119,8 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
             return ""
         def setText(self, *a, **k):
             pass
+        def setReadOnly(self, *a, **k):
+            pass
     class QDateEdit(QWidget):
         def __init__(self, *a, **k):
             pass
@@ -129,12 +131,19 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
     class QComboBox(QWidget):
         def __init__(self, *a, **k):
             self._text = ""
+            self.currentIndexChanged = _Signal()
         def addItem(self, *a, **k):
             pass
+        def addItems(self, items):
+            for i in items:
+                self.addItem(i)
         def currentText(self):
             return self._text
         def setCurrentText(self, t):
             self._text = t
+    class QFormLayout:
+        def addRow(self, *a, **k):
+            pass
     class QGridLayout:
         def addWidget(self, *a, **k):
             pass
@@ -358,6 +367,7 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         QFrame=QFrame,
         QLineEdit=QLineEdit,
         QComboBox=QComboBox,
+        QFormLayout=QFormLayout,
         QGridLayout=QGridLayout,
         QTextEdit=QTextEdit,
         QTableWidget=QTableWidget,
