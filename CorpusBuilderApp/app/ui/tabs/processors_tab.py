@@ -5,6 +5,7 @@ from PySide6.QtCore import Qt, Slot as pyqtSlot
 from PySide6.QtGui import QIcon
 import os
 import shutil
+import time
 
 from shared_tools.ui_wrappers.processors.batch_nonpdf_extractor_enhanced_wrapper import BatchNonPDFExtractorEnhancedWrapper
 from shared_tools.ui_wrappers.processors.pdf_extractor_wrapper import PDFExtractorWrapper
@@ -675,10 +676,64 @@ class ProcessorsTab(QWidget):
     @pyqtSlot()
     def apply_selected_domain(self):
         """Apply advanced processing to a user-selected domain."""
-        # Placeholder for more complex domain-specific logic
-        self.advanced_status.setText(
-            "Processing selected domain... (not yet implemented)"
+        from PySide6.QtWidgets import QInputDialog
+        from shared_tools.utils.domain_utils import get_valid_domains
+
+        domains = get_valid_domains()
+        if not domains:
+            self.advanced_status.setText("No domains available")
+            return
+
+        domain, ok = QInputDialog.getItem(
+            self,
+            "Select Domain",
+            "Domain:",
+            domains,
+            0,
+            False,
         )
+
+        if not ok or not domain:
+            return
+
+        wrappers_to_run = []
+        mapping = [
+            ("deduplicator", self.enable_deduplication),
+            ("domain", self.enable_domain_classification),
+            ("financial", self.enable_financial_symbols),
+            ("language", self.enable_language_confidence),
+            ("mt_detector", self.enable_mt_detection),
+        ]
+
+        for name, checkbox in mapping:
+            wrapper = self.processor_wrappers.get(name)
+            if not wrapper:
+                continue
+            if hasattr(wrapper, "set_enabled"):
+                wrapper.set_enabled(checkbox.isChecked())
+            if checkbox.isChecked():
+                wrappers_to_run.append(wrapper)
+
+        if not wrappers_to_run:
+            self.advanced_status.setText("No advanced processors enabled")
+            self.advanced_progress_bar.setValue(0)
+            return
+
+        self._advanced_wrappers = wrappers_to_run
+        self._current_advanced_index = 0
+        self._advanced_domain = domain
+
+        if self.task_queue_manager:
+            tid = f"adv_domain_{domain}_{int(time.time()*1000)}"
+            self._task_ids["selected_domain"] = tid
+            self.task_queue_manager.add_task(
+                tid,
+                {"name": "AdvancedDomain", "domain": domain},
+            )
+
+        self.advanced_progress_bar.setValue(0)
+        self.advanced_status.setText(f"Starting processing for domain '{domain}'...")
+        self._start_next_advanced_processor(domain=domain)
 
     def start_batch_processing(self):
         input_dir = self.input_dir_path.text()
@@ -806,10 +861,19 @@ class ProcessorsTab(QWidget):
         
         self.processing_status_label.setText("All processors stopped")
 
-    def _start_next_advanced_processor(self):
+    def _start_next_advanced_processor(self, domain=None):
+        if domain is not None:
+            self._advanced_domain = domain
+        domain = getattr(self, "_advanced_domain", None)
+
         if self._current_advanced_index >= len(getattr(self, "_advanced_wrappers", [])):
             self.advanced_progress_bar.setValue(100)
-            self.advanced_status.setText("Advanced processing completed")
+            if domain:
+                self.advanced_status.setText(f"Processing for domain '{domain}' completed")
+            else:
+                self.advanced_status.setText("Advanced processing completed")
+            if self.task_queue_manager and "selected_domain" in self._task_ids:
+                self.task_queue_manager.update_task(self._task_ids.pop("selected_domain"), "completed", 100)
             self._advanced_wrappers = []
             return
 
@@ -824,13 +888,21 @@ class ProcessorsTab(QWidget):
         elif hasattr(wrapper, "completed"):
             wrapper.completed.connect(self._on_advanced_wrapper_completed)
 
-        wrapper.start()
+        if domain:
+            wrapper.start(domain=domain)
+        else:
+            wrapper.start()
 
     def _update_advanced_progress(self, value):
         total = len(self._advanced_wrappers)
         base = (self._current_advanced_index / total) * 100
         step = value / total
-        self.advanced_progress_bar.setValue(int(base + step))
+        progress = int(base + step)
+        self.advanced_progress_bar.setValue(progress)
+        if self.task_queue_manager and "selected_domain" in self._task_ids:
+            self.task_queue_manager.update_task(
+                self._task_ids["selected_domain"], "running", progress
+            )
 
     def _on_advanced_wrapper_completed(self, _results):
         wrapper = self._advanced_wrappers[self._current_advanced_index]

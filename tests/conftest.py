@@ -77,6 +77,7 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
     qtcore.QObject = type("QObject", (), {})
     qtcore.QThread = type("QThread", (), {})
     qtcore.QTimer = type("QTimer", (), {})
+    qtcore.qInstallMessageHandler = lambda *a, **k: None
     sys.modules["PySide6.QtCore"] = qtcore
 
     sys.modules["PySide6.QtGui"] = _SafeStubModule("PySide6.QtGui")
@@ -123,7 +124,26 @@ for mod in [
     "pydantic",
     "psutil",
 ]:
-    sys.modules.setdefault(mod, types.ModuleType(mod))
+    module = sys.modules.setdefault(mod, types.ModuleType(mod))
+    if mod == "requests":
+        setattr(module, "get", lambda *a, **k: None)
+        exceptions_mod = types.ModuleType("requests.exceptions")
+        setattr(exceptions_mod, "Timeout", type("Timeout", (Exception,), {}))
+        setattr(exceptions_mod, "HTTPError", type("HTTPError", (Exception,), {}))
+        setattr(module, "exceptions", exceptions_mod)
+        setattr(module, "Session", lambda *a, **k: object())
+    if mod == "yaml":
+        import json
+        setattr(module, "safe_dump", lambda data, fh: fh.write(json.dumps(data)))
+        setattr(module, "safe_load", lambda fh: json.load(fh))
+    if mod == "psutil":
+        class _P:
+            def __init__(self, *a, **k):
+                pass
+            def memory_info(self):
+                return type("mem", (), {"rss": 0})()
+
+        setattr(module, "Process", _P)
 
 bs4_mod = sys.modules.setdefault('bs4', types.ModuleType('bs4'))
 setattr(bs4_mod, 'BeautifulSoup', lambda *a, **k: None)
@@ -145,7 +165,7 @@ np_mod = sys.modules.setdefault('numpy', types.ModuleType('numpy'))
 setattr(np_mod, 'ndarray', object)
 setattr(np_mod, 'array', lambda *a, **k: None)
 pd_mod = sys.modules.setdefault('pandas', types.ModuleType('pandas'))
-setattr(pd_mod, 'DataFrame', object)
+setattr(pd_mod, 'DataFrame', lambda data=None, **k: data)
 setattr(pd_mod, 'read_csv', lambda *a, **k: None)
 for plot_mod in ['plotly', 'plotly.graph_objects', 'plotly.express', 'plotly.subplots']:
     mod = sys.modules.setdefault(plot_mod, types.ModuleType(plot_mod))
@@ -166,7 +186,12 @@ keyring_mod = sys.modules.setdefault('keyring', types.ModuleType('keyring'))
 setattr(keyring_mod, 'get_password', lambda *a, **k: None)
 setattr(keyring_mod, 'set_password', lambda *a, **k: None)
 pydantic_mod = sys.modules.setdefault('pydantic', types.ModuleType('pydantic'))
-setattr(pydantic_mod, 'BaseModel', object)
+class _DummyBaseModel:
+    @classmethod
+    def parse_obj(cls, obj):
+        return obj
+
+setattr(pydantic_mod, 'BaseModel', _DummyBaseModel)
 setattr(pydantic_mod, 'validator', lambda *a, **k: (lambda f: f))
 setattr(pydantic_mod, 'field_validator', lambda *a, **k: (lambda f: f))
 setattr(pydantic_mod, 'Field', lambda *a, **k: None)
