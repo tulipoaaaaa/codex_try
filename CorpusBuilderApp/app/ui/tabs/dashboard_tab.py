@@ -26,6 +26,8 @@ from app.ui.theme.theme_constants import (
 )
 from shared_tools.services.corpus_stats_service import CorpusStatsService
 from app.ui.utils.ui_helpers import create_styled_progress_bar
+from shared_tools.services.task_queue_manager import TaskQueueManager
+from shared_tools.services.system_monitor import SystemMonitor
 import os
 
 ICON_PATH = os.path.join(os.path.dirname(__file__), '../../resources/icons')
@@ -36,13 +38,18 @@ class DashboardTab(QWidget):
     view_all_activity_requested = Signal()
     rebalance_requested = Signal()
 
-    def __init__(self, project_config, activity_log_service=None, task_history_service=None, parent=None):
+    def __init__(self, project_config, activity_log_service=None, task_history_service=None, task_queue_manager=None, parent=None):
         super().__init__(parent)
         self.config = project_config
         self.activity_log_service = activity_log_service
         self.metric_labels = {}
         self.stats_service = CorpusStatsService(project_config)
         self.task_history_service = task_history_service
+        self.task_queue_manager = task_queue_manager or TaskQueueManager()
+        self.task_queue_manager.queue_counts_changed.connect(self.update_queue_counts)
+        self.system_monitor = SystemMonitor()
+        self.system_monitor.system_metrics.connect(self.update_system_metrics)
+        self.system_monitor.start()
         self._init_ui()
         self.fix_all_label_backgrounds()
         self.stats_service.stats_updated.connect(self.update_overview_metrics)
@@ -115,12 +122,12 @@ class DashboardTab(QWidget):
         ops_card = CardWrapper()
         ops_card.setObjectName('active-operations')
         ops_card.setStyleSheet(f"""
-            QFrame[objectName="active-operations"] {
+            QFrame[objectName="active-operations"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
+            }}
         """)
         ops_layout = ops_card.body_layout
         ops_layout.setContentsMargins(16, 8, 16, 16)
@@ -239,20 +246,24 @@ class DashboardTab(QWidget):
         container = QFrame()
         container.setObjectName('system-status-narrow')
         container.setStyleSheet(f'''
-            QFrame[objectName="system-status-narrow"] {
+            QFrame[objectName="system-status-narrow"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
+            }}
         ''')
         layout = QVBoxLayout(container)
         layout.setSpacing(4)
         layout.setContentsMargins(0, 0, 0, 0)
         header = SectionHeader('🖥️ System Status')
         layout.addWidget(header)
-        resources = [('CPU', 45, '#32B8C6'), ('RAM', 67, '#E68161'), ('Disk', 23, '#22c55e')]
-        for label, value, color in resources:
+        resources = [
+            ('CPU', 'cpu_bar', 'cpu_percent', '#32B8C6'),
+            ('RAM', 'ram_bar', 'ram_percent', '#E68161'),
+            ('Disk', 'disk_bar', 'disk_percent', '#22c55e'),
+        ]
+        for label, bar_attr, percent_attr, color in resources:
             resource_container = QWidget()
             resource_container.setStyleSheet('background-color: transparent;')
             resource_layout = QHBoxLayout(resource_container)
@@ -261,15 +272,17 @@ class DashboardTab(QWidget):
             label_widget = QLabel(label)
             label_widget.setFixedWidth(35)
             label_widget.setStyleSheet('color: #f9fafb; font-size: 12px; background-color: transparent;')
-            progress_bar = create_styled_progress_bar(value, color, height=6)
+            progress_bar = create_styled_progress_bar(0, color, height=6)
             progress_bar.setFixedWidth(80)
-            percent_label = QLabel(f'{value}%')
+            percent_label = QLabel('0%')
             percent_label.setStyleSheet('color: #f9fafb; font-size: 12px; font-weight: 600; background-color: transparent;')
             percent_label.setFixedWidth(30)
             resource_layout.addWidget(label_widget)
             resource_layout.addWidget(progress_bar)
             resource_layout.addWidget(percent_label)
             layout.addWidget(resource_container)
+            setattr(self, bar_attr, progress_bar)
+            setattr(self, percent_attr, percent_label)
         uptime_label = QLabel('Uptime: 2h 14m')
         uptime_label.setStyleSheet('color: #9ca3af; font-size: 10px; background-color: transparent; margin-top: 4px;')
         layout.addWidget(uptime_label)
@@ -280,12 +293,12 @@ class DashboardTab(QWidget):
         container.setObjectName('alerts-narrow')
         container.setMinimumWidth(140)
         container.setStyleSheet(f'''
-            QFrame[objectName="alerts-narrow"] {
+            QFrame[objectName="alerts-narrow"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
+            }}
         ''')
         layout = QVBoxLayout(container)
         layout.setSpacing(6)
@@ -314,12 +327,12 @@ class DashboardTab(QWidget):
         container = QFrame()
         container.setObjectName('recent-activity-tall')
         container.setStyleSheet(f'''
-            QFrame[objectName="recent-activity-tall"] {
+            QFrame[objectName="recent-activity-tall"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
+            }}
         ''')
         main_layout = QVBoxLayout(container)
         main_layout.setSpacing(8)
@@ -498,12 +511,12 @@ class DashboardTab(QWidget):
         quick_actions_card = CardWrapper()
         quick_actions_card.setObjectName('quick-actions')
         quick_actions_card.setStyleSheet(f"""
-            QFrame[objectName="quick-actions"] {
+            QFrame[objectName="quick-actions"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
+            }}
         """)
         quick_actions_layout = quick_actions_card.body_layout
         quick_actions_layout.setContentsMargins(16, 16, 16, 16)
@@ -520,22 +533,22 @@ class DashboardTab(QWidget):
             btn = QPushButton(text)
             btn.setObjectName("action-btn")
             btn.setStyleSheet(f"""
-                QPushButton[objectName="action-btn"] {
+                QPushButton[objectName="action-btn"] {{
                     background-color: {BUTTON_COLOR_PRIMARY};
                     color: white;
                     border: none;
                     border-radius: 8px;
-                    font-size: 14px;
-                    font-weight: 600;
-                    padding: 12px 16px;
-                }
-                QPushButton[objectName="action-btn"]:hover {
+                font-size: 14px;
+                font-weight: 600;
+                padding: 12px 16px;
+                }}
+                QPushButton[objectName="action-btn"]:hover {{
                     background-color: #2DA6B2;
                     transform: translateY(-1px);
-                }
-                QPushButton[objectName="action-btn"]:pressed {
+                }}
+                QPushButton[objectName="action-btn"]:pressed {{
                     background-color: #248995;
-                }
+                }}
             """)
             btn.setFixedHeight(40)
             btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
@@ -546,7 +559,7 @@ class DashboardTab(QWidget):
         self.rebalance_now_btn = QPushButton("Rebalance Now")
         self.rebalance_now_btn.setObjectName("action-btn")
         self.rebalance_now_btn.setStyleSheet(f"""
-                QPushButton[objectName="action-btn"] {
+                QPushButton[objectName="action-btn"] {{
                     background-color: {BUTTON_COLOR_PRIMARY};
                     color: white;
                     border: none;
@@ -554,14 +567,14 @@ class DashboardTab(QWidget):
                     font-size: 14px;
                     font-weight: 600;
                     padding: 12px 16px;
-                }
-                QPushButton[objectName="action-btn"]:hover {
+                }}
+                QPushButton[objectName="action-btn"]:hover {{
                     background-color: #2DA6B2;
                     transform: translateY(-1px);
-                }
-                QPushButton[objectName="action-btn"]:pressed {
+                }}
+                QPushButton[objectName="action-btn"]:pressed {{
                     background-color: #248995;
-                }
+                }}
             """)
         self.rebalance_now_btn.setFixedHeight(40)
         self.rebalance_now_btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
@@ -573,12 +586,12 @@ class DashboardTab(QWidget):
         container = CardWrapper('⚖️ Corpus Health')
         container.setObjectName('corpus-health')
         container.setStyleSheet(f"""
-            QFrame[objectName="corpus-health"] {
+            QFrame[objectName="corpus-health"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
+            }}
         """)
         layout = container.body_layout
         layout.setContentsMargins(16, 16, 16, 16)
@@ -603,12 +616,12 @@ class DashboardTab(QWidget):
         container = CardWrapper('📈 Performance Metrics')
         container.setObjectName('performance-metrics')
         container.setStyleSheet(f"""
-            QFrame[objectName="performance-metrics"] {
+            QFrame[objectName="performance-metrics"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
+            }}
         """)
         layout = container.body_layout
         layout.setContentsMargins(16, 16, 16, 16)
@@ -637,12 +650,12 @@ class DashboardTab(QWidget):
         container = CardWrapper('🖥️ Environment')
         container.setObjectName('environment-info')
         container.setStyleSheet(f"""
-            QFrame[objectName="environment-info"] {
+            QFrame[objectName="environment-info"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
+            }}
         """)
         layout = container.body_layout
         layout.setContentsMargins(16, 12, 16, 12)
@@ -672,13 +685,13 @@ class DashboardTab(QWidget):
         container.setObjectName('quick-stats')
         container.setMinimumWidth(220)
         container.setStyleSheet(f'''
-            QFrame[objectName="quick-stats"] {
+            QFrame[objectName="quick-stats"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
                 min-width: 220px;
-            }
+            }}
         ''')
         header_layout = QVBoxLayout()
         header_layout.setSpacing(2)
@@ -808,6 +821,27 @@ class DashboardTab(QWidget):
         if "Total Tokens" in self.metric_labels:
             self.metric_labels["Total Tokens"].setText(str(total_tokens))
 
+    def update_queue_counts(self, pending: int, retry: int, failed: int, completed: int) -> None:
+        """Update queue count labels from TaskQueueManager."""
+        if hasattr(self, "pending_label"):
+            self.pending_label.setText(str(pending))
+        if hasattr(self, "retry_label"):
+            self.retry_label.setText(str(retry))
+        if hasattr(self, "failed_label"):
+            self.failed_label.setText(str(failed))
+
+    def update_system_metrics(self, cpu: float, ram: float, disk: float) -> None:
+        """Refresh system status bars from SystemMonitor metrics."""
+        if hasattr(self, "cpu_bar"):
+            self.cpu_bar.setValue(int(cpu))
+            self.cpu_percent.setText(f"{int(cpu)}%")
+        if hasattr(self, "ram_bar"):
+            self.ram_bar.setValue(int(ram))
+            self.ram_percent.setText(f"{int(ram)}%")
+        if hasattr(self, "disk_bar"):
+            self.disk_bar.setValue(int(disk))
+            self.disk_percent.setText(f"{int(disk)}%")
+
     def fix_all_label_backgrounds(self):
         # Fix all existing QLabel widgets to have transparent background
         for label in self.findChildren(QLabel):
@@ -818,6 +852,11 @@ class DashboardTab(QWidget):
                 import re
                 new_style = re.sub(r'background-color:\s*[^;]+;?', 'background-color: transparent;', current_style)
                 label.setStyleSheet(new_style)
+
+    def closeEvent(self, event):
+        if hasattr(self, "system_monitor"):
+            self.system_monitor.stop()
+        super().closeEvent(event)
 
     def get_real_domain_data(self):
         try:
@@ -944,12 +983,12 @@ class DashboardTab(QWidget):
         container = QFrame()
         container.setObjectName('performance-metrics-horizontal')
         container.setStyleSheet(f'''
-            QFrame[objectName="performance-metrics-horizontal"] {
+            QFrame[objectName="performance-metrics-horizontal"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
+            }}
         ''')
         main_layout = QVBoxLayout(container)
         main_layout.setSpacing(8)
@@ -989,12 +1028,12 @@ class DashboardTab(QWidget):
         container = QFrame()
         container.setObjectName('task-queue-refined')
         container.setStyleSheet(f'''
-            QFrame[objectName="task-queue-refined"] {
+            QFrame[objectName="task-queue-refined"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
+            }}
         ''')
         main_layout = QVBoxLayout(container)
         main_layout.setSpacing(8)
@@ -1041,13 +1080,13 @@ class DashboardTab(QWidget):
         stats_layout.setSpacing(2)
         stats_layout.setContentsMargins(0, 0, 0, 0)
         
-        stats_data = [
-            ('⏳', 'Pending', '12', '#32B8C6'),
-            ('🔄', 'Retry', '2', '#E68161'),
-            ('❌', 'Failed', '1', '#ef4444')
+        stats_info = [
+            ('⏳', 'Pending', 'pending_label', '#32B8C6'),
+            ('🔄', 'Retry', 'retry_label', '#E68161'),
+            ('❌', 'Failed', 'failed_label', '#ef4444'),
         ]
-        
-        for icon, word, number, color in stats_data:
+
+        for icon, word, attr, color in stats_info:
             stat_item = QWidget()
             stat_item.setStyleSheet('background-color: transparent;')
             stat_layout_item = QHBoxLayout(stat_item)
@@ -1062,12 +1101,13 @@ class DashboardTab(QWidget):
             word_label = QLabel(word + ':')
             word_label.setStyleSheet('color: #C5C7C7; font-size: 10px; font-weight: 500; background-color: transparent;')
             
-            number_label = QLabel(number)
+            number_label = QLabel('0')
             number_label.setStyleSheet(f'color: {color}; font-size: 10px; font-weight: 700; background-color: transparent;')
             
             stat_layout_item.addWidget(icon_label)
             stat_layout_item.addWidget(word_label)
             stat_layout_item.addWidget(number_label)
+            setattr(self, attr, number_label)
             stats_layout.addWidget(stat_item)
         
         bottom_layout.addWidget(stats_container)
@@ -1106,12 +1146,12 @@ class DashboardTab(QWidget):
         container = QFrame()
         container.setObjectName('environment-info')
         container.setStyleSheet(f'''
-            QFrame[objectName="environment-info"] {
+            QFrame[objectName="environment-info"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
+            }}
         ''')
         layout = QVBoxLayout(container)
         layout.setSpacing(8)
@@ -1144,15 +1184,15 @@ class DashboardTab(QWidget):
         container = QFrame()
         container.setObjectName('system-status-narrow')
         container.setStyleSheet(f'''
-            QFrame[objectName="system-status-narrow"] {
+            QFrame[objectName="system-status-narrow"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
-            QFrame[objectName="system-status-narrow"] QLabel {
+            }}
+            QFrame[objectName="system-status-narrow"] QLabel {{
                 background-color: transparent;
-            }
+            }}
         ''')
         layout = QVBoxLayout(container)
         layout.setSpacing(4)
@@ -1188,15 +1228,15 @@ class DashboardTab(QWidget):
         container.setObjectName('alerts-narrow')
         container.setMinimumWidth(140)
         container.setStyleSheet(f'''
-            QFrame[objectName="alerts-narrow"] {
+            QFrame[objectName="alerts-narrow"] {{
                 background-color: #1a1f2e;
                 border: 1px solid {CARD_BORDER_COLOR};
                 border-radius: 12px;
                 padding: 16px;
-            }
-            QFrame[objectName="alerts-narrow"] QLabel {
+            }}
+            QFrame[objectName="alerts-narrow"] QLabel {{
                 background-color: transparent;
-            }
+            }}
         ''')
         layout = QVBoxLayout(container)
         layout.setSpacing(6)
