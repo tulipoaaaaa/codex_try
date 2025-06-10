@@ -24,6 +24,7 @@ from app.ui.widgets.domain_distribution import DomainDistribution
 from app.ui.widgets.active_operations import ActiveOperations
 from app.ui.widgets.recent_activity import RecentActivity
 from app.ui.widgets.activity_log import ActivityLog
+from app.helpers.ui_helpers import create_metric_card
 from app.ui.theme.theme_constants import (
     CARD_MARGIN,
     CARD_PADDING,
@@ -100,7 +101,11 @@ class DashboardTab(QWidget):
             {"value": "3", "label": "Running Ops", "unit": ""},
         ]
         for stat in stat_data:
-            card, _ = self.fix_metric_card_transparency(stat["label"], stat["value"], stat["unit"])
+            card, value_label = create_metric_card(stat["label"], stat["value"], "#32B8C6")
+            if stat.get("unit"):
+                value_label.setText(f"{stat['value']} {stat['unit']}")
+            self.metric_labels[stat["label"]] = value_label
+            card.setObjectName("stat-card")
             metrics_bar.addWidget(card)
         main_layout.addLayout(metrics_bar)
 
@@ -171,42 +176,6 @@ class DashboardTab(QWidget):
         dot.setStyleSheet('background-color: #22c55e; border-radius: 7px;')
         return dot
 
-    def fix_metric_card_transparency(self, title, value, unit=''):
-        metric_widget = QWidget()
-        metric_widget.setStyleSheet('background-color: transparent; border: none;')
-        metric_layout = QVBoxLayout(metric_widget)
-        metric_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        metric_layout.setSpacing(4)
-        metric_layout.setContentsMargins(16, 16, 16, 16)
-        
-        if unit:
-            value_unit_container = QWidget()
-            value_unit_container.setStyleSheet('background-color: transparent;')
-            value_unit_layout = QHBoxLayout(value_unit_container)
-            value_unit_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            value_unit_layout.setSpacing(4)
-            value_unit_layout.setContentsMargins(0, 0, 0, 0)
-            value_label = QLabel(str(value))
-            value_label.setStyleSheet('font-size: 28px; color: #32B8C6; font-weight: 700; background-color: transparent;')
-            unit_label = QLabel(unit)
-            unit_label.setStyleSheet('font-size: 16px; color: #C5C7C7; font-weight: 500; background-color: transparent; margin-top: 8px;')
-            value_unit_layout.addWidget(value_label)
-            value_unit_layout.addWidget(unit_label)
-            metric_layout.addWidget(value_unit_container)
-        else:
-            value_label = QLabel(str(value))
-            value_label.setStyleSheet('font-size: 28px; color: #32B8C6; font-weight: 700; text-align: center; background-color: transparent;')
-            value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            metric_layout.addWidget(value_label)
-        
-        title_label = QLabel(title)
-        title_label.setStyleSheet('font-size: 14px; color: #C5C7C7; font-weight: 600; text-align: center; background-color: transparent;')
-        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        metric_layout.addWidget(title_label)
-
-        # keep reference to update later
-        self.metric_labels[title] = value_label
-        return metric_widget, value_label
 
     def create_giant_pie_chart(self, domain_data):
         from PySide6.QtCharts import QChart, QChartView, QPieSeries

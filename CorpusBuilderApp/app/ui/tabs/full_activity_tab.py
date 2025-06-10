@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 import json
 from app.helpers.chart_manager import ChartManager
+from app.helpers.ui_helpers import create_metric_card
 from app.ui.theme.theme_constants import (
     DEFAULT_FONT_SIZE,
     CARD_MARGIN,
@@ -147,19 +148,27 @@ class FullActivityTab(QWidget):
         metrics_layout = QHBoxLayout()
         
         # Total Tasks Card
-        self.total_tasks_card = self.create_metric_card("Total Tasks", "156", "#32B8C6")
+        self.total_tasks_card, self.total_tasks_value = create_metric_card(
+            "Total Tasks", "156", "#32B8C6"
+        )
         metrics_layout.addWidget(self.total_tasks_card)
         
         # Success Rate Card  
-        self.success_rate_card = self.create_metric_card("Success Rate", "94.2%", STATUS_DOT_GREEN)
+        self.success_rate_card, self.success_rate_value = create_metric_card(
+            "Success Rate", "94.2%", STATUS_DOT_GREEN
+        )
         metrics_layout.addWidget(self.success_rate_card)
         
         # Average Runtime Card
-        self.avg_runtime_card = self.create_metric_card("Avg Runtime", "12m 34s", "#E68161")
+        self.avg_runtime_card, self.avg_runtime_value = create_metric_card(
+            "Avg Runtime", "12m 34s", "#E68161"
+        )
         metrics_layout.addWidget(self.avg_runtime_card)
         
         # Active Tasks Card
-        self.active_tasks_card = self.create_metric_card("Active Now", "3", "#32B8C6")
+        self.active_tasks_card, self.active_now_value = create_metric_card(
+            "Active Now", "3", "#32B8C6"
+        )
         metrics_layout.addWidget(self.active_tasks_card)
         
         layout.addLayout(metrics_layout)
@@ -362,33 +371,6 @@ class FullActivityTab(QWidget):
         
         return container
     
-    def create_metric_card(self, title, value, color):
-        """Create a metric card widget with centered content and bigger fonts"""
-        card = QFrame()
-        card.setObjectName("card")
-        card.setMinimumSize(200, 100)
-        card.setStyleSheet("background-color: #1a1f2e; border-radius: 12px; border: 1px solid #2d3748;")
-        
-        layout = QVBoxLayout(card)
-        layout.setSpacing(8)
-        layout.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Center the content
-        
-        # Title - centered and slightly bigger
-        title_label = QLabel(title)
-        title_label.setStyleSheet("font-size: 14px; color: #C5C7C7; font-weight: 600;")  # Increased from 12px to 14px, weight 500 to 600
-        title_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Center the title
-        layout.addWidget(title_label)
-        
-        # Value - centered and bigger
-        value_label = QLabel(value)
-        value_label.setStyleSheet(f"font-size: 28px; color: {color}; font-weight: 700;")  # Increased from 24px to 28px
-        value_label.setAlignment(Qt.AlignmentFlag.AlignCenter)  # Center the value
-        layout.addWidget(value_label)
-        
-        # Store reference for updates
-        setattr(self, f"{title.lower().replace(' ', '_')}_value", value_label)
-        
-        return card
     
     def create_activity_details(self):
         """Create the detailed activity section"""
