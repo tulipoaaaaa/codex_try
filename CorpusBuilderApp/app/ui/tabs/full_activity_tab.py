@@ -1089,4 +1089,4 @@ Progress: {activity.get('progress', 0)}%
     def update_theme(self, theme_name):
         """Update theme for charts"""
         self.chart_manager.set_theme(theme_name)
-        self.load_activity_data()  # Refresh charts with new theme 
+        self.load_activity_data()  # Refresh charts with new theme
