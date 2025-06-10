@@ -166,24 +166,22 @@ def main(argv: list[str] | None = None) -> int:
         return 0
 
     if argv and argv[0] == "stats":
-        stats_parser = argparse.ArgumentParser(
-            prog="stats",
-            description="Show domain stats in console",
-        )
-        stats_parser.add_argument("--config", required=True, help="Path to ProjectConfig YAML")
-        stats_args = stats_parser.parse_args(argv[1:])
+        parser = argparse.ArgumentParser(description="Print corpus domain statistics")
+        parser.add_argument("--config", required=True)
+        args = parser.parse_args(argv[1:])
 
         from shared_tools.project_config import ProjectConfig
         from shared_tools.services.corpus_stats_service import CorpusStatsService
 
-        cfg = ProjectConfig.from_yaml(stats_args.config)
-        service = CorpusStatsService(cfg)
-        service.refresh_stats()
-        counts = service.get_domain_summary()
-        total = sum(counts.values()) or 0
-        for domain, count in sorted(counts.items()):
-            pct = (count / total * 100) if total else 0
-            print(f"{domain}: {count} ({pct:.2f}%)")
+        config = ProjectConfig.from_yaml(args.config)
+        service = CorpusStatsService(config)
+        dist = service.get_domain_summary()
+        total = sum(dist.values())
+
+        print("Domain Stats:")
+        for k, v in sorted(dist.items(), key=lambda x: -x[1]):
+            pct = (v / total * 100) if total else 0
+            print(f"  - {k}: {v} docs ({pct:.1f}%)")
         return 0
 
     if argv and argv[0] == "check-corpus":
