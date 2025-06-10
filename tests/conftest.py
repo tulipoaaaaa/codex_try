@@ -48,6 +48,78 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
 
     qtwidgets = _SafeStubModule("PySide6.QtWidgets")
 
+    class _Widget:
+        def __init__(self, *a, **k):
+            pass
+
+        def setAcceptDrops(self, *a, **k):
+            pass
+
+        def setWindowTitle(self, *a, **k):
+            pass
+
+    for name in [
+        "QWidget",
+        "QDialog",
+        "QGroupBox",
+        "QFrame",
+        "QFileDialog",
+        "QScrollArea",
+        "QMenu",
+    ]:
+        qtwidgets.__dict__[name] = type(name, (), {
+            "__init__": _Widget.__init__,
+            "setAcceptDrops": _Widget.setAcceptDrops,
+            "setWindowTitle": _Widget.setWindowTitle,
+        })
+
+    for name in [
+        "QPushButton",
+        "QLabel",
+        "QLineEdit",
+        "QComboBox",
+        "QTabWidget",
+        "QCheckBox",
+        "QFormLayout",
+        "QSpinBox",
+        "QTableWidget",
+        "QTableWidgetItem",
+        "QHeaderView",
+        "QDialogButtonBox",
+        "QDateEdit",
+    ]:
+        qtwidgets.__dict__[name] = type(name, (), {"__init__": _Widget.__init__})
+
+    for name in [
+        "QVBoxLayout",
+        "QHBoxLayout",
+        "QFormLayout",
+    ]:
+        qtwidgets.__dict__[name] = type(
+            name,
+            (),
+            {
+                "__init__": _Widget.__init__,
+                "addWidget": lambda *a, **k: None,
+                "addLayout": lambda *a, **k: None,
+                "addRow": lambda *a, **k: None,
+                "addStretch": lambda *a, **k: None,
+                "setContentsMargins": lambda *a, **k: None,
+                "setSpacing": lambda *a, **k: None,
+            },
+        )
+
+    class QMessageBox:
+        @staticmethod
+        def critical(*a, **k):
+            pass
+
+        @staticmethod
+        def information(*a, **k):
+            pass
+
+    qtwidgets.QMessageBox = QMessageBox
+
     class QApplication:
         _instance = None
 
@@ -211,6 +283,9 @@ class DummyBaseModel:
     @classmethod
     def parse_obj(cls, obj):
         return cls()
+
+    def dict(self, *a, **k):
+        return {}
 
 setattr(pydantic_mod, 'BaseModel', DummyBaseModel)
 setattr(pydantic_mod, 'validator', lambda *a, **k: (lambda f: f))
