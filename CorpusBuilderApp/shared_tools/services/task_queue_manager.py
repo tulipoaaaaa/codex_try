@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from PySide6.QtCore import QObject, Signal as pyqtSignal
+from shared_tools.ui_wrappers.base_wrapper import DummySignal
 
 
 class TaskQueueManager(QObject):
@@ -9,9 +10,11 @@ class TaskQueueManager(QObject):
     queue_counts_changed = pyqtSignal(int, int, int, int)  # pending, retry, failed, completed
     task_progress = pyqtSignal(str, int)  # task_id, progress
 
-    def __init__(self, parent: QObject | None = None) -> None:
+    def __init__(self, parent: QObject | None = None, test_mode: bool = False) -> None:
         super().__init__(parent)
         self.tasks: dict[str, dict] = {}
+        if test_mode:
+            self.set_test_mode(True)
 
     # ------------------------------------------------------------------
     def add_task(self, task_id: str, task_info: dict) -> None:
@@ -63,3 +66,10 @@ class TaskQueueManager(QObject):
             summary.get("failed", 0),
             summary.get("completed", 0),
         )
+
+    # ------------------------------------------------------------------
+    def set_test_mode(self, enabled: bool = True) -> None:
+        """Replace Qt signals with simple emitters for unit tests."""
+        if enabled:
+            self.queue_counts_changed = DummySignal()
+            self.task_progress = DummySignal()
