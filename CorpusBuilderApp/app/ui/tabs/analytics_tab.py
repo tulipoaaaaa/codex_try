@@ -12,14 +12,13 @@ from PySide6.QtWidgets import (
     QScrollArea,
 )
 from PySide6.QtCore import Qt, QDate, Slot as pyqtSlot, QMargins
-from PySide6.QtCharts import QChart, QChartView, QPieSeries, QBarSeries, QBarSet, QBarCategoryAxis, QValueAxis, QLineSeries, QSplineSeries
+from PySide6.QtCharts import QChart, QChartView, QPieSeries, QBarSeries, QBarSet, QBarCategoryAxis, QValueAxis, QLineSeries
 from PySide6.QtGui import QPainter, QColor, QIcon, QLinearGradient, QPen
 from app.helpers.chart_manager import ChartManager
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
 from shared_tools.services.corpus_stats_service import CorpusStatsService
 
-import random
 import datetime
 
 
@@ -325,54 +324,49 @@ class AnalyticsTab(QWidget):
         chart.setTitle("")
     
     def update_time_trends_chart(self, from_date, to_date, domain_filter):
-        """Update the time trends chart as a smooth line chart"""
+        """Update the time trends chart from metadata timestamps."""
         chart_view = self.time_chart
         chart = chart_view.chart()
         chart.removeAllSeries()
         chart.removeAxis(chart.axisX())
         chart.removeAxis(chart.axisY())
-        
-        # Create smooth line series
-        series = QSplineSeries()
-        series.setName("Document Count")
+
+        meta_dir = self.project_config.get_metadata_dir()
+        counts = self.stats_service.get_daily_document_counts(meta_dir)
+        filtered = {
+            d: c
+            for d, c in counts.items()
+            if from_date <= datetime.date.fromisoformat(d) <= to_date
+        }
+        if not filtered:
+            return
+
+        dates = sorted(filtered.keys())
+        series = QLineSeries()
         pen = QPen(QColor("#26A69A"))
         pen.setWidth(3)
         series.setPen(pen)
-        
-        # Generate time series data
-        months = []
-        current_date = datetime.date.today()
-        for i in range(5, -1, -1):
-            month_date = current_date - datetime.timedelta(days=i*30)
-            months.append(month_date.strftime("%b %Y"))
-        document_counts = []
-        base_count = 100
-        for i in range(6):
-            count = base_count + i*20 + random.randint(-10, 10)
-            document_counts.append(count)
-        
-        # Add data points to line series
-        for i, count in enumerate(document_counts):
-            series.append(i, count)
-        
+        for idx, d in enumerate(dates):
+            series.append(idx, filtered[d])
+
         chart.addSeries(series)
-        chart.createDefaultAxes()
-        
-        # Customize axes
-        axis_x = chart.axisX()
-        axis_y = chart.axisY()
+
+        axis_x = QBarCategoryAxis()
+        axis_x.append(dates)
         axis_x.setLabelsColor(QColor("#f9fafb"))
+        chart.addAxis(axis_x, Qt.AlignmentFlag.AlignBottom)
+        series.attachAxis(axis_x)
+
+        axis_y = QValueAxis()
+        axis_y.setRange(0, max(filtered.values()))
         axis_y.setLabelsColor(QColor("#f9fafb"))
-        axis_y.setTitleText("Document Count")
-        
-        # Set proper range
-        axis_y.setRange(0, max(document_counts) + 20)
-        
-        # Hide legend for cleaner look
+        chart.addAxis(axis_y, Qt.AlignmentFlag.AlignLeft)
+        series.attachAxis(axis_y)
+
         legend = chart.legend()
         if legend:
             legend.setVisible(False)
-            
+
         chart.setBackgroundBrush(QColor("#0f1419"))
         chart.setBackgroundPen(QColor("#1a1f2e"))
         chart.setBackgroundRoundness(0)
@@ -387,8 +381,10 @@ class AnalyticsTab(QWidget):
         chart.removeAxis(chart.axisX())
         chart.removeAxis(chart.axisY())
         
-        languages = ["English", "Chinese", "Spanish", "French", "German", "Japanese", "Russian"]
-        language_counts = [850, 150, 100, 50, 40, 30, 30]
+        meta_dir = self.project_config.get_metadata_dir()
+        lang_counts = self.stats_service.get_language_distribution(meta_dir)
+        languages = sorted(lang_counts.keys())
+        language_counts = [lang_counts[l] for l in languages]
         
         # Use purple gradient colors for language chart
         purple_colors = [
@@ -406,10 +402,7 @@ class AnalyticsTab(QWidget):
             # Add values: count for this language, 0 for others
             for j, language in enumerate(languages):
                 if language == lang:
-                    filtered_count = count
-                    if domain_filter != "All Domains":
-                        filtered_count = int(count * 0.3)
-                    lang_set.append(filtered_count)
+                    lang_set.append(count)
                 else:
                     lang_set.append(0)
         
@@ -427,7 +420,7 @@ class AnalyticsTab(QWidget):
         series.attachAxis(axis_x)
         
         axis_y = QValueAxis()
-        max_count = max(language_counts) + 50
+        max_count = max(language_counts) + 1 if language_counts else 1
         axis_y.setRange(0, max_count)
         axis_y.setTitleText("Document Count")
         axis_y.setLabelsColor(QColor("#f9fafb"))
