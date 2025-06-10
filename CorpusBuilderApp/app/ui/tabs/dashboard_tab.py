@@ -10,10 +10,12 @@ from PySide6.QtWidgets import (
     QPushButton,
     QScrollArea,
     QSizePolicy,
-    QFrame
+    QFrame,
+    QProgressBar,
 )
 from PySide6.QtCore import Qt, Signal, QMargins
 from PySide6.QtGui import QColor, QPainter
+import sys
 from PySide6.QtCharts import QChart, QChartView, QPieSeries
 from datetime import datetime
 from app.ui.widgets.card_wrapper import CardWrapper
@@ -28,6 +30,7 @@ from shared_tools.services.corpus_stats_service import CorpusStatsService
 from app.ui.utils.ui_helpers import create_styled_progress_bar
 from shared_tools.services.task_queue_manager import TaskQueueManager
 from shared_tools.services.system_monitor import SystemMonitor
+from app.helpers.notifier import Notifier
 import os
 
 ICON_PATH = os.path.join(os.path.dirname(__file__), '../../resources/icons')
@@ -47,12 +50,15 @@ class DashboardTab(QWidget):
         self.task_history_service = task_history_service
         self.task_queue_manager = task_queue_manager or TaskQueueManager()
         self.task_queue_manager.queue_counts_changed.connect(self.update_queue_counts)
+        self.task_queue_manager.task_progress.connect(self.update_task_progress)
+        self._task_bars: dict[str, QProgressBar] = {}
         self.system_monitor = SystemMonitor()
         self.system_monitor.system_metrics.connect(self.update_system_metrics)
         self.system_monitor.start()
         self._init_ui()
         self.fix_all_label_backgrounds()
         self.stats_service.stats_updated.connect(self.update_overview_metrics)
+        self.stats_service.stats_updated.connect(lambda *_: self.update_environment_info())
         self.load_data()
         self.stats_service.refresh_stats()
 
@@ -660,11 +666,8 @@ class DashboardTab(QWidget):
         layout = container.body_layout
         layout.setContentsMargins(16, 12, 16, 12)
         layout.setSpacing(4)
-        env_info = [
-            ('Python', '3.11.2', '#32B8C6'),
-            ('Environment', 'Development', '#E68161'),
-            ('Last Update', '2 days ago', '#9ca3af')
-        ]
+        self.environment_labels = {}
+        env_info = self._build_env_info()
         for label, value, color in env_info:
             item_widget = QWidget()
             item_layout = QHBoxLayout(item_widget)
@@ -674,11 +677,37 @@ class DashboardTab(QWidget):
             label_widget.setStyleSheet('background-color: transparent; color: #C5C7C7; font-size: 11px; font-weight: 500;')
             value_widget = QLabel(value)
             value_widget.setStyleSheet(f'background-color: transparent; color: {color}; font-size: 11px; font-weight: 600;')
+            self.environment_labels[label] = value_widget
             item_layout.addWidget(label_widget)
             item_layout.addStretch()
             item_layout.addWidget(value_widget)
             layout.addWidget(item_widget)
         return container
+
+    def _build_env_info(self):
+        py_version = f"{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}"
+        environment = getattr(self.config, "environment", self.config.get("environment", ""))
+        last_updated = self.stats_service.stats.get("last_updated")
+        if not last_updated:
+            path = self.stats_service._stats_file()
+            if path and path.exists():
+                last_updated = datetime.fromtimestamp(path.stat().st_mtime).isoformat(timespec='seconds')
+        if not last_updated:
+            last_updated = "N/A"
+        return [
+            ("Python", py_version, "#32B8C6"),
+            ("Environment", environment, "#E68161"),
+            ("Last Update", last_updated, "#9ca3af"),
+        ]
+
+    def update_environment_info(self):
+        if not hasattr(self, "environment_labels"):
+            return
+        for label, value, color in self._build_env_info():
+            widget = self.environment_labels.get(label)
+            if widget:
+                widget.setText(str(value))
+                widget.setStyleSheet(f'background-color: transparent; color: {color}; font-size: 11px; font-weight: 600;')
 
     def create_wider_quick_stats(self):
         container = QFrame()
@@ -744,8 +773,9 @@ class DashboardTab(QWidget):
         self.recent_activity_widget = RecentActivity(self.config)
         self.recent_activity_widget.setObjectName('recent-activity-tall')
         right_column.addWidget(self.recent_activity_widget)
-        environment_card = self.create_environment_info_widget()
-        right_column.addWidget(environment_card)
+        self.environment_card = self.create_environment_info_widget()
+        right_column.addWidget(self.environment_card)
+        self.update_environment_info()
         return right_column
 
     def create_card_with_styling(self, title, object_name):
@@ -789,13 +819,102 @@ class DashboardTab(QWidget):
 
     # --- Placeholder methods for actions ---
     def start_corpus_optimization(self):
-        print("[Stub] Optimize Corpus triggered.")
+        """Run the corpus balancer using the wrapper service."""
+        from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import (
+            CorpusBalancerWrapper,
+        )
+
+        self._balancer_wrapper = CorpusBalancerWrapper(
+            self.config,
+            activity_log_service=self.activity_log_service,
+            task_history_service=self.task_history_service,
+            task_queue_manager=self.task_queue_manager,
+        )
+        self._balancer_wrapper.completed.connect(
+            lambda *_: Notifier.notify(
+                "Corpus Optimization", "Optimization completed", level="success"
+            )
+        )
+        self._balancer_wrapper.error_occurred.connect(
+            lambda msg: Notifier.notify(
+                "Optimization Error", msg, level="error"
+            )
+        )
+        self._balancer_wrapper.start_balancing()
+
     def start_all_collectors(self):
-        print("[Stub] Run All Collectors triggered.")
+        """Start all enabled collectors via wrapper factory."""
+        from shared_tools.ui_wrappers.wrapper_factory import create_collector_wrapper
+
+        names = self.config.get("enabled_collectors") or []
+        if not names:
+            Notifier.notify("Collectors", "No collectors enabled", level="warning")
+            return
+
+        self._collector_wrappers = []
+        for name in names:
+            try:
+                wrapper = create_collector_wrapper(name, self.config)
+            except Exception as exc:  # pragma: no cover - defensive
+                Notifier.notify(f"{name} Error", str(exc), level="error")
+                continue
+            wrapper.completed.connect(
+                lambda _r, n=name: Notifier.notify(
+                    "Collector Finished", f"{n} completed", level="success"
+                )
+            )
+            wrapper.error_occurred.connect(
+                lambda msg, n=name: Notifier.notify(
+                    f"{n} Error", msg, level="error"
+                )
+            )
+            wrapper.start()
+            self._collector_wrappers.append(wrapper)
+
+        if self.activity_log_service:
+            self.activity_log_service.log("Collectors", "Started all collectors")
+
     def export_report(self):
-        print("[Stub] Export Report triggered.")
+        """Generate and save a corpus analysis report."""
+        from PySide6.QtWidgets import QFileDialog, QMessageBox
+        from shared_tools.utils.generate_corpus_report import main as gen_report
+
+        report = gen_report(self.config)
+        file_path, _ = QFileDialog.getSaveFileName(
+            self,
+            "Export Corpus Report",
+            "corpus_report.txt",
+            "Text Files (*.txt);;All Files (*)",
+        )
+        if not file_path:
+            return
+        try:
+            with open(file_path, "w", encoding="utf-8") as fh:
+                fh.write(report)
+            Notifier.notify("Report Exported", f"Saved to {file_path}", level="success")
+            if self.activity_log_service:
+                self.activity_log_service.log("Report", f"Exported to {file_path}")
+        except Exception as exc:  # pragma: no cover - runtime guard
+            QMessageBox.critical(self, "Export Error", str(exc))
+
     def update_dependencies(self):
-        print("[Stub] Update Dependencies triggered.")
+        """Update Python dependencies using pip."""
+        import subprocess
+        import sys
+
+        try:
+            subprocess.check_call(
+                [sys.executable, "-m", "pip", "install", "-r", "requirements.txt"]
+            )
+            Notifier.notify(
+                "Dependencies Updated", "All packages are up to date", level="success"
+            )
+            if self.activity_log_service:
+                self.activity_log_service.log("System", "Dependencies updated")
+        except Exception as exc:  # pragma: no cover - runtime guard
+            Notifier.notify("Update Failed", str(exc), level="error")
+            if self.activity_log_service:
+                self.activity_log_service.log("System", f"Dependency update failed: {exc}")
     def pause_task(self, task_id):
         print(f"[Stub] Pause {task_id}")
     def stop_task(self, task_id):
@@ -841,6 +960,12 @@ class DashboardTab(QWidget):
         if hasattr(self, "disk_bar"):
             self.disk_bar.setValue(int(disk))
             self.disk_percent.setText(f"{int(disk)}%")
+
+    def update_task_progress(self, task_id: str, progress: int) -> None:
+        """Update progress bar for a running task."""
+        bar = self._task_bars.get(task_id)
+        if bar:
+            bar.setValue(progress)
 
     def fix_all_label_backgrounds(self):
         # Fix all existing QLabel widgets to have transparent background
@@ -1052,8 +1177,16 @@ class DashboardTab(QWidget):
         running_label.setStyleSheet('color: #C5C7C7; font-size: 11px; font-weight: 600; background-color: transparent;')
         top_layout.addWidget(running_label)
         
-        tasks = [('GitHub Collector', 67, '#32B8C6'), ('PDF Processor', 89, '#22c55e')]
-        for task_name, progress, color in tasks:
+        tasks = [
+            (tid, info)
+            for tid, info in self.task_queue_manager.tasks.items()
+            if info.get("status") == "running"
+        ]
+        colors = ['#22c55e', '#32B8C6', '#E68161', '#8b5cf6', '#f59e0b', '#ef4444', '#06b6d4', '#9ca3af']
+        for idx, (task_id, info) in enumerate(tasks):
+            task_name = info.get('name', task_id)
+            progress = info.get('progress', 0)
+            color = colors[idx % len(colors)]
             task_container = QWidget()
             task_container.setStyleSheet('background-color: transparent;')
             task_layout = QVBoxLayout(task_container)
@@ -1061,6 +1194,7 @@ class DashboardTab(QWidget):
             name_label = QLabel(task_name)
             name_label.setStyleSheet('color: #f9fafb; font-size: 10px; background-color: transparent;')
             progress_bar = create_styled_progress_bar(progress, color, height=4)
+            self._task_bars[task_id] = progress_bar
             task_layout.addWidget(name_label)
             task_layout.addWidget(progress_bar)
             top_layout.addWidget(task_container)

@@ -732,3 +732,14 @@ QLabel[objectName^="status-dot-"] {
 QLabel[objectName="status-dot-active"] { background: #10b981; }
 QLabel[objectName="status-dot-processing"] { background: #06b6d4; }
 QLabel[objectName="status-dot-idle"] { background: #6b7280; }
+
+QTableView::item:alternate, QTableWidget::item:alternate {
+    background-color: #1d232a;
+}
+QPushButton[objectName="danger"] {
+    background-color: #FF5459;
+    color: #FFFFFF;
+}
+QPushButton[objectName="danger"]:hover {
+    background-color: #e74c3c;
+}

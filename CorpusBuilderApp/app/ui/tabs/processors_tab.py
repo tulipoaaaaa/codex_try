@@ -40,6 +40,7 @@ from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBa
 from .corpus_manager_tab import NotificationManager
 from app.helpers.icon_manager import IconManager
 from app.helpers.notifier import Notifier
+from app.ui.theme.theme_constants import PAGE_MARGIN
 
 logger = logging.getLogger(__name__)
 
@@ -67,6 +68,8 @@ class ProcessorsTab(QWidget):
 
     def setup_ui(self):
         main_layout = QVBoxLayout(self)
+        main_layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
+        main_layout.setSpacing(PAGE_MARGIN)
         icon_manager = IconManager()
         
         # Create tabs for different processor types with icons
@@ -97,6 +100,7 @@ class ProcessorsTab(QWidget):
         
         # Button for stopping all processors
         stop_all_btn = QPushButton("Stop All Processors")
+        stop_all_btn.setObjectName("danger")
         stop_all_btn.clicked.connect(self.stop_all_processors)
         status_layout.addWidget(stop_all_btn)
         
@@ -168,6 +172,7 @@ class ProcessorsTab(QWidget):
         if start_icon:
             self.pdf_start_btn.setIcon(QIcon(start_icon))
         self.pdf_stop_btn = QPushButton("Stop")
+        self.pdf_stop_btn.setObjectName("danger")
         stop_icon = icon_manager.get_icon_path('Stop operation control', by='Function')
         if stop_icon:
             self.pdf_stop_btn.setIcon(QIcon(stop_icon))
@@ -259,6 +264,7 @@ class ProcessorsTab(QWidget):
         if start_icon:
             self.text_start_btn.setIcon(QIcon(start_icon))
         self.text_stop_btn = QPushButton("Stop")
+        self.text_stop_btn.setObjectName("danger")
         stop_icon = icon_manager.get_icon_path('Stop operation control', by='Function')
         if stop_icon:
             self.text_stop_btn.setIcon(QIcon(stop_icon))
@@ -413,6 +419,7 @@ class ProcessorsTab(QWidget):
         if start_icon:
             self.batch_start_btn.setIcon(QIcon(start_icon))
         self.batch_stop_btn = QPushButton("Stop")
+        self.batch_stop_btn.setObjectName("danger")
         stop_icon = icon_manager.get_icon_path('Stop operation control', by='Function')
         if stop_icon:
             self.batch_stop_btn.setIcon(QIcon(stop_icon))
