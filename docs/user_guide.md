@@ -1,0 +1,74 @@
+# CryptoCorpusBuilder User Guide
+
+## Overview
+CryptoCorpusBuilder is a desktop application for building and managing large-scale cryptocurrency research corpora. It combines automated data collection, powerful document processing and deduplication, and built-in analytics to help you maintain a clean, balanced dataset.
+
+## System Requirements
+- Windows, macOS or Linux
+- Python 3.8 or higher
+- A virtual environment is recommended
+
+## Installation
+1. Clone or download the project.
+2. Install the dependencies in your environment:
+   ```bash
+   pip install -r requirements.txt
+   ```
+   For minimal runtime installs use:
+   ```bash
+   pip install -r requirements.runtime.txt
+   ```
+
+## Launching the App
+Run the graphical interface from the repository root:
+```bash
+python CorpusBuilderApp/app/main.py
+```
+The application window will open with tabs for configuration, collection and processing.
+
+## Creating or Loading a Configuration
+The application expects a YAML configuration describing collectors, processors and corpus directories. A minimal example:
+```yaml
+enabled_collectors:
+  - github
+enabled_processors:
+  - pdf
+directories:
+  corpus_root: ./data/corpus
+  raw_data_dir: ./data/raw
+  processed_dir: ./data/processed
+  metadata_dir: ./data/metadata
+  logs_dir: ./data/logs
+```
+You can drag this file onto the **Configuration** tab or load it via the menu. To use the same configuration from the command line, pass `--config path/to/file.yaml`.
+
+## Using the App (GUI)
+- **Collectors** – start or stop document collectors.
+- **Processors** – run batch processors on downloaded files.
+- **Corpus Manager** – browse and edit corpus contents.
+- **Balancer** – rebalance the corpus to match target allocations.
+- **Analytics** – view statistics and keyword trends.
+- **Logs** – monitor activity and errors.
+The status bar displays queue information so you can track running tasks.
+
+## Using the CLI
+The project also provides command-line tools. For example, export a corpus:
+```bash
+python CorpusBuilderApp/cli.py export-corpus --corpus-dir data/corpus --output-dir data/exports
+```
+You can run collectors and processors headlessly with `cli/execute_from_config.py`:
+```bash
+python cli/execute_from_config.py --config path/to/config.yaml --run-all
+```
+
+## Exporting the Corpus
+Create a versioned ZIP archive with manifest using the CLI:
+```bash
+python CorpusBuilderApp/cli.py export-corpus --corpus-dir data/corpus --output-dir data/exports
+```
+If the Dashboard is open, you can also trigger an export from the **Tools** or **Corpus Manager** tab.
+
+## Troubleshooting
+- If a configuration fails to load, check the YAML syntax and file paths.
+- Logs are stored in the directory defined by `logs_dir` in your configuration.
+- Ensure all dependencies are installed if modules fail to start or you see missing-file errors.
