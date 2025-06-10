@@ -41,6 +41,7 @@ from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBa
 from .corpus_manager_tab import NotificationManager
 from app.helpers.icon_manager import IconManager
 from app.helpers.notifier import Notifier
+from app.ui.widgets.section_header import SectionHeader
 from app.ui.theme.theme_constants import PAGE_MARGIN
 
 logger = logging.getLogger(__name__)
@@ -72,7 +73,10 @@ class ProcessorsTab(QWidget):
         main_layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
         main_layout.setSpacing(PAGE_MARGIN)
         icon_manager = IconManager()
-        
+
+        header = SectionHeader("Processors")
+        main_layout.addWidget(header)
+
         # Create tabs for different processor types with icons
         pdf_icon = icon_manager.get_icon_path('PDF document', by='Description') or icon_manager.get_icon_path('Main dashboard and analytics view', by='Function')
         text_icon = icon_manager.get_icon_path('Text Files', by='Description') or icon_manager.get_icon_path('File management and organization', by='Function')
