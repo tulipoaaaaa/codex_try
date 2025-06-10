@@ -77,14 +77,17 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
     qtcore.QObject = type("QObject", (), {})
     qtcore.QThread = type("QThread", (), {})
     qtcore.QTimer = type("QTimer", (), {})
-    qtcore.Slot = lambda *a, **k: (lambda *a, **k: None)
+    qtcore.QMutex = type("QMutex", (), {"lock": lambda *a, **k: None, "unlock": lambda *a, **k: None})
     qtcore.qInstallMessageHandler = lambda *a, **k: None
+    qtcore.Slot = lambda *a, **k: (lambda f: f)
     sys.modules["PySide6.QtCore"] = qtcore
 
     sys.modules["PySide6.QtGui"] = _SafeStubModule("PySide6.QtGui")
     sys.modules["PySide6.QtCharts"] = _SafeStubModule("PySide6.QtCharts")
     sys.modules["PySide6.QtTest"] = _SafeStubModule("PySide6.QtTest")
-    sys.modules["PySide6.QtMultimedia"] = _SafeStubModule("PySide6.QtMultimedia")
+    qt_multimedia = _SafeStubModule("PySide6.QtMultimedia")
+    qt_multimedia.QSoundEffect = type("QSoundEffect", (), {})
+    sys.modules["PySide6.QtMultimedia"] = qt_multimedia
     pyside6 = types.ModuleType("PySide6")
     pyside6.QtWidgets = sys.modules["PySide6.QtWidgets"]
     pyside6.QtGui = sys.modules["PySide6.QtGui"]
@@ -105,6 +108,7 @@ for mod in [
     "yaml",
     "requests",
     "pandas",
+    "PyPDF2",
     "plotly",
     "plotly.graph_objects",
     "plotly.express",
@@ -126,6 +130,18 @@ for mod in [
     "psutil",
 ]:
     sys.modules.setdefault(mod, types.ModuleType(mod))
+
+requests_mod = sys.modules.setdefault('requests', types.ModuleType('requests'))
+setattr(requests_mod, 'get', lambda *a, **k: None)
+setattr(requests_mod, 'post', lambda *a, **k: None)
+exceptions_ns = types.SimpleNamespace(RequestException=Exception)
+setattr(exceptions_ns, 'Timeout', Exception)
+setattr(exceptions_ns, 'HTTPError', Exception)
+setattr(requests_mod, 'exceptions', exceptions_ns)
+
+yaml_mod = sys.modules.setdefault('yaml', types.ModuleType('yaml'))
+setattr(yaml_mod, 'safe_dump', lambda *a, **k: '')
+setattr(yaml_mod, 'safe_load', lambda *a, **k: {})
 
 bs4_mod = sys.modules.setdefault('bs4', types.ModuleType('bs4'))
 setattr(bs4_mod, 'BeautifulSoup', lambda *a, **k: None)
@@ -149,6 +165,8 @@ setattr(np_mod, 'array', lambda *a, **k: None)
 pd_mod = sys.modules.setdefault('pandas', types.ModuleType('pandas'))
 setattr(pd_mod, 'DataFrame', object)
 setattr(pd_mod, 'read_csv', lambda *a, **k: None)
+pypdf_mod = sys.modules.setdefault('PyPDF2', types.ModuleType('PyPDF2'))
+setattr(pypdf_mod, 'PdfReader', object)
 for plot_mod in ['plotly', 'plotly.graph_objects', 'plotly.express', 'plotly.subplots']:
     mod = sys.modules.setdefault(plot_mod, types.ModuleType(plot_mod))
     if plot_mod == 'plotly.subplots':
@@ -168,11 +186,19 @@ keyring_mod = sys.modules.setdefault('keyring', types.ModuleType('keyring'))
 setattr(keyring_mod, 'get_password', lambda *a, **k: None)
 setattr(keyring_mod, 'set_password', lambda *a, **k: None)
 pydantic_mod = sys.modules.setdefault('pydantic', types.ModuleType('pydantic'))
-setattr(pydantic_mod, 'BaseModel', object)
+class DummyBaseModel:
+    @classmethod
+    def parse_obj(cls, obj):
+        return cls()
+
+setattr(pydantic_mod, 'BaseModel', DummyBaseModel)
 setattr(pydantic_mod, 'validator', lambda *a, **k: (lambda f: f))
 setattr(pydantic_mod, 'field_validator', lambda *a, **k: (lambda f: f))
 setattr(pydantic_mod, 'Field', lambda *a, **k: None)
 setattr(pydantic_mod, 'ValidationError', type('ValidationError', (Exception,), {}))
+
+psutil_mod = sys.modules.setdefault('psutil', types.ModuleType('psutil'))
+setattr(psutil_mod, 'Process', lambda *a, **k: None)
 
 if "langdetect" not in sys.modules:
     langdetect = types.ModuleType("langdetect")
