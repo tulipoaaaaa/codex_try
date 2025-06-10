@@ -143,6 +143,8 @@ from .financial_symbol_processor import FinancialSymbolProcessor, AcademicPaperP
 from ..utils.domain_utils import get_domain_for_file
 from ..utils.pdf_safe_open import safe_open_pdf
 from ..utils.metadata_normalizer import main as normalize_directory
+from shared_tools.processors.domain_classifier import DomainClassifier
+from shared_tools.utils.metadata_normalizer import normalize_metadata
 from .corruption_detector import detect_corruption
 from .language_confidence_detector import detect_language_confidence
 from .machine_translation_detector import detect_machine_translation
