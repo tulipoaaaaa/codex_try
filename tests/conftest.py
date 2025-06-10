@@ -396,6 +396,7 @@ if os.environ.get("PYTEST_QT_STUBS") == "1":
         QDropEvent=object,
     )
     qttest = types.SimpleNamespace(QTest=object)
+    qtcharts = types.SimpleNamespace()
     qtmultimedia = types.SimpleNamespace(QSoundEffect=object)
     qtcharts = types.SimpleNamespace()
     sys.modules['PySide6'] = types.SimpleNamespace(
