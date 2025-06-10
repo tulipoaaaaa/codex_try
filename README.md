@@ -48,3 +48,9 @@ Launch the application with offscreen rendering:
 ```bash
 HEADLESS=1 python app/main.py
 ```
+
+## License
+
+This project is proprietary and all rights are reserved by Bored AI Labs.
+To inquire about licensing, contact [legal@boredailabs.com](mailto:legal@boredailabs.com).
+
