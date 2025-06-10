@@ -129,6 +129,21 @@ Use **Tools → Import Corpus** to load a previously exported ZIP archive. The s
   `--auto-fix` to create any missing directories and `--check-integrity` to
   scan sample files for corruption.
 
+### Validating the Corpus (CLI)
+
+You can validate your corpus structure via:
+
+```bash
+python CorpusBuilderApp/cli.py check-corpus --config config.yaml --validate-metadata --auto-fix --check-integrity
+```
+
+This command will:
+
+- Ensure required directories exist
+- Optionally create them (`--auto-fix`)
+- Check for file corruption (`--check-integrity`)
+- Validate metadata fields (`--validate-metadata`)
+
 ## Troubleshooting
 - If a configuration fails to load, check the YAML syntax and file paths.
 - Logs are stored in the directory defined by `logs_dir` in your configuration.
