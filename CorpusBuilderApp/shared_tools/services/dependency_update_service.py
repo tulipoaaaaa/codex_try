@@ -2,11 +2,12 @@ from __future__ import annotations
 
 import logging
 import subprocess
+import sys
 from typing import Optional
 
 from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal
 
-from upgrade_dependencies import upgrade_package, UPGRADES
+from upgrade_dependencies import upgrade_package, UPGRADES, is_virtual_env
 
 
 class DependencyUpdateThread(QThread):
@@ -35,7 +36,7 @@ class DependencyUpdateThread(QThread):
                 self.progress.emit(int(i / total * 100), msg)
             if not self.dry_run:
                 with open("CorpusBuilderApp/requirements.txt", "w", encoding="utf-8") as fh:
-                    subprocess.run(["pip", "freeze"], stdout=fh, check=True)
+                    subprocess.run([sys.executable, "-m", "pip", "freeze"], stdout=fh, check=True)
             self.finished.emit()
         except Exception as exc:  # pragma: no cover - defensive
             self.logger.error("Dependency update failed: %s", exc)
@@ -58,6 +59,11 @@ class DependencyUpdateService(QObject):
     def start_update(self, dry_run: bool = False) -> bool:
         """Begin the dependency update in a background thread."""
         if self._thread and self._thread.isRunning():
+            return False
+        if not is_virtual_env():
+            self.dependency_update_failed.emit(
+                "Dependency updates must run inside a virtual environment."
+            )
             return False
         self._thread = DependencyUpdateThread(dry_run, self)
         self._thread.progress.connect(self.dependency_update_progress.emit)
