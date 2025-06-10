@@ -16,6 +16,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtCore import Qt, QTimer, Slot as pyqtSlot
 from PySide6.QtGui import QColor, QTextCharFormat, QBrush
+import logging
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
 from app.ui.widgets.status_dot import StatusDot
@@ -31,6 +32,7 @@ from datetime import datetime
 class LogsTab(QWidget):
     def __init__(self, project_config, activity_log_service: ActivityLogService | None = None, parent=None):
         super().__init__(parent)
+        self.logger = logging.getLogger(self.__class__.__name__)
         self.project_config = project_config
         self.activity_log_service = activity_log_service
         self.log_parser = LogFileParser()
@@ -280,11 +282,11 @@ class LogsTab(QWidget):
         """Apply filters to the log entries."""
         # Defensive check for None entries
         if entries is None:
-            print("DEBUG: filter_log_entries received None, returning empty list")
+            self.logger.info("DEBUG: filter_log_entries received None, returning empty list")
             return []
         
         if not isinstance(entries, list):
-            print(f"DEBUG: filter_log_entries received {type(entries)}, converting to list")
+            self.logger.info("DEBUG: filter_log_entries received %s, converting to list", type(entries))
             entries = list(entries) if entries else []
 
         level_filter = self.level_filter.currentText()
@@ -309,7 +311,7 @@ class LogsTab(QWidget):
                     if entry_date != datetime.now().date():
                         continue
                 except Exception as exc:
-                    print(f"Failed to parse entry date: {exc}")
+                    self.logger.info("Failed to parse entry date: %s", exc)
             filtered.append(entry)
         
         return filtered
@@ -372,11 +374,11 @@ class LogsTab(QWidget):
         if enabled:
             if self.update_timer:
                 self.update_timer.start(5000)  # Refresh every 5 seconds
-            print("DEBUG: Auto-refresh enabled")
+            self.logger.info("DEBUG: Auto-refresh enabled")
         else:
             if self.update_timer:
                 self.update_timer.stop()
-            print("DEBUG: Auto-refresh disabled")
+            self.logger.info("DEBUG: Auto-refresh disabled")
 
     def clear_log_view(self):
         """Clear the current log view"""
@@ -418,7 +420,7 @@ class LogsTab(QWidget):
                     else:
                         for entry in self.filtered_entries:
                             f.write(f"[{entry.get('time','')}] {entry.get('level','')} [{entry.get('component','')}] {entry.get('message','')}\nDetails: {entry.get('details','')}\n\n")
-                print(f"DEBUG: Exported {len(self.filtered_entries)} entries to {file_path}")
+                self.logger.info("DEBUG: Exported %s entries to %s", len(self.filtered_entries), file_path)
             except Exception as e:
                 from PySide6.QtWidgets import QMessageBox
                 QMessageBox.critical(self, "Export Error", f"Could not export logs: {str(e)}")
