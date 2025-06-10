@@ -72,13 +72,14 @@ class ProgressMonitoringWorker(QThread):
     task_failed = pyqtSignal(str, str)  # task_id, error_message
     monitoring_stats = pyqtSignal(dict)  # overall monitoring statistics
     
-    def __init__(self, monitor_config: Dict[str, Any]):
+    def __init__(self, monitor_config: Dict[str, Any], task_queue_manager=None):
         super().__init__()
         self.monitor_config = monitor_config
         self.monitor = MonitorProgress()
         self._is_running = False
         self._mutex = QMutex()
         self.active_tasks = {}
+        self.task_queue_manager = task_queue_manager
         
     def run(self):
         """Execute progress monitoring"""
@@ -114,10 +115,18 @@ class ProgressMonitoringWorker(QThread):
                 continue
                 
     def _check_for_new_tasks(self):
-        """Check for newly started tasks"""
-        # In a real implementation, this would check a task registry
-        # For demonstration, we'll simulate task detection
-        pass
+        """Check ``TaskQueueManager`` for newly registered tasks."""
+        if not self.task_queue_manager:
+            return
+        try:
+            for task_id, info in self.task_queue_manager.tasks.items():
+                if task_id not in self.active_tasks:
+                    self.active_tasks[task_id] = info
+                    name = info.get("name", task_id)
+                    self.task_started.emit(task_id, name)
+        except Exception:
+            # Ignore queue polling errors but continue running
+            return
         
     def _update_active_tasks(self):
         """Update progress for all active tasks"""
@@ -183,13 +192,16 @@ class ProgressMonitoringWorker(QThread):
 class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
     """UI Wrapper for Progress Monitoring"""
 
-    def __init__(self, config=None, parent=None):
-        super().__init__(config)
+    def __init__(self, config=None, task_queue_manager=None, parent=None):
+        super().__init__(parent)
+        self.config = config
+        self.task_queue_manager = task_queue_manager
         self.monitoring_worker = None
         self.monitor_config: Dict[str, Any] = {}
         self.monitored_tasks = {}
         self.task_widgets = {}
         self.monitoring_enabled = False
+        self.task_queue_manager = task_queue_manager
         self.setup_ui()
         self.setup_connections()
         
@@ -490,6 +502,15 @@ class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.clear_history_btn.clicked.connect(self.clear_history)
         self.export_history_btn.clicked.connect(self.export_history)
         self.history_filter_combo.currentTextChanged.connect(self.filter_history)
+
+        if self.task_queue_manager:
+            sig = None
+            if hasattr(self.task_queue_manager, "task_added"):
+                sig = getattr(self.task_queue_manager, "task_added")
+            elif hasattr(self.task_queue_manager, "queue_updated"):
+                sig = getattr(self.task_queue_manager, "queue_updated")
+            if sig:
+                sig.connect(lambda *_: self.refresh_tasks())
         
     @pyqtSlot()
     def start_monitoring(self):
@@ -507,7 +528,9 @@ class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
         }
         
         # Create and start worker
-        self.monitoring_worker = ProgressMonitoringWorker(config)
+        self.monitoring_worker = ProgressMonitoringWorker(
+            config, task_queue_manager=self.task_queue_manager
+        )
         self.monitoring_worker.progress_update.connect(self.update_task_progress)
         self.monitoring_worker.task_started.connect(self.add_task_to_table)
         self.monitoring_worker.task_completed.connect(self.mark_task_completed)
@@ -725,8 +748,24 @@ class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
     @pyqtSlot()
     def refresh_tasks(self):
         """Refresh the tasks table"""
-        # Implementation would refresh task data
-        pass
+        if not self.task_queue_manager:
+            self.status_updated.emit("No task queue manager available")
+            return
+
+        try:
+            self.tasks_table.setRowCount(0)
+            self.monitored_tasks.clear()
+            for task_id, info in self.task_queue_manager.tasks.items():
+                self.add_task_to_table(task_id, info.get("name", task_id))
+                progress_data = {
+                    "percentage": info.get("progress", 0),
+                    "status": info.get("status", "pending"),
+                    "details": info.get("details", ""),
+                }
+                self.update_task_progress(task_id, progress_data)
+            self.status_updated.emit("Task list refreshed")
+        except Exception as exc:
+            self.status_updated.emit(f"Failed to refresh tasks: {exc}")
         
     @pyqtSlot()
     def clear_history(self):
