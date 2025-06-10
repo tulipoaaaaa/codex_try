@@ -22,15 +22,11 @@ import os
 import yaml
 from pathlib import Path
 from dotenv import load_dotenv, set_key
-<<<<<<< HEAD
+from pydantic import ValidationError
 from app.helpers.crypto_utils import encrypt_value, decrypt_value
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
-=======
-from pydantic import ValidationError
-from app.ui.widgets.section_header import SectionHeader
 from app.ui.theme.theme_constants import PAGE_MARGIN
->>>>>>> my-feature-branch
 
 
 class ConfigurationTab(QWidget):
@@ -49,13 +45,9 @@ class ConfigurationTab(QWidget):
 
     def setup_ui(self):
         main_layout = QVBoxLayout(self)
-<<<<<<< HEAD
-
-=======
         main_layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
         main_layout.setSpacing(PAGE_MARGIN)
         
->>>>>>> my-feature-branch
         # Create tabs for different configuration sections
         self.config_tabs = QTabWidget()
 
@@ -200,67 +192,37 @@ class ConfigurationTab(QWidget):
         )
         keys_layout.addRow("GitHub Token:", self.github_token)
 
-        # Anna's Archive
-        self.aa_cookie = QLineEdit()
-        self.aa_cookie.setEchoMode(QLineEdit.EchoMode.Password)
-        self.aa_cookie.setPlaceholderText("Enter Anna's Archive cookie")
-        self.aa_cookie.setToolTip(
-            "Enter your Anna's Archive cookie. This will be stored securely in .env or encrypted config. Never stored in plaintext."
-        )
-        keys_layout.addRow("Anna's Archive Cookie:", self.aa_cookie)
+        # FRED
+        self.fred_token = QLineEdit()
+        self.fred_token.setEchoMode(QLineEdit.EchoMode.Password)
+        self.fred_token.setPlaceholderText("Enter FRED API token")
+        keys_layout.addRow("FRED Token:", self.fred_token)
 
-        # FRED API
-        self.fred_key = QLineEdit()
-        self.fred_key.setEchoMode(QLineEdit.EchoMode.Password)
-        self.fred_key.setPlaceholderText("Enter FRED API key")
-        self.fred_key.setToolTip(
-            "Enter your FRED API key. This will be stored securely in .env or encrypted config. Never stored in plaintext."
-        )
-        keys_layout.addRow("FRED API Key:", self.fred_key)
+        # BitMEX
+        self.bitmex_token = QLineEdit()
+        self.bitmex_token.setEchoMode(QLineEdit.EchoMode.Password)
+        self.bitmex_token.setPlaceholderText("Enter BitMEX API token")
+        keys_layout.addRow("BitMEX Token:", self.bitmex_token)
 
-        # BitMEX API
-        self.bitmex_key = QLineEdit()
-        self.bitmex_key.setEchoMode(QLineEdit.EchoMode.Password)
-        self.bitmex_key.setPlaceholderText("Enter BitMEX API key")
-        self.bitmex_key.setToolTip(
-            "Enter your BitMEX API key. This will be stored securely in .env or encrypted config. Never stored in plaintext."
-        )
-        keys_layout.addRow("BitMEX API Key:", self.bitmex_key)
+        # Quantopian
+        self.quantopian_token = QLineEdit()
+        self.quantopian_token.setEchoMode(QLineEdit.EchoMode.Password)
+        self.quantopian_token.setPlaceholderText("Enter Quantopian API token")
+        keys_layout.addRow("Quantopian Token:", self.quantopian_token)
 
-        self.bitmex_secret = QLineEdit()
-        self.bitmex_secret.setEchoMode(QLineEdit.EchoMode.Password)
-        self.bitmex_secret.setPlaceholderText("Enter BitMEX API secret")
-        self.bitmex_secret.setToolTip(
-            "Enter your BitMEX API secret. This will be stored securely in .env or encrypted config. Never stored in plaintext."
-        )
-        keys_layout.addRow("BitMEX API Secret:", self.bitmex_secret)
+        # SciDB
+        self.scidb_token = QLineEdit()
+        self.scidb_token.setEchoMode(QLineEdit.EchoMode.Password)
+        self.scidb_token.setPlaceholderText("Enter SciDB API token")
+        keys_layout.addRow("SciDB Token:", self.scidb_token)
 
-        # arXiv
-        self.arxiv_email = QLineEdit()
-        self.arxiv_email.setPlaceholderText("Enter contact email for arXiv API")
-        self.arxiv_email.setToolTip(
-            "Enter your contact email for arXiv API. This will be stored securely in .env or encrypted config. Never stored in plaintext."
-        )
-        keys_layout.addRow("arXiv Contact Email:", self.arxiv_email)
+        # Web
+        self.web_token = QLineEdit()
+        self.web_token.setEchoMode(QLineEdit.EchoMode.Password)
+        self.web_token.setPlaceholderText("Enter Web API token")
+        keys_layout.addRow("Web Token:", self.web_token)
 
         layout.addWidget(keys_card)
-
-        # Secure storage options
-        storage_card = CardWrapper(title="Credential Storage")
-        storage_layout = QVBoxLayout()
-        storage_card.body_layout.addLayout(storage_layout)
-
-        self.encrypt_keys = QCheckBox("Encrypt API keys in configuration")
-        self.encrypt_keys.setChecked(True)
-        storage_layout.addWidget(self.encrypt_keys)
-
-        self.use_env_file = QCheckBox(
-            "Store credentials in .env file (not in main config)"
-        )
-        self.use_env_file.setChecked(True)
-        storage_layout.addWidget(self.use_env_file)
-
-        layout.addWidget(storage_card)
         layout.addStretch()
 
         return tab
@@ -270,94 +232,57 @@ class ConfigurationTab(QWidget):
         tab = QWidget()
         layout = QVBoxLayout(tab)
 
-        # Directory paths
-        paths_card = CardWrapper(title="Directory Paths")
-        paths_layout = QFormLayout()
-        paths_card.body_layout.addLayout(paths_layout)
+        # Directories form
+        dirs_card = CardWrapper(title="Directory Settings")
+        dirs_layout = QFormLayout()
+        dirs_card.body_layout.addLayout(dirs_layout)
 
         # Corpus root
-        self.corpus_root = QLineEdit()
-        corpus_browse = QPushButton("Browse...")
-        corpus_browse.clicked.connect(
-            lambda: self.browse_directory(
-                self.corpus_root, "Select Corpus Root Directory"
-            )
-        )
         corpus_layout = QHBoxLayout()
+        self.corpus_root = QLineEdit()
         corpus_layout.addWidget(self.corpus_root)
+        corpus_browse = QPushButton("Browse...")
+        corpus_browse.clicked.connect(lambda: self.browse_directory(self.corpus_root, "Select Corpus Root"))
         corpus_layout.addWidget(corpus_browse)
-        paths_layout.addRow("Corpus Root:", corpus_layout)
+        dirs_layout.addRow("Corpus Root:", corpus_layout)
 
-        # Raw data
-        self.raw_data_dir = QLineEdit()
-        raw_browse = QPushButton("Browse...")
-        raw_browse.clicked.connect(
-            lambda: self.browse_directory(
-                self.raw_data_dir, "Select Raw Data Directory"
-            )
-        )
+        # Raw data directory
         raw_layout = QHBoxLayout()
+        self.raw_data_dir = QLineEdit()
         raw_layout.addWidget(self.raw_data_dir)
+        raw_browse = QPushButton("Browse...")
+        raw_browse.clicked.connect(lambda: self.browse_directory(self.raw_data_dir, "Select Raw Data Directory"))
         raw_layout.addWidget(raw_browse)
-        paths_layout.addRow("Raw Data:", raw_layout)
+        dirs_layout.addRow("Raw Data Directory:", raw_layout)
 
-        # Processed data
-        self.processed_dir = QLineEdit()
-        processed_browse = QPushButton("Browse...")
-        processed_browse.clicked.connect(
-            lambda: self.browse_directory(
-                self.processed_dir, "Select Processed Data Directory"
-            )
-        )
+        # Processed directory
         processed_layout = QHBoxLayout()
+        self.processed_dir = QLineEdit()
         processed_layout.addWidget(self.processed_dir)
+        processed_browse = QPushButton("Browse...")
+        processed_browse.clicked.connect(lambda: self.browse_directory(self.processed_dir, "Select Processed Directory"))
         processed_layout.addWidget(processed_browse)
-        paths_layout.addRow("Processed Data:", processed_layout)
+        dirs_layout.addRow("Processed Directory:", processed_layout)
 
-        # Metadata
-        self.metadata_dir = QLineEdit()
-        metadata_browse = QPushButton("Browse...")
-        metadata_browse.clicked.connect(
-            lambda: self.browse_directory(
-                self.metadata_dir, "Select Metadata Directory"
-            )
-        )
+        # Metadata directory
         metadata_layout = QHBoxLayout()
+        self.metadata_dir = QLineEdit()
         metadata_layout.addWidget(self.metadata_dir)
+        metadata_browse = QPushButton("Browse...")
+        metadata_browse.clicked.connect(lambda: self.browse_directory(self.metadata_dir, "Select Metadata Directory"))
         metadata_layout.addWidget(metadata_browse)
-        paths_layout.addRow("Metadata:", metadata_layout)
+        dirs_layout.addRow("Metadata Directory:", metadata_layout)
 
-        # Logs
-        self.logs_dir = QLineEdit()
-        logs_browse = QPushButton("Browse...")
-        logs_browse.clicked.connect(
-            lambda: self.browse_directory(self.logs_dir, "Select Logs Directory")
-        )
+        # Logs directory
         logs_layout = QHBoxLayout()
+        self.logs_dir = QLineEdit()
         logs_layout.addWidget(self.logs_dir)
+        logs_browse = QPushButton("Browse...")
+        logs_browse.clicked.connect(lambda: self.browse_directory(self.logs_dir, "Select Logs Directory"))
         logs_layout.addWidget(logs_browse)
-        paths_layout.addRow("Logs:", logs_layout)
+        dirs_layout.addRow("Logs Directory:", logs_layout)
 
-        layout.addWidget(paths_card)
-
-        # Directory options
-        options_card = CardWrapper(title="Directory Options")
-        options_layout = QVBoxLayout()
-        options_card.body_layout.addLayout(options_layout)
-
-        self.create_missing = QCheckBox("Create missing directories automatically")
-        self.create_missing.setChecked(True)
-        options_layout.addWidget(self.create_missing)
-
-        self.relative_paths = QCheckBox("Use relative paths (relative to corpus root)")
-        self.relative_paths.setChecked(False)
-        options_layout.addWidget(self.relative_paths)
-
-        self.validate_paths = QCheckBox("Validate directory paths on startup")
-        self.validate_paths.setChecked(True)
-        options_layout.addWidget(self.validate_paths)
-
-        layout.addWidget(options_card)
+        layout.addWidget(dirs_card)
         layout.addStretch()
 
         return tab
@@ -367,85 +292,27 @@ class ConfigurationTab(QWidget):
         tab = QWidget()
         layout = QVBoxLayout(tab)
 
-        # Domains table
-        self.domains_table = QTableWidget(8, 3)  # 8 domains, 3 columns
-        self.domains_table.setHorizontalHeaderLabels(
-            ["Domain", "Target %", "Description"]
-        )
+        # Domains form
+        domains_card = CardWrapper(title="Domain Settings")
+        domains_layout = QFormLayout()
+        domains_card.body_layout.addLayout(domains_layout)
 
-        # Set up table properties
-<<<<<<< HEAD
-        self.domains_table.horizontalHeader().setSectionResizeMode(
-            QHeaderView.ResizeMode.Stretch
-        )
-        self.domains_table.horizontalHeader().setSectionResizeMode(
-            0, QHeaderView.ResizeMode.Stretch
-        )
-        self.domains_table.horizontalHeader().setSectionResizeMode(
-            2, QHeaderView.ResizeMode.Stretch
-        )
+        # Domain table
+        self.domain_table = QTableWidget()
+        self.domain_table.setColumnCount(3)
+        self.domain_table.setHorizontalHeaderLabels(["Domain", "Enabled", "Priority"])
+        self.domain_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        self.domain_table.horizontalHeader().setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents)
+        self.domain_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents)
+        domains_layout.addRow(self.domain_table)
 
-=======
-        self.domains_table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.Stretch)
-        self.domains_table.horizontalHeader().setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
-        self.domains_table.horizontalHeader().setSectionResizeMode(2, QHeaderView.ResizeMode.Stretch)
-        self.domains_table.setAlternatingRowColors(True)
-        
->>>>>>> my-feature-branch
-        # Initialize with domains
-        domains = [
-            "Crypto Derivatives",
-            "High Frequency Trading",
-            "Risk Management",
-            "Market Microstructure",
-            "DeFi",
-            "Portfolio Construction",
-            "Valuation Models",
-            "Regulation & Compliance",
-        ]
+        # Add domain button
+        add_domain_btn = QPushButton("Add Domain")
+        add_domain_btn.clicked.connect(self.add_domain)
+        domains_layout.addRow(add_domain_btn)
 
-        # Default targets (as percentages)
-        targets = [20, 15, 15, 15, 12, 10, 8, 5]
-
-        # Descriptions
-        descriptions = [
-            "Futures, options, perpetual swaps",
-            "Algorithmic trading, market making",
-            "Portfolio risk, volatility models",
-            "Order book dynamics, liquidity",
-            "Decentralized finance protocols",
-            "Asset allocation, optimization",
-            "Token valuation, fundamental analysis",
-            "Legal frameworks, compliance",
-        ]
-
-        for i, (domain, target, desc) in enumerate(zip(domains, targets, descriptions)):
-            self.domains_table.setItem(i, 0, QTableWidgetItem(domain))
-            self.domains_table.setItem(i, 1, QTableWidgetItem(str(target)))
-            self.domains_table.setItem(i, 2, QTableWidgetItem(desc))
-<<<<<<< HEAD
-
-        layout.addWidget(QLabel("Domain Configuration:"))
-=======
-        
-        layout.addWidget(SectionHeader("Domain Configuration"))
->>>>>>> my-feature-branch
-        layout.addWidget(self.domains_table)
-
-        # Domain options
-        options_card = CardWrapper(title="Domain Options")
-        options_layout = QVBoxLayout()
-        options_card.body_layout.addLayout(options_layout)
-
-        self.normalize_percentages = QCheckBox("Normalize percentages to 100%")
-        self.normalize_percentages.setChecked(True)
-        options_layout.addWidget(self.normalize_percentages)
-
-        self.validate_domains = QPushButton("Validate Domain Configuration")
-        self.validate_domains.clicked.connect(self.validate_domain_config)
-        options_layout.addWidget(self.validate_domains)
-
-        layout.addWidget(options_card)
+        layout.addWidget(domains_card)
+        layout.addStretch()
 
         return tab
 
@@ -454,77 +321,30 @@ class ConfigurationTab(QWidget):
         tab = QWidget()
         layout = QVBoxLayout(tab)
 
-        # PDF Processing options
-        pdf_card = CardWrapper(title="PDF Processing")
-        pdf_layout = QFormLayout()
-        pdf_card.body_layout.addLayout(pdf_layout)
+        # Processing form
+        processing_card = CardWrapper(title="Processing Settings")
+        processing_layout = QFormLayout()
+        processing_card.body_layout.addLayout(processing_layout)
 
-        self.enable_ocr = QCheckBox("Enable OCR for scanned PDFs")
-        self.enable_ocr.setChecked(True)
-        pdf_layout.addRow("OCR:", self.enable_ocr)
+        # Max workers
+        self.max_workers = QSpinBox()
+        self.max_workers.setRange(1, 32)
+        self.max_workers.setValue(4)
+        processing_layout.addRow("Max Workers:", self.max_workers)
 
-        self.pdf_threads = QSpinBox()
-        self.pdf_threads.setRange(1, 16)
-        self.pdf_threads.setValue(4)
-        pdf_layout.addRow("Worker Threads:", self.pdf_threads)
-
-        self.enable_formula = QCheckBox("Extract mathematical formulas")
-        self.enable_formula.setChecked(True)
-        pdf_layout.addRow("Formula Extraction:", self.enable_formula)
-
-        self.enable_tables = QCheckBox("Extract tables")
-        self.enable_tables.setChecked(True)
-        pdf_layout.addRow("Table Extraction:", self.enable_tables)
-
-        layout.addWidget(pdf_card)
-
-        # Text Processing options
-        text_card = CardWrapper(title="Text Processing")
-        text_layout = QFormLayout()
-        text_card.body_layout.addLayout(text_layout)
-
-        self.text_threads = QSpinBox()
-        self.text_threads.setRange(1, 16)
-        self.text_threads.setValue(4)
-        text_layout.addRow("Worker Threads:", self.text_threads)
-
-        self.enable_language = QCheckBox("Enable language detection")
-        self.enable_language.setChecked(True)
-        text_layout.addRow("Language Detection:", self.enable_language)
-
-        self.min_quality = QSpinBox()
-        self.min_quality.setRange(0, 100)
-        self.min_quality.setValue(70)
-        text_layout.addRow("Minimum Quality:", self.min_quality)
-
-        self.enable_deduplication = QCheckBox("Enable deduplication")
-        self.enable_deduplication.setChecked(True)
-        text_layout.addRow("Deduplication:", self.enable_deduplication)
-
-        layout.addWidget(text_card)
-
-        # Advanced options
-        advanced_card = CardWrapper(title="Advanced Processing")
-        advanced_layout = QFormLayout()
-        advanced_card.body_layout.addLayout(advanced_layout)
-
+        # Batch size
         self.batch_size = QSpinBox()
         self.batch_size.setRange(1, 1000)
-        self.batch_size.setValue(50)
-        advanced_layout.addRow("Batch Size:", self.batch_size)
+        self.batch_size.setValue(100)
+        processing_layout.addRow("Batch Size:", self.batch_size)
 
-        self.max_retries = QSpinBox()
-        self.max_retries.setRange(0, 10)
-        self.max_retries.setValue(3)
-        advanced_layout.addRow("Max Retries:", self.max_retries)
-
+        # Timeout
         self.timeout = QSpinBox()
-        self.timeout.setRange(10, 3600)
+        self.timeout.setRange(1, 3600)
         self.timeout.setValue(300)
-        self.timeout.setSuffix(" seconds")
-        advanced_layout.addRow("Timeout:", self.timeout)
+        processing_layout.addRow("Timeout (seconds):", self.timeout)
 
-        layout.addWidget(advanced_card)
+        layout.addWidget(processing_card)
         layout.addStretch()
 
         return tab
@@ -538,449 +358,195 @@ class ConfigurationTab(QWidget):
             self.config_path.setText(file_path)
 
     def browse_python_executable(self):
-        """Browse for Python executable"""
+        """Browse for a Python executable"""
         file_path, _ = QFileDialog.getOpenFileName(
-            self, "Select Python Executable", "", "Executables (*.exe);;All Files (*)"
+            self, "Select Python Executable", "", "Executable Files (*.exe)"
         )
         if file_path:
             self.python_path.setText(file_path)
 
     def browse_venv_path(self):
-        """Browse for virtual environment directory"""
-        directory = QFileDialog.getExistingDirectory(
+        """Browse for a virtual environment directory"""
+        dir_path = QFileDialog.getExistingDirectory(
             self, "Select Virtual Environment Directory"
         )
-        if directory:
-            self.venv_path.setText(directory)
+        if dir_path:
+            self.venv_path.setText(dir_path)
 
     def browse_temp_dir(self):
-        """Browse for temp directory"""
-        directory = QFileDialog.getExistingDirectory(self, "Select Temp Directory")
-        if directory:
-            self.temp_dir.setText(directory)
+        """Browse for a temporary directory"""
+        dir_path = QFileDialog.getExistingDirectory(
+            self, "Select Temporary Directory"
+        )
+        if dir_path:
+            self.temp_dir.setText(dir_path)
 
     def browse_directory(self, line_edit, title):
-        """Browse for a directory and update a line edit"""
-        directory = QFileDialog.getExistingDirectory(self, title)
-        if directory:
-            line_edit.setText(directory)
+        """Browse for a directory and update the line edit"""
+        dir_path = QFileDialog.getExistingDirectory(self, title)
+        if dir_path:
+            line_edit.setText(dir_path)
 
     def on_environment_changed(self):
         """Handle environment selection change"""
         env = self.env_selector.currentText()
+        # Persist the selected environment using ProjectConfig
+        self.project_config.set('environment.active', env)
+        self.project_config.save()
 
-        # In a real implementation, this would load the correct environment config
-        # For now, just update the config path to show the correct file
-        self.config_path.setText(f"config/{env}.yaml")
-
-        # If auto-save is enabled, save the current environment
-        if self.auto_save.isChecked():
-<<<<<<< HEAD
-            # This would save the current environment selection to the config
-            pass
-
-=======
-            # Persist the selected environment using ProjectConfig
-            self.project_config.set('environment.active', env)
-            self.project_config.save()
-    
->>>>>>> my-feature-branch
     def validate_domain_config(self):
-        """Validate the domain configuration"""
-        # Check that percentages add up to 100%
-        total = 0
-        for i in range(self.domains_table.rowCount()):
-            try:
-                percentage = float(self.domains_table.item(i, 1).text())
-                total += percentage
-            except (ValueError, AttributeError):
-                QMessageBox.warning(
-                    self,
-                    "Validation Error",
-                    f"Invalid percentage in row {i+1}. Please enter numeric values.",
-                )
-                return
-
-        # Check if total is close to 100%
-        if abs(total - 100) > 0.1:
-            if self.normalize_percentages.isChecked():
-                # Normalize the percentages
-                for i in range(self.domains_table.rowCount()):
-                    try:
-                        percentage = float(self.domains_table.item(i, 1).text())
-                        normalized = (percentage / total) * 100
-                        self.domains_table.setItem(
-                            i, 1, QTableWidgetItem(f"{normalized:.1f}")
-                        )
-                    except (ValueError, AttributeError):
-                        pass
-
-                QMessageBox.information(
-                    self,
-                    "Normalization Complete",
-                    f"Percentages have been normalized from {total:.1f}% to 100%.",
-                )
-            else:
-                QMessageBox.warning(
-                    self,
-                    "Validation Warning",
-                    f"Domain percentages add up to {total:.1f}%, not 100%.\n"
-                    "Enable normalization or adjust manually.",
-                )
-        else:
-            QMessageBox.information(
-                self, "Validation Successful", "Domain configuration is valid."
-            )
+        """Validate domain configuration"""
+        domains = {}
+        for row in range(self.domain_table.rowCount()):
+            domain = self.domain_table.item(row, 0).text()
+            enabled = self.domain_table.item(row, 1).checkState() == Qt.CheckState.Checked
+            priority = int(self.domain_table.item(row, 2).text())
+            domains[domain] = {"enabled": enabled, "priority": priority}
+        return domains
 
     def load_current_config(self):
-        """Load the current configuration into UI"""
-        # Load from .env file if it exists
-        if self.env_path.exists():
-            load_dotenv(self.env_path)
+        """Load current configuration into the UI"""
+        # Load environment
+        env = self.project_config.get("environment.active", "test")
+        self.env_selector.setCurrentText(env)
 
-        # Environment tab
-        self.env_selector.setCurrentText(os.getenv("ENVIRONMENT", "test"))
-        self.config_path.setText(str(self.project_config.config_path))
-        self.python_path.setText(os.getenv("PYTHON_PATH", ""))
-        self.venv_path.setText("venv/")
-        self.temp_dir.setText(os.getenv("TEMP_DIR", ""))
+        # Load config path
+        self.config_path.setText(self.project_config.config_path)
 
-        # API Keys tab
-        self.github_token.setText(os.getenv("GITHUB_TOKEN", ""))
-        self.aa_cookie.setText(os.getenv("AA_COOKIE", ""))
-        self.fred_key.setText(os.getenv("FRED_API_KEY", ""))
-        self.bitmex_key.setText(os.getenv("BITMEX_API_KEY", ""))
-        self.bitmex_secret.setText(os.getenv("BITMEX_API_SECRET", ""))
-        self.arxiv_email.setText(os.getenv("ARXIV_EMAIL", ""))
+        # Load environment variables
+        self.python_path.setText(self.project_config.get("environment.python_path", ""))
+        self.venv_path.setText(self.project_config.get("environment.venv_path", ""))
+        self.temp_dir.setText(self.project_config.get("environment.temp_dir", ""))
 
-        # Directories tab
-        self.corpus_root.setText(os.getenv("CORPUS_ROOT", "~/crypto_corpus"))
-        self.raw_data_dir.setText(os.getenv("RAW_DATA_DIR", "~/crypto_corpus/raw"))
-        self.processed_dir.setText(
-            os.getenv("PROCESSED_DIR", "~/crypto_corpus/processed")
-        )
-        self.metadata_dir.setText(os.getenv("METADATA_DIR", "~/crypto_corpus/metadata"))
-        self.logs_dir.setText(os.getenv("LOGS_DIR", "~/crypto_corpus/logs"))
+        # Load API keys
+        self.github_token.setText(self.project_config.get("api_keys.github", ""))
+        self.fred_token.setText(self.project_config.get("api_keys.fred", ""))
+        self.bitmex_token.setText(self.project_config.get("api_keys.bitmex", ""))
+        self.quantopian_token.setText(self.project_config.get("api_keys.quantopian", ""))
+        self.scidb_token.setText(self.project_config.get("api_keys.scidb", ""))
+        self.web_token.setText(self.project_config.get("api_keys.web", ""))
 
-        # Processing tab
-        self.pdf_threads.setValue(int(os.getenv("PDF_THREADS", "4")))
-        self.text_threads.setValue(int(os.getenv("TEXT_THREADS", "4")))
-        self.batch_size.setValue(int(os.getenv("BATCH_SIZE", "50")))
-        self.max_retries.setValue(int(os.getenv("MAX_RETRIES", "3")))
-        self.timeout.setValue(int(os.getenv("TIMEOUT", "300")))
+        # Load directories
+        self.corpus_root.setText(self.project_config.get("directories.corpus_root", ""))
+        self.raw_data_dir.setText(self.project_config.get("directories.raw_data", ""))
+        self.processed_dir.setText(self.project_config.get("directories.processed", ""))
+        self.metadata_dir.setText(self.project_config.get("directories.metadata", ""))
+        self.logs_dir.setText(self.project_config.get("directories.logs", ""))
+
+        # Load domains
+        domains = self.project_config.get("domains", {})
+        self.domain_table.setRowCount(len(domains))
+        for row, (domain, config) in enumerate(domains.items()):
+            self.domain_table.setItem(row, 0, QTableWidgetItem(domain))
+            enabled_item = QTableWidgetItem()
+            enabled_item.setCheckState(Qt.CheckState.Checked if config.get("enabled", True) else Qt.CheckState.Unchecked)
+            self.domain_table.setItem(row, 1, enabled_item)
+            self.domain_table.setItem(row, 2, QTableWidgetItem(str(config.get("priority", 0))))
+
+        # Load processing settings
+        self.max_workers.setValue(self.project_config.get("processing.max_workers", 4))
+        self.batch_size.setValue(self.project_config.get("processing.batch_size", 100))
+        self.timeout.setValue(self.project_config.get("processing.timeout", 300))
 
     def load_default_config(self):
-        """Reset to default configuration.
+        """Load default configuration into the UI"""
+        # Reset environment
+        self.env_selector.setCurrentText("test")
 
-        Note: This method sets up a default configuration with non-functional placeholder values.
-        All credential fields are cleared and must be populated with real values before use.
-        """
-        # Confirm with user
-        confirm = QMessageBox.question(
-            self,
-            "Confirm Reset",
-            "Are you sure you want to reset to default configuration?\n\n"
-            "Note: This will clear all API credentials and other sensitive information.\n"
-            "You will need to re-enter these values before using the application.",
-            QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No,
-        )
+        # Reset config path
+        self.config_path.setText("")
 
-        if confirm == QMessageBox.StandardButton.Yes:
-            # Reset all fields to defaults
-            # Environment tab
-            self.env_selector.setCurrentText("test")
-            self.config_path.setText("config/test.yaml")
-            self.python_path.setText("")
-            self.venv_path.setText("venv/")
-            self.temp_dir.setText("")
+        # Reset environment variables
+        self.python_path.setText("")
+        self.venv_path.setText("")
+        self.temp_dir.setText("")
 
-            # API Keys tab - Clear all credential fields
-            self.github_token.clear()
-            self.aa_cookie.clear()
-            self.fred_key.clear()
-            self.bitmex_key.clear()
-            self.bitmex_secret.clear()
-            self.arxiv_email.clear()
+        # Reset API keys
+        self.github_token.setText("")
+        self.fred_token.setText("")
+        self.bitmex_token.setText("")
+        self.quantopian_token.setText("")
+        self.scidb_token.setText("")
+        self.web_token.setText("")
 
-            # Directories tab
-            base_dir = os.path.expanduser("~/crypto_corpus")
-            self.corpus_root.setText(base_dir)
-            self.raw_data_dir.setText(f"{base_dir}/raw")
-            self.processed_dir.setText(f"{base_dir}/processed")
-            self.metadata_dir.setText(f"{base_dir}/metadata")
-            self.logs_dir.setText(f"{base_dir}/logs")
+        # Reset directories
+        self.corpus_root.setText("")
+        self.raw_data_dir.setText("")
+        self.processed_dir.setText("")
+        self.metadata_dir.setText("")
+        self.logs_dir.setText("")
 
-            # Domains tab - reset to default values
-            domains = [
-                "Crypto Derivatives",
-                "High Frequency Trading",
-                "Risk Management",
-                "Market Microstructure",
-                "DeFi",
-                "Portfolio Construction",
-                "Valuation Models",
-                "Regulation & Compliance",
-            ]
+        # Reset domains
+        self.domain_table.setRowCount(0)
 
-            # Default targets (as percentages)
-            targets = [20, 15, 15, 15, 12, 10, 8, 5]
-
-            # Descriptions
-            descriptions = [
-                "Futures, options, perpetual swaps",
-                "Algorithmic trading, market making",
-                "Portfolio risk, volatility models",
-                "Order book dynamics, liquidity",
-                "Decentralized finance protocols",
-                "Asset allocation, optimization",
-                "Token valuation, fundamental analysis",
-                "Legal frameworks, compliance",
-            ]
-
-            for i, (domain, target, desc) in enumerate(
-                zip(domains, targets, descriptions)
-            ):
-                self.domains_table.setItem(i, 0, QTableWidgetItem(domain))
-                self.domains_table.setItem(i, 1, QTableWidgetItem(str(target)))
-                self.domains_table.setItem(i, 2, QTableWidgetItem(desc))
-
-            # Processing tab
-            self.enable_ocr.setChecked(True)
-            self.pdf_threads.setValue(4)
-            self.enable_formula.setChecked(True)
-            self.enable_tables.setChecked(True)
-            self.text_threads.setValue(4)
-            self.enable_language.setChecked(True)
-            self.min_quality.setValue(70)
-            self.enable_deduplication.setChecked(True)
-            self.batch_size.setValue(50)
-            self.max_retries.setValue(3)
-            self.timeout.setValue(300)
-
-            QMessageBox.information(
-                self,
-                "Reset Complete",
-                "Configuration has been reset to defaults.\n\n"
-                "Note: All API credentials have been cleared and must be re-entered before use.",
-            )
+        # Reset processing settings
+        self.max_workers.setValue(4)
+        self.batch_size.setValue(100)
+        self.timeout.setValue(300)
 
     def save_configuration(self):
-        """Save the current configuration"""
+        """Save configuration from the UI"""
         try:
-            # Create .env file if it doesn't exist
-            if not self.env_path.exists():
-                self.env_path.touch()
+            # Save environment
+            self.project_config.set("environment.active", self.env_selector.currentText())
 
-            # Save API keys to .env file
-            if self.use_env_file.isChecked():
-                env_vars = {
-                    "ENVIRONMENT": self.env_selector.currentText(),
-                    "PYTHON_PATH": self.python_path.text(),
-                    "VENV_PATH": self.venv_path.text(),
-                    "TEMP_DIR": self.temp_dir.text(),
-                    "GITHUB_TOKEN": self.github_token.text(),
-                    "AA_COOKIE": self.aa_cookie.text(),
-                    "FRED_API_KEY": self.fred_key.text(),
-                    "BITMEX_API_KEY": self.bitmex_key.text(),
-                    "BITMEX_API_SECRET": self.bitmex_secret.text(),
-                    "ARXIV_EMAIL": self.arxiv_email.text(),
-                    "CORPUS_ROOT": self.corpus_root.text(),
-                    "RAW_DATA_DIR": self.raw_data_dir.text(),
-                    "PROCESSED_DIR": self.processed_dir.text(),
-                    "METADATA_DIR": self.metadata_dir.text(),
-                    "LOGS_DIR": self.logs_dir.text(),
-                    "PDF_THREADS": str(self.pdf_threads.value()),
-                    "TEXT_THREADS": str(self.text_threads.value()),
-                    "BATCH_SIZE": str(self.batch_size.value()),
-                    "MAX_RETRIES": str(self.max_retries.value()),
-                    "TIMEOUT": str(self.timeout.value()),
-                }
+            # Save environment variables
+            self.project_config.set("environment.python_path", self.python_path.text())
+            self.project_config.set("environment.venv_path", self.venv_path.text())
+            self.project_config.set("environment.temp_dir", self.temp_dir.text())
 
-                # Update .env file
-                for key, value in env_vars.items():
-                    set_key(self.env_path, key, value)
+            # Save API keys
+            self.project_config.set("api_keys.github", self.github_token.text())
+            self.project_config.set("api_keys.fred", self.fred_token.text())
+            self.project_config.set("api_keys.bitmex", self.bitmex_token.text())
+            self.project_config.set("api_keys.quantopian", self.quantopian_token.text())
+            self.project_config.set("api_keys.scidb", self.scidb_token.text())
+            self.project_config.set("api_keys.web", self.web_token.text())
 
-            # Save non-sensitive configuration to YAML
-            config = {
-                "environment": {
-                    "active": self.env_selector.currentText(),
-                    "config_path": str(self.project_config.config_path),
-                    "auto_save": self.auto_save.isChecked(),
-                },
-                "processing": {
-                    "pdf": {
-                        "enable_ocr": self.enable_ocr.isChecked(),
-                        "enable_formula": self.enable_formula.isChecked(),
-                        "enable_tables": self.enable_tables.isChecked(),
-                    },
-                    "text": {
-                        "enable_language": self.enable_language.isChecked(),
-                        "min_quality": self.min_quality.value(),
-                        "enable_deduplication": self.enable_deduplication.isChecked(),
-                    },
-                },
-                "directories": {
-                    "create_missing": self.create_missing.isChecked(),
-                    "relative_paths": self.relative_paths.isChecked(),
-                    "validate_paths": self.validate_paths.isChecked(),
-                },
-            }
+            # Save directories
+            self.project_config.set("directories.corpus_root", self.corpus_root.text())
+            self.project_config.set("directories.raw_data", self.raw_data_dir.text())
+            self.project_config.set("directories.processed", self.processed_dir.text())
+            self.project_config.set("directories.metadata", self.metadata_dir.text())
+            self.project_config.set("directories.logs", self.logs_dir.text())
 
-            # Save to YAML
-            with open(self.project_config.config_path, "w") as f:
-                yaml.dump(config, f, default_flow_style=False)
+            # Save domains
+            domains = self.validate_domain_config()
+            self.project_config.set("domains", domains)
 
-            # Persist changes in ProjectConfig
-            self.project_config.set(
-                "environment.active", self.env_selector.currentText()
-            )
-            self.project_config.set(
-                "environment.config_path", str(self.project_config.config_path)
-            )
-            self.project_config.set("environment.auto_save", self.auto_save.isChecked())
-            self.project_config.set(
-                "processing.pdf.enable_ocr", self.enable_ocr.isChecked()
-            )
-            self.project_config.set(
-                "processing.pdf.enable_formula", self.enable_formula.isChecked()
-            )
-            self.project_config.set(
-                "processing.pdf.enable_tables", self.enable_tables.isChecked()
-            )
-            self.project_config.set(
-                "processing.text.enable_language", self.enable_language.isChecked()
-            )
-            self.project_config.set(
-                "processing.text.min_quality", self.min_quality.value()
-            )
-            self.project_config.set(
-                "processing.text.enable_deduplication",
-                self.enable_deduplication.isChecked(),
-            )
-            self.project_config.set(
-                "directories.create_missing", self.create_missing.isChecked()
-            )
-            self.project_config.set(
-                "directories.relative_paths", self.relative_paths.isChecked()
-            )
-            self.project_config.set(
-                "directories.validate_paths", self.validate_paths.isChecked()
-            )
+            # Save processing settings
+            self.project_config.set("processing.max_workers", self.max_workers.value())
+            self.project_config.set("processing.batch_size", self.batch_size.value())
+            self.project_config.set("processing.timeout", self.timeout.value())
+
+            # Save configuration
             self.project_config.save()
 
-            # Emit signal so other components can refresh
-            self.configuration_saved.emit(config)
+            # Emit signal
+            self.configuration_saved.emit(self.project_config.config)
 
-            QMessageBox.information(
-                self,
-                "Configuration Saved",
-                "Configuration has been saved successfully.",
-            )
-
+            QMessageBox.information(self, "Success", "Configuration saved successfully.")
         except Exception as e:
-            QMessageBox.critical(
-                self, "Save Error", f"Failed to save configuration: {str(e)}"
-            )
+            QMessageBox.critical(self, "Error", f"Failed to save configuration: {str(e)}")
 
     def dragEnterEvent(self, event: QDragEnterEvent):
+        """Handle drag enter event"""
         if event.mimeData().hasUrls():
             event.acceptProposedAction()
 
     def dropEvent(self, event: QDropEvent):
-        files = [url.toLocalFile() for url in event.mimeData().urls()]
-        if files:
-            self.import_config_file(files[0])
+        """Handle drop event"""
+        for url in event.mimeData().urls():
+            file_path = url.toLocalFile()
+            self.import_config_file(file_path)
 
     def import_config_file(self, file_path: str):
+        """Import configuration from a file"""
         try:
             with open(file_path, "r") as f:
                 config = yaml.safe_load(f)
-
-            if not isinstance(config, dict):
-                raise ValueError("Config file did not contain a dictionary")
-
-            # Environment
-            env_cfg = config.get("environment", {})
-            if isinstance(env_cfg, dict):
-                self.env_selector.setCurrentText(env_cfg.get("active", "test"))
-                self.config_path.setText(env_cfg.get("config_path", self.config_path.text()))
-                self.python_path.setText(env_cfg.get("python_path", self.python_path.text()))
-                self.venv_path.setText(env_cfg.get("venv_path", self.venv_path.text()))
-                self.temp_dir.setText(env_cfg.get("temp_dir", self.temp_dir.text()))
-                if "auto_save" in env_cfg:
-                    self.auto_save.setChecked(bool(env_cfg.get("auto_save")))
-            elif isinstance(env_cfg, str):
-                self.env_selector.setCurrentText(env_cfg)
-
-            # API keys
-            api_cfg = config.get("api_keys", {})
-            if isinstance(api_cfg, dict):
-                self.github_token.setText(api_cfg.get("github_token", ""))
-                self.aa_cookie.setText(api_cfg.get("aa_cookie", ""))
-                self.fred_key.setText(api_cfg.get("fred_key", ""))
-                self.bitmex_key.setText(api_cfg.get("bitmex_key", ""))
-                self.bitmex_secret.setText(api_cfg.get("bitmex_secret", ""))
-                self.arxiv_email.setText(api_cfg.get("arxiv_email", ""))
-
-            # Directories
-            dir_cfg = config.get("directories", {})
-            if isinstance(dir_cfg, dict):
-                self.corpus_root.setText(dir_cfg.get("corpus_root", self.corpus_root.text()))
-                self.raw_data_dir.setText(dir_cfg.get("raw_data_dir", self.raw_data_dir.text()))
-                self.processed_dir.setText(dir_cfg.get("processed_dir", self.processed_dir.text()))
-                self.metadata_dir.setText(dir_cfg.get("metadata_dir", self.metadata_dir.text()))
-                self.logs_dir.setText(dir_cfg.get("logs_dir", self.logs_dir.text()))
-                if "create_missing" in dir_cfg:
-                    self.create_missing.setChecked(bool(dir_cfg.get("create_missing")))
-                if "relative_paths" in dir_cfg:
-                    self.relative_paths.setChecked(bool(dir_cfg.get("relative_paths")))
-                if "validate_paths" in dir_cfg:
-                    self.validate_paths.setChecked(bool(dir_cfg.get("validate_paths")))
-
-            # Processing
-            proc_cfg = config.get("processing", {})
-            pdf_cfg = proc_cfg.get("pdf", {}) if isinstance(proc_cfg, dict) else {}
-            if isinstance(pdf_cfg, dict):
-                if "enable_ocr" in pdf_cfg:
-                    self.enable_ocr.setChecked(bool(pdf_cfg.get("enable_ocr")))
-                if "threads" in pdf_cfg:
-                    self.pdf_threads.setValue(int(pdf_cfg.get("threads")))
-                if "enable_formula" in pdf_cfg:
-                    self.enable_formula.setChecked(bool(pdf_cfg.get("enable_formula")))
-                if "enable_tables" in pdf_cfg:
-                    self.enable_tables.setChecked(bool(pdf_cfg.get("enable_tables")))
-
-            text_cfg = proc_cfg.get("text", {}) if isinstance(proc_cfg, dict) else {}
-            if isinstance(text_cfg, dict):
-                if "threads" in text_cfg:
-                    self.text_threads.setValue(int(text_cfg.get("threads")))
-                if "enable_language" in text_cfg:
-                    self.enable_language.setChecked(bool(text_cfg.get("enable_language")))
-                if "min_quality" in text_cfg:
-                    self.min_quality.setValue(int(text_cfg.get("min_quality")))
-                if "enable_deduplication" in text_cfg:
-                    self.enable_deduplication.setChecked(bool(text_cfg.get("enable_deduplication")))
-
-            adv_cfg = proc_cfg.get("advanced", {}) if isinstance(proc_cfg, dict) else {}
-            if isinstance(adv_cfg, dict):
-                if "batch_size" in adv_cfg:
-                    self.batch_size.setValue(int(adv_cfg.get("batch_size")))
-                if "max_retries" in adv_cfg:
-                    self.max_retries.setValue(int(adv_cfg.get("max_retries")))
-                if "timeout" in adv_cfg:
-                    self.timeout.setValue(int(adv_cfg.get("timeout")))
-
-            # Update ProjectConfig and revalidate
-            self.project_config.config = config
-            try:
-                self.project_config.revalidate()
-            except ValidationError as exc:
-                QMessageBox.warning(self, "Validation Error", str(exc))
-
-            # Notify others of imported configuration
-            self.configuration_saved.emit(config)
-
+            self.project_config.config.update(config)
+            self.load_current_config()
+            QMessageBox.information(self, "Success", "Configuration imported successfully.")
         except Exception as e:
-            QMessageBox.critical(
-                self, "Import Error", f"Failed to import config: {str(e)}"
-            )
+            QMessageBox.critical(self, "Error", f"Failed to import configuration: {str(e)}")

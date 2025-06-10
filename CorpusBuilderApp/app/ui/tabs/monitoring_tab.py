@@ -1,31 +1,14 @@
-<<<<<<< HEAD
-from PySide6.QtWidgets import QWidget, QVBoxLayout
-from app.ui.widgets.card_wrapper import CardWrapper
-from app.ui.widgets.section_header import SectionHeader
-from shared_tools.ui_wrappers.processors.monitor_progress_wrapper import (
-    MonitorProgressWrapper,
-)
-
-=======
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QLabel, QProgressBar
 from app.ui.theme.theme_constants import PAGE_MARGIN
 from app.ui.widgets.section_header import SectionHeader
 from PySide6.QtCore import Slot
 from shared_tools.ui_wrappers.processors.monitor_progress_wrapper import MonitorProgressWrapper
 from shared_tools.services.system_monitor import SystemMonitor
->>>>>>> my-feature-branch
 
 class MonitoringTab(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
         layout = QVBoxLayout(self)
-<<<<<<< HEAD
-        card = CardWrapper()
-        layout.addWidget(card)
-        card.body_layout.addWidget(SectionHeader("Monitoring"))
-        self.monitor_widget = MonitorProgressWrapper()
-        card.body_layout.addWidget(self.monitor_widget)
-=======
         layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
         layout.setSpacing(PAGE_MARGIN)
 
@@ -69,4 +52,3 @@ class MonitoringTab(QWidget):
         if hasattr(self, "system_monitor"):
             self.system_monitor.stop()
         super().closeEvent(event)
->>>>>>> my-feature-branch

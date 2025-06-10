@@ -793,10 +793,7 @@ def main():
     
     if args.project_config:
         # Use project config
-<<<<<<< HEAD:CorpusBuilderApp/shared_tools/processors/finacial_symbol_processor.py
         from shared_tools.project_config import ProjectConfig
-=======
->>>>>>> my-feature-branch:CorpusBuilderApp/shared_tools/processors/financial_symbol_processor.py
         project = ProjectConfig.load(args.project_config)
         results = run_with_project_config(project, args.verbose)
     else:

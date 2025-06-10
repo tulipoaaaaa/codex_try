@@ -71,16 +71,8 @@ class CorpusBalancerWrapper(BaseWrapper, ProcessorWrapperMixin):
     domain_processed = pyqtSignal(str, int, int)  # domain, current, target
     balance_completed = pyqtSignal(dict)  # Balance results
     
-<<<<<<< HEAD
-    def __init__(self, config: ProjectConfig):
-        super().__init__(config)
-        self.config = config
-        self.corpus_dir = self.config.get_corpus_dir()
-        self.logs_dir = self.config.get_logs_dir()
-=======
     def __init__(self, config, test_mode: bool = False):
         super().__init__(config, test_mode=test_mode)
->>>>>>> my-feature-branch
         self.balancer = None
         self.target_allocations = {}
         

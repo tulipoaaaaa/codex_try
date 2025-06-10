@@ -8,11 +8,8 @@ import argparse
 import datetime
 
 from shared_tools.config import balancer_config, domain_config
-<<<<<<< HEAD
-=======
 import logging
 logger = logging.getLogger(__name__)
->>>>>>> my-feature-branch
 
 REFERENCE_DOMAINS = balancer_config.DOMAIN_BALANCE_CONFIG
 EXTRACTOR_DOMAINS = domain_config.DOMAINS
