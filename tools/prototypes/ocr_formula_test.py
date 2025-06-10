@@ -1,4 +1,4 @@
-# PROTOTYPE: Not integrated into app. Placeholder only.
+# ⚠️ Prototype script. Not integrated. Used for OCR testing only.
 import fitz
 from PIL import Image
 import pytesseract
