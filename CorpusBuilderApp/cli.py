@@ -180,7 +180,7 @@ def main(argv: list[str] | None = None) -> int:
         args = parser.parse_args(argv[1:])
 
         from tools.check_corpus_structure import check_corpus_structure
-        from shared_tools.config.project_config import ProjectConfig
+        from shared_tools.project_config import ProjectConfig
         import shutil
 
         cfg = ProjectConfig.from_yaml(args.config)
