@@ -12,7 +12,7 @@ from shared_tools.collectors.github_collector import GitHubCollector
 
 def _write_yaml(path: Path, corpus_dir: Path) -> None:
     data = {
-        "environment": "test",
+        "environment": {"active": "test"},
         "environments": {"test": {"corpus_dir": str(corpus_dir)}},
     }
     with open(path, "w", encoding="utf-8") as fh:

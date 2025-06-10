@@ -231,7 +231,12 @@ def verify_project_config():
         tmpdir = tempfile.mkdtemp()
         cfg_path = Path(tmpdir) / "cfg.yaml"
         data = {
-            "environment": "test",
+            "environment": {
+                "active": "test",
+                "python_path": "",
+                "venv_path": "",
+                "temp_dir": "",
+            },
             "environments": {"test": {"corpus_dir": tmpdir}},
         }
         import yaml
