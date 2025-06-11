@@ -90,6 +90,8 @@ class CollectorsTab(QWidget):
         # Setup UI
         self.setup_ui()
         self.connect_signals()
+        self.collection_started.connect(self.on_collection_started)
+        self.collection_finished.connect(self.on_collection_finished)
 
     def setup_ui(self) -> None:
         """Initialize the user interface."""
@@ -184,6 +186,17 @@ class CollectorsTab(QWidget):
             card.stop_requested.connect(lambda n=name: self.stop_collection(n))
             card.configure_requested.connect(lambda n=name: self.configure_collector(n))
             card.logs_requested.connect(lambda n=name: self.show_logs(n))
+
+    def on_collection_started(self, name: str) -> None:
+        """Update UI when a collection begins."""
+        self.collection_status_label.setText(f"Collecting: {name}")
+        self.overall_progress.setRange(0, 0)
+
+    def on_collection_finished(self, name: str, success: bool) -> None:
+        """Reset progress when collection ends."""
+        status = "completed" if success else "stopped"
+        self.collection_status_label.setText(f"Collection {status}: {name}")
+        self.overall_progress.setRange(0, 100)
 
     def _handle_progress(self, name: str, value: int) -> None:
         """Handle progress updates from collectors."""
