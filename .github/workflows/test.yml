@@ -25,6 +25,8 @@ jobs:
           pip install ruff pytest pytest-cov
       - name: Lint
         run: ruff check .
+      - name: Validate UI backend integration
+        run: python ui_backend_integration_rules.py
       - name: Run tests
         env:
           PYTEST_QT_STUBS: '0'
