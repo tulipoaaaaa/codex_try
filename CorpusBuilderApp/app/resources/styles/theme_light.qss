@@ -382,7 +382,7 @@ QLabel[objectName="status--success"] {
     font-size: 10px;
     font-weight: 500;
     padding: 2px 6px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     letter-spacing: 0.05em;
 }
 QLabel[objectName="status--error"] {
@@ -393,7 +393,7 @@ QLabel[objectName="status--error"] {
     font-size: 10px;
     font-weight: 500;
     padding: 2px 6px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     letter-spacing: 0.05em;
 }
 QLabel[objectName="status--warning"] {
@@ -404,7 +404,7 @@ QLabel[objectName="status--warning"] {
     font-size: 10px;
     font-weight: 500;
     padding: 2px 6px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     letter-spacing: 0.05em;
 }
 QLabel[objectName="status--info"] {
@@ -415,7 +415,7 @@ QLabel[objectName="status--info"] {
     font-size: 10px;
     font-weight: 500;
     padding: 2px 6px;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     letter-spacing: 0.05em;
 }
 

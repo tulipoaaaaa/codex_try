@@ -6,6 +6,9 @@ from typing import List, Tuple
 from PySide6.QtCore import QObject
 
 
+OPTIONAL_TABS = {"balancer_tab", "corpus_manager_tab"}
+
+
 class TabAuditService(QObject):
     """Runtime audit of main tab connections."""
 
@@ -13,6 +16,7 @@ class TabAuditService(QObject):
         super().__init__(parent)
         self.main_window = main_window
         self.logger = logging.getLogger(self.__class__.__name__)
+        self.tab_registry = getattr(main_window, "tab_registry", {})
 
     # ------------------------------------------------------------------
     def _signal_receivers(self, signal: object) -> int:
@@ -43,44 +47,43 @@ class TabAuditService(QObject):
         mw = self.main_window
         issues: List[str] = []
 
-        tabs = [
-            "dashboard_tab",
-            "collectors_tab",
-            "processors_tab",
-            "corpus_manager_tab",
-            "balancer_tab",
-            "analytics_tab",
-            "configuration_tab",
-            "logs_tab",
-        ]
+        registry = getattr(self, "tab_registry", getattr(mw, "tab_registry", {}))
+        tabs = list(registry.keys())
 
         for attr in tabs:
-            if getattr(mw, attr, None) is None:
+            tab_obj = registry.get(attr)
+            if tab_obj is None and attr not in OPTIONAL_TABS:
                 issues.append(f"{attr} missing")
 
         # Expected cross-tab signal connections
-        if mw.collectors_tab:
-            self._check_connection(mw.collectors_tab, "collection_started", "on_collection_started", issues)
-            self._check_connection(mw.collectors_tab, "collection_finished", "on_collection_finished", issues)
+        collectors_tab = registry.get("collectors_tab")
+        if collectors_tab:
+            self._check_connection(collectors_tab, "collection_started", "on_collection_started", issues)
+            self._check_connection(collectors_tab, "collection_finished", "on_collection_finished", issues)
 
-        if mw.processors_tab:
-            self._check_connection(mw.processors_tab, "processing_started", "on_processing_started", issues)
-            self._check_connection(mw.processors_tab, "processing_finished", "on_processing_finished", issues)
+        processors_tab = registry.get("processors_tab")
+        if processors_tab:
+            self._check_connection(processors_tab, "processing_started", "on_processing_started", issues)
+            self._check_connection(processors_tab, "processing_finished", "on_processing_finished", issues)
 
-        if mw.dashboard_tab:
-            self._check_connection(mw.dashboard_tab, "view_all_activity_requested", "show_full_activity_tab", issues)
-            self._check_connection(mw.dashboard_tab, "rebalance_requested", "on_rebalance_requested", issues)
+        dashboard_tab = registry.get("dashboard_tab")
+        if dashboard_tab:
+            self._check_connection(dashboard_tab, "view_all_activity_requested", "show_full_activity_tab", issues)
+            self._check_connection(dashboard_tab, "rebalance_requested", "on_rebalance_requested", issues)
 
-        if mw.configuration_tab:
-            self._check_connection(mw.configuration_tab, "configuration_saved", "config.save", issues)
+        configuration_tab = registry.get("configuration_tab")
+        if configuration_tab:
+            self._check_connection(configuration_tab, "configuration_saved", "config.save", issues)
 
-        balancer = getattr(getattr(mw, "balancer_tab", None), "balancer", None)
+        balancer_tab = registry.get("balancer_tab")
+        balancer = getattr(balancer_tab, "balancer", None)
         if balancer:
             self._check_connection(balancer, "balance_completed", "on_balance_completed", issues)
         else:
             issues.append("balancer tab missing balancer")
 
-        if getattr(mw, "full_activity_tab", None) and not hasattr(mw.full_activity_tab, "task_source"):
+        full_activity_tab = registry.get("full_activity_tab")
+        if full_activity_tab and not hasattr(full_activity_tab, "task_source"):
             issues.append("FullActivityTab missing task source")
 
         if issues:

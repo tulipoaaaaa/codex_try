@@ -13,7 +13,7 @@ from PySide6.QtWidgets import (
     QFileDialog,
     QMessageBox,
 )
-from PySide6.QtCore import Qt, Slot as pyqtSlot
+from PySide6.QtCore import Qt, Slot as pyqtSlot, Signal as pyqtSignal
 import logging
 from PySide6.QtGui import QIcon
 import os
@@ -48,6 +48,8 @@ logger = logging.getLogger(__name__)
 
 
 class ProcessorsTab(QWidget):
+    processing_started = pyqtSignal(str)
+    processing_finished = pyqtSignal(str, bool)
     def __init__(
         self,
         project_config,
@@ -67,6 +69,8 @@ class ProcessorsTab(QWidget):
         self.setup_ui()
         self.init_processors()
         self.connect_signals()
+        self.processing_started.connect(self.on_processing_started)
+        self.processing_finished.connect(self.on_processing_finished)
 
     def setup_ui(self):
         main_layout = QVBoxLayout(self)
@@ -635,6 +639,7 @@ class ProcessorsTab(QWidget):
             tid = f"processor_pdf_{int(time.time()*1000)}"
             self._task_ids['pdf'] = tid
             self.task_history_service.start_task(tid, 'PDF Processing', {'type': 'processing'})
+        self.processing_started.emit('pdf')
         # Start processing
         pdf_wrapper.start_batch_processing(files_to_process)
 
@@ -644,6 +649,7 @@ class ProcessorsTab(QWidget):
             self.task_history_service.fail_task(self._task_ids.pop('pdf'), 'stopped')
         self.pdf_start_btn.setEnabled(True)
         self.pdf_stop_btn.setEnabled(False)
+        self.processing_finished.emit('pdf', False)
 
     def start_text_processing(self):
         """Start Text processing with safety checks"""
@@ -675,6 +681,7 @@ class ProcessorsTab(QWidget):
             tid = f"processor_text_{int(time.time()*1000)}"
             self._task_ids['text'] = tid
             self.task_history_service.start_task(tid, 'Text Processing', {'type': 'processing'})
+        self.processing_started.emit('text')
         # Start processing
         text_wrapper.start_batch_processing(files_to_process)
 
@@ -684,6 +691,7 @@ class ProcessorsTab(QWidget):
             self.task_history_service.fail_task(self._task_ids.pop('text'), 'stopped')
         self.text_start_btn.setEnabled(True)
         self.text_stop_btn.setEnabled(False)
+        self.processing_finished.emit('text', False)
     
     def apply_advanced_processing(self):
         # Enable/disable processors based on UI selections
@@ -872,6 +880,7 @@ class ProcessorsTab(QWidget):
         message = f"PDF processing completed: {success_count} successes, {fail_count} failures"
         self.pdf_status.setText(message)
         self.processing_status_label.setText(message)
+        self.processing_finished.emit('pdf', True)
 
     @pyqtSlot(dict)
     def on_text_batch_completed(self, results):
@@ -887,6 +896,7 @@ class ProcessorsTab(QWidget):
         message = f"Text processing completed: {success_count} successes, {fail_count} failures"
         self.text_status.setText(message)
         self.processing_status_label.setText(message)
+        self.processing_finished.emit('text', True)
 
     def stop_all_processors(self):
         for wrapper in self.processor_wrappers.values():
@@ -906,6 +916,17 @@ class ProcessorsTab(QWidget):
         self.batch_stop_btn.setEnabled(False)
         
         self.processing_status_label.setText("All processors stopped")
+
+    def on_processing_started(self, name: str) -> None:
+        """Update UI when a processing task begins."""
+        self.processing_status_label.setText(f"Processing: {name}")
+        self.overall_progress.setRange(0, 0)
+
+    def on_processing_finished(self, name: str, success: bool) -> None:
+        """Reset progress when processing ends."""
+        status = "completed" if success else "stopped"
+        self.processing_status_label.setText(f"Processing {status}: {name}")
+        self.overall_progress.setRange(0, 100)
 
     def _start_next_advanced_processor(self, domain=None):
         if domain is not None:

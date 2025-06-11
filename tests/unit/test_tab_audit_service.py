@@ -93,6 +93,18 @@ class DummyMainWindow:
         self.configuration_tab.configuration_saved.connect(self.on_config_saved)
         self.balancer_tab.balancer.balance_completed.connect(self.on_balance_completed)
 
+        self.tab_registry = {
+            "dashboard_tab": self.dashboard_tab,
+            "collectors_tab": self.collectors_tab,
+            "processors_tab": self.processors_tab,
+            "corpus_manager_tab": self.corpus_manager_tab,
+            "balancer_tab": self.balancer_tab,
+            "analytics_tab": self.analytics_tab,
+            "configuration_tab": self.configuration_tab,
+            "logs_tab": self.logs_tab,
+            "full_activity_tab": self.full_activity_tab,
+        }
+
     def on_collection_started(self, *a, **k):
         pass
 

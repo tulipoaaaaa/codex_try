@@ -178,6 +178,19 @@ class CryptoCorpusMainWindow(QMainWindow):
             self.logger.debug("LogsTab initialized successfully")
             self.tab_widget.addTab(self.logs_tab, "📝 Logs")
             self.logger.info("All tabs initialized successfully")
+
+            # Registry for runtime tab audits
+            self.tab_registry = {
+                "dashboard_tab": self.dashboard_tab,
+                "collectors_tab": self.collectors_tab,
+                "processors_tab": self.processors_tab,
+                "balancer_tab": self.balancer_tab,
+                "corpus_manager_tab": self.corpus_manager_tab,
+                "configuration_tab": self.configuration_tab,
+                "logs_tab": self.logs_tab,
+                "analytics_tab": self.analytics_tab,
+                "full_activity_tab": self.full_activity_tab,
+            }
         except Exception as e:
             self.logger.error(f"Failed to initialize tabs: {e}")
             self.show_error("Initialization Error", f"Failed to initialize application tabs: {e}")
