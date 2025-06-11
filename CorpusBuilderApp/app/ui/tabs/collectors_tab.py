@@ -213,6 +213,15 @@ class CollectorsTab(QWidget):
         if name in self.collector_wrappers:
             wrapper = self.collector_wrappers[name]
             wrapper.start_collection()
+            # Connect optional live-update signals once, on first run
+            if hasattr(wrapper, "progress_updated"):
+                wrapper.progress_updated.connect(
+                    lambda v, n=name: self.cards[n].update_progress(v)
+                )
+            if hasattr(wrapper, "status_updated"):
+                wrapper.status_updated.connect(
+                    lambda msg, n=name: self.cards[n].update_status(msg)
+                )
             self.collection_started.emit(name)
 
     def stop_collection(self, name: str) -> None:

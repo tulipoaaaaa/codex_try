@@ -15,6 +15,7 @@ from PySide6.QtWidgets import (
     QTableWidgetItem,
     QHeaderView,
     QMessageBox,
+    QInputDialog,
 )
 from PySide6.QtCore import Qt, Slot as pyqtSlot, QMimeData, Signal as pyqtSignal
 from PySide6.QtGui import QDragEnterEvent, QDropEvent
@@ -27,6 +28,7 @@ from app.helpers.crypto_utils import encrypt_value, decrypt_value
 from app.ui.widgets.card_wrapper import CardWrapper
 from app.ui.widgets.section_header import SectionHeader
 from app.ui.theme.theme_constants import PAGE_MARGIN
+from app.ui.utils.ui_helpers import set_line_edit_text
 
 
 class ConfigurationTab(QWidget):
@@ -352,18 +354,18 @@ class ConfigurationTab(QWidget):
     def browse_config_file(self):
         """Browse for a configuration file"""
         file_path, _ = QFileDialog.getOpenFileName(
-            self, "Select Configuration File", "", "YAML Files (*.yaml *.yml)"
+            self, "Select Config File", "", "YAML Files (*.yaml *.yml)"
         )
         if file_path:
-            self.config_path.setText(file_path)
+            set_line_edit_text(self.config_path, file_path)
 
     def browse_python_executable(self):
         """Browse for a Python executable"""
         file_path, _ = QFileDialog.getOpenFileName(
-            self, "Select Python Executable", "", "Executable Files (*.exe)"
+            self, "Select Python Executable", "", "Executable Files (*.exe);;All Files (*.*)"
         )
         if file_path:
-            self.python_path.setText(file_path)
+            set_line_edit_text(self.python_path, file_path)
 
     def browse_venv_path(self):
         """Browse for a virtual environment directory"""
@@ -371,7 +373,7 @@ class ConfigurationTab(QWidget):
             self, "Select Virtual Environment Directory"
         )
         if dir_path:
-            self.venv_path.setText(dir_path)
+            set_line_edit_text(self.venv_path, dir_path)
 
     def browse_temp_dir(self):
         """Browse for a temporary directory"""
@@ -379,13 +381,13 @@ class ConfigurationTab(QWidget):
             self, "Select Temporary Directory"
         )
         if dir_path:
-            self.temp_dir.setText(dir_path)
+            set_line_edit_text(self.temp_dir, dir_path)
 
     def browse_directory(self, line_edit, title):
         """Browse for a directory and update the line edit"""
         dir_path = QFileDialog.getExistingDirectory(self, title)
         if dir_path:
-            line_edit.setText(dir_path)
+            set_line_edit_text(line_edit, dir_path)
 
     def on_environment_changed(self):
         """Handle environment selection change"""
@@ -405,87 +407,68 @@ class ConfigurationTab(QWidget):
         return domains
 
     def load_current_config(self):
-        """Load current configuration into the UI"""
-        # Load environment
-        env = self.project_config.get("environment.active", "test")
-        self.env_selector.setCurrentText(env)
+        """Load the current configuration into the UI."""
+        # Environment
+        env = self.project_config.get("environment", {})
+        set_line_edit_text(self.corpus_root, env.get("corpus_root", ""))
+        set_line_edit_text(self.raw_data_dir, env.get("raw_data_dir", ""))
+        set_line_edit_text(self.processed_dir, env.get("processed_dir", ""))
+        set_line_edit_text(self.metadata_dir, env.get("metadata_dir", ""))
+        set_line_edit_text(self.logs_dir, env.get("logs_dir", ""))
 
-        # Load config path
-        self.config_path.setText(self.project_config.config_path)
+        # API Keys
+        api_keys = self.project_config.get("api_keys", {})
+        set_line_edit_text(self.github_token, api_keys.get("github", ""))
+        set_line_edit_text(self.fred_token, api_keys.get("fred", ""))
+        set_line_edit_text(self.bitmex_token, api_keys.get("bitmex", ""))
+        set_line_edit_text(self.quantopian_token, api_keys.get("quantopian", ""))
+        set_line_edit_text(self.scidb_token, api_keys.get("scidb", ""))
+        set_line_edit_text(self.web_token, api_keys.get("web", ""))
 
-        # Load environment variables
-        self.python_path.setText(self.project_config.get("environment.python_path", ""))
-        self.venv_path.setText(self.project_config.get("environment.venv_path", ""))
-        self.temp_dir.setText(self.project_config.get("environment.temp_dir", ""))
-
-        # Load API keys
-        self.github_token.setText(self.project_config.get("api_keys.github", ""))
-        self.fred_token.setText(self.project_config.get("api_keys.fred", ""))
-        self.bitmex_token.setText(self.project_config.get("api_keys.bitmex", ""))
-        self.quantopian_token.setText(self.project_config.get("api_keys.quantopian", ""))
-        self.scidb_token.setText(self.project_config.get("api_keys.scidb", ""))
-        self.web_token.setText(self.project_config.get("api_keys.web", ""))
-
-        # Load directories from the active environment
-        env_dirs = self.project_config.get(f"environments.{env}", {})
-        self.corpus_root.setText(
-            env_dirs.get("corpus_root", self.project_config.get("directories.corpus_root", ""))
-        )
-        self.raw_data_dir.setText(
-            env_dirs.get("raw_dir", self.project_config.get("directories.raw_data", ""))
-        )
-        self.processed_dir.setText(
-            env_dirs.get("processed_dir", self.project_config.get("directories.processed", ""))
-        )
-        self.metadata_dir.setText(
-            env_dirs.get("metadata_dir", self.project_config.get("directories.metadata", ""))
-        )
-        self.logs_dir.setText(
-            env_dirs.get("logs_dir", self.project_config.get("directories.logs", ""))
-        )
+        # Environment paths
+        env = self.project_config.get("environment", {})
+        set_line_edit_text(self.python_path, env.get("python_path", ""))
+        set_line_edit_text(self.venv_path, env.get("venv_path", ""))
+        set_line_edit_text(self.temp_dir, env.get("temp_dir", ""))
+        set_line_edit_text(self.config_path, str(self.project_config.config_path))
 
         # Load domains
         domains = self.project_config.get("domains", {})
-        self.domain_table.setRowCount(len(domains))
-        for row, (domain, config) in enumerate(domains.items()):
-            self.domain_table.setItem(row, 0, QTableWidgetItem(domain))
-            enabled_item = QTableWidgetItem()
-            enabled_item.setCheckState(Qt.CheckState.Checked if config.get("enabled", True) else Qt.CheckState.Unchecked)
-            self.domain_table.setItem(row, 1, enabled_item)
-            self.domain_table.setItem(row, 2, QTableWidgetItem(str(config.get("priority", 0))))
+        self.domain_table.setRowCount(0)
+        for domain_key, domain_data in domains.items():
+            row = self.domain_table.rowCount()
+            self.domain_table.insertRow(row)
+            self.domain_table.setItem(row, 0, QTableWidgetItem(domain_key))
+            chk_item = QTableWidgetItem()
+            chk_item.setCheckState(Qt.Checked if domain_data.get("enabled", True) else Qt.Unchecked)
+            self.domain_table.setItem(row, 1, chk_item)
+            self.domain_table.setItem(row, 2, QTableWidgetItem(str(domain_data.get("priority", 0))))
 
         # Load processing settings
         self.max_workers.setValue(self.project_config.get("processing.max_workers", 4))
         self.batch_size.setValue(self.project_config.get("processing.batch_size", 100))
         self.timeout.setValue(self.project_config.get("processing.timeout", 300))
 
+        # Load environment variables
+        self.auto_save.setChecked(self.project_config.get("environment.auto_save", True))
+
     def load_default_config(self):
-        """Load default configuration into the UI"""
-        # Reset environment
-        self.env_selector.setCurrentText("test")
-
-        # Reset config path
-        self.config_path.setText("")
-
-        # Reset environment variables
-        self.python_path.setText("")
-        self.venv_path.setText("")
-        self.temp_dir.setText("")
-
-        # Reset API keys
-        self.github_token.setText("")
-        self.fred_token.setText("")
-        self.bitmex_token.setText("")
-        self.quantopian_token.setText("")
-        self.scidb_token.setText("")
-        self.web_token.setText("")
-
-        # Reset directories
-        self.corpus_root.setText("")
-        self.raw_data_dir.setText("")
-        self.processed_dir.setText("")
-        self.metadata_dir.setText("")
-        self.logs_dir.setText("")
+        """Reset all fields to empty."""
+        set_line_edit_text(self.config_path, "")
+        set_line_edit_text(self.python_path, "")
+        set_line_edit_text(self.venv_path, "")
+        set_line_edit_text(self.temp_dir, "")
+        set_line_edit_text(self.github_token, "")
+        set_line_edit_text(self.fred_token, "")
+        set_line_edit_text(self.bitmex_token, "")
+        set_line_edit_text(self.quantopian_token, "")
+        set_line_edit_text(self.scidb_token, "")
+        set_line_edit_text(self.web_token, "")
+        set_line_edit_text(self.corpus_root, "")
+        set_line_edit_text(self.raw_data_dir, "")
+        set_line_edit_text(self.processed_dir, "")
+        set_line_edit_text(self.metadata_dir, "")
+        set_line_edit_text(self.logs_dir, "")
 
         # Reset domains
         self.domain_table.setRowCount(0)
@@ -496,60 +479,53 @@ class ConfigurationTab(QWidget):
         self.timeout.setValue(300)
 
     def save_configuration(self):
-        """Save configuration from the UI"""
-        try:
-            # Save environment
-            self.project_config.set("environment.active", self.env_selector.currentText())
+        """Save the current configuration."""
+        env = self.env_selector.currentText()
+        self.project_config.set("environment.active", env)
 
-            # Save environment variables
-            self.project_config.set("environment.python_path", self.python_path.text())
-            self.project_config.set("environment.venv_path", self.venv_path.text())
-            self.project_config.set("environment.temp_dir", self.temp_dir.text())
+        # Save directories using the new schema
+        self.project_config.set(f"environments.{env}.corpus_dir", self.corpus_root.text())
+        self.project_config.set(f"environments.{env}.raw_data_dir", self.raw_data_dir.text())
+        self.project_config.set(f"environments.{env}.processed_dir", self.processed_dir.text())
+        self.project_config.set(f"environments.{env}.metadata_dir", self.metadata_dir.text())
+        self.project_config.set(f"environments.{env}.log_dir", self.logs_dir.text())
 
-            # Save API keys
-            self.project_config.set("api_keys.github", self.github_token.text())
-            self.project_config.set("api_keys.fred", self.fred_token.text())
-            self.project_config.set("api_keys.bitmex", self.bitmex_token.text())
-            self.project_config.set("api_keys.quantopian", self.quantopian_token.text())
-            self.project_config.set("api_keys.scidb", self.scidb_token.text())
-            self.project_config.set("api_keys.web", self.web_token.text())
+        # Save API keys
+        self.project_config.set("api_keys.github", self.github_token.text())
+        self.project_config.set("api_keys.fred", self.fred_token.text())
+        self.project_config.set("api_keys.bitmex", self.bitmex_token.text())
+        self.project_config.set("api_keys.quantopian", self.quantopian_token.text())
+        self.project_config.set("api_keys.scidb", self.scidb_token.text())
+        self.project_config.set("api_keys.web", self.web_token.text())
 
-            # Save directories under the active environment
-            env = self.env_selector.currentText()
-            self.project_config.set(
-                f"environments.{env}.corpus_root", self.corpus_root.text()
-            )
-            self.project_config.set(
-                f"environments.{env}.raw_dir", self.raw_data_dir.text()
-            )
-            self.project_config.set(
-                f"environments.{env}.processed_dir", self.processed_dir.text()
-            )
-            self.project_config.set(
-                f"environments.{env}.metadata_dir", self.metadata_dir.text()
-            )
-            self.project_config.set(
-                f"environments.{env}.logs_dir", self.logs_dir.text()
-            )
+        # Save domains
+        domains = {}
+        for row in range(self.domain_table.rowCount()):
+            domain_key = self.domain_table.item(row, 0).text()
+            enabled = self.domain_table.item(row, 1).checkState() == Qt.Checked
+            priority = int(self.domain_table.item(row, 2).text())
+            domains[domain_key] = {"enabled": enabled, "priority": priority}
+        self.project_config.set("domains", domains)
 
-            # Save domains
-            domains = self.validate_domain_config()
-            self.project_config.set("domains", domains)
+        # Save processing settings
+        self.project_config.set("processing.max_workers", self.max_workers.value())
+        self.project_config.set("processing.batch_size", self.batch_size.value())
+        self.project_config.set("processing.timeout", self.timeout.value())
 
-            # Save processing settings
-            self.project_config.set("processing.max_workers", self.max_workers.value())
-            self.project_config.set("processing.batch_size", self.batch_size.value())
-            self.project_config.set("processing.timeout", self.timeout.value())
+        # Save environment variables
+        self.project_config.set("environment.python_path", self.python_path.text())
+        self.project_config.set("environment.venv_path", self.venv_path.text())
+        self.project_config.set("environment.temp_dir", self.temp_dir.text())
+        self.project_config.set("environment.auto_save", self.auto_save.isChecked())
 
-            # Save configuration
-            self.project_config.save()
+        # Save config file path
+        self.project_config.config_path = self.config_path.text()
 
-            # Emit signal
-            self.configuration_saved.emit(self.project_config.config)
+        # Save the configuration
+        self.project_config.save()
 
-            QMessageBox.information(self, "Success", "Configuration saved successfully.")
-        except Exception as e:
-            QMessageBox.critical(self, "Error", f"Failed to save configuration: {str(e)}")
+        # Emit saved signal
+        self.configuration_saved.emit(self.project_config.config)
 
     def dragEnterEvent(self, event: QDragEnterEvent):
         """Handle drag enter event"""
@@ -572,3 +548,52 @@ class ConfigurationTab(QWidget):
             QMessageBox.information(self, "Success", "Configuration imported successfully.")
         except Exception as e:
             QMessageBox.critical(self, "Error", f"Failed to import configuration: {str(e)}")
+
+    def add_domain(self):
+        """
+        Prompt the user for a domain key and optional allocation,
+        then store it in ProjectConfig and refresh the domain table.
+        """
+        # Prompt for domain
+        domain_key, ok = QInputDialog.getText(
+            self, "Add Domain", "Enter new domain identifier (e.g., crypto_derivatives):"
+        )
+        if not ok or not domain_key.strip():
+            return
+        domain_key = domain_key.strip()
+
+        # Prompt for allocation
+        alloc_str, ok2 = QInputDialog.getText(
+            self, "Allocation (0–1)", "Optional allocation percentage (blank = 0):"
+        )
+        if not ok2:
+            return
+        try:
+            allocation = float(alloc_str) if alloc_str else 0.0
+        except ValueError:
+            QMessageBox.warning(self, "Invalid Input", "Allocation must be a number.")
+            return
+        if not (0.0 <= allocation <= 1.0):
+            QMessageBox.warning(self, "Invalid Input", "Allocation must be 0–1.")
+            return
+
+        # Update config
+        domains = self.project_config.get("domains", {})
+        if domain_key in domains:
+            QMessageBox.information(self, "Duplicate", f"Domain '{domain_key}' already exists.")
+            return
+        domains[domain_key] = {"enabled": True, "priority": 0, "allocation": allocation, "keywords": []}
+        self.project_config.set("domains", domains)
+        self.project_config.save()
+
+        # Add to table
+        row = self.domain_table.rowCount()
+        self.domain_table.insertRow(row)
+        self.domain_table.setItem(row, 0, QTableWidgetItem(domain_key))
+        chk_item = QTableWidgetItem()
+        chk_item.setCheckState(Qt.Checked)
+        self.domain_table.setItem(row, 1, chk_item)
+        self.domain_table.setItem(row, 2, QTableWidgetItem("0"))
+
+        # Emit saved signal
+        self.configuration_saved.emit(self.project_config.config)

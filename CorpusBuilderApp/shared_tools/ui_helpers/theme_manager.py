@@ -1,5 +1,6 @@
 """Utility for loading QSS theme stylesheets."""
 import logging
+import re
 from pathlib import Path
 
 logger = logging.getLogger(__name__)
@@ -15,13 +16,23 @@ def load_theme(theme_name: str) -> str:
     for path in candidates:
         if path.exists():
             try:
-                return path.read_text(encoding="utf-8")
+                logger.info("Loading QSS from %s", path)
+                text = path.read_text(encoding="utf-8")
+                # Strip any transform lines
+                text = re.sub(r".*transform:.*\n", "", text)
+                text = re.sub(r".*text-transform:.*\n", "", text)
+                return text
             except Exception as exc:  # pragma: no cover - file read issues
                 logger.exception("Unhandled exception in load_theme: %s", exc)
                 return ""
     path = base_dir / f"{theme_name}.qss"
     try:
-        return path.read_text(encoding="utf-8")
+        logger.info("Loading QSS from %s", path)
+        text = path.read_text(encoding="utf-8")
+        # Strip any transform lines
+        text = re.sub(r".*transform:.*\n", "", text)
+        text = re.sub(r".*text-transform:.*\n", "", text)
+        return text
     except Exception as exc:  # pragma: no cover - file read issues
         logger.exception("Unhandled exception in load_theme: %s", exc)
         return ""

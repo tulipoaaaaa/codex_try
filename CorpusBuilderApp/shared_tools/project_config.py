@@ -372,15 +372,12 @@ class ProjectConfig:
                 return default
         return value
     
-    def set(self, key: str, value: Any) -> None:
-        """Set configuration value"""
-        keys = key.split('.')
-        config = self.config
-        for k in keys[:-1]:
-            if k not in config:
-                config[k] = {}
-            config = config[k]
-        config[keys[-1]] = value
+    def set(self, dotted_key: str, value):
+        parts = dotted_key.split('.')
+        node = self.config
+        for p in parts[:-1]:
+            node = node.setdefault(p, {})
+        node[parts[-1]] = value
     
     def save(self) -> None:
         """Save configuration to YAML file"""
@@ -399,6 +396,9 @@ class ProjectConfig:
         for key, value in parsed_dict.items():
             if key not in self.config:
                 self.config[key] = value
+
+    def __contains__(self, key: str) -> bool:
+        return self.get(key) is not None
 
  # Directory helper methods
     def get_corpus_root(self) -> Path:

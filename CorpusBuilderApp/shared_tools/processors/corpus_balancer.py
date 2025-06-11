@@ -37,7 +37,7 @@ class CorpusAnalyzer:
         self.project_config = project_config
         
         # Use project config if provided, otherwise use provided config or defaults
-        if project_config and 'corpus_balancer' in project_config:
+        if project_config and project_config.get("corpus_balancer") is not None:
             self.config = project_config['corpus_balancer']
         else:
             self.config = config or self._get_default_config()

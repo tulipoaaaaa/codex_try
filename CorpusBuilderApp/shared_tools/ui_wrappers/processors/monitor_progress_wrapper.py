@@ -189,19 +189,35 @@ class ProgressMonitoringWorker(QThread):
         self._is_running = False
 
 
-class MonitorProgressWrapper(BaseWrapper, ProcessorWrapperMixin):
+class MonitorProgressWrapper(QWidget, BaseWrapper, ProcessorWrapperMixin):
     """UI Wrapper for Progress Monitoring"""
 
-    def __init__(self, config=None, task_queue_manager=None, parent=None):
-        super().__init__(parent)
-        self.config = config
+    def __init__(
+        self,
+        config=None,                  # project_config object or path
+        task_queue_manager=None,
+        parent=None,
+    ):
+        QWidget.__init__(self, parent)
+        # Back-compat guard
+        if isinstance(config, QWidget) and parent is None:
+            import logging
+            logging.warning(
+                "MonitorProgressWrapper called with (parent) only; auto-shifting args for backward compatibility.")
+            parent = config
+            config = None
+        BaseWrapper.__init__(self, config)
+        ProcessorWrapperMixin.__init__(self)
         self.task_queue_manager = task_queue_manager
+        self.monitor_config = config or {}
+        self.monitor = MonitorProgress()
+        self._is_running = False
+        self._mutex = QMutex()
+        self.active_tasks = {}
         self.monitoring_worker = None
-        self.monitor_config: Dict[str, Any] = {}
         self.monitored_tasks = {}
         self.task_widgets = {}
         self.monitoring_enabled = False
-        self.task_queue_manager = task_queue_manager
         self.setup_ui()
         self.setup_connections()
         

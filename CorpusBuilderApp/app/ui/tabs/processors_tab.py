@@ -511,11 +511,18 @@ class ProcessorsTab(QWidget):
             # Initialize object-based wrappers
             for name, wrapper_class in object_wrappers:
                 try:
-                    logger.debug(
-                        "Initializing %s with config_object...",
-                        wrapper_class.__name__,
-                    )
-                    self.processor_wrappers[name] = wrapper_class(config_object)
+                    if wrapper_class.__name__ in (
+                        "QualityControlWrapper",
+                        "MonitorProgressWrapper",
+                    ):
+                        self.processor_wrappers[name] = wrapper_class(
+                            self.project_config,
+                            parent=self,
+                        )
+                    else:
+                        self.processor_wrappers[name] = wrapper_class(
+                            self.project_config
+                        )
                     logger.debug("%s initialized successfully", wrapper_class.__name__)
                 except Exception as e:
                     logger.error(
@@ -606,7 +613,7 @@ class ProcessorsTab(QWidget):
             self, "Select Input Directory", ""
         )
         if directory:
-            self.input_dir_path.setText(directory)
+            self.input_dir_path.setText(str(directory))
 
     def start_pdf_processing(self):
         """Start PDF processing with safety checks"""

@@ -3,6 +3,8 @@ Crypto Corpus Builder v3 - Main Application Entry Point
 """
 
 import sys
+print("PYTHON EXECUTABLE:", sys.executable)
+print("PYTHONPATH:", sys.path)
 import os
 if os.getenv("HEADLESS", "0") == "1":
     os.environ["QT_QPA_PLATFORM"] = "offscreen"
@@ -15,6 +17,10 @@ import json
 from dotenv import load_dotenv
 # Add import for qdarktheme
 import qdarktheme
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning, module="pydantic")
+import PySide6.QtWidgets as QtW
+import inspect
 
 # Add shared_tools to path for imports
 current_dir = Path(__file__).parent.parent
@@ -27,6 +33,14 @@ from shared_tools.logging_config import setup_logging
 
 # Update theme config path to use the correct location
 THEME_CONFIG_PATH = os.path.join(os.path.dirname(__file__), 'resources', 'styles', 'theme_config.json')
+
+_orig_setText = QtW.QLineEdit.setText
+def _patched_setText(self, val):
+    if isinstance(val, Path):
+        logging.warning("QLineEdit.setText received Path at %s", inspect.stack()[1].filename)
+        val = str(val)
+    _orig_setText(self, val)
+QtW.QLineEdit.setText = _patched_setText
 
 def load_user_theme():
     if os.path.exists(THEME_CONFIG_PATH):

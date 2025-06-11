@@ -1,0 +1,6 @@
+processors:
+  machine_translation:
+    min_confidence: 0.80
+    target_languages: ["en"]
+  language_confidence:
+    min_confidence: 0.80 

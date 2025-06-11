@@ -1,0 +1,6 @@
+import logging
+
+def load_theme(...):
+    # ... existing code ...
+    logging.info('Loading QSS %s', qss_path)
+    # ... existing code ... 

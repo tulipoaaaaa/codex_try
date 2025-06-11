@@ -1,22 +1,65 @@
 # File: shared_tools/ui_wrappers/processors/quality_control_wrapper.py
 
+import inspect, sys, textwrap, pathlib, importlib
+print("QC-TRACE A  file loaded:", __file__)
+
+# Dump the full source of THIS module at import time
+with open(__file__, "r", encoding="utf-8") as _f:
+    print("QC-TRACE B  file contents at import time ▼\n",
+          textwrap.indent(_f.read(), "   "), "\n▲ end")
+
+print("LOADED QCWrapper from", __file__)
+
 from PySide6.QtCore import Signal as pyqtSignal, QObject, QThread
+from PySide6.QtWidgets import QWidget
 from shared_tools.processors.quality_control import QualityControl
 from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
 from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
+import logging, traceback
 
-class QualityControlWrapper(BaseWrapper, ProcessorWrapperMixin):
+class QualityControlWrapper(QWidget, BaseWrapper, ProcessorWrapperMixin):
     """UI wrapper for the Quality Control processor."""
     
     quality_score_calculated = pyqtSignal(str, float)  # file_path, score
     
-    def __init__(self, project_config):
-        super().__init__(project_config)
-        self.project_config = project_config  # Ensure attribute exists for tests
-        self.processor = QualityControl(project_config)
+    def __init__(
+        self,
+        config,
+        task_queue_manager=None,
+        parent=None,
+    ):
+        """
+        Parameters
+        ----------
+        config : ProjectConfig | str
+            Mandatory. Passed straight to BaseWrapper.
+        task_queue_manager : TaskQueueManager | None
+        parent : QWidget | None
+        """
+        QWidget.__init__(self, parent)
+
+        # 2. guard: refuse to run without config
+        if config is None:
+            logging.error("QualityControlWrapper called with config=None")
+            traceback.print_stack(limit=8)
+            raise RuntimeError("QualityControlWrapper requires a non-None config")
+
+        print("QC-DEBUG 1  -> config argument value:", type(config))
+        print("QC-DEBUG 2  -> BaseWrapper we will call is from:", BaseWrapper.__module__, "file:", inspect.getfile(BaseWrapper))
+        print("QC-DEBUG 3  -> About to call BaseWrapper.__init__ with args:", (self, config))
+
+        # 3. pass the config into BaseWrapper
+        BaseWrapper.__init__(self, config)
+        ProcessorWrapperMixin.__init__(self)
+
+        self.task_queue_manager = task_queue_manager
+        self.project_config = config  # Ensure attribute exists for tests
+        self.processor = QualityControl(config)
         self._is_running = False
         self.worker_thread = None
         self.quality_threshold = 70  # Default threshold
+        
+        print("QCWrapper __init__ source at runtime:\n", inspect.getsource(QualityControlWrapper.__init__))
         
     def start(self, file_paths=None, **kwargs):
         """Start quality control processing on the specified files."""
@@ -186,3 +229,10 @@ class QCWorkerThread(QThread):
             
         except Exception as e:
             self.error_occurred.emit(f"Quality control error: {str(e)}")
+
+# After the class is defined, show the __init__ we'll run
+def _after_def():
+    from inspect import getsource
+    print("QC-TRACE C  QualityControlWrapper.__init__ body ▼")
+    print(textwrap.indent(getsource(QualityControlWrapper.__init__), "   "), "\n▲ end")
+_after_def()

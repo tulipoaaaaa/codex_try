@@ -9,6 +9,7 @@ from app.helpers.theme_manager import ThemeManager
 import json
 import os
 import logging
+from app.ui.utils.ui_helpers import set_line_edit_text
 
 class SettingsDialog(QDialog):
     """Dialog for application settings."""

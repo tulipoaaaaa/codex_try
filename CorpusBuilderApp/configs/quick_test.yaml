@@ -11,3 +11,10 @@ environments:
     corpus_dir: ./test_data/corpus
     log_dir: ./test_data/logs
     # cache_dir: ./test_data/cache   # optional
+
+processors:
+  language_confidence:
+    min_confidence: 0.80
+  machine_translation:
+    min_confidence: 0.80
+    target_languages: ["en"]

@@ -35,7 +35,7 @@ class DomainClassifier:
         
         # Use project config if provided, otherwise use provided config or defaults
         if project_config:
-            if hasattr(project_config, 'processors') and 'domain_classifier' in project_config.processors:
+            if hasattr(project_config, 'get') and project_config.get('processors') and 'domain_classifier' in project_config.get('processors'):
                 # New master config structure
                 self.config = project_config.processors['domain_classifier']
                 self.domain_config = self.config.get('domains', {})
