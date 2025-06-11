@@ -6,9 +6,9 @@ from shared_tools.ui_wrappers.processors.monitor_progress_wrapper import Monitor
 from shared_tools.services.system_monitor import SystemMonitor
 
 class MonitoringTab(QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, project_config, parent=None):
         super().__init__(parent)
-        self.project_config = getattr(parent, 'project_config', None)
+        self.project_config = project_config
         layout = QVBoxLayout(self)
         layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
         layout.setSpacing(PAGE_MARGIN)

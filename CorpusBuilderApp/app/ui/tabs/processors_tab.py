@@ -59,6 +59,7 @@ class ProcessorsTab(QWidget):
     ):
         super().__init__(parent)
         self.project_config = project_config
+        logger.debug("ProcessorsTab received project_config: %s", type(project_config))
         self.task_history_service = task_history_service
         self.task_queue_manager = task_queue_manager
         self._task_ids = {}
@@ -465,6 +466,7 @@ class ProcessorsTab(QWidget):
         try:
             logger.debug("Starting processor wrapper initialization...")
             logger.debug("project_config type: %s", type(self.project_config))
+            assert self.project_config is not None, "ProcessorsTab missing ProjectConfig"
             
             # Get both config object and config path
             config_object = self.project_config
