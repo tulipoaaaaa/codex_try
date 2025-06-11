@@ -225,9 +225,6 @@ def main():
         )
     app = CryptoCorpusApp(sys.argv)
 
-    # Create main window with config
-    app.main_window = CryptoCorpusMainWindow(app.config)
-    
     # Load and apply theme AFTER window creation
     user_theme = load_user_theme()
     print(f"DEBUG: Applying theme after window creation: {user_theme}")
@@ -235,9 +232,6 @@ def main():
     
     # Force theme re-application after a short delay
     QTimer.singleShot(100, lambda: ThemeManager.apply_theme(user_theme))
-
-    # Show the window
-    app.main_window.show()
 
     # Connect settings dialog to save theme changes
     def on_settings_updated(settings):
@@ -250,12 +244,7 @@ def main():
 
     sound_enabled = load_user_sound_setting()
 
-    # Run the application
-    exit_code = app.exec()
-    
-    # Cleanup
-    logging.getLogger("CryptoCorpusApp").info("Application exiting...")
-    sys.exit(exit_code)
+    return app.exec()
 
 if __name__ == "__main__":
     main()

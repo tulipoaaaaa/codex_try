@@ -11,10 +11,9 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
                            QProgressBar, QLabel, QTextEdit, QFileDialog, QCheckBox, 
                            QSpinBox, QGroupBox, QGridLayout, QComboBox, QDoubleSpinBox,
                            QTabWidget, QListWidget, QSplitter, QFormLayout)
-from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
 from shared_tools.processors.batch_text_extractor_enhanced_prerefactor import BatchTextExtractorEnhancedPrerefactor
-from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
 from ...project_config import ProjectConfig
+from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 
 
 class BatchTextExtractorWorker(QThread):
@@ -27,7 +26,7 @@ class BatchTextExtractorWorker(QThread):
     quality_report = pyqtSignal(str, dict)  # file path, quality metrics
     
     def __init__(self, input_path: str, output_path: str, options: Dict[str, Any]):
-        super().__init__()
+        QThread.__init__(self)  # Initialize QThread explicitly
         self.input_path = input_path
         self.output_path = output_path
         self.options = options
@@ -156,18 +155,27 @@ class BatchTextExtractorWorker(QThread):
         return files
 
 
-class BatchTextExtractorEnhancedPrerefactorWrapper(ProcessorWrapperMixin):
+class BatchTextExtractorEnhancedPrerefactorWrapper(QWidget):
     """Wrapper for BatchTextExtractorEnhancedPrerefactor with UI controls"""
     
-    def __init__(self, parent: Optional[QWidget] = None, project_config: Optional[Union[str, ProjectConfig]] = None):
-        """Initialize the wrapper
-        
-        Args:
-            parent: Parent widget
-            project_config: Optional project configuration
+    def __init__(self, config, task_queue_manager=None, parent=None):
         """
-        super().__init__(parent, project_config)
-        self.processor = BatchTextExtractorEnhancedPrerefactor(project_config=project_config)
+        Parameters
+        ----------
+        config : ProjectConfig | str
+            Mandatory. Passed straight to BaseWrapper.
+        task_queue_manager : TaskQueueManager | None
+        parent : QWidget | None
+        """
+        # Initialize base classes in correct order
+        QWidget.__init__(self, parent)  # layout parent
+        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)
+        
+        # Set up delegation for frequently used attributes
+        self.config = self._bw.config  # delegation
+        self.logger = self._bw.logger  # delegation
+        
+        self.processor = BatchTextExtractorEnhancedPrerefactor(project_config=config)
         self._init_ui()
     
     def _init_ui(self):
@@ -312,8 +320,10 @@ class BatchTextExtractorEnhancedPrerefactorWrapper(ProcessorWrapperMixin):
         return self.processor.process_file(file_path, output_dir)
 
 
-class BatchTextExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
-    """UI Wrapper for Batch Text Extractor Enhanced Pre-refactor"""
+# Note: This class may be deprecated. Pending full audit of its usage and functionality.
+# Consider using BatchTextExtractorEnhancedPrerefactorWrapper instead.
+class BatchTextExtractorWrapper(QWidget):
+    """UI wrapper for Batch Text Extractor (Potentially Deprecated)"""
     
     def __init__(self, parent=None):
         super().__init__(parent)

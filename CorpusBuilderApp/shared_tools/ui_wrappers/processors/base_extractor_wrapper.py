@@ -10,17 +10,32 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
                            QLabel, QTextEdit, QFileDialog, QCheckBox, 
                            QSpinBox, QGroupBox, QGridLayout, QComboBox,
                            QLineEdit, QTabWidget, QSlider)
-from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
 from shared_tools.processors.base_extractor import BaseExtractor
+from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 
 
-class BaseExtractorWrapper(BaseWrapper):
+class BaseExtractorWrapper(QWidget):
     """UI Wrapper for Base Extractor Configuration"""
     
     configuration_changed = pyqtSignal(dict)  # Emitted when configuration changes
     
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self, config, task_queue_manager=None, parent=None):
+        """
+        Parameters
+        ----------
+        config : ProjectConfig | str
+            Mandatory. Passed straight to BaseWrapper.
+        task_queue_manager : TaskQueueManager | None
+        parent : QWidget | None
+        """
+        # Initialize base classes in correct order
+        QWidget.__init__(self, parent)  # Initialize QWidget first
+        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)  # Then initialize ProcessorMixin
+        
+        # Set up delegation for frequently used attributes
+        self.config = self._bw.config  # delegation
+        self.logger = self._bw.logger  # delegation
+        
         self.extractor = BaseExtractor()
         self.current_config = {}
         self.setup_ui()

@@ -12,9 +12,8 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
                            QSpinBox, QGroupBox, QGridLayout, QComboBox, QListWidget,
                            QSplitter, QTabWidget, QTableWidget, QTableWidgetItem,
                            QHeaderView)
-from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
 from shared_tools.processors.corruption_detector import CorruptionDetector
-from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
+from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 
 
 class CorruptionDetectorWorker(QThread):
@@ -135,11 +134,26 @@ class CorruptionDetectorWorker(QThread):
         return files
 
 
-class CorruptionDetectorWrapper(BaseWrapper, ProcessorWrapperMixin):
+class CorruptionDetectorWrapper(QWidget):
     """UI Wrapper for Corruption Detector"""
     
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self, config, task_queue_manager=None, parent=None):
+        """
+        Parameters
+        ----------
+        config : ProjectConfig | str
+            Mandatory. Passed straight to BaseWrapper.
+        task_queue_manager : TaskQueueManager | None
+        parent : QWidget | None
+        """
+        # Initialize base classes in correct order
+        QWidget.__init__(self, parent)  # Initialize QWidget first
+        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)  # Then initialize ProcessorMixin
+        
+        # Set up delegation for frequently used attributes
+        self.config = self._bw.config  # delegation
+        self.logger = self._bw.logger  # delegation
+        
         self.worker = None
         self.scan_results = []
         self.setup_ui()

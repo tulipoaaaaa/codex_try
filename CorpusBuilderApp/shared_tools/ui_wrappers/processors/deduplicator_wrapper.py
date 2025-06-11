@@ -1,20 +1,39 @@
 # File: shared_tools/ui_wrappers/processors/deduplicator_wrapper.py
 
 from PySide6.QtCore import Signal as pyqtSignal, QThread, Slot as pyqtSlot
+from PySide6.QtWidgets import QWidget
 from shared_tools.processors.deduplicator import Deduplicator
-from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
-from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
+from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 import subprocess
 import sys
 
-class DeduplicatorWrapper(BaseWrapper, ProcessorWrapperMixin):
+class DeduplicatorWrapper(QWidget):
     """UI wrapper for the Deduplicator processor."""
     
     duplicate_found = pyqtSignal(str, str, float)  # file1, file2, similarity
     
-    def __init__(self, project_config):
-        super().__init__(project_config)
-        self.processor = Deduplicator(project_config)
+    def __init__(self, config, task_queue_manager=None, parent=None):
+        """
+        Parameters
+        ----------
+        config : ProjectConfig | str
+            Mandatory. Passed straight to ProcessorMixin.
+        task_queue_manager : TaskQueueManager | None
+        parent : QWidget | None
+        """
+        # Initialize base classes in correct order
+        QWidget.__init__(self, parent)  # Initialize QWidget first
+        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)  # Then initialize ProcessorMixin
+        
+        # Set up delegation for frequently used attributes
+        self.config = self._bw.config  # delegation
+        self.logger = self._bw.logger  # delegation
+        
+        # Delegate signals from BaseWrapper
+        self.status_updated = self._bw.status_updated
+        self.batch_completed = self._bw.completed
+        
+        self.processor = Deduplicator(config)
         self._is_running = False
         self.worker_thread = None
         self.similarity_threshold = 0.85  # Default threshold

@@ -1,18 +1,37 @@
 # File: shared_tools/ui_wrappers/processors/machine_translation_detector_wrapper.py
 
 from PySide6.QtCore import Signal as pyqtSignal, QThread
+from PySide6.QtWidgets import QWidget
 from shared_tools.processors.machine_translation_detector import MachineTranslationDetector
-from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
-from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
+from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 
-class MachineTranslationDetectorWrapper(BaseWrapper, ProcessorWrapperMixin):
+class MachineTranslationDetectorWrapper(QWidget):
     """UI wrapper for the Machine Translation Detector processor."""
     
     translation_detected = pyqtSignal(str, bool, float)  # file_path, is_translated, confidence
     
-    def __init__(self, project_config):
-        super().__init__(project_config)
-        self.processor = MachineTranslationDetector(project_config)
+    def __init__(self, config, task_queue_manager=None, parent=None):
+        """
+        Parameters
+        ----------
+        config : ProjectConfig | str
+            Mandatory. Passed straight to BaseWrapper.
+        task_queue_manager : TaskQueueManager | None
+        parent : QWidget | None
+        """
+        # Initialize base classes in correct order
+        QWidget.__init__(self, parent)  # Initialize QWidget first
+        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)  # Then initialize ProcessorMixin
+        
+        # Set up delegation for frequently used attributes
+        self.config = self._bw.config  # delegation
+        self.logger = self._bw.logger  # delegation
+        
+        # Delegate signals from BaseWrapper
+        self.status_updated = self._bw.status_updated
+        self.batch_completed = self._bw.completed
+        
+        self.processor = MachineTranslationDetector(config)
         self._is_running = False
         self.worker_thread = None
         self._enabled = True

@@ -53,14 +53,11 @@ except Exception:  # pragma: no cover - fallback for stubs
     class Qt:
         Orientation = type("Orientation", (), {"Horizontal": 0})
 
-from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
-try:
-    from shared_tools.processors.monitor_progress import MonitorProgress
-except Exception:  # pragma: no cover - optional dependency
-    class MonitorProgress:
-        def configure(self, *a, **k):
-            pass
-from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
+from PySide6.QtCore import Signal as pyqtSignal, QThread, QMutex
+from PySide6.QtWidgets import QWidget
+from shared_tools.processors.monitor_progress import MonitorProgress
+from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
+import logging
 
 
 class ProgressMonitoringWorker(QThread):
@@ -73,29 +70,22 @@ class ProgressMonitoringWorker(QThread):
     monitoring_stats = pyqtSignal(dict)  # overall monitoring statistics
     
     def __init__(self, monitor_config: Dict[str, Any], task_queue_manager=None):
-        super().__init__()
+        QThread.__init__(self)  # Initialize QThread explicitly
         self.monitor_config = monitor_config
-        self.monitor = MonitorProgress()
-        self._is_running = False
+        self.task_queue_manager = task_queue_manager
+        self._should_stop = False
+        self._is_paused = False
         self._mutex = QMutex()
         self.active_tasks = {}
-        self.task_queue_manager = task_queue_manager
+        self.monitor = MonitorProgress()
+        self.monitor.configure(**monitor_config)
         
     def run(self):
         """Execute progress monitoring"""
-        self._is_running = True
-        
-        # Configure monitor
-        self.monitor.configure(
-            update_interval=self.monitor_config.get('update_interval', 1.0),
-            enable_notifications=self.monitor_config.get('enable_notifications', True),
-            log_progress=self.monitor_config.get('log_progress', True),
-            track_memory=self.monitor_config.get('track_memory', True),
-            track_cpu=self.monitor_config.get('track_cpu', True)
-        )
+        self._should_stop = False
         
         # Start monitoring loop
-        while self._is_running:
+        while not self._should_stop:
             try:
                 # Check for new tasks
                 self._check_for_new_tasks()
@@ -186,28 +176,34 @@ class ProgressMonitoringWorker(QThread):
             
     def stop_monitoring(self):
         """Stop the monitoring process"""
-        self._is_running = False
+        self._should_stop = True
 
 
-class MonitorProgressWrapper(QWidget, BaseWrapper, ProcessorWrapperMixin):
-    """UI Wrapper for Progress Monitoring"""
+class MonitorProgressWrapper(QWidget):
+    """UI wrapper for the Monitor Progress processor."""
 
     def __init__(
         self,
-        config=None,                  # project_config object or path
+        config,
         task_queue_manager=None,
         parent=None,
     ):
-        QWidget.__init__(self, parent)
-        # Back-compat guard
-        if isinstance(config, QWidget) and parent is None:
-            import logging
-            logging.warning(
-                "MonitorProgressWrapper called with (parent) only; auto-shifting args for backward compatibility.")
-            parent = config
-            config = None
-        BaseWrapper.__init__(self, config)
-        ProcessorWrapperMixin.__init__(self)
+        """
+        Parameters
+        ----------
+        config : ProjectConfig | str
+            Mandatory. Passed straight to BaseWrapper.
+        task_queue_manager : TaskQueueManager | None
+        parent : QWidget | None
+        """
+        # Initialize base classes in correct order
+        QWidget.__init__(self, parent)  # Initialize QWidget first
+        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)  # Then initialize ProcessorMixin
+        
+        # Set up delegation for frequently used attributes
+        self.config = self._bw.config  # delegation
+        self.logger = self._bw.logger  # delegation
+        
         self.task_queue_manager = task_queue_manager
         self.monitor_config = config or {}
         self.monitor = MonitorProgress()
@@ -927,3 +923,14 @@ class MonitorProgressWrapper(QWidget, BaseWrapper, ProcessorWrapperMixin):
 
         except Exception as exc:
             self.show_error("Configuration Error", f"Failed to refresh configuration: {exc}")
+
+    @pyqtSlot(str)
+    def filter_history(self, filter_text: str):
+        """Filter history table based on selected filter"""
+        for row in range(self.history_table.rowCount()):
+            show_row = True
+            if filter_text != "All":
+                status_item = self.history_table.item(row, 2)
+                if status_item and status_item.text() != filter_text:
+                    show_row = False
+            self.history_table.setRowHidden(row, not show_row)
