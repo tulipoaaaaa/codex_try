@@ -84,7 +84,7 @@ def check_corpus_structure(
     check_integrity:
         When ``True`` sample domain files with :class:`CorruptionDetector`.
     """
-    corpus_root = Path(config.get_corpus_dir())
+    corpus_root = Path(config.get_corpus_root())
     logger.info("Corpus root: %s", corpus_root)
 
     required = {

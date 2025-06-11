@@ -237,7 +237,7 @@ def verify_project_config():
                 "venv_path": "",
                 "temp_dir": "",
             },
-            "environments": {"test": {"corpus_dir": tmpdir}},
+            "environments": {"test": {"corpus_root": tmpdir}},
         }
         import yaml
 

@@ -8,7 +8,7 @@ def _write_yaml(path, corpus_dir):
     """Write a minimal configuration file matching the current schema."""
     data = {
         "environment": {"active": "test"},
-        "environments": {"test": {"corpus_dir": str(corpus_dir)}},
+        "environments": {"test": {"corpus_root": str(corpus_dir)}},
     }
     with open(path, "w") as f:
         yaml.safe_dump(data, f)

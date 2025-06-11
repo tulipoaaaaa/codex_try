@@ -176,14 +176,14 @@ class CryptoCorpusApp(QApplication):
                 'venv_path': '',
                 'temp_dir': ''
             },
-            'environments': {
+                        'environments': {
                 'test': {
-                    'corpus_dir': str(config_dir / 'corpus'),
+                'corpus_root': str(config_dir / 'corpus'),
                     'cache_dir': str(config_dir / 'cache'),
                     'log_dir': str(config_dir / 'logs')
                 },
-                'production': {
-                    'corpus_dir': str(Path.home() / 'CryptoCorpus'),
+                                'production': {
+                'corpus_root': str(Path.home() / 'CryptoCorpus'),
                     'cache_dir': str(Path.home() / 'CryptoCorpus' / 'cache'),
                     'log_dir': str(Path.home() / 'CryptoCorpus' / 'logs')
                 }

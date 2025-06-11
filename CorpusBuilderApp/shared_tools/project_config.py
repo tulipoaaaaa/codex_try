@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 
 class EnvironmentConfig(BaseModel):
     """Schema for environment-specific configuration."""
-    corpus_dir: str = Field(..., description="Base directory for the corpus")
+    corpus_root: str = Field(..., description="Base directory for the corpus")
     cache_dir: Optional[str] = Field(None, description="Optional cache directory")
     log_dir: Optional[str] = Field(None, description="Optional log directory")
     raw_data_dir: Optional[str] = Field(None, description="Directory for raw documents")
@@ -409,6 +409,7 @@ class ProjectConfig:
         return Path(path).expanduser()
 
     def get_corpus_dir(self) -> Path:
+        """Legacy method for backward compatibility. Use get_corpus_root() instead."""
         return self.get_corpus_root()
 
     def get_raw_dir(self) -> Path:
@@ -472,7 +473,7 @@ class ProjectConfig:
             },
             "environments": {
                 "test": {
-                    "corpus_dir": str(config_dir / "corpus"),
+                    "corpus_root": str(config_dir / "corpus"),
                     "cache_dir": str(config_dir / "cache"),
                     "log_dir": str(config_dir / "logs"),
                     "raw_data_dir": str(config_dir / "corpus" / "raw"),
@@ -480,7 +481,7 @@ class ProjectConfig:
                     "metadata_dir": str(config_dir / "corpus" / "metadata"),
                 },
                 "production": {
-                    "corpus_dir": str(Path.home() / "CryptoCorpus"),
+                    "corpus_root": str(Path.home() / "CryptoCorpus"),
                     "cache_dir": str(Path.home() / "CryptoCorpus" / "cache"),
                     "log_dir": str(Path.home() / "CryptoCorpus" / "logs"),
                     "raw_data_dir": str(Path.home() / "CryptoCorpus" / "raw"),

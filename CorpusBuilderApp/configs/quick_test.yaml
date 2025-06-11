@@ -8,7 +8,7 @@ enabled_processors:
 
 environments:
   test:
-    corpus_dir: ./test_data/corpus
+    corpus_root: ./test_data/corpus
     log_dir: ./test_data/logs
     # cache_dir: ./test_data/cache   # optional
 
