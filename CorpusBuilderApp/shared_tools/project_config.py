@@ -418,6 +418,10 @@ class ProjectConfig:
             path = self.get('directories.raw_data_dir')
         return Path(path).expanduser()
 
+    def get_input_dir(self) -> Path:
+        """Legacy helper for compatibility with older processors."""
+        return self.get_raw_dir()
+
     def get_processed_dir(self) -> Path:
         env = self.get('environment.active')
         path = self.get(f'environments.{env}.processed_dir')
