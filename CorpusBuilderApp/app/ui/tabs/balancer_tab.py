@@ -17,6 +17,7 @@ from app.helpers.icon_manager import IconManager
 from app.helpers.notifier import Notifier
 from shared_tools.services.corpus_stats_service import CorpusStatsService
 from shared_tools.services.auto_balance_service import AutoBalanceService
+from app.ui.widgets.section_header import SectionHeader
 
 
 class AdvancedNotificationManager(QObject):

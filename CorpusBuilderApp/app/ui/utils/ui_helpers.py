@@ -1,4 +1,5 @@
 from PySide6.QtWidgets import QProgressBar
+from pathlib import Path
 
 
 def create_styled_progress_bar(value: int, color: str, height: int = 8) -> QProgressBar:
@@ -15,3 +16,10 @@ def create_styled_progress_bar(value: int, color: str, height: int = 8) -> QProg
         """
     )
     return bar
+
+
+def set_line_edit_text(line_edit, value):
+    """
+    Safely set text on a QLineEdit, converting Path objects to str.
+    """
+    line_edit.setText(str(value) if isinstance(value, Path) else value)

@@ -326,13 +326,12 @@ def detect_machine_translation(text, config_path=None, file_type=None, domain=No
 class MachineTranslationDetector:
     """Detect machine-translated content"""
     
-    def __init__(self, config: Optional[Dict] = None, project_config: Optional[Dict] = None):
-        """Initialize machine translation detector
-        
-        Args:
-            config (dict): Optional configuration
-            project_config (dict): Optional project configuration
-        """
+    def __init__(self, project_config, *a, **kw):
+        super().__init__(*a, **kw)
+        self.project_config = project_config
+        cfg = project_config.get('processors.' + self.__class__.__name__.lower(), {})
+        self.min_conf = cfg.get('min_confidence', 0.80)
+        self.target_languages = cfg.get('target_languages', ['en'])
         self.logger = logging.getLogger(self.__class__.__name__)
         
         # Use project config if provided, otherwise use provided config or defaults
@@ -344,9 +343,9 @@ class MachineTranslationDetector:
                 # Legacy project config structure
                 self.config = project_config['machine_translation']
             else:
-                self.config = config or self._get_default_config()
+                self.config = cfg or self._get_default_config()
         else:
-            self.config = config or self._get_default_config()
+            self.config = cfg or self._get_default_config()
         
         # Validate configuration
         self._validate_config()
@@ -383,21 +382,26 @@ class MachineTranslationDetector:
     
     def _validate_config(self) -> None:
         """Validate configuration values"""
-        required_fields = ['min_confidence', 'min_text_length', 'patterns']
+        required_fields = ['min_confidence', 'min_text_length', 'target_languages']
         for field in required_fields:
             if field not in self.config:
                 self.logger.warning(f"Missing required config field: {field}")
-                self.config[field] = self._get_default_config()[field]
+                if field == 'min_confidence':
+                    if self.project_config and hasattr(self.project_config, 'get'):
+                        self.config[field] = self.project_config.get('processors.machine_translation.min_confidence', 0.80)
+                    else:
+                        self.config[field] = 0.80
+                elif field == 'target_languages':
+                    self.config[field] = ['en']
+                else:
+                    self.config[field] = self._get_default_config()[field]
         
         # Validate numeric fields
         numeric_fields = {
             'min_confidence': (0.0, 1.0),
             'min_text_length': (1, float('inf')),
-            'ngram_repetition_threshold': (1, float('inf')),
-            'rare_word_ratio_threshold': (0.0, 1.0),
-            'functional_to_content_ratio': (0.0, 1.0),
-            'missing_article_threshold': (0.0, 1.0),
-            'unusual_verb_tense_threshold': (0.0, 1.0)
+            'min_language_ratio': (0.0, 1.0),
+            'max_languages': (1, float('inf'))
         }
         
         for field, (min_val, max_val) in numeric_fields.items():
@@ -406,10 +410,16 @@ class MachineTranslationDetector:
                     value = float(self.config[field])
                     if not min_val <= value <= max_val:
                         self.logger.warning(f"Config field {field} value {value} outside valid range [{min_val}, {max_val}]")
-                        self.config[field] = self._get_default_config()[field]
+                        if field == 'min_confidence':
+                            self.config[field] = self.project_config.get('processors.machine_translation.min_confidence', 0.80)
+                        else:
+                            self.config[field] = self._get_default_config()[field]
                 except (ValueError, TypeError):
                     self.logger.warning(f"Invalid numeric value for config field: {field}")
-                    self.config[field] = self._get_default_config()[field]
+                    if field == 'min_confidence':
+                        self.config[field] = self.project_config.get('processors.machine_translation.min_confidence', 0.80)
+                    else:
+                        self.config[field] = self._get_default_config()[field]
         
         # Validate boolean fields
         boolean_fields = ['enabled', 'high_precision', 'verbose']
@@ -418,40 +428,41 @@ class MachineTranslationDetector:
                 self.logger.warning(f"Invalid boolean value for config field: {field}")
                 self.config[field] = self._get_default_config()[field]
         
-        # Validate pattern fields
-        if 'patterns' in self.config:
-            if not isinstance(self.config['patterns'], dict):
-                self.logger.warning("Invalid patterns configuration")
-                self.config['patterns'] = self._get_default_config()['patterns']
-            else:
-                for pattern, value in self.config['patterns'].items():
-                    if not isinstance(value, bool):
-                        self.logger.warning(f"Invalid boolean value for pattern: {pattern}")
-                        self.config['patterns'][pattern] = self._get_default_config()['patterns'][pattern]
+        # Validate language lists
+        list_fields = ['target_languages', 'excluded_languages']
+        for field in list_fields:
+            if field in self.config:
+                if not isinstance(self.config[field], list):
+                    self.logger.warning(f"Invalid {field} configuration")
+                    self.config[field] = self._get_default_config()[field]
+                else:
+                    for lang in self.config[field]:
+                        if not isinstance(lang, str):
+                            self.logger.warning(f"Invalid language code in {field}: {lang}")
+                            self.config[field] = self._get_default_config()[field]
+                            break
         
-        # Validate disclaimer patterns
-        if 'disclaimer_patterns' in self.config:
-            if not isinstance(self.config['disclaimer_patterns'], list):
-                self.logger.warning("Invalid disclaimer patterns configuration")
-                self.config['disclaimer_patterns'] = self._get_default_config()['disclaimer_patterns']
+        # Validate processing settings
+        if 'processing' in self.config:
+            if not isinstance(self.config['processing'], dict):
+                self.logger.warning("Invalid processing configuration")
+                self.config['processing'] = self._get_default_config()['processing']
             else:
-                for pattern in self.config['disclaimer_patterns']:
-                    if not isinstance(pattern, str):
-                        self.logger.warning(f"Invalid disclaimer pattern: {pattern}")
-                        self.config['disclaimer_patterns'] = self._get_default_config()['disclaimer_patterns']
-                        break
-        
-        # Validate domain exclusions
-        if 'domain_exclusions' in self.config:
-            if not isinstance(self.config['domain_exclusions'], list):
-                self.logger.warning("Invalid domain exclusions configuration")
-                self.config['domain_exclusions'] = self._get_default_config()['domain_exclusions']
-            else:
-                for exclusion in self.config['domain_exclusions']:
-                    if not isinstance(exclusion, str):
-                        self.logger.warning(f"Invalid domain exclusion: {exclusion}")
-                        self.config['domain_exclusions'] = self._get_default_config()['domain_exclusions']
-                        break
+                processing_fields = {
+                    'max_workers': (1, float('inf')),
+                    'batch_size': (1, float('inf')),
+                    'timeout': (1, float('inf'))
+                }
+                for field, (min_val, max_val) in processing_fields.items():
+                    if field in self.config['processing']:
+                        try:
+                            value = int(self.config['processing'][field])
+                            if not min_val <= value <= max_val:
+                                self.logger.warning(f"Processing field {field} value {value} outside valid range [{min_val}, {max_val}]")
+                                self.config['processing'][field] = self._get_default_config()['processing'][field]
+                        except (ValueError, TypeError):
+                            self.logger.warning(f"Invalid numeric value for processing field: {field}")
+                            self.config['processing'][field] = self._get_default_config()['processing'][field]
 
     def detect(self, text: str) -> Dict[str, Any]:
         """Detect machine translation in text

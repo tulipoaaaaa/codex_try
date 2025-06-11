@@ -71,11 +71,8 @@ class FullActivityTab(QWidget):
             except Exception as exc:
                 self.logger.warning("Failed to connect activity_added: %s", exc)
 
-        if self.task_source:
-            try:
-                self.task_source.history_changed.connect(self.load_activity_data)
-            except Exception as exc:
-                self.logger.warning("Failed to connect history_changed: %s", exc)
+        if hasattr(self.task_source, 'history_changed'):
+            self.task_source.history_changed.connect(self.load_activity_data)
 
         self.init_ui()
         self.setup_update_timer()
@@ -654,8 +651,9 @@ class FullActivityTab(QWidget):
         chart.removeAllSeries()
         
         # Clear existing axes
-        for axis in chart.axes():
-            chart.removeAxis(axis)
+        for axis in list(chart.axes()):
+            if axis in chart.axes():
+                chart.removeAxis(axis)
         
         series = QBarSeries()
         bar_set = QBarSet("Task Count")
@@ -694,8 +692,9 @@ class FullActivityTab(QWidget):
         """Update the performance trends chart with daily task counts."""
         chart = self.trends_chart.chart()
         chart.removeAllSeries()
-        for axis in chart.axes():
-            chart.removeAxis(axis)
+        for axis in list(chart.axes()):
+            if axis in chart.axes():
+                chart.removeAxis(axis)
 
         counts = self.task_source.get_recent_task_counts(days=7) if self.task_source else {}
         if not counts:

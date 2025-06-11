@@ -555,13 +555,6 @@ class DashboardTab(QWidget):
                 font-weight: 600;
                 padding: 12px 16px;
                 }}
-                QPushButton[objectName="action-btn"]:hover {{
-                    background-color: #2DA6B2;
-                    transform: translateY(-1px);
-                }}
-                QPushButton[objectName="action-btn"]:pressed {{
-                    background-color: #248995;
-                }}
             """)
             btn.setFixedHeight(40)
             btn.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Fixed)
@@ -580,13 +573,6 @@ class DashboardTab(QWidget):
                     font-size: 14px;
                     font-weight: 600;
                     padding: 12px 16px;
-                }}
-                QPushButton[objectName="action-btn"]:hover {{
-                    background-color: #2DA6B2;
-                    transform: translateY(-1px);
-                }}
-                QPushButton[objectName="action-btn"]:pressed {{
-                    background-color: #248995;
                 }}
             """)
         self.rebalance_now_btn.setFixedHeight(40)

@@ -7,6 +7,18 @@ from PySide6.QtCore import QObject
 
 
 OPTIONAL_TABS = {"balancer_tab", "corpus_manager_tab"}
+EXPECTED_TABS = {
+    'dashboard_tab',
+    'collectors_tab',
+    'processors_tab',
+    'balancer_tab',
+    'corpus_manager_tab',
+    'configuration_tab',
+    'logs_tab',
+    'analytics_tab',
+    'full_activity_tab',
+    'monitoring_tab',
+}
 
 
 class TabAuditService(QObject):

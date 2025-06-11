@@ -6,3 +6,9 @@ environments:
       processed_dir: ./tests/tmp_corpus/processed
       metadata_dir: ./tests/tmp_corpus/metadata
       logs_dir: ./tests/tmp_corpus/logs
+
+processors:
+  language_confidence:
+    min_confidence: 0.80
+  machine_translation:
+    min_confidence: 0.80

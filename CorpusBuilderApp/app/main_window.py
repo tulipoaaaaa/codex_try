@@ -34,6 +34,7 @@ from ui.tabs.analytics_tab import AnalyticsTab
 from ui.tabs.configuration_tab import ConfigurationTab
 from ui.tabs.logs_tab import LogsTab
 from ui.tabs.full_activity_tab import FullActivityTab
+from ui.tabs.monitoring_tab import MonitoringTab
 from ui.dialogs.settings_dialog import SettingsDialog
 from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
 from shared_tools.services.activity_log_service import ActivityLogService
@@ -73,6 +74,7 @@ class CryptoCorpusMainWindow(QMainWindow):
         self.configuration_tab = None
         self.logs_tab = None
         self.full_activity_tab = None
+        self.monitoring_tab = None
 
         # Settings dialog for application preferences
         self.settings_dialog = SettingsDialog(current_settings=getattr(self.config, 'config', {}), parent=self)
@@ -138,6 +140,9 @@ class CryptoCorpusMainWindow(QMainWindow):
                 self.activity_log_service,
                 task_queue_manager=self.task_queue_manager,
             )
+            self.dashboard_tab.view_all_activity_requested.connect(
+                lambda: self.switch_to_tab("full_activity_tab")
+            )
             self.logger.debug("DashboardTab initialized successfully")
             self.tab_widget.addTab(self.dashboard_tab, "📊 Dashboard")
             # Collectors tab
@@ -190,7 +195,30 @@ class CryptoCorpusMainWindow(QMainWindow):
                 "logs_tab": self.logs_tab,
                 "analytics_tab": self.analytics_tab,
                 "full_activity_tab": self.full_activity_tab,
+                "monitoring_tab": self.monitoring_tab,
             }
+
+            # Full Activity tab
+            self.logger.debug("Initializing FullActivityTab...")
+            self.full_activity_tab = FullActivityTab(
+                self.config,
+                activity_log_service=self.activity_log_service,
+                task_history_service=self.task_history_service,
+            )
+            self.logger.debug("FullActivityTab initialized successfully")
+            self.tab_widget.addTab(self.full_activity_tab, "📊 Full Activity")
+            self.tab_registry.update({
+                "full_activity_tab": self.full_activity_tab,
+            })
+
+            # Monitoring tab
+            self.logger.debug("Initializing MonitoringTab...")
+            self.monitoring_tab = MonitoringTab(parent=self)
+            self.logger.debug("MonitoringTab initialized successfully")
+            self.tab_widget.addTab(self.monitoring_tab, "Monitoring")
+            self.tab_registry.update({
+                'monitoring_tab': self.monitoring_tab,
+            })
         except Exception as e:
             self.logger.error(f"Failed to initialize tabs: {e}")
             self.show_error("Initialization Error", f"Failed to initialize application tabs: {e}")
@@ -314,7 +342,7 @@ class CryptoCorpusMainWindow(QMainWindow):
     def on_tab_changed(self, index):
         """Handle tab change"""
         tab_names = ["Dashboard", "Collectors", "Processors", "Corpus Manager", 
-                     "Balancer", "Analytics", "Configuration", "Logs"]
+                     "Balancer", "Analytics", "Configuration", "Logs", "Full Activity", "Monitoring"]
         if 0 <= index < len(tab_names):
             self.system_status_label.setText(f"Viewing: {tab_names[index]}")
     
@@ -510,7 +538,6 @@ class CryptoCorpusMainWindow(QMainWindow):
                     self.config,
                     activity_log_service=self.activity_log_service,
                     task_history_service=self.task_history_service,
-                    task_queue_manager=self.task_queue_manager,
                 )
                 self.full_activity_tab.retry_requested.connect(self.on_retry_requested)
                 self.full_activity_tab.stop_requested.connect(self.on_stop_requested)
@@ -578,5 +605,12 @@ class CryptoCorpusMainWindow(QMainWindow):
             else:
                 self.logger.info(message)
         except Exception as e:
-            self.logger.error(f"Failed to log activity: {e}") 
+            self.logger.error(f"Failed to log activity: {e}")
+
+    def switch_to_tab(self, tab_key: str):
+        tab = self.tab_registry.get(tab_key)
+        if tab:
+            index = self.tab_widget.indexOf(tab)
+            if index >= 0:
+                self.tab_widget.setCurrentIndex(index) 
      

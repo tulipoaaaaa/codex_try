@@ -38,10 +38,10 @@ class CorruptionDetector:
         
         # Use project config if provided, otherwise use provided config or defaults
         if project_config:
-            if 'processors' in project_config and 'quality_control' in project_config['processors'] and 'checks' in project_config['processors']['quality_control'] and 'corruption' in project_config['processors']['quality_control']['checks']:
+            if project_config.get('processors') is not None and 'quality_control' in project_config['processors'] and 'checks' in project_config['processors']['quality_control'] and 'corruption' in project_config['processors']['quality_control']['checks']:
                 # New master config structure
                 self.config = project_config['processors']['quality_control']['checks']['corruption']
-            elif 'corruption_detection' in project_config:
+            elif project_config.get('corruption_detection') is not None:
                 # Legacy project config structure
                 self.config = project_config['corruption_detection']
             else:

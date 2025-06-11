@@ -283,8 +283,10 @@ class AnalyticsTab(QWidget):
         chart_view = self.size_chart
         chart = chart_view.chart()
         chart.removeAllSeries()
-        chart.removeAxis(chart.axisX())
-        chart.removeAxis(chart.axisY())
+        if chart.axisX() in chart.axes():
+            chart.removeAxis(chart.axisX())
+        if chart.axisY() in chart.axes():
+            chart.removeAxis(chart.axisY())
 
         domains = list(sizes.keys())
         if domain_filter != "All Domains":
@@ -330,8 +332,10 @@ class AnalyticsTab(QWidget):
         chart_view = self.time_chart
         chart = chart_view.chart()
         chart.removeAllSeries()
-        chart.removeAxis(chart.axisX())
-        chart.removeAxis(chart.axisY())
+        if chart.axisX() in chart.axes():
+            chart.removeAxis(chart.axisX())
+        if chart.axisY() in chart.axes():
+            chart.removeAxis(chart.axisY())
 
         meta_dir = self.project_config.get_metadata_dir()
         counts = self.stats_service.get_daily_document_counts(meta_dir)
@@ -380,8 +384,10 @@ class AnalyticsTab(QWidget):
         chart_view = self.lang_chart
         chart = chart_view.chart()
         chart.removeAllSeries()
-        chart.removeAxis(chart.axisX())
-        chart.removeAxis(chart.axisY())
+        if chart.axisX() in chart.axes():
+            chart.removeAxis(chart.axisX())
+        if chart.axisY() in chart.axes():
+            chart.removeAxis(chart.axisY())
         
         meta_dir = self.project_config.get_metadata_dir()
         lang_counts = self.stats_service.get_language_distribution(meta_dir)

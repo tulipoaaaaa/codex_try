@@ -8,6 +8,7 @@ from shared_tools.services.system_monitor import SystemMonitor
 class MonitoringTab(QWidget):
     def __init__(self, parent=None):
         super().__init__(parent)
+        self.project_config = getattr(parent, 'project_config', None)
         layout = QVBoxLayout(self)
         layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
         layout.setSpacing(PAGE_MARGIN)
@@ -16,7 +17,7 @@ class MonitoringTab(QWidget):
         layout.addWidget(header)
 
         # Progress widget provided by the shared wrapper
-        self.monitor_widget = MonitorProgressWrapper()
+        self.monitor_widget = MonitorProgressWrapper(self.project_config)
         layout.addWidget(self.monitor_widget)
 
         # System metrics progress bars

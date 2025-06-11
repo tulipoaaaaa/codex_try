@@ -15,27 +15,26 @@ logger = logging.getLogger(__name__)
 class LanguageConfidenceDetector:
     """Detect language confidence"""
     
-    def __init__(self, config: Optional[Dict] = None, project_config: Optional[Dict] = None):
-        """Initialize language confidence detector
-        
-        Args:
-            config (dict): Optional configuration
-            project_config (dict): Optional project configuration
-        """
+    def __init__(self, project_config, *a, **kw):
+        super().__init__(*a, **kw)
+        self.project_config = project_config
+        cfg = project_config.get('processors.' + self.__class__.__name__.lower(), {})
+        self.min_conf = cfg.get('min_confidence', 0.80)
+        self.target_languages = cfg.get('target_languages', ['en'])
         self.logger = logging.getLogger(self.__class__.__name__)
         
         # Use project config if provided, otherwise use provided config or defaults
         if project_config:
-            if 'processors' in project_config and 'quality_control' in project_config['processors'] and 'checks' in project_config['processors']['quality_control'] and 'language' in project_config['processors']['quality_control']['checks']:
+            if project_config.get('processors') is not None and 'quality_control' in project_config['processors'] and 'checks' in project_config['processors']['quality_control'] and 'language' in project_config['processors']['quality_control']['checks']:
                 # New master config structure
                 self.config = project_config['processors']['quality_control']['checks']['language']
-            elif 'language_confidence' in project_config:
+            elif project_config.get('language_confidence') is not None:
                 # Legacy project config structure
                 self.config = project_config['language_confidence']
             else:
-                self.config = config or self._get_default_config()
+                self.config = cfg or self._get_default_config()
         else:
-            self.config = config or self._get_default_config()
+            self.config = cfg or self._get_default_config()
         
         # Validate configuration
         self._validate_config()
@@ -65,7 +64,15 @@ class LanguageConfidenceDetector:
         for field in required_fields:
             if field not in self.config:
                 self.logger.warning(f"Missing required config field: {field}")
-                self.config[field] = self._get_default_config()[field]
+                if field == 'min_confidence':
+                    if self.project_config and hasattr(self.project_config, 'get'):
+                        self.config[field] = self.project_config.get('processors.' + self.__class__.__name__.lower() + '.min_confidence', 0.80)
+                    else:
+                        self.config[field] = 0.80
+                elif field == 'target_languages':
+                    self.config[field] = ['en']
+                else:
+                    self.config[field] = self._get_default_config()[field]
         
         # Validate numeric fields
         numeric_fields = {
@@ -81,10 +88,16 @@ class LanguageConfidenceDetector:
                     value = float(self.config[field])
                     if not min_val <= value <= max_val:
                         self.logger.warning(f"Config field {field} value {value} outside valid range [{min_val}, {max_val}]")
-                        self.config[field] = self._get_default_config()[field]
+                        if field == 'min_confidence':
+                            self.config[field] = self.project_config.get('processors.' + self.__class__.__name__.lower() + '.min_confidence', 0.80)
+                        else:
+                            self.config[field] = self._get_default_config()[field]
                 except (ValueError, TypeError):
                     self.logger.warning(f"Invalid numeric value for config field: {field}")
-                    self.config[field] = self._get_default_config()[field]
+                    if field == 'min_confidence':
+                        self.config[field] = self.project_config.get('processors.' + self.__class__.__name__.lower() + '.min_confidence', 0.80)
+                    else:
+                        self.config[field] = self._get_default_config()[field]
         
         # Validate boolean fields
         boolean_fields = ['enabled', 'high_precision', 'verbose']
