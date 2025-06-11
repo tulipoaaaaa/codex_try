@@ -213,7 +213,7 @@ class CryptoCorpusMainWindow(QMainWindow):
 
             # Monitoring tab
             self.logger.debug("Initializing MonitoringTab...")
-            self.monitoring_tab = MonitoringTab(parent=self)
+            self.monitoring_tab = MonitoringTab(self.config, parent=self)
             self.logger.debug("MonitoringTab initialized successfully")
             self.tab_widget.addTab(self.monitoring_tab, "Monitoring")
             self.tab_registry.update({

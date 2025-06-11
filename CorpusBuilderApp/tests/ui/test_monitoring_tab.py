@@ -106,7 +106,8 @@ def monitoring_tab(qapp, qtbot):
     module.QProgressBar = DummyProgressBar
     module.QLabel = DummyLabel
     with patch.object(module, "SystemMonitor", return_value=dummy):
-        tab = module.MonitoringTab()
+        dummy_cfg = types.SimpleNamespace()
+        tab = module.MonitoringTab(dummy_cfg)
         qtbot.addWidget(tab)
         yield tab, dummy
 
