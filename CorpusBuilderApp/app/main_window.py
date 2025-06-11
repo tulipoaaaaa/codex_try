@@ -402,9 +402,9 @@ class CryptoCorpusMainWindow(QMainWindow):
     def export_corpus(self):
         """Export corpus data"""
         corpus_dir = None
-        if hasattr(self.config, "get_corpus_dir"):
+        if hasattr(self.config, "get_corpus_root"):
             try:
-                corpus_dir = Path(self.config.get_corpus_dir())
+                corpus_dir = Path(self.config.get_corpus_root())
             except Exception:  # pragma: no cover - defensive
                 corpus_dir = None
 
@@ -457,9 +457,9 @@ class CryptoCorpusMainWindow(QMainWindow):
             return
 
         corpus_dir = None
-        if hasattr(self.config, "get_corpus_dir"):
+        if hasattr(self.config, "get_corpus_root"):
             try:
-                corpus_dir = Path(self.config.get_corpus_dir())
+                corpus_dir = Path(self.config.get_corpus_root())
             except Exception:  # pragma: no cover - defensive
                 corpus_dir = None
 

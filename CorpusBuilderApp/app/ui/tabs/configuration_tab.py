@@ -484,7 +484,7 @@ class ConfigurationTab(QWidget):
         self.project_config.set("environment.active", env)
 
         # Save directories using the new schema
-        self.project_config.set(f"environments.{env}.corpus_dir", self.corpus_root.text())
+        self.project_config.set(f"environments.{env}.corpus_root", self.corpus_root.text())
         self.project_config.set(f"environments.{env}.raw_data_dir", self.raw_data_dir.text())
         self.project_config.set(f"environments.{env}.processed_dir", self.processed_dir.text())
         self.project_config.set(f"environments.{env}.metadata_dir", self.metadata_dir.text())

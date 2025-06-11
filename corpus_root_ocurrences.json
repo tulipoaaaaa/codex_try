@@ -1,0 +1,171 @@
+{
+    "corpus_root_occurrences": [
+      {
+        "category": "Documentation Files",
+        "files": [
+          {
+            "file": "docs/user_guide.md",
+            "lines": [35]
+          },
+          {
+            "file": "docs/environment_config.md", 
+            "lines": [32, 45]
+          }
+        ]
+      },
+      {
+        "category": "Core Configuration Classes",
+        "files": [
+          {
+            "file": "CorpusBuilderApp/shared_tools/project_config.py",
+            "lines": [403, 411]
+          }
+        ]
+      },
+      {
+        "category": "Application Files",
+        "files": [
+          {
+            "file": "CorpusBuilderApp/cli.py",
+            "lines": [234, 241, 243, 249, 259, 266]
+          }
+        ]
+      },
+      {
+        "category": "UI Components",
+        "files": [
+          {
+            "file": "CorpusBuilderApp/app/ui/dialogs/settings_dialog.py",
+            "lines": [96, 98, 100, 259, 290, 332]
+          },
+          {
+            "file": "CorpusBuilderApp/app/ui/tabs/configuration_tab.py",
+            "lines": [243, 244, 246, 412, 466, 486]
+          },
+          {
+            "file": "CorpusBuilderApp/app/ui/tabs/corpus_manager_tab.py",
+            "lines": [450, 451, 452, 453, 455, 456, 457]
+          }
+        ]
+      },
+      {
+        "category": "Test Files",
+        "files": [
+          {
+            "file": "CorpusBuilderApp/tests/conftest.py",
+            "lines": [174]
+          },
+          {
+            "file": "CorpusBuilderApp/tests/integration/test_project_config_edges.py",
+            "lines": [73, 75, 77, 78, 79, 80, 81, 85, 86, 87, 88, 89]
+          },
+          {
+            "file": "CorpusBuilderApp/tests/integration/test_multi_collector_flow.py",
+            "lines": [24, 26, 29, 30, 31, 32, 33]
+          },
+          {
+            "file": "CorpusBuilderApp/tests/unit/test_project_config_public.py",
+            "lines": [17, 18, 19, 20, 21, 22, 23, 26, 27, 28, 29, 30, 31, 35, 37, 38, 39, 40, 41, 42, 52, 54, 55]
+          },
+          {
+            "file": "CorpusBuilderApp/tests/deprecated/test_corpus_management.py",
+            "lines": [25, 26, 27, 28, 31, 37, 92, 93, 118, 119, 146, 147]
+          }
+        ]
+      },
+      {
+        "category": "Tools",
+        "files": [
+          {
+            "file": "tools/export_corpus.py",
+            "lines": [54, 55, 56, 85, 93, 98, 106, 115, 117]
+          },
+          {
+            "file": "tools/check_corpus_structure.py",
+            "lines": [86, 87]
+          }
+        ]
+      }
+    ],
+    "mapping_analysis": {
+      "corpus_dir_vs_corpus_root_comparison": {
+        "corpus_dir_total_files": 29,
+        "corpus_root_total_files": 17,
+        "corpus_dir_total_occurrences": 108,
+        "corpus_root_total_occurrences": 65,
+        "overlap_analysis": {
+          "files_with_both": [
+            "CorpusBuilderApp/tests/unit/test_project_config_public.py",
+            "tools/check_corpus_structure.py"
+          ],
+          "corpus_dir_only": [
+            "CorpusBuilderApp/shared_tools/processors/*",
+            "CorpusBuilderApp/app/main_window.py",
+            "CorpusBuilderApp/configs/quick_test.yaml",
+            "Most processor files (12 files)"
+          ],
+          "corpus_root_only": [
+            "CorpusBuilderApp/app/ui/dialogs/settings_dialog.py",
+            "CorpusBuilderApp/app/ui/tabs/configuration_tab.py",
+            "tools/export_corpus.py",
+            "docs/*.md files"
+          ]
+        }
+      },
+      "migration_strategy": {
+        "phase_1_critical": [
+          {
+            "file": "CorpusBuilderApp/shared_tools/project_config.py",
+            "action": "Rename corpus_dir field to corpus_root (line 10)",
+            "impact": "BREAKING - Core configuration field"
+          },
+          {
+            "file": "CorpusBuilderApp/shared_tools/project_config.py", 
+            "action": "Update get_corpus_dir() to delegate to get_corpus_root() (line 410-411)",
+            "impact": "COMPATIBILITY - Maintain backward compatibility"
+          }
+        ],
+        "phase_2_config_files": [
+          {
+            "file": "CorpusBuilderApp/configs/quick_test.yaml",
+            "action": "Change corpus_dir: to corpus_root: (line 10)",
+            "impact": "Config file consistency"
+          }
+        ],
+        "phase_3_processors": [
+          {
+            "files": "12 processor files",
+            "action": "Update parameter names from corpus_dir to corpus_root",
+            "impact": "API consistency across processors"
+          }
+        ],
+        "phase_4_tests": [
+          {
+            "files": "Test files using corpus_dir",
+            "action": "Update mock configurations and test expectations",
+            "impact": "Test compatibility"
+          }
+        ]
+      },
+      "key_conflicts": [
+        {
+          "file": "CorpusBuilderApp/tests/unit/test_project_config_public.py",
+          "issue": "Line 27: assert cfg.get_corpus_dir() == corpus_root",
+          "resolution": "Shows corpus_dir and corpus_root should be equivalent"
+        },
+        {
+          "file": "CorpusBuilderApp/app/ui/tabs/configuration_tab.py", 
+          "issue": "Line 486: Uses corpus_dir in config set but corpus_root in UI",
+          "resolution": "Inconsistent naming needs alignment"
+        }
+      ]
+    },
+    "environment_variables": {
+      "corpus_root_env_vars": [
+        "CORPUS_ROOT - Used in test files and documentation"
+      ],
+      "corpus_dir_env_vars": [
+        "None found explicitly"
+      ]
+    }
+  }

@@ -31,9 +31,9 @@ class CorpusStatsService(QObject):
                 return Path(self.project_config.get_stats_path())
             except Exception:  # pragma: no cover - defensive
                 return None
-        if hasattr(self.project_config, "get_corpus_dir"):
+        if hasattr(self.project_config, "get_corpus_root"):
             try:
-                return Path(self.project_config.get_corpus_dir()) / "corpus_stats.json"
+                return Path(self.project_config.get_corpus_root()) / "corpus_stats.json"
             except Exception:  # pragma: no cover - defensive
                 return None
         return None
