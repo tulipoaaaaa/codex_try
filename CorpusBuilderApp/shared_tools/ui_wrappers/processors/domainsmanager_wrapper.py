@@ -12,9 +12,8 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
                            QSpinBox, QDoubleSpinBox, QGroupBox, QGridLayout, QComboBox, QListWidget,
                            QSplitter, QTabWidget, QTableWidget, QTableWidgetItem,
                            QHeaderView, QLineEdit, QTreeWidget, QTreeWidgetItem)
-from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
 from shared_tools.processors.domainsmanager import DomainsManager
-from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
+from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 
 
 class DomainsManagerWorker(QThread):
@@ -157,12 +156,29 @@ class DomainsManagerWorker(QThread):
         self._mutex.unlock()
 
 
-class DomainsManagerWrapper(BaseWrapper, ProcessorWrapperMixin):
-    """UI Wrapper for Domains Manager"""
+class DomainsManagerWrapper(QWidget):
+    """UI wrapper for Domains Manager"""
     
-    def __init__(self, parent=None):
-        super().__init__(parent)
-        self.worker = None
+    def __init__(self, config, task_queue_manager=None, parent=None):
+        """
+        Parameters
+        ----------
+        config : ProjectConfig | str
+            Mandatory. Passed straight to BaseWrapper.
+        task_queue_manager : TaskQueueManager | None
+        parent : QWidget | None
+        """
+        # Initialize base classes in correct order
+        QWidget.__init__(self, parent)  # layout parent
+        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)
+        
+        # Set up delegation for frequently used attributes
+        self.config = self._bw.config  # delegation
+        self.logger = self._bw.logger  # delegation
+        
+        self.manager = DomainsManager(config)
+        self._is_running = False
+        self.worker_thread = None
         self.domain_classifications = {}
         self.domain_categories = set()
         self.setup_ui()
@@ -526,13 +542,13 @@ class DomainsManagerWrapper(BaseWrapper, ProcessorWrapperMixin):
         options = self._get_classification_options()
         
         # Create and start worker
-        self.worker = DomainsManagerWorker("classify_domains", [domain], options)
-        self.worker.progress_updated.connect(self.update_progress)
-        self.worker.domain_processed.connect(self.add_classification_result)
-        self.worker.classification_completed.connect(self.classification_completed)
-        self.worker.error_occurred.connect(self.handle_error)
+        self.worker_thread = DomainsManagerWorker("classify_domains", [domain], options)
+        self.worker_thread.progress_updated.connect(self.update_progress)
+        self.worker_thread.domain_processed.connect(self.add_classification_result)
+        self.worker_thread.classification_completed.connect(self.classification_completed)
+        self.worker_thread.error_occurred.connect(self.handle_error)
         
-        self.worker.start()
+        self.worker_thread.start()
         
     @pyqtSlot()
     def classify_bulk_domains(self):
@@ -553,13 +569,13 @@ class DomainsManagerWrapper(BaseWrapper, ProcessorWrapperMixin):
         self.classification_table.setRowCount(0)
         
         # Create and start worker
-        self.worker = DomainsManagerWorker("classify_domains", domains, options)
-        self.worker.progress_updated.connect(self.update_progress)
-        self.worker.domain_processed.connect(self.add_classification_result)
-        self.worker.classification_completed.connect(self.classification_completed)
-        self.worker.error_occurred.connect(self.handle_error)
+        self.worker_thread = DomainsManagerWorker("classify_domains", domains, options)
+        self.worker_thread.progress_updated.connect(self.update_progress)
+        self.worker_thread.domain_processed.connect(self.add_classification_result)
+        self.worker_thread.classification_completed.connect(self.classification_completed)
+        self.worker_thread.error_occurred.connect(self.handle_error)
         
-        self.worker.start()
+        self.worker_thread.start()
         
     def _get_classification_options(self) -> Dict[str, Any]:
         """Get current classification options"""
@@ -635,9 +651,9 @@ class DomainsManagerWrapper(BaseWrapper, ProcessorWrapperMixin):
         
     def operation_finished(self):
         """Reset UI state after operation completion"""
-        if self.worker:
-            self.worker.deleteLater()
-            self.worker = None
+        if self.worker_thread:
+            self.worker_thread.deleteLater()
+            self.worker_thread = None
             
     @pyqtSlot()
     def load_domains_from_file(self):
@@ -832,12 +848,12 @@ class DomainsManagerWrapper(BaseWrapper, ProcessorWrapperMixin):
         if filename:
             options = {'format': 'auto', 'update_existing': True}
             
-            self.worker = DomainsManagerWorker("import_domains", filename, options)
-            self.worker.progress_updated.connect(self.update_progress)
-            self.worker.classification_completed.connect(self.import_completed)
-            self.worker.error_occurred.connect(self.handle_error)
+            self.worker_thread = DomainsManagerWorker("import_domains", filename, options)
+            self.worker_thread.progress_updated.connect(self.update_progress)
+            self.worker_thread.classification_completed.connect(self.import_completed)
+            self.worker_thread.error_occurred.connect(self.handle_error)
             
-            self.worker.start()
+            self.worker_thread.start()
             
     @pyqtSlot(dict)
     def import_completed(self, stats: dict):
@@ -861,12 +877,12 @@ class DomainsManagerWrapper(BaseWrapper, ProcessorWrapperMixin):
             format_type = 'json' if filename.endswith('.json') else 'csv'
             options = {'format': format_type, 'include_metadata': True}
             
-            self.worker = DomainsManagerWorker("export_domains", (filename, None), options)
-            self.worker.progress_updated.connect(self.update_progress)
-            self.worker.classification_completed.connect(self.export_completed)
-            self.worker.error_occurred.connect(self.handle_error)
+            self.worker_thread = DomainsManagerWorker("export_domains", (filename, None), options)
+            self.worker_thread.progress_updated.connect(self.update_progress)
+            self.worker_thread.classification_completed.connect(self.export_completed)
+            self.worker_thread.error_occurred.connect(self.handle_error)
             
-            self.worker.start()
+            self.worker_thread.start()
             
     @pyqtSlot()
     def export_category(self):
@@ -889,12 +905,12 @@ class DomainsManagerWrapper(BaseWrapper, ProcessorWrapperMixin):
             format_type = 'json' if filename.endswith('.json') else 'csv'
             options = {'format': format_type, 'include_metadata': True}
             
-            self.worker = DomainsManagerWorker("export_domains", (filename, [category]), options)
-            self.worker.progress_updated.connect(self.update_progress)
-            self.worker.classification_completed.connect(self.export_completed)
-            self.worker.error_occurred.connect(self.handle_error)
+            self.worker_thread = DomainsManagerWorker("export_domains", (filename, [category]), options)
+            self.worker_thread.progress_updated.connect(self.update_progress)
+            self.worker_thread.classification_completed.connect(self.export_completed)
+            self.worker_thread.error_occurred.connect(self.handle_error)
             
-            self.worker.start()
+            self.worker_thread.start()
             
     @pyqtSlot(dict)
     def export_completed(self, stats: dict):
@@ -938,12 +954,12 @@ class DomainsManagerWrapper(BaseWrapper, ProcessorWrapperMixin):
         # Switch to analysis tab
         self.tab_widget.setCurrentIndex(2)
         
-        self.worker = DomainsManagerWorker("analyze_corpus", corpus_path, options)
-        self.worker.progress_updated.connect(self.update_progress)
-        self.worker.classification_completed.connect(self.analysis_completed)
-        self.worker.error_occurred.connect(self.handle_error)
+        self.worker_thread = DomainsManagerWorker("analyze_corpus", corpus_path, options)
+        self.worker_thread.progress_updated.connect(self.update_progress)
+        self.worker_thread.classification_completed.connect(self.analysis_completed)
+        self.worker_thread.error_occurred.connect(self.handle_error)
         
-        self.worker.start()
+        self.worker_thread.start()
         
     @pyqtSlot(dict)
     def analysis_completed(self, analysis: dict):
@@ -973,9 +989,9 @@ class DomainsManagerWrapper(BaseWrapper, ProcessorWrapperMixin):
     @pyqtSlot()
     def cancel_operation(self):
         """Cancel current operation"""
-        if self.worker and self.worker.isRunning():
-            self.worker.cancel()
-            self.worker.wait(3000)
+        if self.worker_thread and self.worker_thread.isRunning():
+            self.worker_thread.cancel()
+            self.worker_thread.wait(3000)
             self.operation_finished()
             
         self.start_analysis_btn.setEnabled(True)
@@ -1016,7 +1032,7 @@ class DomainsManagerWrapper(BaseWrapper, ProcessorWrapperMixin):
         
     def is_processing(self) -> bool:
         """Check if any operation is currently active"""
-        return self.worker is not None and self.worker.isRunning()
+        return self.worker_thread is not None and self.worker_thread.isRunning()
 
     def refresh_config(self):
         """Reload parameters from ``self.config``."""

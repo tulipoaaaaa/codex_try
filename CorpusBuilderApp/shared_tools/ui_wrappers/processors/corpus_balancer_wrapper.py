@@ -1,8 +1,9 @@
 from PySide6.QtCore import Signal as pyqtSignal, QThread
-from ..base_wrapper import BaseWrapper, ProcessorWrapperMixin
 from shared_tools.processors.corpus_balancer import CorpusAnalyzer as CorpusBalancer
 from shared_tools.project_config import ProjectConfig
 from typing import Dict, Any, List
+from PySide6.QtWidgets import QWidget
+from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 
 class CorpusBalancerWorker(QThread):
     """Worker thread for Corpus Balancing"""
@@ -12,7 +13,7 @@ class CorpusBalancerWorker(QThread):
     domain_processed = pyqtSignal(str, int, int)  # domain, current, target
     
     def __init__(self, balancer, domains_to_balance, **kwargs):
-        super().__init__()
+        QThread.__init__(self)  # Initialize QThread explicitly
         self.balancer = balancer
         self.domains = domains_to_balance
         self.kwargs = kwargs
@@ -65,16 +66,50 @@ class CorpusBalancerWorker(QThread):
         """Stop processing"""
         self._should_stop = True
 
-class CorpusBalancerWrapper(BaseWrapper, ProcessorWrapperMixin):
+class CorpusBalancerWrapper(QWidget):
     """UI wrapper for Corpus Balancer"""
     
     domain_processed = pyqtSignal(str, int, int)  # domain, current, target
     balance_completed = pyqtSignal(dict)  # Balance results
+    file_processed = pyqtSignal(str, bool)  # filepath, success (from ProcessorWrapperMixin)
     
-    def __init__(self, config, test_mode: bool = False):
-        super().__init__(config, test_mode=test_mode)
+    def __init__(self, config, task_queue_manager=None, parent=None):
+        """
+        Parameters
+        ----------
+        config : ProjectConfig | str
+            Mandatory. Passed straight to BaseWrapper.
+        task_queue_manager : TaskQueueManager | None
+        parent : QWidget | None
+        """
+        
+        # Initialize base classes in correct order
+        QWidget.__init__(self, parent)  # Initialize QWidget first
+        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)  # Then initialize ProcessorMixin with config
+        
+        # Set up delegation for frequently used attributes
+        self.config = self._bw.config  # delegation
+        self.logger = self._bw.logger  # delegation
+        
+        # Delegate signals from BaseWrapper
+        self.completed = self._bw.completed
+        self.status_updated = self._bw.status_updated
+        self.progress_updated = self._bw.progress_updated
+        self.error_occurred = self._bw.error_occurred
+        
+        # Delegate other frequently used attributes
+        self._is_running = self._bw._is_running
+        self.worker = self._bw.worker
+        
+        # Delegate methods from BaseWrapper
+        self._on_progress = self._bw._on_progress
+        self._on_error = self._bw._on_error
+        
+        # Set up the file_processed signal that was placeholder in ProcessorMixin
+        self.file_processed = self.__class__.file_processed
+        
         self.balancer = None
-        self.target_allocations = {}
+        self.target_allocations: Dict[str, float] = {}
         
     def _create_target_object(self):
         """Create Corpus Balancer instance"""

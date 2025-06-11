@@ -1,7 +1,7 @@
 from PySide6.QtCore import Signal as pyqtSignal, QThread
 import time
-from ..base_wrapper import BaseWrapper, ProcessorWrapperMixin
 from shared_tools.processors.pdf_extractor import PDFExtractor
+from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 from typing import List, Dict, Any
 from pathlib import Path
 
@@ -63,15 +63,20 @@ class PDFExtractorWorker(QThread):
         """Stop processing"""
         self._should_stop = True
 
-class PDFExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
+class PDFExtractorWrapper:
     """UI wrapper for PDF Extractor"""
     
     file_processed = pyqtSignal(str, bool)  # filepath, success
     total_pages_processed = pyqtSignal(int)  # Total pages processed
     ocr_used = pyqtSignal(str, bool)  # filepath, ocr_used
     
-    def __init__(self, config):
-        super().__init__(config)
+    def __init__(self, config, task_queue_manager=None):
+        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)
+        
+        # Set up delegation for frequently used attributes
+        self.config = self._bw.config  # delegation
+        self.logger = self._bw.logger  # delegation
+        
         self.extractor = None
         self.enable_ocr = True
         self.extract_tables = True

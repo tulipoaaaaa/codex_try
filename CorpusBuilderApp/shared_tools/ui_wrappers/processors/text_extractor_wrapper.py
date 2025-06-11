@@ -5,8 +5,8 @@ Provides text extraction capabilities with UI controls
 
 from PySide6.QtCore import Signal as pyqtSignal, QThread
 import time
-from ..base_wrapper import BaseWrapper, ProcessorWrapperMixin
 from shared_tools.processors.text_extractor import TextExtractor
+from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 from typing import List, Dict, Any
 from pathlib import Path
 
@@ -68,14 +68,19 @@ class TextExtractorWorker(QThread):
         """Stop processing"""
         self._should_stop = True
 
-class TextExtractorWrapper(BaseWrapper, ProcessorWrapperMixin):
+class TextExtractorWrapper:
     """UI wrapper for Non-PDF Text Extractor"""
     
     file_processed = pyqtSignal(str, bool)  # filepath, success
     mime_type_detected = pyqtSignal(str, str)  # filepath, mime_type
     
-    def __init__(self, config):
-        super().__init__(config)
+    def __init__(self, config, task_queue_manager=None):
+        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)
+        
+        # Set up delegation for frequently used attributes
+        self.config = self._bw.config  # delegation
+        self.logger = self._bw.logger  # delegation
+        
         self.extractor = None
         self.worker_threads = 4
         

@@ -8,8 +8,8 @@ import time
 from typing import Dict, List, Optional, Any
 from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Slot as pyqtSlot, QMutex, QTimer
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QProgressBar, QLabel, QTextEdit, QFileDialog, QCheckBox, QSpinBox, QGroupBox, QGridLayout
-from shared_tools.ui_wrappers.base_wrapper import BaseWrapper, ProcessorWrapperMixin
 from shared_tools.processors.batch_nonpdf_extractor_enhanced import BatchNonPDFExtractorEnhanced
+from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 
 
 class BatchNonPDFExtractorWorker(QThread):
@@ -106,11 +106,17 @@ class BatchNonPDFExtractorWorker(QThread):
         return files
 
 
-class BatchNonPDFExtractorEnhancedWrapper(BaseWrapper, ProcessorWrapperMixin):
+class BatchNonPDFExtractorEnhancedWrapper(QWidget):
     """UI Wrapper for Batch Non-PDF Extractor Enhanced"""
     
-    def __init__(self, parent=None):
-        super().__init__(parent)
+    def __init__(self, config, task_queue_manager=None, parent=None):
+        QWidget.__init__(self, parent)
+        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)
+        
+        # Set up delegation for frequently used attributes
+        self.config = self._bw.config  # delegation
+        self.logger = self._bw.logger  # delegation
+        
         self.worker = None
         self.processed_files = []
         self.setup_ui()

@@ -35,7 +35,7 @@ class BaseWorkerThread(QThread):
     finished = pyqtSignal(dict)
     
     def __init__(self, target_object, operation_type="collect", **kwargs):
-        super().__init__()
+        QThread.__init__(self)  # Initialize QThread explicitly
         self.target = target_object
         self.operation_type = operation_type
         self.kwargs = kwargs
@@ -76,7 +76,8 @@ class BaseWrapper(QObject):
         task_queue_manager: "TaskQueueManager | None" = None,
         test_mode: bool = False,
     ):
-        super().__init__()
+        QObject.__init__(self)  # Initialize QObject explicitly
+        
         self.config = config
         self.worker = None
         self._is_running = False

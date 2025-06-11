@@ -1,23 +1,12 @@
 # File: shared_tools/ui_wrappers/processors/quality_control_wrapper.py
 
-import inspect, sys, textwrap, pathlib, importlib
-print("QC-TRACE A  file loaded:", __file__)
-
-# Dump the full source of THIS module at import time
-with open(__file__, "r", encoding="utf-8") as _f:
-    print("QC-TRACE B  file contents at import time ▼\n",
-          textwrap.indent(_f.read(), "   "), "\n▲ end")
-
-print("LOADED QCWrapper from", __file__)
-
 from PySide6.QtCore import Signal as pyqtSignal, QObject, QThread
 from PySide6.QtWidgets import QWidget
 from shared_tools.processors.quality_control import QualityControl
-from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
-from shared_tools.processors.mixins.processor_wrapper_mixin import ProcessorWrapperMixin
+from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 import logging, traceback
 
-class QualityControlWrapper(QWidget, BaseWrapper, ProcessorWrapperMixin):
+class QualityControlWrapper(QWidget):
     """UI wrapper for the Quality Control processor."""
     
     quality_score_calculated = pyqtSignal(str, float)  # file_path, score
@@ -36,7 +25,22 @@ class QualityControlWrapper(QWidget, BaseWrapper, ProcessorWrapperMixin):
         task_queue_manager : TaskQueueManager | None
         parent : QWidget | None
         """
-        QWidget.__init__(self, parent)
+        # Initialize base classes in correct order
+        QWidget.__init__(self, parent)  # Initialize QWidget first
+        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)  # Then initialize ProcessorMixin
+        
+        # Set up delegation for frequently used attributes
+        self.config = self._bw.config  # delegation
+        self.logger = self._bw.logger  # delegation
+        
+        # Delegate signals from BaseWrapper
+        self.status_updated = self._bw.status_updated
+        self.progress_updated = self._bw.progress_updated
+        self.batch_completed = self._bw.completed
+        
+        # Delegate task tracking attributes
+        self.task_history_service = self._bw.task_history_service
+        self._task_id = self._bw._task_id
 
         # 2. guard: refuse to run without config
         if config is None:
@@ -44,22 +48,12 @@ class QualityControlWrapper(QWidget, BaseWrapper, ProcessorWrapperMixin):
             traceback.print_stack(limit=8)
             raise RuntimeError("QualityControlWrapper requires a non-None config")
 
-        print("QC-DEBUG 1  -> config argument value:", type(config))
-        print("QC-DEBUG 2  -> BaseWrapper we will call is from:", BaseWrapper.__module__, "file:", inspect.getfile(BaseWrapper))
-        print("QC-DEBUG 3  -> About to call BaseWrapper.__init__ with args:", (self, config))
-
-        # 3. pass the config into BaseWrapper
-        BaseWrapper.__init__(self, config)
-        ProcessorWrapperMixin.__init__(self)
-
         self.task_queue_manager = task_queue_manager
         self.project_config = config  # Ensure attribute exists for tests
         self.processor = QualityControl(config)
         self._is_running = False
         self.worker_thread = None
         self.quality_threshold = 70  # Default threshold
-        
-        print("QCWrapper __init__ source at runtime:\n", inspect.getsource(QualityControlWrapper.__init__))
         
     def start(self, file_paths=None, **kwargs):
         """Start quality control processing on the specified files."""
@@ -186,7 +180,7 @@ class QCWorkerThread(QThread):
     error_occurred = pyqtSignal(str)
     
     def __init__(self, processor, file_paths, **kwargs):
-        super().__init__()
+        QThread.__init__(self)  # Initialize QThread explicitly
         self.processor = processor
         self.file_paths = file_paths or []
         self.kwargs = kwargs
@@ -229,10 +223,3 @@ class QCWorkerThread(QThread):
             
         except Exception as e:
             self.error_occurred.emit(f"Quality control error: {str(e)}")
-
-# After the class is defined, show the __init__ we'll run
-def _after_def():
-    from inspect import getsource
-    print("QC-TRACE C  QualityControlWrapper.__init__ body ▼")
-    print(textwrap.indent(getsource(QualityControlWrapper.__init__), "   "), "\n▲ end")
-_after_def()
