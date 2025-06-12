@@ -9,8 +9,7 @@ from typing import Dict, List, Optional, Any
 from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Slot as pyqtSlot, QMutex, QTimer
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QProgressBar, QLabel, QTextEdit, QFileDialog, QCheckBox, QSpinBox, QGroupBox, QGridLayout
 from shared_tools.processors.batch_nonpdf_extractor_enhanced import BatchNonPDFExtractorEnhanced
-from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
-
+from shared_tools.project_config import ProjectConfig
 
 class BatchNonPDFExtractorWorker(QThread):
     """Worker thread for batch non-PDF extraction operations"""
@@ -106,19 +105,18 @@ class BatchNonPDFExtractorWorker(QThread):
         return files
 
 
-class BatchNonPDFExtractorEnhancedWrapper(QWidget):
-    """UI Wrapper for Batch Non-PDF Extractor Enhanced"""
-    
-    def __init__(self, config, task_queue_manager=None, parent=None):
+class BatchNonPDFExtractorWrapper(QWidget):
+    """UI Wrapper for Batch Non-PDF Extractor Enhanced (migrated to QWidget-only, explicit delegation)"""
+    def __init__(self, project_config, parent=None):
         QWidget.__init__(self, parent)
-        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)
-        
-        # Set up delegation for frequently used attributes
-        self.config = self._bw.config  # delegation
-        self.logger = self._bw.logger  # delegation
-        
+        if project_config is None:
+            raise RuntimeError("BatchNonPDFExtractorWrapper requires a non-None ProjectConfig")
+        self.project_config = project_config
+        self.config = project_config.get('processors.batch_nonpdf_extractor_enhanced', {})
+        self.logger = None  # Set up logger if needed
         self.worker = None
         self.processed_files = []
+        self._running = False
         self.setup_ui()
         self.setup_connections()
         
@@ -346,8 +344,8 @@ class BatchNonPDFExtractorEnhancedWrapper(QWidget):
     def refresh_config(self):
         """Reload parameters from ``self.config``."""
         cfg = {}
-        if hasattr(self.config, 'get_processor_config'):
-            cfg = self.config.get_processor_config('batch_nonpdf_extractor_enhanced') or {}
+        if hasattr(self.project_config, 'get'):
+            cfg = self.project_config.get('processors.batch_nonpdf_extractor_enhanced', {})
         for k, v in cfg.items():
             method = f'set_{k}'
             if hasattr(self, method):
@@ -355,16 +353,25 @@ class BatchNonPDFExtractorEnhancedWrapper(QWidget):
                     getattr(self, method)(v)
                     continue
                 except Exception:
-                    self.logger.debug('Failed to apply %s via wrapper', k)
-            if hasattr(self.processor, method):
+                    if self.logger:
+                        self.logger.debug('Failed to apply %s via wrapper', k)
+            if hasattr(self.worker, method):
                 try:
-                    getattr(self.processor, method)(v)
+                    getattr(self.worker, method)(v)
                     continue
                 except Exception:
-                    self.logger.debug('Failed to apply %s via processor', k)
-            if hasattr(self.processor, k):
-                setattr(self.processor, k, v)
+                    if self.logger:
+                        self.logger.debug('Failed to apply %s via worker', k)
+            if hasattr(self.worker, k):
+                setattr(self.worker, k, v)
             elif hasattr(self, k):
                 setattr(self, k, v)
-        if cfg and hasattr(self, 'configuration_changed'):
-            self.configuration_changed.emit(cfg)
+        # No configuration_changed signal in this wrapper, so skip emit
+
+    @property
+    def _is_running(self):
+        return self._running
+
+    @_is_running.setter
+    def _is_running(self, val):
+        self._running = bool(val)

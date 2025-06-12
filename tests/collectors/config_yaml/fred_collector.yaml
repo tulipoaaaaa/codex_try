@@ -1,0 +1,7 @@
+raw_data_dir: /path/to/raw_data
+domains:
+  valuation_models:
+    path: valuation_models
+series_ids:
+  - GDP
+max_results: 5 

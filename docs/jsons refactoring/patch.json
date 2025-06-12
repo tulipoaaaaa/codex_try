@@ -1,0 +1,337 @@
+{
+    "corpus_dir_to_corpus_root_patch": {
+      "description": "Comprehensive patch to rename corpus_dir to corpus_root across the codebase",
+      "changes": [
+        {
+          "file": "CorpusBuilderApp/shared_tools/project_config.py",
+          "patches": [
+            {
+              "line": 11,
+              "operation": "replace",
+              "old": "    corpus_dir: str = Field(..., description=\"Base directory for the corpus\")",
+              "new": "    corpus_root: str = Field(..., description=\"Base directory for the corpus\")"
+            },
+            {
+              "line": 403,
+              "operation": "replace", 
+              "old": "    def get_corpus_root(self) -> Path:\n        env = self.get('environment.active')\n        path = self.get(f'environments.{env}.corpus_root')\n        if path is None:\n            path = self.get('directories.corpus_root')\n        return Path(path).expanduser()",
+              "new": "    def get_corpus_root(self) -> Path:\n        env = self.get('environment.active')\n        path = self.get(f'environments.{env}.corpus_root')\n        if path is None:\n            path = self.get('directories.corpus_root')\n        return Path(path).expanduser()"
+            },
+            {
+              "line": 410,
+              "operation": "replace",
+              "old": "    def get_corpus_dir(self) -> Path:\n        return self.get_corpus_root()",
+              "new": "    def get_corpus_dir(self) -> Path:\n        \"\"\"Legacy method for backward compatibility. Use get_corpus_root() instead.\"\"\"\n        return self.get_corpus_root()"
+            },
+            {
+              "line": 474,
+              "operation": "replace",
+              "old": "                    \"corpus_dir\": str(config_dir / \"corpus\"),",
+              "new": "                    \"corpus_root\": str(config_dir / \"corpus\"),"
+            },
+            {
+              "line": 482,
+              "operation": "replace",
+              "old": "                    \"corpus_dir\": str(Path.home() / \"CryptoCorpus\"),",
+              "new": "                    \"corpus_root\": str(Path.home() / \"CryptoCorpus\"),"
+            }
+          ]
+        },
+        {
+          "file": "CorpusBuilderApp/configs/quick_test.yaml",
+          "patches": [
+            {
+              "line": 10,
+              "operation": "replace",
+              "old": "corpus_dir: ./test_data/corpus",
+              "new": "corpus_root: ./test_data/corpus"
+            }
+          ]
+        },
+        {
+          "file": "CorpusBuilderApp/app/main.py",
+          "patches": [
+            {
+              "line": 180,
+              "operation": "replace",
+              "old": "                'corpus_dir': str(config_dir / 'corpus'),",
+              "new": "                'corpus_root': str(config_dir / 'corpus'),"
+            },
+            {
+              "line": 185,
+              "operation": "replace", 
+              "old": "                'corpus_dir': str(Path.home() / 'CryptoCorpus'),",
+              "new": "                'corpus_root': str(Path.home() / 'CryptoCorpus'),"
+            }
+          ]
+        },
+        {
+          "file": "CorpusBuilderApp/app/ui/tabs/configuration_tab.py",
+          "patches": [
+            {
+              "line": 486,
+              "operation": "replace",
+              "old": "        self.project_config.set(f\"environments.{env}.corpus_dir\", self.corpus_root.text())",
+              "new": "        self.project_config.set(f\"environments.{env}.corpus_root\", self.corpus_root.text())"
+            }
+          ]
+        },
+        {
+          "file": "CorpusBuilderApp/app/main_window.py",
+          "patches": [
+            {
+              "line": 404,
+              "operation": "replace",
+              "old": "        if hasattr(self.config, \"get_corpus_dir\"):",
+              "new": "        if hasattr(self.config, \"get_corpus_root\"):"
+            },
+            {
+              "line": 406,
+              "operation": "replace", 
+              "old": "            corpus_dir = Path(self.config.get_corpus_dir())",
+              "new": "            corpus_dir = Path(self.config.get_corpus_root())"
+            },
+            {
+              "line": 459,
+              "operation": "replace",
+              "old": "        if hasattr(self.config, \"get_corpus_dir\"):",
+              "new": "        if hasattr(self.config, \"get_corpus_root\"):"
+            },
+            {
+              "line": 461,
+              "operation": "replace",
+              "old": "            corpus_dir = Path(self.config.get_corpus_dir())",
+              "new": "            corpus_dir = Path(self.config.get_corpus_root())"
+            }
+          ]
+        },
+        {
+          "file": "CorpusBuilderApp/shared_tools/services/corpus_stats_service.py",
+          "patches": [
+            {
+              "line": 33,
+              "operation": "replace",
+              "old": "        if hasattr(self.project_config, \"get_corpus_dir\"):",
+              "new": "        if hasattr(self.project_config, \"get_corpus_root\"):"
+            },
+            {
+              "line": 35,
+              "operation": "replace",
+              "old": "            return Path(self.project_config.get_corpus_dir()) / \"corpus_stats.json\"",
+              "new": "            return Path(self.project_config.get_corpus_root()) / \"corpus_stats.json\""
+            }
+          ]
+        },
+        {
+          "file": "tools/check_corpus_structure.py",
+          "patches": [
+            {
+              "line": 86,
+              "operation": "replace",
+              "old": "    corpus_root = Path(config.get_corpus_dir())",
+              "new": "    corpus_root = Path(config.get_corpus_root())"
+            }
+          ]
+        },
+        {
+          "file": "CorpusBuilderApp/cli.py",
+          "patches": [
+            {
+              "line": 234,
+              "operation": "replace",
+              "old": "        corpus_root = cfg.get_corpus_root()",
+              "new": "        corpus_root = cfg.get_corpus_root()"
+            }
+          ]
+        },
+        {
+          "file": "tools/diff_corpus_profiles.py",
+          "patches": [
+            {
+              "line": 29,
+              "operation": "replace",
+              "old": "def build_profile(corpus_dir: Path) -> Dict[str, Any]:",
+              "new": "def build_profile(corpus_root: Path) -> Dict[str, Any]:"
+            },
+            {
+              "line": 38,
+              "operation": "replace",
+              "old": "for txt_file in corpus_dir.rglob(\"*.txt\"):",
+              "new": "for txt_file in corpus_root.rglob(\"*.txt\"):"
+            },
+            {
+              "line": 39,
+              "operation": "replace",
+              "old": "rel = txt_file.relative_to(corpus_dir)",
+              "new": "rel = txt_file.relative_to(corpus_root)"
+            },
+            {
+              "line": 43,
+              "operation": "replace",
+              "old": "for json_file in corpus_dir.rglob(\"*.json\"):",
+              "new": "for json_file in corpus_root.rglob(\"*.json\"):"
+            },
+            {
+              "line": 44,
+              "operation": "replace",
+              "old": "rel = json_file.relative_to(corpus_dir)",
+              "new": "rel = json_file.relative_to(corpus_root)"
+            }
+          ]
+        },
+        {
+          "file": "CorpusBuilderApp/shared_tools/processors/generate_title_cache.py",
+          "patches": [
+            {
+              "line": 9,
+              "operation": "replace",
+              "old": "def generate_title_cache(corpus_dir: str, output_dir: str) -> None:",
+              "new": "def generate_title_cache(corpus_root: str, output_dir: str) -> None:"
+            },
+            {
+              "line": 20,
+              "operation": "replace",
+              "old": "for root, _, files in os.walk(corpus_dir):",
+              "new": "for root, _, files in os.walk(corpus_root):"
+            },
+            {
+              "line": 55,
+              "operation": "replace",
+              "old": "parser.add_argument(\"corpus_dir\", help=\"Directory containing the corpus metadata files\")",
+              "new": "parser.add_argument(\"corpus_root\", help=\"Directory containing the corpus metadata files\")"
+            },
+            {
+              "line": 58,
+              "operation": "replace",
+              "old": "generate_title_cache(args.corpus_dir, args.output_dir)",
+              "new": "generate_title_cache(args.corpus_root, args.output_dir)"
+            }
+          ]
+        },
+        {
+          "file": "CorpusBuilderApp/RUN_COLLECTORS_HERE.ipynb",
+          "patches": [
+            {
+              "line": 3002,
+              "operation": "replace",
+              "old": "corpus_dir = Path(\"/workspace/data/corpus_1\")",
+              "new": "corpus_root = Path(\"/workspace/data/corpus_1\")"
+            },
+            {
+              "line": 3010,
+              "operation": "replace",
+              "old": "for domain in os.listdir(corpus_dir):",
+              "new": "for domain in os.listdir(corpus_root):"
+            },
+            {
+              "line": 3012,
+              "operation": "replace",
+              "old": "domain_dir = corpus_dir / domain",
+              "new": "domain_dir = corpus_root / domain"
+            },
+            {
+              "line": 3046,
+              "operation": "replace",
+              "old": "with open(corpus_dir / \"corpus_stats.json\", \"w\") as f:",
+              "new": "with open(corpus_root / \"corpus_stats.json\", \"w\") as f:"
+            },
+            {
+              "line": 3049,
+              "operation": "replace",
+              "old": "print(f\"\\nSaved statistics to {corpus_dir / 'corpus_stats.json'}\")",
+              "new": "print(f\"\\nSaved statistics to {corpus_root / 'corpus_stats.json'}\")"
+            },
+            {
+              "line": 3115,
+              "operation": "replace",
+              "old": "corpus_dir = Path(\"/workspace/data/corpus_1\")",
+              "new": "corpus_root = Path(\"/workspace/data/corpus_1\")"
+            },
+            {
+              "line": 3119,
+              "operation": "replace",
+              "old": "for domain_dir in corpus_dir.iterdir():",
+              "new": "for domain_dir in corpus_root.iterdir():"
+            },
+            {
+              "line": 3125,
+              "operation": "replace",
+              "old": "extracted_dir = corpus_dir / f\"{domain_dir.name}_extracted\"",
+              "new": "extracted_dir = corpus_root / f\"{domain_dir.name}_extracted\""
+            },
+            {
+              "line": 3218,
+              "operation": "replace",
+              "old": "corpus_dir = Path(\"/workspace/data/corpus_1\")",
+              "new": "corpus_root = Path(\"/workspace/data/corpus_1\")"
+            },
+            {
+              "line": 3219,
+              "operation": "replace",
+              "old": "stats_file = corpus_dir / \"corpus_stats.json\"",
+              "new": "stats_file = corpus_root / \"corpus_stats.json\""
+            }
+          ]
+        }
+      ],
+      "test_file_updates": [
+        {
+          "file": "CorpusBuilderApp/tests/unit/test_project_config_public.py",
+          "patches": [
+            {
+              "line": 10,
+              "operation": "replace",
+              "old": "        \"environments\": {\"test\": {\"corpus_dir\": str(corpus_dir)}},",
+              "new": "        \"environments\": {\"test\": {\"corpus_root\": str(corpus_dir)}},"
+            }
+          ]
+        },
+        {
+          "file": "CorpusBuilderApp/tests/integration/test_project_config_edges.py",
+          "patches": [
+            {
+              "line": 64,
+              "operation": "replace",
+              "old": "        \"environments\": {\"test\": {\"corpus_dir\": str(corpus_dir)}},",
+              "new": "        \"environments\": {\"test\": {\"corpus_root\": str(corpus_dir)}},"
+            }
+          ]
+        },
+        {
+          "file": "CorpusBuilderApp/tests/integration/test_multi_collector_flow.py",
+          "patches": [
+            {
+              "line": 15,
+              "operation": "replace",
+              "old": "        \"environments\": {\"test\": {\"corpus_dir\": str(corpus_dir)}},",
+              "new": "        \"environments\": {\"test\": {\"corpus_root\": str(corpus_dir)}},"
+            }
+          ]
+        },
+        {
+          "file": "scripts/audit_integration_state.py",
+          "patches": [
+            {
+              "line": 239,
+              "operation": "replace",
+              "old": "            \"environments\": {\"test\": {\"corpus_dir\": tmpdir}},",
+              "new": "            \"environments\": {\"test\": {\"corpus_root\": tmpdir}},"
+            }
+          ]
+        }
+      ],
+      "backward_compatibility_notes": [
+        "The get_corpus_dir() method is kept for backward compatibility and now delegates to get_corpus_root()",
+        "All new code should use get_corpus_root() instead of get_corpus_dir()",
+        "Environment variable CORPUS_ROOT is already properly handled",
+        "Test files that create mock configs should use corpus_root instead of corpus_dir"
+      ],
+      "validation_steps": [
+        "1. Ensure all tests pass after applying patches",
+        "2. Verify UI configuration tab works correctly",
+        "3. Test that environment variable CORPUS_ROOT is properly loaded",
+        "4. Confirm backward compatibility with existing config files that still have corpus_dir",
+        "5. Run a full end-to-end test to ensure corpus path resolution works"
+      ]
+    }
+  }

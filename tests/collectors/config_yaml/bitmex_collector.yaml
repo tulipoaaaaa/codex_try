@@ -1,0 +1,5 @@
+raw_data_dir: /path/to/raw_data
+domains:
+  high_frequency_trading:
+    path: high_frequency_trading
+max_pages: 10 

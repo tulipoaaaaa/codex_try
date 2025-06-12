@@ -36,12 +36,12 @@ class ChartImageExtractor:
         
         # Use project config if provided, otherwise use provided config or defaults
         if project_config:
-            if project_config.get('processors') is not None and 'specialized' in project_config['processors'] and 'charts' in project_config['processors']['specialized']:
+            if project_config.get('processors') is not None and 'specialized' in project_config.get('processors', {}) and 'charts' in project_config.get('processors.specialized', {}):
                 # New master config structure
-                self.config = project_config['processors']['specialized']['charts']
+                self.config = project_config.get('processors.specialized.charts')
             elif project_config.get('chart_image_extractor') is not None:
                 # Legacy project config structure
-                self.config = project_config['chart_image_extractor']
+                self.config = project_config.get('chart_image_extractor')
             else:
                 self.config = config or self._get_default_config()
         else:

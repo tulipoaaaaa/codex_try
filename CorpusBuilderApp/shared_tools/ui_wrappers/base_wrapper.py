@@ -67,6 +67,8 @@ class BaseWrapper(QObject):
     status_updated = pyqtSignal(str)    # Status message
     error_occurred = pyqtSignal(str)    # Error message
     completed = pyqtSignal(dict)        # Results dictionary
+    batch_completed = completed         # alias expected by tabs
+    file_processed = pyqtSignal(object) # path or metadata payload
     
     def __init__(
         self,
@@ -80,7 +82,7 @@ class BaseWrapper(QObject):
         
         self.config = config
         self.worker = None
-        self._is_running = False
+        self._running = False  # Changed from _is_running to _running
         self.logger = logging.getLogger(f"{self.__class__.__name__}")
         self.activity_log_service = activity_log_service
         self.task_history_service = task_history_service
@@ -90,6 +92,14 @@ class BaseWrapper(QObject):
         self._test_mode = False
         if test_mode:
             self.set_test_mode(True)
+        
+    @property
+    def _is_running(self) -> bool:  # tab audit expects this
+        return getattr(self, "_running", False)
+
+    @_is_running.setter
+    def _is_running(self, value: bool) -> None:
+        self._running = bool(value)
         
     @abstractmethod
     def _create_target_object(self):

@@ -1,0 +1,45 @@
+{
+  "description": "JSON patch to consolidate ProjectConfig implementations",
+  "operations": [
+    {
+      "op": "remove",
+      "path": "/CorpusBuilderApp/shared_tools/config/project_config.py",
+      "description": "Deleted duplicate ProjectConfig implementation"
+    },
+    {
+      "op": "replace",
+      "path": "/CorpusBuilderApp/shared_tools/processors/chart_image_extractor.py",
+      "old_import": "from shared_tools.config.project_config import ProjectConfig",
+      "new_import": "from shared_tools.project_config import ProjectConfig",
+      "line": 21
+    },
+    {
+      "op": "replace", 
+      "path": "/CorpusBuilderApp/shared_tools/processors/financial_symbol_processor.py",
+      "old_import": "from shared_tools.config.project_config import ProjectConfig",
+      "new_import": "from shared_tools.project_config import ProjectConfig",
+      "line": 15
+    },
+    {
+      "op": "replace",
+      "path": "/CorpusBuilderApp/shared_tools/processors/formula_extractor.py", 
+      "old_import": "from shared_tools.config.project_config import ProjectConfig",
+      "new_import": "from shared_tools.project_config import ProjectConfig",
+      "line": 15
+    },
+    {
+      "op": "replace",
+      "path": "/CorpusBuilderApp/shared_tools/processors/deduplicator.py",
+      "old_import": "from shared_tools.config.project_config import ProjectConfig", 
+      "new_import": "from shared_tools.project_config import ProjectConfig",
+      "line": 22
+    }
+  ],
+  "summary": {
+    "files_changed": 5,
+    "files_deleted": 1,
+    "import_statements_updated": 4,
+    "remaining_implementation": "CorpusBuilderApp/shared_tools/project_config.py",
+    "reason_for_choice": "The main ProjectConfig implementation is Pydantic-based with comprehensive features including environment variable support, schema validation, configuration merging, and extensive API. It's used by 40+ files vs. 4 files using the simpler alternative."
+  }
+} 

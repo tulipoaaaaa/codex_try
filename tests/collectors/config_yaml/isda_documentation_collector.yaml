@@ -1,0 +1,7 @@
+raw_data_dir: /path/to/raw_data
+domains:
+  regulation_compliance:
+    path: regulation_compliance
+max_sources: 4
+keywords:
+  - protocol 

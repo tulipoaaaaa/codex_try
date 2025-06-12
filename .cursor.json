@@ -1,133 +1,54 @@
 {
-    "$schema": "https://raw.githubusercontent.com/getcursor/cursor/main/cursor.schema.json",
-    "project": {
-      "name": "CryptoCorpusBuilder",
-      "description": "Corpus ingestion, enrichment, UI management and processor control for crypto-finance documents.",
-      "language": "python",
-      "root": "CorpusBuilderApp"
-    },
-    "settings": {
-      "python_version": "3.11",
-      "venv_path": "./.venv",
-      "entry_point": "CorpusBuilderApp/app/main.py"
-    },
-    "linting": {
-      "tool": "ruff",
-      "enabled": true,
-      "ignore": ["E501", "F401"],
-      "config_file": "pyproject.toml"
-    },
-    "formatting": {
-      "enabled": true,
-      "tool": "black",
-      "lineLength": 100
-    },
-    "type_checking": {
-      "enabled": true,
-      "tool": "mypy",
-      "strict": true,
-      "config_file": "mypy.ini"
-    },
-    "testing": {
-      "framework": "pytest",
-      "entry_point": "pytest -q CorpusBuilderApp/tests",
-      "pytest_ini": "CorpusBuilderApp/pytest.ini",
-      "requires_env": true,
-      "skip_if_missing": ["PySide6", "fitz", "requests"]
-    },
-    "ai_tools": {
-      "codex_assist": true,
-      "codex_guidelines": [
-        "Never refactor working PySide6 logic unless explicitly requested.",
-        "Respect wrapper boundaries: do not move logic from wrappers to UI or vice versa.",
-        "All new logic must use ProjectConfig helpers for path resolution.",
-        "Always suggest test coverage for new features in tests/ui or tests/unit.",
-        "Use CardWrapper, SectionHeader, StatusDot for all visual components unless overridden."
-      ],
-      "cursor_goals": [
-        "1. Ensure all deprecated folders are ignored and marked for deletion.",
-        "2. Convert legacy imports to shared_tools where safe.",
-        "3. Assist in test scaffolding generation using mock ProjectConfig instances.",
-        "4. Avoid breaking UI layout or signal connections — always preserve working tabs.",
-        "5. Default all config parsing to use get_config_value helpers from conf_utils."
-      ]
-    },
-    "rules": [
-      {
-        "match": "**/CryptoCorpusBuilder/**",
-        "action": "ignore",
-        "reason": "Legacy deprecated folder. Do not read or write."
-      },
-      {
-        "match": "**/shared_tools/prev_working/**",
-        "action": "ignore",
-        "reason": "Deprecated legacy experiments. Safe to delete."
-      },
-      {
-        "match": "**/tests/deprecated/**",
-        "action": "ignore",
-        "reason": "Old test stubs or legacy test files."
-      },
-      {
-        "match": "**/app/ui/widgets/**",
-        "action": "read-only",
-        "reason": "Shared UI components like CardWrapper, StatusDot, SectionHeader. Changes must be explicitly requested."
-      },
-      {
-        "match": "**/shared_tools/project_config.py",
-        "action": "read-write",
-        "reason": "Main ProjectConfig schema. Update only if config schema itself changes."
-      },
-      {
-        "match": "**/shared_tools/config/conf_utils.py",
-        "action": "read-write",
-        "reason": "Helper utilities for safe config parsing. Codex should use these to resolve nested or wrapped config values."
-      },
-      {
-        "match": "**/app/ui/tabs/**/*.py",
-        "action": "read-write",
-        "reason": "UI logic for each tab. Update only if adding signals, wrappers, widgets, or fixing visual/styling bugs."
-      },
-      {
-        "match": "**/app/ui/dialogs/settings_dialog.py",
-        "action": "read-write",
-        "reason": "UI config surface. Always ensure setCurrentText() is passed a string. Handle dict config values safely."
-      },
-      {
-        "match": "**/shared_tools/ui_wrappers/processors/**",
-        "action": "read-write",
-        "reason": "UI processor bridge wrappers. Always verify: ProjectConfig is passed, config access is safe, fallback values are valid."
-      },
-      {
-        "match": "**/shared_tools/storage/corpus_manager.py",
-        "action": "read-write",
-        "reason": "Handles file ops. Before changing any method, ensure it emits all 3 signals: progress_updated, status_updated, operation_completed."
-      },
-      {
-        "match": "**/*.qss",
-        "action": "read-write",
-        "reason": "Theme styles. Ensure .stat-card and .status-dot-* selectors are consistent across themes."
-      }
+  "hard_rules": {
+    "ui_qt_framework": [
+      "PySide6 only. Importing or depending on PyQt6 is forbidden.",
+      "Single-inheritance for widgets. Every UI wrapper class must inherit only from a Qt widget (usually QWidget). No mixins like BaseWrapper or ProcessorMixin.",
+      "No super() chains that reach non-Qt parents. Call QWidget.__init__(self, parent) directly.",
+      "Public signals/slots/methods may not be renamed, removed, or have their signatures altered.",
+      "Constructor arguments of existing widgets must stay identical.",
+      "No unsolicited visual or layout changes. UI layout, styles, and assets are considered stable unless a visual bug is explicitly flagged.",
+      "All UI setup must be in setup_ui(). No UI logic in base classes or outside the wrapper.",
+      "All signal/slot connections must be in setup_connections()."
     ],
-    "patterns": {
-      "function_behavior_checks": [
-        {
-          "trigger": "batch_copy_files",
-          "check": ["corpus_manager.operation_completed.emit", "file copy verification"]
-        },
-        {
-          "trigger": "load_current_settings",
-          "check": ["type check config values", "avoid setCurrentText(dict)"]
-        },
-        {
-          "trigger": "_init_ui",
-          "check": ["combo boxes use string values only", "avoid unwrapped config values"]
-        },
-        {
-          "trigger": "create_collector_wrapper",
-          "check": ["ensure ProjectConfig instance passed", "wrapper class has valid config"]
-        }
-      ]
-    }
+    "architecture_delegation": [
+      "Wrappers own their config, logger, and processor instances explicitly – nothing is inherited.",
+      "Signals are defined in the wrapper itself and connected in a setup_connections() helper.",
+      "Business logic lives in backend services/processors; wrappers use explicit delegation (self.processor.start(), etc.).",
+      "TaskQueueManager, SystemMonitor, CorpusStatsService, etc. remain the authoritative back-end hubs; no shortcut logic in the UI layers.",
+      "No global state in UI wrappers. All state must be instance-local or managed by backend services."
+    ],
+    "coding_standards_quality": [
+      "Keep code Python 3.11-compatible and GPU-aware (32 GB VRAM target).",
+      "No use of deprecated Qt APIs or Python features.",
+      "All patches must update CHANGELOG.md and docs/progress_log.md with a one-liner.",
+      "Filenames and package paths must follow the audit conventions (e.g., financial_symbol_processor.py, never finacial_…).",
+      "Add missing __init__.py files so every directory is a package.",
+      "No placeholder, mock, or test logic in production code."
+    ],
+    "testing_ci": [
+      "pytest must discover and run both /tests and CorpusBuilderApp/tests.",
+      "New bugfixes require a unit or integration test reproducing the failure.",
+      "GUI launch in CI/headless must not crash; if Qt plugins are missing, supply a shim or mark xfail.",
+      "All new/changed signals, slots, and public methods must have a test."
+    ],
+    "codex_usage": [
+      "Every change is preceded by an audit report → “OK” confirmation loop. No fix is applied until I green-light it.",
+      "Cursor prompt headers must restate the critical constraints (PySide6-only, single-inheritance, etc.).",
+      "No placeholder or mock logic in final commits; production code only.",
+      "Each audit/fix must log artefacts to audit_reports/ for traceability."
+    ],
+    "performance_resources": [
+      "Assume 64 GB RAM / 32 GB VRAM; design data pipelines to exploit available memory without hard-coding GPU IDs.",
+      "For CLI/GUI long tasks, provide real-time progress feedback (Qt dialog or CLI bar).",
+      "Persistent global hash index governs deduplication; never bypass it."
+    ],
+    "documentation_roadmapping": [
+      "All features require doc updates (README, docs/cli_vs_gui_matrix.md, etc.).",
+      "Queued tasks and stretch goals (export tooling, corpus diff, dashboard visuals, etc.) must remain preserved until completed."
+    ],
+    "security_compliance": [
+      "Crypto exchange code must stay Hyperliquid-only for trading.",
+      "Sensitive keys/secrets must remain in the existing secret-handling vault—never hard-code."
+    ]
   }
-  
+}

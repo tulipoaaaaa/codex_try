@@ -1,0 +1,94 @@
+{
+  "modules_imported": 67,
+  "collector_classes": 15,
+  "processor_classes": 0,
+  "corpus_classes": 4,
+  "cli_exit_code": 1,
+  "collectors": [
+    [
+      "CorpusBuilderApp.shared_tools.collectors.api_collector.ApiCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.api_collector.BaseCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.arxiv_collector.ApiCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.arxiv_collector.ArxivCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.base_collector.BaseCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.collect_isda.BaseCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.collect_isda.ISDADocumentationCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.github_collector.ApiCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.github_collector.GitHubCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.quantopian_collector.BaseCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.quantopian_collector.QuantopianCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.repo_collector.BaseCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.repo_collector.RepoCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.web_collector.BaseCollector",
+      "FAIL"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.collectors.web_collector.WebCollector",
+      "FAIL"
+    ]
+  ],
+  "processors": [],
+  "corpus": [
+    [
+      "CorpusBuilderApp.shared_tools.processors.deduplicator.CorpusManager",
+      "OK"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.storage.corpus_manager.CorpusManager",
+      "OK"
+    ],
+    [
+      "CorpusBuilderApp.shared_tools.services.corpus_stats_service.CorpusManager",
+      "OK"
+    ],
+    [
+      "CorpusBuilderApp.app.ui.tabs.corpus_manager_tab.CorpusManager",
+      "OK"
+    ]
+  ],
+  "cli": {
+    "exit_code": 1,
+    "stdout": "[ERROR] Could not import collectors: No module named 'shared_tools'\n",
+    "stderr": ""
+  },
+  "log_file": "audit_reports\\system_backend_audit_20250612_205635.log"
+}

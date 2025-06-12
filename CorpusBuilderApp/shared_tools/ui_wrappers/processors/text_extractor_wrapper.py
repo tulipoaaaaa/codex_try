@@ -6,9 +6,10 @@ Provides text extraction capabilities with UI controls
 from PySide6.QtCore import Signal as pyqtSignal, QThread
 import time
 from shared_tools.processors.text_extractor import TextExtractor
-from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
+from shared_tools.project_config import ProjectConfig
 from typing import List, Dict, Any
 from pathlib import Path
+from PySide6.QtWidgets import QWidget
 
 class TextExtractorWorker(QThread):
     """Worker thread for Non-PDF Text Extraction"""
@@ -68,32 +69,33 @@ class TextExtractorWorker(QThread):
         """Stop processing"""
         self._should_stop = True
 
-class TextExtractorWrapper:
-    """UI wrapper for Non-PDF Text Extractor"""
-    
+class TextExtractorWrapper(QWidget):
+    """UI wrapper for Non-PDF Text Extractor (migrated to QWidget-only, explicit delegation)"""
     file_processed = pyqtSignal(str, bool)  # filepath, success
     mime_type_detected = pyqtSignal(str, str)  # filepath, mime_type
-    
-    def __init__(self, config, task_queue_manager=None):
-        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)
-        
-        # Set up delegation for frequently used attributes
-        self.config = self._bw.config  # delegation
-        self.logger = self._bw.logger  # delegation
-        
+
+    def __init__(self, project_config, parent=None):
+        QWidget.__init__(self, parent)
+        if project_config is None:
+            raise RuntimeError("TextExtractorWrapper requires a non-None ProjectConfig")
+        self.project_config = project_config
+        self.config = project_config.get('processors.text_extractor', {})
+        self.logger = None  # Set up logger if needed
         self.extractor = None
         self.worker_threads = 4
-        
+        self.worker = None
+        self._is_running = False
+        # All signal-slot connections are made explicitly in methods
+
     def _create_target_object(self):
         """Create Text extractor instance"""
         if not self.extractor:
             self.extractor = TextExtractor(
-                input_dir=str(self.config.raw_data_dir),
-                output_dir=str(self.config.nonpdf_extracted_dir),
+                output_dir=str(self.config.get('nonpdf_extracted_dir', '')),
                 num_workers=self.worker_threads
             )
         return self.extractor
-        
+
     def _get_operation_type(self):
         return "extract_text"
 
@@ -102,7 +104,7 @@ class TextExtractorWrapper:
         self.worker_threads = count
         if self.extractor:
             self.extractor.num_workers = count
-        
+
     def start_batch_processing(self, files_to_process: List[str]):
         """Start batch processing of non-PDF files"""
         if self._is_running:
@@ -111,39 +113,35 @@ class TextExtractorWrapper:
 
         self._is_running = True
         self.status_updated.emit(f"Starting non-PDF processing of {len(files_to_process)} files...")
-        if self.task_history_service:
-            self._current_task_id = f"TextExtractor_{int(time.time()*1000)}"
-            self.task_history_service.start_task(self._current_task_id, "Text Batch")
-
         # Create extractor instance
         extractor = self._create_target_object()
-        
+
         # Create worker thread
         self.worker = TextExtractorWorker(
             extractor, 
             files_to_process
         )
-        
+
         # Connect signals
         self.worker.progress.connect(self._on_progress)
         self.worker.error.connect(self._on_error)
         self.worker.finished.connect(self._on_finished)
         self.worker.file_processed.connect(self.file_processed)
-        
+
         # Start worker
         self.worker.start()
-        
+
     def get_format_stats(self):
         """Get statistics about processed file formats"""
         if self.extractor:
-            return {"formats_processed": self.extractor.format_counts}
+            return {"formats_processed": getattr(self.extractor, 'format_counts', {})}
         return {"formats_processed": {}}
 
     def refresh_config(self):
         """Reload parameters from ``self.config``."""
         cfg = {}
-        if hasattr(self.config, 'get_processor_config'):
-            cfg = self.config.get_processor_config('text_extractor') or {}
+        if hasattr(self.project_config, 'get'):
+            cfg = self.project_config.get('processors.text_extractor', {})
         for k, v in cfg.items():
             method = f'set_{k}'
             if hasattr(self, method):
@@ -151,16 +149,17 @@ class TextExtractorWrapper:
                     getattr(self, method)(v)
                     continue
                 except Exception:
-                    self.logger.debug('Failed to apply %s via wrapper', k)
-            if hasattr(self.processor, method):
+                    if self.logger:
+                        self.logger.debug('Failed to apply %s via wrapper', k)
+            if hasattr(self.extractor, method):
                 try:
-                    getattr(self.processor, method)(v)
+                    getattr(self.extractor, method)(v)
                     continue
                 except Exception:
-                    self.logger.debug('Failed to apply %s via processor', k)
-            if hasattr(self.processor, k):
-                setattr(self.processor, k, v)
+                    if self.logger:
+                        self.logger.debug('Failed to apply %s via extractor', k)
+            if hasattr(self.extractor, k):
+                setattr(self.extractor, k, v)
             elif hasattr(self, k):
                 setattr(self, k, v)
-        if cfg and hasattr(self, 'configuration_changed'):
-            self.configuration_changed.emit(cfg)
+        # No configuration_changed signal in this wrapper, so skip emit

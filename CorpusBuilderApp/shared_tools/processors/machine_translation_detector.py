@@ -326,28 +326,20 @@ def detect_machine_translation(text, config_path=None, file_type=None, domain=No
 class MachineTranslationDetector:
     """Detect machine-translated content"""
     
-    def __init__(self, project_config, *a, **kw):
-        super().__init__(*a, **kw)
-        self.project_config = project_config
-        cfg = project_config.get('processors.' + self.__class__.__name__.lower(), {})
-        self.min_conf = cfg.get('min_confidence', 0.80)
-        self.target_languages = cfg.get('target_languages', ['en'])
+    def __init__(self, config: Optional[Dict] = None, project_config: Optional[Union[str, ProjectConfig]] = None):
         self.logger = logging.getLogger(self.__class__.__name__)
-        
-        # Use project config if provided, otherwise use provided config or defaults
+        if isinstance(project_config, str):
+            project_config = ProjectConfig(project_config)
         if project_config:
-            if 'processors' in project_config and 'quality_control' in project_config['processors'] and 'checks' in project_config['processors']['quality_control'] and 'translation' in project_config['processors']['quality_control']['checks']:
-                # New master config structure
-                self.config = project_config['processors']['quality_control']['checks']['translation']
-            elif 'machine_translation' in project_config:
-                # Legacy project config structure
-                self.config = project_config['machine_translation']
+            if hasattr(project_config, 'get') and project_config.get('processors.quality_control.checks.translation'):
+                self.config = project_config.get('processors.quality_control.checks.translation')
+            elif project_config.get('machine_translation') is not None:
+                self.config = project_config.get('machine_translation')
             else:
-                self.config = cfg or self._get_default_config()
+                self.config = config or self._get_default_config()
         else:
-            self.config = cfg or self._get_default_config()
-        
-        # Validate configuration
+            self.config = config or self._get_default_config()
+        self.project_config = project_config
         self._validate_config()
     
     def _get_default_config(self) -> Dict[str, Any]:

@@ -1,0 +1,583 @@
+[MISSING] APIKeyDialog expects self.accept
+[MISSING] APIKeyDialog expects self.reject
+[MISSING] APIKeyDialog expects self.test_connections
+[MISSING] ActiveOperations expects Manager.task_queue_manager
+[MISSING] ActiveOperations expects self.refresh_operations
+[MISSING] ActiveOperationsWidget expects Manager.task_queue_manager
+ActivityLog  -->  lambda: self.copy_item_text(item)
+ActivityLog  -->  lambda: self.delete_item(item)
+ActivityLog  -->  lambda: self.view_item_details(item)
+[MISSING] ActivityLog expects self.apply_filters
+[MISSING] ActivityLog expects self.clear_log
+[MISSING] ActivityLog expects self.export_log
+[MISSING] ActivityLog expects self.on_item_clicked
+[MISSING] ActivityLog expects self.show_context_menu
+[MISSING] ActivityLogItem expects Manager.get_icon_path
+[MISSING] ActivityLogItem expects Manager.icon_manager
+[MISSING] AddPropertyDialog expects self.accept
+[MISSING] AddPropertyDialog expects self.reject
+AnalyticsTab  -->  CorpusStatsService.<ast.Attribute object at 0x000001D96AAF1110>
+AnalyticsTab  -->  Manager.<ast.Attribute object at 0x000001D96AAF14D0>
+[MISSING] AnalyticsTab expects Manager.chart_manager
+[MISSING] AnalyticsTab expects Manager.create_chart_view
+[MISSING] AnalyticsTab expects Manager.set_theme
+AnalyticsTab  -->  Service.<ast.Attribute object at 0x000001D96AAF1110>
+[MISSING] AnalyticsTab expects Service.get_daily_document_counts
+[MISSING] AnalyticsTab expects Service.get_domain_size_summary
+[MISSING] AnalyticsTab expects Service.get_domain_summary
+[MISSING] AnalyticsTab expects Service.get_language_distribution
+[MISSING] AnalyticsTab expects Service.refresh_stats
+[MISSING] AnalyticsTab expects Service.stats_service
+[MISSING] AnalyticsTab expects self.on_stats_updated
+[MISSING] AnalyticsTab expects self.update_charts
+AnnasArchiveWrapper  -->  Collector.<ast.Attribute object at 0x000001D96A8A9E50>
+[MISSING] AnnasArchiveWrapper expects Collector.collector
+ArxivWrapper  -->  Collector.<ast.Attribute object at 0x000001D96B05DC90>
+[MISSING] ArxivWrapper expects Collector.collector
+BalancerTab  -->  CorpusStatsService.<ast.Attribute object at 0x000001D96AB87990>
+BalancerTab  -->  Manager.<ast.Attribute object at 0x000001D96AB87F90>
+[MISSING] BalancerTab expects Manager.get_icon_path
+[MISSING] BalancerTab expects Manager.icon_manager
+[MISSING] BalancerTab expects Manager.notification_manager
+[MISSING] BalancerTab expects Manager.show_notification
+BalancerTab  -->  Service.<ast.Attribute object at 0x000001D96AB862D0>
+BalancerTab  -->  Service.<ast.Attribute object at 0x000001D96AB87990>
+[MISSING] BalancerTab expects Service.auto_balance_service
+[MISSING] BalancerTab expects Service.refresh_stats
+[MISSING] BalancerTab expects Service.start
+[MISSING] BalancerTab expects Service.stats_service
+[MISSING] BalancerTab expects Service.stop
+BalancerTab  -->  lambda: self.update_status_display('Auto balance loop running')
+BalancerTab  -->  lambda: self.update_status_display('Auto balance loop stopped')
+[MISSING] BalancerTab expects self.analyze_corpus_balance
+[MISSING] BalancerTab expects self.balance_corpus
+[MISSING] BalancerTab expects self.collect_for_missing_domains
+[MISSING] BalancerTab expects self.export_balance_report
+[MISSING] BalancerTab expects self.on_balance_completed
+BalancerTab  -->  self.overall_progress.setValue
+[MISSING] BalancerTab expects self.perform_periodic_analysis
+[MISSING] BalancerTab expects self.reanalyze_corpus
+[MISSING] BalancerTab expects self.refresh_corpus_stats
+[MISSING] BalancerTab expects self.show_notification
+[MISSING] BalancerTab expects self.stop_balancing
+[MISSING] BalancerTab expects self.toggle_auto_analysis
+[MISSING] BalancerTab expects self.toggle_auto_balance_loop
+[MISSING] BalancerTab expects self.update_analysis_interval
+[MISSING] BalancerTab expects self.update_balancer_view
+[MISSING] BalancerTab expects self.update_status_display
+BaseExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96AB96490>
+[MISSING] BaseExtractorWrapper expects Extractor.configure
+[MISSING] BaseExtractorWrapper expects Extractor.extractor
+BaseExtractorWrapper  -->  lambda v: self.confidence_value_label.setText(f'{v}%')
+BaseExtractorWrapper  -->  lambda v: self.min_quality_value_label.setText(f'{v}%')
+[MISSING] BaseExtractorWrapper expects self._on_configuration_changed
+[MISSING] BaseExtractorWrapper expects self.apply_configuration
+[MISSING] BaseExtractorWrapper expects self.browse_temp_directory
+[MISSING] BaseExtractorWrapper expects self.export_configuration
+[MISSING] BaseExtractorWrapper expects self.import_configuration
+[MISSING] BaseExtractorWrapper expects self.reset_configuration
+[MISSING] BatchMetadataEditor expects self.accept
+[MISSING] BatchMetadataEditor expects self.reject
+BatchNonPDFExtractorWorker  -->  Extractor.<ast.Attribute object at 0x000001D96ABC7790>
+[MISSING] BatchNonPDFExtractorWorker expects Extractor.configure
+[MISSING] BatchNonPDFExtractorWorker expects Extractor.extract_file
+[MISSING] BatchNonPDFExtractorWorker expects Extractor.extractor
+BatchNonPDFExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96A899150>
+[MISSING] BatchNonPDFExtractorWrapper expects self.batch_completed
+[MISSING] BatchNonPDFExtractorWrapper expects self.browse_input_directory
+[MISSING] BatchNonPDFExtractorWrapper expects self.browse_output_directory
+[MISSING] BatchNonPDFExtractorWrapper expects self.cancel_extraction
+[MISSING] BatchNonPDFExtractorWrapper expects self.file_processed
+[MISSING] BatchNonPDFExtractorWrapper expects self.handle_error
+[MISSING] BatchNonPDFExtractorWrapper expects self.start_extraction
+[MISSING] BatchNonPDFExtractorWrapper expects self.update_progress
+BatchTextExtractorEnhancedPrerefactorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96B035C90>
+[MISSING] BatchTextExtractorEnhancedPrerefactorWrapper expects Extractor.worker
+[MISSING] BatchTextExtractorEnhancedPrerefactorWrapper expects Processor.process_file
+[MISSING] BatchTextExtractorEnhancedPrerefactorWrapper expects Processor.processor
+BatchTextExtractorEnhancedPrerefactorWrapper  -->  on_batch_completed
+BatchTextExtractorEnhancedPrerefactorWrapper  -->  on_error
+BatchTextExtractorWorker  -->  Extractor.<ast.Attribute object at 0x000001D96AB5DF10>
+[MISSING] BatchTextExtractorWorker expects Extractor.configure
+[MISSING] BatchTextExtractorWorker expects Extractor.extract_file
+[MISSING] BatchTextExtractorWorker expects Extractor.extractor
+BitMEXWrapper  -->  Collector.<ast.Attribute object at 0x000001D96ABA6110>
+[MISSING] BitMEXWrapper expects Collector.collector
+[MISSING] ChartExtractorWorkerThread expects Processor.extract_charts
+[MISSING] ChartExtractorWorkerThread expects Processor.processor
+ChartImageExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96B1C9790>
+ChartImageExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96B3AE650>
+[MISSING] ChartImageExtractorWrapper expects Processor.processor
+[MISSING] ChartImageExtractorWrapper expects self._on_processing_completed
+[MISSING] ChartImageExtractorWrapper expects self.chart_extracted
+[MISSING] ChartImageExtractorWrapper expects self.error_occurred
+[MISSING] ChartImageExtractorWrapper expects self.progress_updated
+[MISSING] ChartImageExtractorWrapper expects self.status_updated
+[MISSING] CollectorCard expects self.configure_requested
+[MISSING] CollectorCard expects self.logs_requested
+[MISSING] CollectorCard expects self.start_requested
+[MISSING] CollectorCard expects self.stop_requested
+[MISSING] CollectorConfigDialog expects Collector.collector_name
+[MISSING] CollectorConfigDialog expects Collector.title
+[MISSING] CollectorConfigDialog expects self.reject
+[MISSING] CollectorConfigDialog expects self.reset_to_global
+[MISSING] CollectorConfigDialog expects self.save
+[MISSING] CollectorsTab expects Collector.addWidget
+[MISSING] CollectorsTab expects Collector.card
+[MISSING] CollectorsTab expects Collector.collector_error
+[MISSING] CollectorsTab expects Collector.collector_wrappers
+[MISSING] CollectorsTab expects Collector.configure_collector
+[MISSING] CollectorsTab expects Collector.dialog
+[MISSING] CollectorsTab expects Collector.emit
+[MISSING] CollectorsTab expects Collector.items
+[MISSING] CollectorsTab expects Collector.stop_all_collectors
+[MISSING] CollectorsTab expects Collector.values
+[MISSING] CollectorsTab expects Manager.task_queue_manager
+[MISSING] CollectorsTab expects Service.task_history_service
+CollectorsTab  -->  lambda msg, n=name: self.cards[n].update_status(msg)
+CollectorsTab  -->  lambda n=name: self.configure_collector(n)
+CollectorsTab  -->  lambda n=name: self.show_logs(n)
+CollectorsTab  -->  lambda n=name: self.start_collection(n)
+CollectorsTab  -->  lambda n=name: self.stop_collection(n)
+CollectorsTab  -->  lambda v, n=name: self.cards[n].update_progress(v)
+[MISSING] CollectorsTab expects self.on_collection_finished
+[MISSING] CollectorsTab expects self.on_collection_started
+[MISSING] CollectorsTab expects self.stop_all_collectors
+ConfigurationTab  -->  lambda: self.browse_directory(self.corpus_root, 'Select Corpus Root')
+ConfigurationTab  -->  lambda: self.browse_directory(self.logs_dir, 'Select Logs Directory')
+ConfigurationTab  -->  lambda: self.browse_directory(self.metadata_dir, 'Select Metadata Directory')
+ConfigurationTab  -->  lambda: self.browse_directory(self.processed_dir, 'Select Processed Directory')
+ConfigurationTab  -->  lambda: self.browse_directory(self.raw_data_dir, 'Select Raw Data Directory')
+[MISSING] ConfigurationTab expects self.add_domain
+[MISSING] ConfigurationTab expects self.browse_config_file
+[MISSING] ConfigurationTab expects self.browse_python_executable
+[MISSING] ConfigurationTab expects self.browse_temp_dir
+[MISSING] ConfigurationTab expects self.browse_venv_path
+[MISSING] ConfigurationTab expects self.load_current_config
+[MISSING] ConfigurationTab expects self.load_default_config
+[MISSING] ConfigurationTab expects self.on_environment_changed
+[MISSING] ConfigurationTab expects self.save_configuration
+[MISSING] CorpusBalancerWrapper expects Collector.items
+[MISSING] CorpusBalancerWrapper expects Manager._corpus_manager
+[MISSING] CorpusBalancerWrapper expects Manager.get_domain_distribution
+[MISSING] CorpusBalancerWrapper expects Processor.get_processor_config
+[MISSING] CorpusBalancerWrapper expects self._on_error
+[MISSING] CorpusBalancerWrapper expects self._on_finished
+[MISSING] CorpusBalancerWrapper expects self._on_progress
+[MISSING] CorpusBalancerWrapper expects self.domain_processed
+CorpusManagerTab  -->  Manager.<ast.Attribute object at 0x000001D96AB5DFD0>
+CorpusManagerTab  -->  Manager.<ast.Attribute object at 0x000001D96AB5F490>
+[MISSING] CorpusManagerTab expects Manager.add_notification
+[MISSING] CorpusManagerTab expects Manager.copy_files
+[MISSING] CorpusManagerTab expects Manager.corpus_manager
+[MISSING] CorpusManagerTab expects Manager.delete_files
+[MISSING] CorpusManagerTab expects Manager.get_icon_path
+[MISSING] CorpusManagerTab expects Manager.icon_manager
+[MISSING] CorpusManagerTab expects Manager.move_files
+[MISSING] CorpusManagerTab expects Manager.notification_manager
+[MISSING] CorpusManagerTab expects Manager.organize_files
+[MISSING] CorpusManagerTab expects Manager.rename_files
+CorpusManagerTab  -->  Service.<ast.Attribute object at 0x000001D96AB5D950>
+[MISSING] CorpusManagerTab expects Service.activity_log_service
+[MISSING] CorpusManagerTab expects Service.openUrl
+[MISSING] CorpusManagerTab expects Service.validate_structure
+[MISSING] CorpusManagerTab expects Service.validator_service
+CorpusManagerTab  -->  callback
+CorpusManagerTab  -->  lambda p, _op: self.batch_progress.setValue(p)
+CorpusManagerTab  -->  lambda: self.delete_file(file_path)
+CorpusManagerTab  -->  lambda: self.notification_manager.add_notification('corpus_validate', 'Validating Corpus', 'Checking corpus structure...', auto_hide=True)
+CorpusManagerTab  -->  lambda: self.on_file_selected(index)
+CorpusManagerTab  -->  lambda: self.open_file(file_path)
+CorpusManagerTab  -->  lambda: self.process_file(file_path)
+[MISSING] CorpusManagerTab expects self._handle_batch_status
+[MISSING] CorpusManagerTab expects self._handle_operation_completed
+[MISSING] CorpusManagerTab expects self.add_metadata_field
+[MISSING] CorpusManagerTab expects self.batch_organize_files
+[MISSING] CorpusManagerTab expects self.batch_rename_files
+[MISSING] CorpusManagerTab expects self.browse_directory
+[MISSING] CorpusManagerTab expects self.create_folder
+[MISSING] CorpusManagerTab expects self.filter_files
+[MISSING] CorpusManagerTab expects self.on_balancer_finished
+[MISSING] CorpusManagerTab expects self.on_domain_processed
+[MISSING] CorpusManagerTab expects self.on_file_selected
+[MISSING] CorpusManagerTab expects self.on_validation_complete
+[MISSING] CorpusManagerTab expects self.on_validation_failed
+[MISSING] CorpusManagerTab expects self.open_batch_metadata_editor
+[MISSING] CorpusManagerTab expects self.rebalance_corpus
+[MISSING] CorpusManagerTab expects self.refresh_file_view
+[MISSING] CorpusManagerTab expects self.save_metadata
+[MISSING] CorpusManagerTab expects self.show_context_menu
+[MISSING] CorpusManagerTab expects self.show_validation_results
+[MISSING] CorpusManagerTab expects self.validate_corpus_structure
+[MISSING] CorpusStatistics expects self.refresh_requested
+[MISSING] CorruptionDetectorWrapper expects Processor.processor
+[MISSING] CorruptionDetectorWrapper expects self.apply_filter
+[MISSING] CorruptionDetectorWrapper expects self.browse_input_path
+[MISSING] CorruptionDetectorWrapper expects self.cancel_scan
+[MISSING] CorruptionDetectorWrapper expects self.export_results
+[MISSING] CorruptionDetectorWrapper expects self.file_checked
+[MISSING] CorruptionDetectorWrapper expects self.generate_report
+[MISSING] CorruptionDetectorWrapper expects self.handle_error
+[MISSING] CorruptionDetectorWrapper expects self.scan_completed
+[MISSING] CorruptionDetectorWrapper expects self.show_file_details
+[MISSING] CorruptionDetectorWrapper expects self.start_scan
+[MISSING] CorruptionDetectorWrapper expects self.update_progress
+[MISSING] DashboardTab expects Collector._collector_wrappers
+[MISSING] DashboardTab expects Collector.append
+DashboardTab  -->  Collector.lambda _r, n=name: Notifier.notify('Collector Finished', f'{n} completed', level='success')
+[MISSING] DashboardTab expects Collector.start_all_collectors
+[MISSING] DashboardTab expects Collector.wrapper
+DashboardTab  -->  CorpusStatsService.<ast.Attribute object at 0x000001D96B054590>
+DashboardTab  -->  Manager.<ast.Attribute object at 0x000001D96B054290>
+[MISSING] DashboardTab expects Manager.apply_chart_theme
+[MISSING] DashboardTab expects Manager.chart_manager
+[MISSING] DashboardTab expects Manager.create_chart_view
+[MISSING] DashboardTab expects Manager.task_queue_manager
+[MISSING] DashboardTab expects Manager.update_task
+DashboardTab  -->  Service.<ast.Attribute object at 0x000001D96AFF52D0>
+DashboardTab  -->  Service.<ast.Attribute object at 0x000001D96B054590>
+[MISSING] DashboardTab expects Service._stats_file
+[MISSING] DashboardTab expects Service.activity_log_service
+[MISSING] DashboardTab expects Service.dependency_update_service
+[MISSING] DashboardTab expects Service.get_domain_distribution
+[MISSING] DashboardTab expects Service.get_domain_summary
+[MISSING] DashboardTab expects Service.get_recent_tasks
+[MISSING] DashboardTab expects Service.get_summary
+[MISSING] DashboardTab expects Service.log
+[MISSING] DashboardTab expects Service.refresh_stats
+[MISSING] DashboardTab expects Service.start_update
+[MISSING] DashboardTab expects Service.stats_service
+[MISSING] DashboardTab expects Service.task_history_service
+DashboardTab  -->  SystemMonitor.<ast.Attribute object at 0x000001D96ABB5190>
+DashboardTab  -->  lambda *_: Notifier.notify('Corpus Optimization', 'Optimization completed', level='success')
+DashboardTab  -->  lambda *_: self.load_data()
+DashboardTab  -->  lambda *_: self.update_environment_info()
+DashboardTab  -->  lambda e: self.activity_log_widget.add_activity(e.get('source', 'Info'), e.get('message', ''), e.get('details'))
+DashboardTab  -->  lambda msg, n=name: Notifier.notify(f'{n} Error', msg, level='error')
+DashboardTab  -->  lambda msg: Notifier.notify('Optimization Error', msg, level='error')
+DashboardTab  -->  lambda: self.view_all_activity_requested.emit()
+[MISSING] DashboardTab expects self.on_dependency_update_completed
+[MISSING] DashboardTab expects self.on_dependency_update_failed
+[MISSING] DashboardTab expects self.on_dependency_update_progress
+DashboardTab  -->  self.rebalance_requested.emit
+DashboardTab  -->  self.recent_activity_widget.add_activity
+[MISSING] DashboardTab expects self.update_overview_metrics
+[MISSING] DashboardTab expects self.update_queue_counts
+[MISSING] DashboardTab expects self.update_system_metrics
+[MISSING] DashboardTab expects self.update_task_progress
+DashboardTab  -->  slot
+[MISSING] DeduplicateNonPDFOutputsWrapper expects Processor.processor
+DeduplicateNonPDFOutputsWrapper  -->  lambda v: self.similarity_value_label.setText(f'{v}%')
+[MISSING] DeduplicateNonPDFOutputsWrapper expects self.add_duplicate_result
+[MISSING] DeduplicateNonPDFOutputsWrapper expects self.browse_input_directory
+[MISSING] DeduplicateNonPDFOutputsWrapper expects self.cancel_deduplication
+[MISSING] DeduplicateNonPDFOutputsWrapper expects self.deduplication_completed
+[MISSING] DeduplicateNonPDFOutputsWrapper expects self.export_results
+[MISSING] DeduplicateNonPDFOutputsWrapper expects self.handle_error
+[MISSING] DeduplicateNonPDFOutputsWrapper expects self.remove_selected_duplicates
+[MISSING] DeduplicateNonPDFOutputsWrapper expects self.start_deduplication
+[MISSING] DeduplicateNonPDFOutputsWrapper expects self.update_progress
+[MISSING] DeduplicationWorker expects Deduplicator.configure
+[MISSING] DeduplicationWorker expects Deduplicator.deduplicator
+[MISSING] DeduplicatorWorker expects Processor.find_duplicates
+[MISSING] DeduplicatorWorker expects Processor.processor
+DeduplicatorWrapper  -->  Deduplicator.<ast.Attribute object at 0x000001D96AAD6550>
+DeduplicatorWrapper  -->  Deduplicator.<ast.Attribute object at 0x000001D96AB6B3D0>
+[MISSING] DeduplicatorWrapper expects Processor.processor
+[MISSING] DeduplicatorWrapper expects self._on_processing_completed
+[MISSING] DeduplicatorWrapper expects self.duplicate_found
+[MISSING] DeduplicatorWrapper expects self.error_occurred
+[MISSING] DeduplicatorWrapper expects self.progress_updated
+[MISSING] DeduplicatorWrapper expects self.status_updated
+[MISSING] DomainClassifierWorkerThread expects Processor.classify
+[MISSING] DomainClassifierWorkerThread expects Processor.processor
+[MISSING] DomainClassifierWrapper expects Processor._processor
+[MISSING] DomainClassifierWrapper expects Processor.refresh_config
+[MISSING] DomainClassifierWrapper expects self._on_processing_completed
+[MISSING] DomainClassifierWrapper expects self._on_progress_updated
+[MISSING] DomainClassifierWrapper expects self._on_status_updated
+DomainClassifierWrapper  -->  self.document_classified.emit
+DomainClassifierWrapper  -->  self.error_occurred.emit
+DomainClassifierWrapper  -->  self.progress_updated.emit
+DomainClassifierWrapper  -->  self.status_updated.emit
+DomainsManagerWorker  -->  DomainsManager.<ast.Attribute object at 0x000001D96AFFE8D0>
+DomainsManagerWorker  -->  Manager.<ast.Attribute object at 0x000001D96AFFE8D0>
+[MISSING] DomainsManagerWorker expects Manager.analyze_corpus_domains
+[MISSING] DomainsManagerWorker expects Manager.classify_domain
+[MISSING] DomainsManagerWorker expects Manager.export_domains_to_file
+[MISSING] DomainsManagerWorker expects Manager.import_domains_from_file
+[MISSING] DomainsManagerWorker expects Manager.manager
+DomainsManagerWrapper  -->  DomainsManager.<ast.Attribute object at 0x000001D96A8AB450>
+DomainsManagerWrapper  -->  DomainsManager.<ast.Attribute object at 0x000001D96AB1BC10>
+DomainsManagerWrapper  -->  DomainsManager.<ast.Attribute object at 0x000001D96AFDE9D0>
+DomainsManagerWrapper  -->  DomainsManager.<ast.Attribute object at 0x000001D96B04FF50>
+DomainsManagerWrapper  -->  DomainsManager.<ast.Attribute object at 0x000001D96B053B90>
+DomainsManagerWrapper  -->  DomainsManager.<ast.Attribute object at 0x000001D96B06CF90>
+DomainsManagerWrapper  -->  Manager.<ast.Attribute object at 0x000001D96A8AB450>
+DomainsManagerWrapper  -->  Manager.<ast.Attribute object at 0x000001D96AB1BC10>
+DomainsManagerWrapper  -->  Manager.<ast.Attribute object at 0x000001D96AFDE9D0>
+DomainsManagerWrapper  -->  Manager.<ast.Attribute object at 0x000001D96B04FF50>
+DomainsManagerWrapper  -->  Manager.<ast.Attribute object at 0x000001D96B053B90>
+DomainsManagerWrapper  -->  Manager.<ast.Attribute object at 0x000001D96B06CF90>
+[MISSING] DomainsManagerWrapper expects Processor.get_processor_config
+[MISSING] DomainsManagerWrapper expects Processor.processor
+[MISSING] DomainsManagerWrapper expects self.add_category
+[MISSING] DomainsManagerWrapper expects self.add_classification_result
+[MISSING] DomainsManagerWrapper expects self.add_domain
+[MISSING] DomainsManagerWrapper expects self.analysis_completed
+[MISSING] DomainsManagerWrapper expects self.browse_corpus_directory
+[MISSING] DomainsManagerWrapper expects self.browse_database_path
+[MISSING] DomainsManagerWrapper expects self.cancel_operation
+[MISSING] DomainsManagerWrapper expects self.classification_completed
+[MISSING] DomainsManagerWrapper expects self.classify_bulk_domains
+[MISSING] DomainsManagerWrapper expects self.classify_single_domain
+[MISSING] DomainsManagerWrapper expects self.clear_classification_cache
+[MISSING] DomainsManagerWrapper expects self.clear_domain_input
+[MISSING] DomainsManagerWrapper expects self.export_category
+[MISSING] DomainsManagerWrapper expects self.export_completed
+[MISSING] DomainsManagerWrapper expects self.export_domains
+[MISSING] DomainsManagerWrapper expects self.handle_error
+[MISSING] DomainsManagerWrapper expects self.import_completed
+[MISSING] DomainsManagerWrapper expects self.import_domains
+[MISSING] DomainsManagerWrapper expects self.load_domains_from_file
+[MISSING] DomainsManagerWrapper expects self.move_domain
+[MISSING] DomainsManagerWrapper expects self.on_category_selected
+[MISSING] DomainsManagerWrapper expects self.refresh_domain_tree
+[MISSING] DomainsManagerWrapper expects self.remove_category
+[MISSING] DomainsManagerWrapper expects self.remove_domain
+[MISSING] DomainsManagerWrapper expects self.start_corpus_analysis
+[MISSING] DomainsManagerWrapper expects self.update_progress
+[MISSING] ErrorDialog expects Manager.get_icon_path
+[MISSING] ErrorDialog expects Manager.icon_manager
+[MISSING] ErrorDialog expects self.reject
+[MISSING] ErrorDialog expects self.report_issue
+[MISSING] ErrorDialog expects self.request_retry
+[MISSING] ErrorDialog expects self.toggle_details
+FREDWrapper  -->  Collector.<ast.Attribute object at 0x000001D96A8AB8D0>
+[MISSING] FREDWrapper expects Collector.collector
+[MISSING] FileBrowser expects Manager.get_icon_path
+[MISSING] FileBrowser expects Manager.icon_manager
+[MISSING] FileBrowser expects Service.openUrl
+FileBrowser  -->  lambda: self.copy_path_to_clipboard(file_path)
+FileBrowser  -->  lambda: self.create_new_folder(file_path)
+FileBrowser  -->  lambda: self.delete_item(file_path)
+FileBrowser  -->  lambda: self.open_file(file_path)
+FileBrowser  -->  lambda: self.set_directory(file_path)
+[MISSING] FileBrowser expects self.apply_filter
+[MISSING] FileBrowser expects self.apply_type_filter
+[MISSING] FileBrowser expects self.browse_directory
+[MISSING] FileBrowser expects self.go_back
+[MISSING] FileBrowser expects self.go_forward
+[MISSING] FileBrowser expects self.go_up
+[MISSING] FileBrowser expects self.navigate_to_address
+[MISSING] FileBrowser expects self.on_item_clicked
+[MISSING] FileBrowser expects self.on_item_double_clicked
+[MISSING] FileBrowser expects self.show_context_menu
+FinancialSymbolProcessorWrapper  -->  Processor.<ast.Attribute object at 0x000001D96A8ACF10>
+[MISSING] FinancialSymbolProcessorWrapper expects Processor.processor
+[MISSING] FinancialSymbolProcessorWrapper expects self._on_processing_completed
+[MISSING] FinancialSymbolProcessorWrapper expects self.error_occurred
+[MISSING] FinancialSymbolProcessorWrapper expects self.progress_updated
+[MISSING] FinancialSymbolProcessorWrapper expects self.status_updated
+[MISSING] FinancialSymbolProcessorWrapper expects self.symbols_extracted
+[MISSING] FinancialSymbolWorkerThread expects Processor.extract_symbols
+[MISSING] FinancialSymbolWorkerThread expects Processor.processor
+[MISSING] FormulaExtractorWorkerThread expects Processor.extract_formulas
+[MISSING] FormulaExtractorWorkerThread expects Processor.processor
+FormulaExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96AB81010>
+FormulaExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96B054310>
+[MISSING] FormulaExtractorWrapper expects Processor.processor
+[MISSING] FormulaExtractorWrapper expects self._on_processing_completed
+[MISSING] FormulaExtractorWrapper expects self.error_occurred
+[MISSING] FormulaExtractorWrapper expects self.formula_extracted
+[MISSING] FormulaExtractorWrapper expects self.progress_updated
+[MISSING] FormulaExtractorWrapper expects self.status_updated
+FullActivityTab  -->  Manager.<ast.Attribute object at 0x000001D96B0C9910>
+[MISSING] FullActivityTab expects Manager.add_task
+[MISSING] FullActivityTab expects Manager.chart_manager
+[MISSING] FullActivityTab expects Manager.create_chart_view
+[MISSING] FullActivityTab expects Manager.set_theme
+[MISSING] FullActivityTab expects Manager.task_queue_manager
+[MISSING] FullActivityTab expects Manager.update_task
+[MISSING] FullActivityTab expects Service.activity_log_service
+[MISSING] FullActivityTab expects dialog.close
+FullActivityTab  -->  lambda _: self.load_activity_data()
+FullActivityTab  -->  lambda: self.export_task_logs(activity, log_content)
+[MISSING] FullActivityTab expects self.load_activity_data
+[MISSING] FullActivityTab expects self.on_activity_added
+[MISSING] FullActivityTab expects self.on_activity_selected
+[MISSING] FullActivityTab expects self.retry_task
+[MISSING] FullActivityTab expects self.stop_task
+[MISSING] FullActivityTab expects self.view_task_logs
+GitHubWrapper  -->  Collector.<ast.Attribute object at 0x000001D96AB5DB50>
+[MISSING] GitHubWrapper expects Collector.collector
+ISDAWrapper  -->  Collector.<ast.Attribute object at 0x000001D96ABC63D0>
+[MISSING] ISDAWrapper expects Collector.collector
+[MISSING] LanguageConfidenceDetectorWrapper expects Processor._processor
+[MISSING] LanguageConfidenceDetectorWrapper expects Processor.refresh_config
+[MISSING] LanguageConfidenceDetectorWrapper expects self._on_processing_completed
+[MISSING] LanguageConfidenceDetectorWrapper expects self._on_progress_updated
+[MISSING] LanguageConfidenceDetectorWrapper expects self._on_status_updated
+LanguageConfidenceDetectorWrapper  -->  self.error_occurred.emit
+LanguageConfidenceDetectorWrapper  -->  self.language_detected.emit
+LanguageConfidenceDetectorWrapper  -->  self.progress_updated.emit
+LanguageConfidenceDetectorWrapper  -->  self.status_updated.emit
+[MISSING] LanguageDetectorWorkerThread expects Processor.detect
+[MISSING] LanguageDetectorWorkerThread expects Processor.processor
+[MISSING] LogViewer expects self.add_new_entries
+[MISSING] LogViewer expects self.apply_filters
+[MISSING] LogViewer expects self.browse_log_file
+[MISSING] LogViewer expects self.clear_logs
+[MISSING] LogViewer expects self.export_logs
+[MISSING] LogViewer expects self.on_entry_selected
+[MISSING] LogViewer expects self.refresh_logs
+[MISSING] LogViewer expects self.set_auto_scroll
+[MISSING] LogViewer expects self.toggle_watching
+[MISSING] LogsTab expects Service.activity_log_service
+[MISSING] LogsTab expects Service.log
+[MISSING] LogsTab expects self.apply_filters
+[MISSING] LogsTab expects self.clear_filters
+[MISSING] LogsTab expects self.clear_log_view
+[MISSING] LogsTab expects self.export_logs
+[MISSING] LogsTab expects self.on_log_entry_selected
+[MISSING] LogsTab expects self.on_log_selected
+[MISSING] LogsTab expects self.refresh_logs
+[MISSING] LogsTab expects self.toggle_auto_refresh
+[MISSING] MTDetectorWorkerThread expects Processor.detect_machine_translation
+[MISSING] MTDetectorWorkerThread expects Processor.processor
+[MISSING] MachineTranslationDetectorWrapper expects Processor.processor
+[MISSING] MachineTranslationDetectorWrapper expects self._on_processing_completed
+[MISSING] MachineTranslationDetectorWrapper expects self.error_occurred
+[MISSING] MachineTranslationDetectorWrapper expects self.progress_updated
+[MISSING] MachineTranslationDetectorWrapper expects self.status_updated
+[MISSING] MachineTranslationDetectorWrapper expects self.translation_detected
+[MISSING] MaintenanceTab expects self.on_upgrade_error
+[MISSING] MaintenanceTab expects self.on_upgrade_finished
+[MISSING] MaintenanceTab expects self.run_upgrade
+[MISSING] MetadataViewer expects self.add_property
+[MISSING] MetadataViewer expects self.remove_property
+[MISSING] MetadataViewer expects self.save_metadata
+[MISSING] MonitorProgressWrapper expects Manager.task_queue_manager
+MonitorProgressWrapper  -->  MonitorProgress.<ast.Attribute object at 0x000001D96B1CEC90>
+MonitorProgressWrapper  -->  lambda *_: self.refresh_tasks()
+MonitorProgressWrapper  -->  lambda v: self.update_interval_value.setText(f'{v}s')
+[MISSING] MonitorProgressWrapper expects self.add_task_to_table
+[MISSING] MonitorProgressWrapper expects self.cancel_selected_task
+[MISSING] MonitorProgressWrapper expects self.clear_history
+[MISSING] MonitorProgressWrapper expects self.export_history
+[MISSING] MonitorProgressWrapper expects self.filter_history
+[MISSING] MonitorProgressWrapper expects self.mark_task_completed
+[MISSING] MonitorProgressWrapper expects self.mark_task_failed
+[MISSING] MonitorProgressWrapper expects self.pause_monitoring
+[MISSING] MonitorProgressWrapper expects self.pause_selected_task
+[MISSING] MonitorProgressWrapper expects self.refresh_tasks
+[MISSING] MonitorProgressWrapper expects self.resume_selected_task
+[MISSING] MonitorProgressWrapper expects self.start_monitoring
+[MISSING] MonitorProgressWrapper expects self.stop_monitoring
+[MISSING] MonitorProgressWrapper expects self.update_system_stats
+[MISSING] MonitorProgressWrapper expects self.update_task_progress
+MonitoringTab  -->  MonitorProgress.<ast.Attribute object at 0x000001D96A894AD0>
+MonitoringTab  -->  SystemMonitor.<ast.Attribute object at 0x000001D96B1A7650>
+[MISSING] MonitoringTab expects self.update_metrics
+[MISSING] NotificationManager expects self.clear_all_notifications
+[MISSING] PDFExtractorWorker expects Extractor.extract_text
+[MISSING] PDFExtractorWorker expects Extractor.extractor
+PDFExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96A8B1FD0>
+PDFExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96B034390>
+[MISSING] PDFExtractorWrapper expects Extractor.extractor
+[MISSING] PDFExtractorWrapper expects self._on_error
+[MISSING] PDFExtractorWrapper expects self._on_finished
+[MISSING] PDFExtractorWrapper expects self._on_progress
+[MISSING] PDFExtractorWrapper expects self.file_processed
+[MISSING] ProcessorMixin expects Manager.setter
+[MISSING] ProcessorMixin expects Manager.task_queue_manager
+[MISSING] ProcessorMixin expects Processor.__init__
+[MISSING] ProcessorMixin expects Processor._processor
+[MISSING] ProcessorMixin expects Processor.get_processing_stats
+[MISSING] ProcessorMixin expects Processor.setter
+ProcessorsTab  -->  Manager.<ast.Attribute object at 0x000001D96ABC4810>
+[MISSING] ProcessorsTab expects Manager.add_notification
+[MISSING] ProcessorsTab expects Manager.add_task
+[MISSING] ProcessorsTab expects Manager.get_icon_path
+[MISSING] ProcessorsTab expects Manager.icon_manager
+[MISSING] ProcessorsTab expects Manager.notification_manager
+[MISSING] ProcessorsTab expects Manager.task_queue_manager
+[MISSING] ProcessorsTab expects Manager.update_task
+[MISSING] ProcessorsTab expects Processor._start_next_advanced_processor
+[MISSING] ProcessorsTab expects Processor.addTab
+[MISSING] ProcessorsTab expects Processor.currentIndex
+[MISSING] ProcessorsTab expects Processor.get
+[MISSING] ProcessorsTab expects Processor.init_processors
+[MISSING] ProcessorsTab expects Processor.processor_tabs
+[MISSING] ProcessorsTab expects Processor.processor_wrappers
+[MISSING] ProcessorsTab expects Processor.stop_all_processors
+[MISSING] ProcessorsTab expects Processor.values
+[MISSING] ProcessorsTab expects Service.complete_task
+[MISSING] ProcessorsTab expects Service.fail_task
+[MISSING] ProcessorsTab expects Service.start_task
+[MISSING] ProcessorsTab expects Service.task_history_service
+[MISSING] ProcessorsTab expects self._on_advanced_wrapper_completed
+[MISSING] ProcessorsTab expects self._update_advanced_progress
+[MISSING] ProcessorsTab expects self.add_pdf_files
+[MISSING] ProcessorsTab expects self.add_text_files
+ProcessorsTab  -->  self.advanced_status.setText
+[MISSING] ProcessorsTab expects self.apply_advanced_processing
+[MISSING] ProcessorsTab expects self.apply_selected_domain
+[MISSING] ProcessorsTab expects self.clear_pdf_files
+[MISSING] ProcessorsTab expects self.clear_text_files
+[MISSING] ProcessorsTab expects self.on_pdf_batch_completed
+[MISSING] ProcessorsTab expects self.on_processing_finished
+[MISSING] ProcessorsTab expects self.on_processing_started
+[MISSING] ProcessorsTab expects self.on_text_batch_completed
+ProcessorsTab  -->  self.pdf_progress_bar.setValue
+ProcessorsTab  -->  self.pdf_status.setText
+[MISSING] ProcessorsTab expects self.select_input_directory
+[MISSING] ProcessorsTab expects self.start_pdf_processing
+[MISSING] ProcessorsTab expects self.start_text_processing
+[MISSING] ProcessorsTab expects self.stop_all_processors
+[MISSING] ProcessorsTab expects self.stop_pdf_processing
+[MISSING] ProcessorsTab expects self.stop_text_processing
+ProcessorsTab  -->  self.text_progress_bar.setValue
+ProcessorsTab  -->  self.text_status.setText
+[MISSING] ProgressMonitoringWorker expects Manager.task_queue_manager
+ProgressMonitoringWorker  -->  MonitorProgress.<ast.Attribute object at 0x000001D96B042690>
+[MISSING] QualityControlWrapper expects Manager.setter
+[MISSING] QualityControlWrapper expects Manager.task_queue_manager
+[MISSING] QualityControlWrapper expects Processor._processor
+[MISSING] QualityControlWrapper expects Processor.get_processing_stats
+[MISSING] QualityControlWrapper expects Processor.get_status
+[MISSING] QualityControlWrapper expects Processor.process_batch
+[MISSING] QualityControlWrapper expects Processor.refresh_config
+[MISSING] QualityControlWrapper expects Processor.set_test_mode
+[MISSING] QualityControlWrapper expects Processor.start
+[MISSING] QualityControlWrapper expects Processor.stop
+QuantopianWrapper  -->  Collector.<ast.Attribute object at 0x000001D96AFF4610>
+[MISSING] QuantopianWrapper expects Collector.collector
+[MISSING] RecentActivity expects self.on_view_all_clicked
+[MISSING] RecentActivity expects self.refresh_activities
+SciDBWrapper  -->  Collector.<ast.Attribute object at 0x000001D96ABC62D0>
+[MISSING] SciDBWrapper expects Collector.collector
+[MISSING] SettingsDialog expects Manager.apply_theme
+SettingsDialog  -->  lambda: self.browse_directory(self.corpus_root)
+SettingsDialog  -->  lambda: self.browse_directory(self.logs_dir)
+SettingsDialog  -->  lambda: self.browse_directory(self.metadata_dir)
+SettingsDialog  -->  lambda: self.browse_directory(self.processed_dir)
+SettingsDialog  -->  lambda: self.browse_directory(self.raw_dir)
+[MISSING] SettingsDialog expects self.accept
+[MISSING] SettingsDialog expects self.browse_python_path
+[MISSING] SettingsDialog expects self.browse_venv_path
+[MISSING] SettingsDialog expects self.on_sound_setting_changed
+[MISSING] SettingsDialog expects self.on_theme_changed
+[MISSING] SettingsDialog expects self.reject
+[MISSING] SettingsDialog expects self.reset_to_defaults
+[MISSING] TextExtractorWorker expects Extractor.extract_text
+[MISSING] TextExtractorWorker expects Extractor.extractor
+TextExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96A89F990>
+TextExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96AB87450>
+[MISSING] TextExtractorWrapper expects Extractor.extractor
+[MISSING] TextExtractorWrapper expects self._on_error
+[MISSING] TextExtractorWrapper expects self._on_finished
+[MISSING] TextExtractorWrapper expects self._on_progress
+[MISSING] TextExtractorWrapper expects self.file_processed
+WebWrapper  -->  Collector.<ast.Attribute object at 0x000001D96A8AB610>
+[MISSING] WebWrapper expects Collector.collector

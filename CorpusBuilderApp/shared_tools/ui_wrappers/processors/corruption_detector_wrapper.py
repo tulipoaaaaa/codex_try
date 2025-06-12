@@ -13,8 +13,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
                            QSplitter, QTabWidget, QTableWidget, QTableWidgetItem,
                            QHeaderView)
 from shared_tools.processors.corruption_detector import CorruptionDetector
-from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
-
+from shared_tools.project_config import ProjectConfig
 
 class CorruptionDetectorWorker(QThread):
     """Worker thread for corruption detection operations"""
@@ -135,30 +134,21 @@ class CorruptionDetectorWorker(QThread):
 
 
 class CorruptionDetectorWrapper(QWidget):
-    """UI Wrapper for Corruption Detector"""
-    
-    def __init__(self, config, task_queue_manager=None, parent=None):
-        """
-        Parameters
-        ----------
-        config : ProjectConfig | str
-            Mandatory. Passed straight to BaseWrapper.
-        task_queue_manager : TaskQueueManager | None
-        parent : QWidget | None
-        """
-        # Initialize base classes in correct order
-        QWidget.__init__(self, parent)  # Initialize QWidget first
-        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)  # Then initialize ProcessorMixin
-        
-        # Set up delegation for frequently used attributes
-        self.config = self._bw.config  # delegation
-        self.logger = self._bw.logger  # delegation
-        
+    """UI Wrapper for Corruption Detector (migrated to QWidget-only, explicit delegation)"""
+    def __init__(self, project_config, parent=None):
+        QWidget.__init__(self, parent)
+        if project_config is None:
+            raise RuntimeError("CorruptionDetectorWrapper requires a non-None ProjectConfig")
+        self.project_config = project_config
+        self.config = project_config.get('processors.corruption', {})
+        self.logger = None  # Set up logger if needed
+        self.processor = CorruptionDetector(project_config=project_config)
         self.worker = None
-        self.scan_results = []
+        self._running = False
         self.setup_ui()
         self.setup_connections()
-        
+        # Connect signals if needed (explicitly)
+
     def setup_ui(self):
         """Initialize the user interface components"""
         layout = QVBoxLayout(self)
@@ -368,7 +358,11 @@ class CorruptionDetectorWrapper(QWidget):
         self.export_results_btn.clicked.connect(self.export_results)
         self.export_report_btn.clicked.connect(self.generate_report)
         self.filter_combo.currentTextChanged.connect(self.apply_filter)
-        self.results_table.currentRowChanged.connect(self.show_file_details)
+        try:
+            self.results_table.currentRowChanged.connect(self.show_file_details)
+        except AttributeError:
+            if hasattr(self.results_table, "currentCellChanged"):
+                self.results_table.currentCellChanged.connect(self.show_file_details)
         
     @pyqtSlot()
     def browse_input_path(self):
@@ -717,8 +711,8 @@ class CorruptionDetectorWrapper(QWidget):
     def refresh_config(self):
         """Reload parameters from ``self.config``."""
         cfg = {}
-        if hasattr(self.config, 'get_processor_config'):
-            cfg = self.config.get_processor_config('corruption') or {}
+        if hasattr(self.project_config, 'get'):
+            cfg = self.project_config.get('processors.corruption', {})
         for k, v in cfg.items():
             method = f'set_{k}'
             if hasattr(self, method):
@@ -726,16 +720,25 @@ class CorruptionDetectorWrapper(QWidget):
                     getattr(self, method)(v)
                     continue
                 except Exception:
-                    self.logger.debug('Failed to apply %s via wrapper', k)
+                    if self.logger:
+                        self.logger.debug('Failed to apply %s via wrapper', k)
             if hasattr(self.processor, method):
                 try:
                     getattr(self.processor, method)(v)
                     continue
                 except Exception:
-                    self.logger.debug('Failed to apply %s via processor', k)
+                    if self.logger:
+                        self.logger.debug('Failed to apply %s via processor', k)
             if hasattr(self.processor, k):
                 setattr(self.processor, k, v)
             elif hasattr(self, k):
                 setattr(self, k, v)
-        if cfg and hasattr(self, 'configuration_changed'):
-            self.configuration_changed.emit(cfg)
+        # No configuration_changed signal in this wrapper, so skip emit
+
+    @property
+    def _is_running(self):
+        return self._running
+
+    @_is_running.setter
+    def _is_running(self, val):
+        self._running = bool(val)

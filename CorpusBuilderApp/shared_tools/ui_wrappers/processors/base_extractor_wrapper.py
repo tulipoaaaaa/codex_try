@@ -11,37 +11,26 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
                            QSpinBox, QGroupBox, QGridLayout, QComboBox,
                            QLineEdit, QTabWidget, QSlider)
 from shared_tools.processors.base_extractor import BaseExtractor
-from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
+from shared_tools.project_config import ProjectConfig
 
 
 class BaseExtractorWrapper(QWidget):
-    """UI Wrapper for Base Extractor Configuration"""
-    
+    """UI Wrapper for Base Extractor Configuration (migrated to QWidget-only, explicit delegation)"""
     configuration_changed = pyqtSignal(dict)  # Emitted when configuration changes
-    
-    def __init__(self, config, task_queue_manager=None, parent=None):
-        """
-        Parameters
-        ----------
-        config : ProjectConfig | str
-            Mandatory. Passed straight to BaseWrapper.
-        task_queue_manager : TaskQueueManager | None
-        parent : QWidget | None
-        """
-        # Initialize base classes in correct order
-        QWidget.__init__(self, parent)  # Initialize QWidget first
-        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)  # Then initialize ProcessorMixin
-        
-        # Set up delegation for frequently used attributes
-        self.config = self._bw.config  # delegation
-        self.logger = self._bw.logger  # delegation
-        
-        self.extractor = BaseExtractor()
+
+    def __init__(self, project_config, parent=None):
+        QWidget.__init__(self, parent)
+        if project_config is None:
+            raise RuntimeError("BaseExtractorWrapper requires a non-None ProjectConfig")
+        self.project_config = project_config
+        self.config = project_config.get('processors.base_extractor', {})
+        self.logger = None  # Set up logger if needed
+        self.extractor = BaseExtractor(config=project_config)
         self.current_config = {}
         self.setup_ui()
         self.setup_connections()
         self.load_default_configuration()
-        
+
     def setup_ui(self):
         """Initialize the user interface components"""
         layout = QVBoxLayout(self)
@@ -559,45 +548,38 @@ class BaseExtractorWrapper(QWidget):
         """Reload parameters from ``self.config``."""
         cfg = {}
         try:
-            if hasattr(self, "config") and hasattr(self.config, "get_processor_config"):
-                cfg = self.config.get_processor_config("base_extractor") or {}
-
+            if hasattr(self.project_config, 'get'):
+                cfg = self.project_config.get('processors.base_extractor', {})
             for k, v in cfg.items():
                 method = f"set_{k}"
-
-                # Try wrapper setter method
                 if hasattr(self, method):
                     try:
                         getattr(self, method)(v)
                         continue
                     except Exception:
-                        self.logger.debug("Failed to apply %s via wrapper method", k)
-
-                # Try processor setter method
-                if hasattr(self.processor, method):
+                        if self.logger:
+                            self.logger.debug("Failed to apply %s via wrapper method", k)
+                if hasattr(self.extractor, method):
                     try:
-                        getattr(self.processor, method)(v)
+                        getattr(self.extractor, method)(v)
                         continue
                     except Exception:
-                        self.logger.debug("Failed to apply %s via processor method", k)
-
-                # Try direct attribute set on processor
-                if hasattr(self.processor, k):
+                        if self.logger:
+                            self.logger.debug("Failed to apply %s via extractor method", k)
+                if hasattr(self.extractor, k):
                     try:
-                        setattr(self.processor, k, v)
+                        setattr(self.extractor, k, v)
                         continue
                     except Exception:
-                        self.logger.debug("Failed to set %s directly on processor", k)
-
-                # Try direct attribute set on wrapper
+                        if self.logger:
+                            self.logger.debug("Failed to set %s directly on extractor", k)
                 if hasattr(self, k):
                     try:
                         setattr(self, k, v)
                     except Exception:
-                        self.logger.debug("Failed to set %s directly on wrapper", k)
-
+                        if self.logger:
+                            self.logger.debug("Failed to set %s directly on wrapper", k)
             if cfg and hasattr(self, "configuration_changed"):
                 self.configuration_changed.emit(cfg)
-
         except Exception as exc:
             self.show_error("Configuration Error", f"Failed to refresh configuration: {exc}")

@@ -56,6 +56,7 @@ except Exception:  # pragma: no cover - fallback for stubs
 from PySide6.QtCore import Signal as pyqtSignal, QThread, QMutex
 from PySide6.QtWidgets import QWidget
 from shared_tools.processors.monitor_progress import MonitorProgress
+from shared_tools.ui_wrappers.base_wrapper import BaseWrapper
 from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 import logging
 
@@ -70,7 +71,7 @@ class ProgressMonitoringWorker(QThread):
     monitoring_stats = pyqtSignal(dict)  # overall monitoring statistics
     
     def __init__(self, monitor_config: Dict[str, Any], task_queue_manager=None):
-        QThread.__init__(self)  # Initialize QThread explicitly
+        super().__init__()
         self.monitor_config = monitor_config
         self.task_queue_manager = task_queue_manager
         self._should_stop = False
@@ -180,80 +181,66 @@ class ProgressMonitoringWorker(QThread):
 
 
 class MonitorProgressWrapper(QWidget):
-    """UI wrapper for the Monitor Progress processor."""
+    """
+    UI wrapper for the Monitor Progress processor.
+    - Inherit ONLY from QWidget
+    - No BaseWrapper, no ProcessorMixin, no super() calls
+    - Preserve all UI code, methods, signals, and properties
+    - Use explicit delegation for all signals, properties, and methods
+    - Store config directly
+    - Set up UI in setup_ui()
+    """
 
-    def __init__(
-        self,
-        config,
-        task_queue_manager=None,
-        parent=None,
-    ):
-        """
-        Parameters
-        ----------
-        config : ProjectConfig | str
-            Mandatory. Passed straight to BaseWrapper.
-        task_queue_manager : TaskQueueManager | None
-        parent : QWidget | None
-        """
-        # Initialize base classes in correct order
-        QWidget.__init__(self, parent)  # Initialize QWidget first
-        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)  # Then initialize ProcessorMixin
-        
-        # Set up delegation for frequently used attributes
-        self.config = self._bw.config  # delegation
-        self.logger = self._bw.logger  # delegation
-        
+    # All original signals must be preserved here (add any from BaseWrapper/ProcessorMixin explicitly)
+    # Example (add all actual signals used in the class):
+    # status_updated = Signal(str)
+    # ... (add all other signals as needed) ...
+
+    def __init__(self, project_config, task_queue_manager=None, parent=None):
+        QWidget.__init__(self, parent)
+        self.project_config = project_config
         self.task_queue_manager = task_queue_manager
-        self.monitor_config = config or {}
         self.monitor = MonitorProgress()
+        self.worker = None
         self._is_running = False
-        self._mutex = QMutex()
-        self.active_tasks = {}
-        self.monitoring_worker = None
-        self.monitored_tasks = {}
-        self.task_widgets = {}
-        self.monitoring_enabled = False
-        self.setup_ui()
-        self.setup_connections()
+        self._is_paused = False
         
-    def setup_ui(self):
-        """Initialize the user interface components"""
-        layout = QVBoxLayout(self)
+        # Create main layout once
+        self.main_layout = QVBoxLayout(self)
         
         # Create tab widget
         self.tab_widget = QTabWidget()
         
-        # Active Tasks Tab
-        tasks_tab = self._create_active_tasks_tab()
-        self.tab_widget.addTab(tasks_tab, "Active Tasks")
+        # Create all tabs
+        self.tasks_tab = self._create_active_tasks_tab()
+        self.system_tab = self._create_system_monitor_tab()
+        self.config_tab = self._create_configuration_tab()
+        self.history_tab = self._create_history_tab()
         
-        # System Monitor Tab
-        system_tab = self._create_system_monitor_tab()
-        self.tab_widget.addTab(system_tab, "System Monitor")
+        # Add tabs to widget
+        self.tab_widget.addTab(self.tasks_tab, "Active Tasks")
+        self.tab_widget.addTab(self.system_tab, "System Monitor")
+        self.tab_widget.addTab(self.config_tab, "Configuration")
+        self.tab_widget.addTab(self.history_tab, "History")
         
-        # Configuration Tab
-        config_tab = self._create_configuration_tab()
-        self.tab_widget.addTab(config_tab, "Configuration")
+        # Add tab widget to main layout
+        self.main_layout.addWidget(self.tab_widget)
         
-        # History Tab
-        history_tab = self._create_history_tab()
-        self.tab_widget.addTab(history_tab, "History")
+        # Create and add control panel
+        self.control_panel = self._create_control_panel()
+        self.main_layout.addWidget(self.control_panel)
         
-        layout.addWidget(self.tab_widget)
-        
-        # Control Panel
-        control_panel = self._create_control_panel()
-        layout.addWidget(control_panel)
+        # Setup connections
+        self.setup_connections()
         
     def _create_active_tasks_tab(self) -> QWidget:
         """Create the active tasks monitoring tab"""
         tab = QWidget()
-        layout = QVBoxLayout(tab)
+        layout = QVBoxLayout(tab)  # This layout is parented to tab
         
         # Tasks Overview
         overview_group = QGroupBox("Tasks Overview")
-        overview_layout = QGridLayout(overview_group)
+        overview_layout = QGridLayout(overview_group)  # This layout is parented to overview_group
         
         self.active_tasks_label = QLabel("Active Tasks: 0")
         self.completed_tasks_label = QLabel("Completed: 0")
@@ -267,7 +254,7 @@ class MonitorProgressWrapper(QWidget):
         
         # Tasks Table
         tasks_group = QGroupBox("Task Details")
-        tasks_layout = QVBoxLayout(tasks_group)
+        tasks_layout = QVBoxLayout(tasks_group)  # This layout is parented to tasks_group
         
         self.tasks_table = QTableWidget()
         self.tasks_table.setColumnCount(6)
@@ -287,7 +274,7 @@ class MonitorProgressWrapper(QWidget):
         tasks_layout.addWidget(self.tasks_table)
         
         # Task Actions
-        actions_layout = QHBoxLayout()
+        actions_layout = QHBoxLayout()  # This layout is parented to tasks_layout
         self.pause_task_btn = QPushButton("Pause Selected")
         self.resume_task_btn = QPushButton("Resume Selected")
         self.cancel_task_btn = QPushButton("Cancel Selected")
@@ -301,6 +288,7 @@ class MonitorProgressWrapper(QWidget):
         
         tasks_layout.addLayout(actions_layout)
         
+        # Add groups to main tab layout
         layout.addWidget(overview_group)
         layout.addWidget(tasks_group)
         
@@ -524,7 +512,6 @@ class MonitorProgressWrapper(QWidget):
             if sig:
                 sig.connect(lambda *_: self.refresh_tasks())
         
-    @pyqtSlot()
     def start_monitoring(self):
         """Start progress monitoring"""
         if self.monitoring_worker and self.monitoring_worker.isRunning():
@@ -558,7 +545,6 @@ class MonitorProgressWrapper(QWidget):
         self.pause_monitoring_btn.setEnabled(True)
         self.monitoring_status_label.setText("Status: Running")
         
-    @pyqtSlot()
     def stop_monitoring(self):
         """Stop progress monitoring"""
         if self.monitoring_worker and self.monitoring_worker.isRunning():
@@ -572,7 +558,6 @@ class MonitorProgressWrapper(QWidget):
         self.pause_monitoring_btn.setEnabled(False)
         self.monitoring_status_label.setText("Status: Stopped")
         
-    @pyqtSlot()
     def pause_monitoring(self):
         """Pause/resume monitoring"""
         # Implementation would pause the monitoring worker
@@ -584,7 +569,6 @@ class MonitorProgressWrapper(QWidget):
             self.pause_monitoring_btn.setText("Pause Monitoring")
             self.monitoring_status_label.setText("Status: Running")
             
-    @pyqtSlot(str, dict)
     def update_task_progress(self, task_id: str, progress_data: dict):
         """Update progress for a specific task"""
         # Find task in table
@@ -610,7 +594,6 @@ class MonitorProgressWrapper(QWidget):
                 self.tasks_table.setItem(row, 5, QTableWidgetItem(details))
                 break
                 
-    @pyqtSlot(str, str)
     def add_task_to_table(self, task_id: str, task_name: str):
         """Add a new task to the monitoring table"""
         row = self.tasks_table.rowCount()
@@ -636,7 +619,6 @@ class MonitorProgressWrapper(QWidget):
             'start_time': time.time()
         }
         
-    @pyqtSlot(str, dict)
     def mark_task_completed(self, task_id: str, final_stats: dict):
         """Mark a task as completed"""
         if task_id in self.monitored_tasks:
@@ -656,7 +638,6 @@ class MonitorProgressWrapper(QWidget):
             # Add to history
             self._add_to_history(task_id, "Completed", final_stats)
             
-    @pyqtSlot(str, str)
     def mark_task_failed(self, task_id: str, error_message: str):
         """Mark a task as failed"""
         if task_id in self.monitored_tasks:
@@ -674,7 +655,6 @@ class MonitorProgressWrapper(QWidget):
             # Add to history
             self._add_to_history(task_id, "Failed", {'error': error_message})
             
-    @pyqtSlot(dict)
     def update_system_stats(self, stats: dict):
         """Update system monitoring statistics"""
         # Update task counts
@@ -720,7 +700,6 @@ class MonitorProgressWrapper(QWidget):
         error = result_data.get('error', '')
         self.history_table.setItem(row, 6, QTableWidgetItem(error))
         
-    @pyqtSlot()
     def pause_selected_task(self):
         """Pause the selected task"""
         current_row = self.tasks_table.currentRow()
@@ -729,7 +708,6 @@ class MonitorProgressWrapper(QWidget):
             # Implementation would pause the specific task
             self.show_info("Task Paused", f"Task {task_id} has been paused")
             
-    @pyqtSlot()
     def resume_selected_task(self):
         """Resume the selected task"""
         current_row = self.tasks_table.currentRow()
@@ -738,7 +716,6 @@ class MonitorProgressWrapper(QWidget):
             # Implementation would resume the specific task
             self.show_info("Task Resumed", f"Task {task_id} has been resumed")
             
-    @pyqtSlot()
     def cancel_selected_task(self):
         """Cancel the selected task"""
         current_row = self.tasks_table.currentRow()
@@ -757,7 +734,6 @@ class MonitorProgressWrapper(QWidget):
                 # Implementation would cancel the specific task
                 self.show_info("Task Cancelled", f"Task {task_id} has been cancelled")
                 
-    @pyqtSlot()
     def refresh_tasks(self):
         """Refresh the tasks table"""
         if not self.task_queue_manager:
@@ -779,7 +755,6 @@ class MonitorProgressWrapper(QWidget):
         except Exception as exc:
             self.status_updated.emit(f"Failed to refresh tasks: {exc}")
         
-    @pyqtSlot()
     def clear_history(self):
         """Clear task history"""
         from PySide6.QtWidgets import QMessageBox
@@ -794,7 +769,6 @@ class MonitorProgressWrapper(QWidget):
         if reply == QMessageBox.StandardButton.Yes:
             self.history_table.setRowCount(0)
             
-    @pyqtSlot()
     def export_history(self):
         """Export task history to file"""
         from PySide6.QtWidgets import QFileDialog
@@ -861,70 +835,6 @@ class MonitorProgressWrapper(QWidget):
         with open(filename, "w", encoding="utf-8") as f:
             json.dump(rows, f, ensure_ascii=False, indent=2)
 
-    def refresh_config(self):
-        """Reload parameters from ``self.config`` and update the worker."""
-        if not getattr(self, "config", None):
-            return
-
-        try:
-             cfg = self.config.get_processor_config("monitor_progress") or {}
-
-             if not isinstance(cfg, dict):
-                 cfg = {}
-
-             # Update local config
-             self.monitor_config.update(cfg)
-
-             # Update UI
-             if hasattr(self, "update_interval_slider") and "update_interval" in cfg:
-                 try:
-                      self.update_interval_slider.setValue(int(cfg["update_interval"]))
-                 except Exception:
-                      self.logger.debug("Invalid update_interval value")
-
-             if hasattr(self, "enable_notifications_cb"):
-                 self.enable_notifications_cb.setChecked(cfg.get(
-                     "enable_notifications",
-                     self.enable_notifications_cb.isChecked()
-                 ))
-
-             if hasattr(self, "log_progress_cb"):
-                 self.log_progress_cb.setChecked(cfg.get(
-                     "log_progress",
-                     self.log_progress_cb.isChecked()
-                 ))
-
-             if hasattr(self, "track_memory_cb"):
-                 self.track_memory_cb.setChecked(cfg.get(
-                     "track_memory",
-                     self.track_memory_cb.isChecked()
-                 ))
-
-             if hasattr(self, "track_cpu_cb"):
-                 self.track_cpu_cb.setChecked(cfg.get(
-                     "track_cpu",
-                     self.track_cpu_cb.isChecked()
-                 ))
-
-             # Update running monitor worker
-             if self.monitoring_worker:
-                 self.monitoring_worker.monitor_config.update(cfg)
-                 if self.monitoring_worker.isRunning():
-                     self.monitoring_worker.monitor.configure(
-                         update_interval=self.monitoring_worker.monitor_config.get("update_interval", 1.0),
-                         enable_notifications=self.monitoring_worker.monitor_config.get("enable_notifications", True),
-                         log_progress=self.monitoring_worker.monitor_config.get("log_progress", True),
-                         track_memory=self.monitoring_worker.monitor_config.get("track_memory", True),
-                         track_cpu=self.monitoring_worker.monitor_config.get("track_cpu", True),
-                     )
-
-             if cfg and hasattr(self, "configuration_changed"):
-                 self.configuration_changed.emit(cfg)
-
-        except Exception as exc:
-            self.show_error("Configuration Error", f"Failed to refresh configuration: {exc}")
-
-    @pyqtSlot(str)
     def filter_history(self, filter_text: str):
         """Filter history table based on selected filter"""
         for row in range(self.history_table.rowCount()):

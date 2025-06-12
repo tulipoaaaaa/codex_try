@@ -17,7 +17,7 @@ except Exception:  # pragma: no cover - PySide6 unavailable
 
 # Stub heavy wrapper modules before importing the tab module
 class_names = {
-    'shared_tools.ui_wrappers.processors.batch_nonpdf_extractor_enhanced_wrapper': 'BatchNonPDFExtractorEnhancedWrapper',
+    'shared_tools.ui_wrappers.processors.batch_nonpdf_extractor_enhanced_wrapper': 'BatchNonPDFExtractorWrapper',
     'shared_tools.ui_wrappers.processors.pdf_extractor_wrapper': 'PDFExtractorWrapper',
     'shared_tools.ui_wrappers.processors.base_extractor_wrapper': 'BaseExtractorWrapper',
     'shared_tools.ui_wrappers.processors.text_extractor_wrapper': 'TextExtractorWrapper',

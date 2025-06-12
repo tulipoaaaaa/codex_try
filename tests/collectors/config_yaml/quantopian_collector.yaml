@@ -1,0 +1,4 @@
+raw_data_dir: /path/to/raw_data
+domains:
+  portfolio_construction:
+    path: portfolio_construction 

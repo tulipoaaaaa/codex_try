@@ -1,0 +1,583 @@
+APIKeyDialog  -->  self.accept
+APIKeyDialog  -->  self.reject
+APIKeyDialog  -->  self.test_connections
+ActiveOperations  -->  Manager.task_queue_manager
+ActiveOperations  -->  self.refresh_operations
+ActiveOperationsWidget  -->  Manager.task_queue_manager
+ActivityLog  -->  lambda: self.copy_item_text(item)
+ActivityLog  -->  lambda: self.delete_item(item)
+ActivityLog  -->  lambda: self.view_item_details(item)
+ActivityLog  -->  self.apply_filters
+ActivityLog  -->  self.clear_log
+ActivityLog  -->  self.export_log
+ActivityLog  -->  self.on_item_clicked
+ActivityLog  -->  self.show_context_menu
+ActivityLogItem  -->  Manager.get_icon_path
+ActivityLogItem  -->  Manager.icon_manager
+AddPropertyDialog  -->  self.accept
+AddPropertyDialog  -->  self.reject
+AnalyticsTab  -->  CorpusStatsService.<ast.Attribute object at 0x000001D96AAF1110>
+AnalyticsTab  -->  Manager.<ast.Attribute object at 0x000001D96AAF14D0>
+AnalyticsTab  -->  Manager.chart_manager
+AnalyticsTab  -->  Manager.create_chart_view
+AnalyticsTab  -->  Manager.set_theme
+AnalyticsTab  -->  Service.<ast.Attribute object at 0x000001D96AAF1110>
+AnalyticsTab  -->  Service.get_daily_document_counts
+AnalyticsTab  -->  Service.get_domain_size_summary
+AnalyticsTab  -->  Service.get_domain_summary
+AnalyticsTab  -->  Service.get_language_distribution
+AnalyticsTab  -->  Service.refresh_stats
+AnalyticsTab  -->  Service.stats_service
+AnalyticsTab  -->  self.on_stats_updated
+AnalyticsTab  -->  self.update_charts
+AnnasArchiveWrapper  -->  Collector.<ast.Attribute object at 0x000001D96A8A9E50>
+AnnasArchiveWrapper  -->  Collector.collector
+ArxivWrapper  -->  Collector.<ast.Attribute object at 0x000001D96B05DC90>
+ArxivWrapper  -->  Collector.collector
+BalancerTab  -->  CorpusStatsService.<ast.Attribute object at 0x000001D96AB87990>
+BalancerTab  -->  Manager.<ast.Attribute object at 0x000001D96AB87F90>
+BalancerTab  -->  Manager.get_icon_path
+BalancerTab  -->  Manager.icon_manager
+BalancerTab  -->  Manager.notification_manager
+BalancerTab  -->  Manager.show_notification
+BalancerTab  -->  Service.<ast.Attribute object at 0x000001D96AB862D0>
+BalancerTab  -->  Service.<ast.Attribute object at 0x000001D96AB87990>
+BalancerTab  -->  Service.auto_balance_service
+BalancerTab  -->  Service.refresh_stats
+BalancerTab  -->  Service.start
+BalancerTab  -->  Service.stats_service
+BalancerTab  -->  Service.stop
+BalancerTab  -->  lambda: self.update_status_display('Auto balance loop running')
+BalancerTab  -->  lambda: self.update_status_display('Auto balance loop stopped')
+BalancerTab  -->  self.analyze_corpus_balance
+BalancerTab  -->  self.balance_corpus
+BalancerTab  -->  self.collect_for_missing_domains
+BalancerTab  -->  self.export_balance_report
+BalancerTab  -->  self.on_balance_completed
+BalancerTab  -->  self.overall_progress.setValue
+BalancerTab  -->  self.perform_periodic_analysis
+BalancerTab  -->  self.reanalyze_corpus
+BalancerTab  -->  self.refresh_corpus_stats
+BalancerTab  -->  self.show_notification
+BalancerTab  -->  self.stop_balancing
+BalancerTab  -->  self.toggle_auto_analysis
+BalancerTab  -->  self.toggle_auto_balance_loop
+BalancerTab  -->  self.update_analysis_interval
+BalancerTab  -->  self.update_balancer_view
+BalancerTab  -->  self.update_status_display
+BaseExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96AB96490>
+BaseExtractorWrapper  -->  Extractor.configure
+BaseExtractorWrapper  -->  Extractor.extractor
+BaseExtractorWrapper  -->  lambda v: self.confidence_value_label.setText(f'{v}%')
+BaseExtractorWrapper  -->  lambda v: self.min_quality_value_label.setText(f'{v}%')
+BaseExtractorWrapper  -->  self._on_configuration_changed
+BaseExtractorWrapper  -->  self.apply_configuration
+BaseExtractorWrapper  -->  self.browse_temp_directory
+BaseExtractorWrapper  -->  self.export_configuration
+BaseExtractorWrapper  -->  self.import_configuration
+BaseExtractorWrapper  -->  self.reset_configuration
+BatchMetadataEditor  -->  self.accept
+BatchMetadataEditor  -->  self.reject
+BatchNonPDFExtractorWorker  -->  Extractor.<ast.Attribute object at 0x000001D96ABC7790>
+BatchNonPDFExtractorWorker  -->  Extractor.configure
+BatchNonPDFExtractorWorker  -->  Extractor.extract_file
+BatchNonPDFExtractorWorker  -->  Extractor.extractor
+BatchNonPDFExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96A899150>
+BatchNonPDFExtractorWrapper  -->  self.batch_completed
+BatchNonPDFExtractorWrapper  -->  self.browse_input_directory
+BatchNonPDFExtractorWrapper  -->  self.browse_output_directory
+BatchNonPDFExtractorWrapper  -->  self.cancel_extraction
+BatchNonPDFExtractorWrapper  -->  self.file_processed
+BatchNonPDFExtractorWrapper  -->  self.handle_error
+BatchNonPDFExtractorWrapper  -->  self.start_extraction
+BatchNonPDFExtractorWrapper  -->  self.update_progress
+BatchTextExtractorEnhancedPrerefactorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96B035C90>
+BatchTextExtractorEnhancedPrerefactorWrapper  -->  Extractor.worker
+BatchTextExtractorEnhancedPrerefactorWrapper  -->  Processor.process_file
+BatchTextExtractorEnhancedPrerefactorWrapper  -->  Processor.processor
+BatchTextExtractorEnhancedPrerefactorWrapper  -->  on_batch_completed
+BatchTextExtractorEnhancedPrerefactorWrapper  -->  on_error
+BatchTextExtractorWorker  -->  Extractor.<ast.Attribute object at 0x000001D96AB5DF10>
+BatchTextExtractorWorker  -->  Extractor.configure
+BatchTextExtractorWorker  -->  Extractor.extract_file
+BatchTextExtractorWorker  -->  Extractor.extractor
+BitMEXWrapper  -->  Collector.<ast.Attribute object at 0x000001D96ABA6110>
+BitMEXWrapper  -->  Collector.collector
+ChartExtractorWorkerThread  -->  Processor.extract_charts
+ChartExtractorWorkerThread  -->  Processor.processor
+ChartImageExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96B1C9790>
+ChartImageExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96B3AE650>
+ChartImageExtractorWrapper  -->  Processor.processor
+ChartImageExtractorWrapper  -->  self._on_processing_completed
+ChartImageExtractorWrapper  -->  self.chart_extracted
+ChartImageExtractorWrapper  -->  self.error_occurred
+ChartImageExtractorWrapper  -->  self.progress_updated
+ChartImageExtractorWrapper  -->  self.status_updated
+CollectorCard  -->  self.configure_requested
+CollectorCard  -->  self.logs_requested
+CollectorCard  -->  self.start_requested
+CollectorCard  -->  self.stop_requested
+CollectorConfigDialog  -->  Collector.collector_name
+CollectorConfigDialog  -->  Collector.title
+CollectorConfigDialog  -->  self.reject
+CollectorConfigDialog  -->  self.reset_to_global
+CollectorConfigDialog  -->  self.save
+CollectorsTab  -->  Collector.addWidget
+CollectorsTab  -->  Collector.card
+CollectorsTab  -->  Collector.collector_error
+CollectorsTab  -->  Collector.collector_wrappers
+CollectorsTab  -->  Collector.configure_collector
+CollectorsTab  -->  Collector.dialog
+CollectorsTab  -->  Collector.emit
+CollectorsTab  -->  Collector.items
+CollectorsTab  -->  Collector.stop_all_collectors
+CollectorsTab  -->  Collector.values
+CollectorsTab  -->  Manager.task_queue_manager
+CollectorsTab  -->  Service.task_history_service
+CollectorsTab  -->  lambda msg, n=name: self.cards[n].update_status(msg)
+CollectorsTab  -->  lambda n=name: self.configure_collector(n)
+CollectorsTab  -->  lambda n=name: self.show_logs(n)
+CollectorsTab  -->  lambda n=name: self.start_collection(n)
+CollectorsTab  -->  lambda n=name: self.stop_collection(n)
+CollectorsTab  -->  lambda v, n=name: self.cards[n].update_progress(v)
+CollectorsTab  -->  self.on_collection_finished
+CollectorsTab  -->  self.on_collection_started
+CollectorsTab  -->  self.stop_all_collectors
+ConfigurationTab  -->  lambda: self.browse_directory(self.corpus_root, 'Select Corpus Root')
+ConfigurationTab  -->  lambda: self.browse_directory(self.logs_dir, 'Select Logs Directory')
+ConfigurationTab  -->  lambda: self.browse_directory(self.metadata_dir, 'Select Metadata Directory')
+ConfigurationTab  -->  lambda: self.browse_directory(self.processed_dir, 'Select Processed Directory')
+ConfigurationTab  -->  lambda: self.browse_directory(self.raw_data_dir, 'Select Raw Data Directory')
+ConfigurationTab  -->  self.add_domain
+ConfigurationTab  -->  self.browse_config_file
+ConfigurationTab  -->  self.browse_python_executable
+ConfigurationTab  -->  self.browse_temp_dir
+ConfigurationTab  -->  self.browse_venv_path
+ConfigurationTab  -->  self.load_current_config
+ConfigurationTab  -->  self.load_default_config
+ConfigurationTab  -->  self.on_environment_changed
+ConfigurationTab  -->  self.save_configuration
+CorpusBalancerWrapper  -->  Collector.items
+CorpusBalancerWrapper  -->  Manager._corpus_manager
+CorpusBalancerWrapper  -->  Manager.get_domain_distribution
+CorpusBalancerWrapper  -->  Processor.get_processor_config
+CorpusBalancerWrapper  -->  self._on_error
+CorpusBalancerWrapper  -->  self._on_finished
+CorpusBalancerWrapper  -->  self._on_progress
+CorpusBalancerWrapper  -->  self.domain_processed
+CorpusManagerTab  -->  Manager.<ast.Attribute object at 0x000001D96AB5DFD0>
+CorpusManagerTab  -->  Manager.<ast.Attribute object at 0x000001D96AB5F490>
+CorpusManagerTab  -->  Manager.add_notification
+CorpusManagerTab  -->  Manager.copy_files
+CorpusManagerTab  -->  Manager.corpus_manager
+CorpusManagerTab  -->  Manager.delete_files
+CorpusManagerTab  -->  Manager.get_icon_path
+CorpusManagerTab  -->  Manager.icon_manager
+CorpusManagerTab  -->  Manager.move_files
+CorpusManagerTab  -->  Manager.notification_manager
+CorpusManagerTab  -->  Manager.organize_files
+CorpusManagerTab  -->  Manager.rename_files
+CorpusManagerTab  -->  Service.<ast.Attribute object at 0x000001D96AB5D950>
+CorpusManagerTab  -->  Service.activity_log_service
+CorpusManagerTab  -->  Service.openUrl
+CorpusManagerTab  -->  Service.validate_structure
+CorpusManagerTab  -->  Service.validator_service
+CorpusManagerTab  -->  callback
+CorpusManagerTab  -->  lambda p, _op: self.batch_progress.setValue(p)
+CorpusManagerTab  -->  lambda: self.delete_file(file_path)
+CorpusManagerTab  -->  lambda: self.notification_manager.add_notification('corpus_validate', 'Validating Corpus', 'Checking corpus structure...', auto_hide=True)
+CorpusManagerTab  -->  lambda: self.on_file_selected(index)
+CorpusManagerTab  -->  lambda: self.open_file(file_path)
+CorpusManagerTab  -->  lambda: self.process_file(file_path)
+CorpusManagerTab  -->  self._handle_batch_status
+CorpusManagerTab  -->  self._handle_operation_completed
+CorpusManagerTab  -->  self.add_metadata_field
+CorpusManagerTab  -->  self.batch_organize_files
+CorpusManagerTab  -->  self.batch_rename_files
+CorpusManagerTab  -->  self.browse_directory
+CorpusManagerTab  -->  self.create_folder
+CorpusManagerTab  -->  self.filter_files
+CorpusManagerTab  -->  self.on_balancer_finished
+CorpusManagerTab  -->  self.on_domain_processed
+CorpusManagerTab  -->  self.on_file_selected
+CorpusManagerTab  -->  self.on_validation_complete
+CorpusManagerTab  -->  self.on_validation_failed
+CorpusManagerTab  -->  self.open_batch_metadata_editor
+CorpusManagerTab  -->  self.rebalance_corpus
+CorpusManagerTab  -->  self.refresh_file_view
+CorpusManagerTab  -->  self.save_metadata
+CorpusManagerTab  -->  self.show_context_menu
+CorpusManagerTab  -->  self.show_validation_results
+CorpusManagerTab  -->  self.validate_corpus_structure
+CorpusStatistics  -->  self.refresh_requested
+CorruptionDetectorWrapper  -->  Processor.processor
+CorruptionDetectorWrapper  -->  self.apply_filter
+CorruptionDetectorWrapper  -->  self.browse_input_path
+CorruptionDetectorWrapper  -->  self.cancel_scan
+CorruptionDetectorWrapper  -->  self.export_results
+CorruptionDetectorWrapper  -->  self.file_checked
+CorruptionDetectorWrapper  -->  self.generate_report
+CorruptionDetectorWrapper  -->  self.handle_error
+CorruptionDetectorWrapper  -->  self.scan_completed
+CorruptionDetectorWrapper  -->  self.show_file_details
+CorruptionDetectorWrapper  -->  self.start_scan
+CorruptionDetectorWrapper  -->  self.update_progress
+DashboardTab  -->  Collector._collector_wrappers
+DashboardTab  -->  Collector.append
+DashboardTab  -->  Collector.lambda _r, n=name: Notifier.notify('Collector Finished', f'{n} completed', level='success')
+DashboardTab  -->  Collector.start_all_collectors
+DashboardTab  -->  Collector.wrapper
+DashboardTab  -->  CorpusStatsService.<ast.Attribute object at 0x000001D96B054590>
+DashboardTab  -->  Manager.<ast.Attribute object at 0x000001D96B054290>
+DashboardTab  -->  Manager.apply_chart_theme
+DashboardTab  -->  Manager.chart_manager
+DashboardTab  -->  Manager.create_chart_view
+DashboardTab  -->  Manager.task_queue_manager
+DashboardTab  -->  Manager.update_task
+DashboardTab  -->  Service.<ast.Attribute object at 0x000001D96AFF52D0>
+DashboardTab  -->  Service.<ast.Attribute object at 0x000001D96B054590>
+DashboardTab  -->  Service._stats_file
+DashboardTab  -->  Service.activity_log_service
+DashboardTab  -->  Service.dependency_update_service
+DashboardTab  -->  Service.get_domain_distribution
+DashboardTab  -->  Service.get_domain_summary
+DashboardTab  -->  Service.get_recent_tasks
+DashboardTab  -->  Service.get_summary
+DashboardTab  -->  Service.log
+DashboardTab  -->  Service.refresh_stats
+DashboardTab  -->  Service.start_update
+DashboardTab  -->  Service.stats_service
+DashboardTab  -->  Service.task_history_service
+DashboardTab  -->  SystemMonitor.<ast.Attribute object at 0x000001D96ABB5190>
+DashboardTab  -->  lambda *_: Notifier.notify('Corpus Optimization', 'Optimization completed', level='success')
+DashboardTab  -->  lambda *_: self.load_data()
+DashboardTab  -->  lambda *_: self.update_environment_info()
+DashboardTab  -->  lambda e: self.activity_log_widget.add_activity(e.get('source', 'Info'), e.get('message', ''), e.get('details'))
+DashboardTab  -->  lambda msg, n=name: Notifier.notify(f'{n} Error', msg, level='error')
+DashboardTab  -->  lambda msg: Notifier.notify('Optimization Error', msg, level='error')
+DashboardTab  -->  lambda: self.view_all_activity_requested.emit()
+DashboardTab  -->  self.on_dependency_update_completed
+DashboardTab  -->  self.on_dependency_update_failed
+DashboardTab  -->  self.on_dependency_update_progress
+DashboardTab  -->  self.rebalance_requested.emit
+DashboardTab  -->  self.recent_activity_widget.add_activity
+DashboardTab  -->  self.update_overview_metrics
+DashboardTab  -->  self.update_queue_counts
+DashboardTab  -->  self.update_system_metrics
+DashboardTab  -->  self.update_task_progress
+DashboardTab  -->  slot
+DeduplicateNonPDFOutputsWrapper  -->  Processor.processor
+DeduplicateNonPDFOutputsWrapper  -->  lambda v: self.similarity_value_label.setText(f'{v}%')
+DeduplicateNonPDFOutputsWrapper  -->  self.add_duplicate_result
+DeduplicateNonPDFOutputsWrapper  -->  self.browse_input_directory
+DeduplicateNonPDFOutputsWrapper  -->  self.cancel_deduplication
+DeduplicateNonPDFOutputsWrapper  -->  self.deduplication_completed
+DeduplicateNonPDFOutputsWrapper  -->  self.export_results
+DeduplicateNonPDFOutputsWrapper  -->  self.handle_error
+DeduplicateNonPDFOutputsWrapper  -->  self.remove_selected_duplicates
+DeduplicateNonPDFOutputsWrapper  -->  self.start_deduplication
+DeduplicateNonPDFOutputsWrapper  -->  self.update_progress
+DeduplicationWorker  -->  Deduplicator.configure
+DeduplicationWorker  -->  Deduplicator.deduplicator
+DeduplicatorWorker  -->  Processor.find_duplicates
+DeduplicatorWorker  -->  Processor.processor
+DeduplicatorWrapper  -->  Deduplicator.<ast.Attribute object at 0x000001D96AAD6550>
+DeduplicatorWrapper  -->  Deduplicator.<ast.Attribute object at 0x000001D96AB6B3D0>
+DeduplicatorWrapper  -->  Processor.processor
+DeduplicatorWrapper  -->  self._on_processing_completed
+DeduplicatorWrapper  -->  self.duplicate_found
+DeduplicatorWrapper  -->  self.error_occurred
+DeduplicatorWrapper  -->  self.progress_updated
+DeduplicatorWrapper  -->  self.status_updated
+DomainClassifierWorkerThread  -->  Processor.classify
+DomainClassifierWorkerThread  -->  Processor.processor
+DomainClassifierWrapper  -->  Processor._processor
+DomainClassifierWrapper  -->  Processor.refresh_config
+DomainClassifierWrapper  -->  self._on_processing_completed
+DomainClassifierWrapper  -->  self._on_progress_updated
+DomainClassifierWrapper  -->  self._on_status_updated
+DomainClassifierWrapper  -->  self.document_classified.emit
+DomainClassifierWrapper  -->  self.error_occurred.emit
+DomainClassifierWrapper  -->  self.progress_updated.emit
+DomainClassifierWrapper  -->  self.status_updated.emit
+DomainsManagerWorker  -->  DomainsManager.<ast.Attribute object at 0x000001D96AFFE8D0>
+DomainsManagerWorker  -->  Manager.<ast.Attribute object at 0x000001D96AFFE8D0>
+DomainsManagerWorker  -->  Manager.analyze_corpus_domains
+DomainsManagerWorker  -->  Manager.classify_domain
+DomainsManagerWorker  -->  Manager.export_domains_to_file
+DomainsManagerWorker  -->  Manager.import_domains_from_file
+DomainsManagerWorker  -->  Manager.manager
+DomainsManagerWrapper  -->  DomainsManager.<ast.Attribute object at 0x000001D96A8AB450>
+DomainsManagerWrapper  -->  DomainsManager.<ast.Attribute object at 0x000001D96AB1BC10>
+DomainsManagerWrapper  -->  DomainsManager.<ast.Attribute object at 0x000001D96AFDE9D0>
+DomainsManagerWrapper  -->  DomainsManager.<ast.Attribute object at 0x000001D96B04FF50>
+DomainsManagerWrapper  -->  DomainsManager.<ast.Attribute object at 0x000001D96B053B90>
+DomainsManagerWrapper  -->  DomainsManager.<ast.Attribute object at 0x000001D96B06CF90>
+DomainsManagerWrapper  -->  Manager.<ast.Attribute object at 0x000001D96A8AB450>
+DomainsManagerWrapper  -->  Manager.<ast.Attribute object at 0x000001D96AB1BC10>
+DomainsManagerWrapper  -->  Manager.<ast.Attribute object at 0x000001D96AFDE9D0>
+DomainsManagerWrapper  -->  Manager.<ast.Attribute object at 0x000001D96B04FF50>
+DomainsManagerWrapper  -->  Manager.<ast.Attribute object at 0x000001D96B053B90>
+DomainsManagerWrapper  -->  Manager.<ast.Attribute object at 0x000001D96B06CF90>
+DomainsManagerWrapper  -->  Processor.get_processor_config
+DomainsManagerWrapper  -->  Processor.processor
+DomainsManagerWrapper  -->  self.add_category
+DomainsManagerWrapper  -->  self.add_classification_result
+DomainsManagerWrapper  -->  self.add_domain
+DomainsManagerWrapper  -->  self.analysis_completed
+DomainsManagerWrapper  -->  self.browse_corpus_directory
+DomainsManagerWrapper  -->  self.browse_database_path
+DomainsManagerWrapper  -->  self.cancel_operation
+DomainsManagerWrapper  -->  self.classification_completed
+DomainsManagerWrapper  -->  self.classify_bulk_domains
+DomainsManagerWrapper  -->  self.classify_single_domain
+DomainsManagerWrapper  -->  self.clear_classification_cache
+DomainsManagerWrapper  -->  self.clear_domain_input
+DomainsManagerWrapper  -->  self.export_category
+DomainsManagerWrapper  -->  self.export_completed
+DomainsManagerWrapper  -->  self.export_domains
+DomainsManagerWrapper  -->  self.handle_error
+DomainsManagerWrapper  -->  self.import_completed
+DomainsManagerWrapper  -->  self.import_domains
+DomainsManagerWrapper  -->  self.load_domains_from_file
+DomainsManagerWrapper  -->  self.move_domain
+DomainsManagerWrapper  -->  self.on_category_selected
+DomainsManagerWrapper  -->  self.refresh_domain_tree
+DomainsManagerWrapper  -->  self.remove_category
+DomainsManagerWrapper  -->  self.remove_domain
+DomainsManagerWrapper  -->  self.start_corpus_analysis
+DomainsManagerWrapper  -->  self.update_progress
+ErrorDialog  -->  Manager.get_icon_path
+ErrorDialog  -->  Manager.icon_manager
+ErrorDialog  -->  self.reject
+ErrorDialog  -->  self.report_issue
+ErrorDialog  -->  self.request_retry
+ErrorDialog  -->  self.toggle_details
+FREDWrapper  -->  Collector.<ast.Attribute object at 0x000001D96A8AB8D0>
+FREDWrapper  -->  Collector.collector
+FileBrowser  -->  Manager.get_icon_path
+FileBrowser  -->  Manager.icon_manager
+FileBrowser  -->  Service.openUrl
+FileBrowser  -->  lambda: self.copy_path_to_clipboard(file_path)
+FileBrowser  -->  lambda: self.create_new_folder(file_path)
+FileBrowser  -->  lambda: self.delete_item(file_path)
+FileBrowser  -->  lambda: self.open_file(file_path)
+FileBrowser  -->  lambda: self.set_directory(file_path)
+FileBrowser  -->  self.apply_filter
+FileBrowser  -->  self.apply_type_filter
+FileBrowser  -->  self.browse_directory
+FileBrowser  -->  self.go_back
+FileBrowser  -->  self.go_forward
+FileBrowser  -->  self.go_up
+FileBrowser  -->  self.navigate_to_address
+FileBrowser  -->  self.on_item_clicked
+FileBrowser  -->  self.on_item_double_clicked
+FileBrowser  -->  self.show_context_menu
+FinancialSymbolProcessorWrapper  -->  Processor.<ast.Attribute object at 0x000001D96A8ACF10>
+FinancialSymbolProcessorWrapper  -->  Processor.processor
+FinancialSymbolProcessorWrapper  -->  self._on_processing_completed
+FinancialSymbolProcessorWrapper  -->  self.error_occurred
+FinancialSymbolProcessorWrapper  -->  self.progress_updated
+FinancialSymbolProcessorWrapper  -->  self.status_updated
+FinancialSymbolProcessorWrapper  -->  self.symbols_extracted
+FinancialSymbolWorkerThread  -->  Processor.extract_symbols
+FinancialSymbolWorkerThread  -->  Processor.processor
+FormulaExtractorWorkerThread  -->  Processor.extract_formulas
+FormulaExtractorWorkerThread  -->  Processor.processor
+FormulaExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96AB81010>
+FormulaExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96B054310>
+FormulaExtractorWrapper  -->  Processor.processor
+FormulaExtractorWrapper  -->  self._on_processing_completed
+FormulaExtractorWrapper  -->  self.error_occurred
+FormulaExtractorWrapper  -->  self.formula_extracted
+FormulaExtractorWrapper  -->  self.progress_updated
+FormulaExtractorWrapper  -->  self.status_updated
+FullActivityTab  -->  Manager.<ast.Attribute object at 0x000001D96B0C9910>
+FullActivityTab  -->  Manager.add_task
+FullActivityTab  -->  Manager.chart_manager
+FullActivityTab  -->  Manager.create_chart_view
+FullActivityTab  -->  Manager.set_theme
+FullActivityTab  -->  Manager.task_queue_manager
+FullActivityTab  -->  Manager.update_task
+FullActivityTab  -->  Service.activity_log_service
+FullActivityTab  -->  dialog.close
+FullActivityTab  -->  lambda _: self.load_activity_data()
+FullActivityTab  -->  lambda: self.export_task_logs(activity, log_content)
+FullActivityTab  -->  self.load_activity_data
+FullActivityTab  -->  self.on_activity_added
+FullActivityTab  -->  self.on_activity_selected
+FullActivityTab  -->  self.retry_task
+FullActivityTab  -->  self.stop_task
+FullActivityTab  -->  self.view_task_logs
+GitHubWrapper  -->  Collector.<ast.Attribute object at 0x000001D96AB5DB50>
+GitHubWrapper  -->  Collector.collector
+ISDAWrapper  -->  Collector.<ast.Attribute object at 0x000001D96ABC63D0>
+ISDAWrapper  -->  Collector.collector
+LanguageConfidenceDetectorWrapper  -->  Processor._processor
+LanguageConfidenceDetectorWrapper  -->  Processor.refresh_config
+LanguageConfidenceDetectorWrapper  -->  self._on_processing_completed
+LanguageConfidenceDetectorWrapper  -->  self._on_progress_updated
+LanguageConfidenceDetectorWrapper  -->  self._on_status_updated
+LanguageConfidenceDetectorWrapper  -->  self.error_occurred.emit
+LanguageConfidenceDetectorWrapper  -->  self.language_detected.emit
+LanguageConfidenceDetectorWrapper  -->  self.progress_updated.emit
+LanguageConfidenceDetectorWrapper  -->  self.status_updated.emit
+LanguageDetectorWorkerThread  -->  Processor.detect
+LanguageDetectorWorkerThread  -->  Processor.processor
+LogViewer  -->  self.add_new_entries
+LogViewer  -->  self.apply_filters
+LogViewer  -->  self.browse_log_file
+LogViewer  -->  self.clear_logs
+LogViewer  -->  self.export_logs
+LogViewer  -->  self.on_entry_selected
+LogViewer  -->  self.refresh_logs
+LogViewer  -->  self.set_auto_scroll
+LogViewer  -->  self.toggle_watching
+LogsTab  -->  Service.activity_log_service
+LogsTab  -->  Service.log
+LogsTab  -->  self.apply_filters
+LogsTab  -->  self.clear_filters
+LogsTab  -->  self.clear_log_view
+LogsTab  -->  self.export_logs
+LogsTab  -->  self.on_log_entry_selected
+LogsTab  -->  self.on_log_selected
+LogsTab  -->  self.refresh_logs
+LogsTab  -->  self.toggle_auto_refresh
+MTDetectorWorkerThread  -->  Processor.detect_machine_translation
+MTDetectorWorkerThread  -->  Processor.processor
+MachineTranslationDetectorWrapper  -->  Processor.processor
+MachineTranslationDetectorWrapper  -->  self._on_processing_completed
+MachineTranslationDetectorWrapper  -->  self.error_occurred
+MachineTranslationDetectorWrapper  -->  self.progress_updated
+MachineTranslationDetectorWrapper  -->  self.status_updated
+MachineTranslationDetectorWrapper  -->  self.translation_detected
+MaintenanceTab  -->  self.on_upgrade_error
+MaintenanceTab  -->  self.on_upgrade_finished
+MaintenanceTab  -->  self.run_upgrade
+MetadataViewer  -->  self.add_property
+MetadataViewer  -->  self.remove_property
+MetadataViewer  -->  self.save_metadata
+MonitorProgressWrapper  -->  Manager.task_queue_manager
+MonitorProgressWrapper  -->  MonitorProgress.<ast.Attribute object at 0x000001D96B1CEC90>
+MonitorProgressWrapper  -->  lambda *_: self.refresh_tasks()
+MonitorProgressWrapper  -->  lambda v: self.update_interval_value.setText(f'{v}s')
+MonitorProgressWrapper  -->  self.add_task_to_table
+MonitorProgressWrapper  -->  self.cancel_selected_task
+MonitorProgressWrapper  -->  self.clear_history
+MonitorProgressWrapper  -->  self.export_history
+MonitorProgressWrapper  -->  self.filter_history
+MonitorProgressWrapper  -->  self.mark_task_completed
+MonitorProgressWrapper  -->  self.mark_task_failed
+MonitorProgressWrapper  -->  self.pause_monitoring
+MonitorProgressWrapper  -->  self.pause_selected_task
+MonitorProgressWrapper  -->  self.refresh_tasks
+MonitorProgressWrapper  -->  self.resume_selected_task
+MonitorProgressWrapper  -->  self.start_monitoring
+MonitorProgressWrapper  -->  self.stop_monitoring
+MonitorProgressWrapper  -->  self.update_system_stats
+MonitorProgressWrapper  -->  self.update_task_progress
+MonitoringTab  -->  MonitorProgress.<ast.Attribute object at 0x000001D96A894AD0>
+MonitoringTab  -->  SystemMonitor.<ast.Attribute object at 0x000001D96B1A7650>
+MonitoringTab  -->  self.update_metrics
+NotificationManager  -->  self.clear_all_notifications
+PDFExtractorWorker  -->  Extractor.extract_text
+PDFExtractorWorker  -->  Extractor.extractor
+PDFExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96A8B1FD0>
+PDFExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96B034390>
+PDFExtractorWrapper  -->  Extractor.extractor
+PDFExtractorWrapper  -->  self._on_error
+PDFExtractorWrapper  -->  self._on_finished
+PDFExtractorWrapper  -->  self._on_progress
+PDFExtractorWrapper  -->  self.file_processed
+ProcessorMixin  -->  Manager.setter
+ProcessorMixin  -->  Manager.task_queue_manager
+ProcessorMixin  -->  Processor.__init__
+ProcessorMixin  -->  Processor._processor
+ProcessorMixin  -->  Processor.get_processing_stats
+ProcessorMixin  -->  Processor.setter
+ProcessorsTab  -->  Manager.<ast.Attribute object at 0x000001D96ABC4810>
+ProcessorsTab  -->  Manager.add_notification
+ProcessorsTab  -->  Manager.add_task
+ProcessorsTab  -->  Manager.get_icon_path
+ProcessorsTab  -->  Manager.icon_manager
+ProcessorsTab  -->  Manager.notification_manager
+ProcessorsTab  -->  Manager.task_queue_manager
+ProcessorsTab  -->  Manager.update_task
+ProcessorsTab  -->  Processor._start_next_advanced_processor
+ProcessorsTab  -->  Processor.addTab
+ProcessorsTab  -->  Processor.currentIndex
+ProcessorsTab  -->  Processor.get
+ProcessorsTab  -->  Processor.init_processors
+ProcessorsTab  -->  Processor.processor_tabs
+ProcessorsTab  -->  Processor.processor_wrappers
+ProcessorsTab  -->  Processor.stop_all_processors
+ProcessorsTab  -->  Processor.values
+ProcessorsTab  -->  Service.complete_task
+ProcessorsTab  -->  Service.fail_task
+ProcessorsTab  -->  Service.start_task
+ProcessorsTab  -->  Service.task_history_service
+ProcessorsTab  -->  self._on_advanced_wrapper_completed
+ProcessorsTab  -->  self._update_advanced_progress
+ProcessorsTab  -->  self.add_pdf_files
+ProcessorsTab  -->  self.add_text_files
+ProcessorsTab  -->  self.advanced_status.setText
+ProcessorsTab  -->  self.apply_advanced_processing
+ProcessorsTab  -->  self.apply_selected_domain
+ProcessorsTab  -->  self.clear_pdf_files
+ProcessorsTab  -->  self.clear_text_files
+ProcessorsTab  -->  self.on_pdf_batch_completed
+ProcessorsTab  -->  self.on_processing_finished
+ProcessorsTab  -->  self.on_processing_started
+ProcessorsTab  -->  self.on_text_batch_completed
+ProcessorsTab  -->  self.pdf_progress_bar.setValue
+ProcessorsTab  -->  self.pdf_status.setText
+ProcessorsTab  -->  self.select_input_directory
+ProcessorsTab  -->  self.start_pdf_processing
+ProcessorsTab  -->  self.start_text_processing
+ProcessorsTab  -->  self.stop_all_processors
+ProcessorsTab  -->  self.stop_pdf_processing
+ProcessorsTab  -->  self.stop_text_processing
+ProcessorsTab  -->  self.text_progress_bar.setValue
+ProcessorsTab  -->  self.text_status.setText
+ProgressMonitoringWorker  -->  Manager.task_queue_manager
+ProgressMonitoringWorker  -->  MonitorProgress.<ast.Attribute object at 0x000001D96B042690>
+QualityControlWrapper  -->  Manager.setter
+QualityControlWrapper  -->  Manager.task_queue_manager
+QualityControlWrapper  -->  Processor._processor
+QualityControlWrapper  -->  Processor.get_processing_stats
+QualityControlWrapper  -->  Processor.get_status
+QualityControlWrapper  -->  Processor.process_batch
+QualityControlWrapper  -->  Processor.refresh_config
+QualityControlWrapper  -->  Processor.set_test_mode
+QualityControlWrapper  -->  Processor.start
+QualityControlWrapper  -->  Processor.stop
+QuantopianWrapper  -->  Collector.<ast.Attribute object at 0x000001D96AFF4610>
+QuantopianWrapper  -->  Collector.collector
+RecentActivity  -->  self.on_view_all_clicked
+RecentActivity  -->  self.refresh_activities
+SciDBWrapper  -->  Collector.<ast.Attribute object at 0x000001D96ABC62D0>
+SciDBWrapper  -->  Collector.collector
+SettingsDialog  -->  Manager.apply_theme
+SettingsDialog  -->  lambda: self.browse_directory(self.corpus_root)
+SettingsDialog  -->  lambda: self.browse_directory(self.logs_dir)
+SettingsDialog  -->  lambda: self.browse_directory(self.metadata_dir)
+SettingsDialog  -->  lambda: self.browse_directory(self.processed_dir)
+SettingsDialog  -->  lambda: self.browse_directory(self.raw_dir)
+SettingsDialog  -->  self.accept
+SettingsDialog  -->  self.browse_python_path
+SettingsDialog  -->  self.browse_venv_path
+SettingsDialog  -->  self.on_sound_setting_changed
+SettingsDialog  -->  self.on_theme_changed
+SettingsDialog  -->  self.reject
+SettingsDialog  -->  self.reset_to_defaults
+TextExtractorWorker  -->  Extractor.extract_text
+TextExtractorWorker  -->  Extractor.extractor
+TextExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96A89F990>
+TextExtractorWrapper  -->  Extractor.<ast.Attribute object at 0x000001D96AB87450>
+TextExtractorWrapper  -->  Extractor.extractor
+TextExtractorWrapper  -->  self._on_error
+TextExtractorWrapper  -->  self._on_finished
+TextExtractorWrapper  -->  self._on_progress
+TextExtractorWrapper  -->  self.file_processed
+WebWrapper  -->  Collector.<ast.Attribute object at 0x000001D96A8AB610>
+WebWrapper  -->  Collector.collector

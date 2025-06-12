@@ -16,7 +16,6 @@ class LanguageConfidenceDetector:
     """Detect language confidence"""
     
     def __init__(self, project_config, *a, **kw):
-        super().__init__(*a, **kw)
         self.project_config = project_config
         cfg = project_config.get('processors.' + self.__class__.__name__.lower(), {})
         self.min_conf = cfg.get('min_confidence', 0.80)
@@ -25,12 +24,12 @@ class LanguageConfidenceDetector:
         
         # Use project config if provided, otherwise use provided config or defaults
         if project_config:
-            if project_config.get('processors') is not None and 'quality_control' in project_config['processors'] and 'checks' in project_config['processors']['quality_control'] and 'language' in project_config['processors']['quality_control']['checks']:
+            if hasattr(project_config, 'get') and project_config.get('processors.quality_control.checks.language'):
                 # New master config structure
-                self.config = project_config['processors']['quality_control']['checks']['language']
+                self.config = project_config.get('processors.quality_control.checks.language')
             elif project_config.get('language_confidence') is not None:
                 # Legacy project config structure
-                self.config = project_config['language_confidence']
+                self.config = project_config.get('language_confidence')
             else:
                 self.config = cfg or self._get_default_config()
         else:

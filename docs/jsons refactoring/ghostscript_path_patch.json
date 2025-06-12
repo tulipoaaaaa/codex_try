@@ -1,0 +1,125 @@
+{
+    "ghostscript_path_refactor": {
+        "description": "Replace hardcoded Ghostscript paths with environment variable GHOSTSCRIPT_PATH and smart OS-specific auto-detection",
+        "changes": [
+            {
+                "file": "CorpusBuilderApp/shared_tools/processors/batch_text_extractor_enhanced_prerefactor.py",
+                "patches": [
+                    {
+                        "line": 6,
+                        "operation": "add_after",
+                        "new": "import platform\nimport glob\nimport shutil"
+                    },
+                    {
+                        "line": 20,
+                        "operation": "add_after", 
+                        "new": "\ndef find_ghostscript_executable():\n    \"\"\"Smart Ghostscript executable detection with version-agnostic search.\"\"\"\n    # 1. Check GHOSTSCRIPT_PATH environment variable first\n    env_path = os.environ.get('GHOSTSCRIPT_PATH')\n    if env_path:\n        if os.path.isfile(env_path) and os.access(env_path, os.X_OK):\n            logger.info(f\"Using Ghostscript from GHOSTSCRIPT_PATH: {env_path}\")\n            return env_path\n        elif os.path.isdir(env_path):\n            # If directory provided, look for executable inside\n            system = platform.system().lower()\n            if system == 'windows':\n                for exe in ['gswin64c.exe', 'gswin32c.exe', 'gs.exe']:\n                    full_path = os.path.join(env_path, exe)\n                    if os.path.exists(full_path):\n                        logger.info(f\"Found Ghostscript executable in GHOSTSCRIPT_PATH dir: {full_path}\")\n                        return full_path\n            else:\n                gs_exe = os.path.join(env_path, 'gs')\n                if os.path.exists(gs_exe) and os.access(gs_exe, os.X_OK):\n                    logger.info(f\"Found Ghostscript executable in GHOSTSCRIPT_PATH dir: {gs_exe}\")\n                    return gs_exe\n        logger.warning(f\"GHOSTSCRIPT_PATH set but invalid: {env_path}\")\n    \n    # 2. OS-specific auto-detection with version-agnostic patterns\n    system = platform.system().lower()\n    \n    if system == 'windows':\n        # Search for any Ghostscript version using glob patterns\n        search_patterns = [\n            r\"C:\\Program Files\\gs\\gs*\\bin\\gswin64c.exe\",\n            r\"C:\\Program Files\\gs\\gs*\\bin\\gswin32c.exe\", \n            r\"C:\\Program Files (x86)\\gs\\gs*\\bin\\gswin64c.exe\",\n            r\"C:\\Program Files (x86)\\gs\\gs*\\bin\\gswin32c.exe\",\n            r\"C:\\Program Files\\gs\\gs*\\bin\\gs.exe\",\n            r\"C:\\Program Files (x86)\\gs\\gs*\\bin\\gs.exe\"\n        ]\n        \n        found_executables = []\n        for pattern in search_patterns:\n            matches = glob.glob(pattern)\n            found_executables.extend(matches)\n        \n        if found_executables:\n            # Sort to get newest version (assumes version in path)\n            found_executables.sort(reverse=True)\n            selected = found_executables[0]\n            logger.info(f\"Auto-detected Ghostscript (Windows): {selected}\")\n            return selected\n    \n    elif system == 'darwin':  # macOS\n        # Common macOS paths with priority order\n        search_paths = [\n            '/opt/homebrew/bin/gs',      # Apple Silicon Homebrew\n            '/usr/local/bin/gs',         # Intel Homebrew\n            '/opt/local/bin/gs',         # MacPorts\n            '/usr/bin/gs'                # System\n        ]\n        \n        for path in search_paths:\n            if os.path.exists(path) and os.access(path, os.X_OK):\n                logger.info(f\"Auto-detected Ghostscript (macOS): {path}\")\n                return path\n    \n    else:  # Linux and other Unix-like systems\n        # Common Linux paths\n        search_paths = [\n            '/usr/bin/gs',               # System package\n            '/usr/local/bin/gs',         # Manual install\n            '/opt/ghostscript/bin/gs',   # Custom install\n            '/snap/bin/ghostscript.gs'   # Snap package\n        ]\n        \n        for path in search_paths:\n            if os.path.exists(path) and os.access(path, os.X_OK):\n                logger.info(f\"Auto-detected Ghostscript (Linux): {path}\")\n                return path\n    \n    # 3. Final fallback: search system PATH\n    gs_in_path = shutil.which('gs')\n    if gs_in_path:\n        logger.info(f\"Found Ghostscript in system PATH: {gs_in_path}\")\n        return gs_in_path\n    \n    # 4. Windows-specific PATH search for gswin executables\n    if system == 'windows':\n        for exe in ['gswin64c', 'gswin32c']:\n            gs_win_path = shutil.which(exe)\n            if gs_win_path:\n                logger.info(f\"Found Ghostscript Windows executable in PATH: {gs_win_path}\")\n                return gs_win_path\n    \n    # 5. Not found - provide helpful error\n    error_msg = f\"Ghostscript not found on {system}. \"\n    if system == 'windows':\n        error_msg += \"Install from https://www.ghostscript.com/download/gsdnld.html or set GHOSTSCRIPT_PATH environment variable.\"\n    elif system == 'darwin':\n        error_msg += \"Install with: brew install ghostscript\"\n    else:\n        error_msg += \"Install with your package manager (e.g., apt install ghostscript) or set GHOSTSCRIPT_PATH.\"\n    \n    raise RuntimeError(error_msg)\n\ndef get_ghostscript_bin_dir():\n    \"\"\"Get Ghostscript binary directory.\"\"\"\n    gs_executable = find_ghostscript_executable()\n    return os.path.dirname(gs_executable)\n\ndef get_ghostscript_executable():\n    \"\"\"Get Ghostscript executable path (alias for find_ghostscript_executable).\"\"\"\n    return find_ghostscript_executable()\n"
+                    },
+                    {
+                        "line": 23,
+                        "operation": "replace",
+                        "old": "    gs_bin = r\"C:\\Program Files\\gs\\gs10.05.1\\bin\"",
+                        "new": "    gs_bin = get_ghostscript_bin_dir()"
+                    },
+                    {
+                        "line": 24,
+                        "operation": "replace", 
+                        "old": "    gs_executable = os.path.join(gs_bin, \"gswin64c.exe\")",
+                        "new": "    gs_executable = get_ghostscript_executable()"
+                    },
+                    {
+                        "line": 25,
+                        "operation": "replace",
+                        "old": "    if not os.path.exists(gs_executable):\n        raise RuntimeError(f\"Ghostscript not found at {gs_executable}\")",
+                        "new": "    # gs_executable is now guaranteed to exist from find_ghostscript_executable()"
+                    },
+                    {
+                        "line": 76,
+                        "operation": "replace",
+                        "old": "    gs_bin = r\"C:\\Program Files\\gs\\gs10.05.1\\bin\"",
+                        "new": "    gs_bin = get_ghostscript_bin_dir()"
+                    },
+                    {
+                        "line": 77,
+                        "operation": "replace",
+                        "old": "    gs_executable = os.path.join(gs_bin, \"gswin64c.exe\")",
+                        "new": "    gs_executable = get_ghostscript_executable()"
+                    },
+                    {
+                        "line": 104,
+                        "operation": "replace",
+                        "old": "GS_PATH = r\"C:\\Program Files\\gs\\gs10.05.1\\bin\\gswin64c.exe\"  # adjust if needed",
+                        "new": "GS_PATH = find_ghostscript_executable()  # Smart auto-detection with GHOSTSCRIPT_PATH fallback"
+                    }
+                ]
+            }
+        ],
+        "environment_variables": [
+            {
+                "name": "GHOSTSCRIPT_PATH",
+                "description": "Path to Ghostscript executable or bin directory (optional - auto-detects if not set)",
+                "examples": {
+                    "windows_executable": "C:\\Program Files\\gs\\gs10.05.1\\bin\\gswin64c.exe",
+                    "windows_directory": "C:\\Program Files\\gs\\gs10.05.1\\bin",
+                    "macos": "/opt/homebrew/bin/gs",
+                    "linux": "/usr/bin/gs",
+                    "custom": "/custom/path/to/ghostscript/bin/gs"
+                }
+            }
+        ],
+        "key_features": [
+            "Environment variable GHOSTSCRIPT_PATH takes highest priority",
+            "Version-agnostic detection using glob patterns (gs*)",
+            "Automatically selects newest version if multiple found",
+            "Cross-platform support (Windows, macOS, Linux)",
+            "System PATH search as final fallback",
+            "Clear error messages with installation instructions",
+            "Robust executable validation (checks file exists and is executable)"
+        ],
+        "os_specific_search_patterns": {
+            "windows": [
+                "C:\\Program Files\\gs\\gs*\\bin\\gswin64c.exe",
+                "C:\\Program Files\\gs\\gs*\\bin\\gswin32c.exe", 
+                "C:\\Program Files (x86)\\gs\\gs*\\bin\\gswin64c.exe",
+                "C:\\Program Files (x86)\\gs\\gs*\\bin\\gswin32c.exe"
+            ],
+            "macos": [
+                "/opt/homebrew/bin/gs (Apple Silicon Homebrew)",
+                "/usr/local/bin/gs (Intel Homebrew)",
+                "/opt/local/bin/gs (MacPorts)",
+                "/usr/bin/gs (System)"
+            ],
+            "linux": [
+                "/usr/bin/gs (System package)",
+                "/usr/local/bin/gs (Manual install)",
+                "/opt/ghostscript/bin/gs (Custom install)",
+                "/snap/bin/ghostscript.gs (Snap package)"
+            ]
+        },
+        "usage_examples": [
+            "# Override with environment variable:",
+            "set GHOSTSCRIPT_PATH=C:\\custom\\path\\to\\gs.exe",
+            "export GHOSTSCRIPT_PATH=/custom/path/to/gs",
+            "",
+            "# Or let it auto-detect (recommended):",
+            "# Windows: Will find C:\\Program Files\\gs\\gs10.05.1\\bin\\gswin64c.exe",
+            "# macOS: Will find /opt/homebrew/bin/gs", 
+            "# Linux: Will find /usr/bin/gs"
+        ],
+        "backward_compatibility_notes": [
+            "Maintains existing functionality while adding smart auto-detection",
+            "If GHOSTSCRIPT_PATH is not set, automatically finds Ghostscript installation",
+            "Works with any Ghostscript version (not tied to specific version numbers)",
+            "Graceful fallback chain: env var → OS-specific paths → system PATH → error with help"
+        ],
+        "validation_steps": [
+            "1. Test with GHOSTSCRIPT_PATH environment variable set to custom path",
+            "2. Test without environment variable to verify auto-detection works",
+            "3. Test with multiple Ghostscript versions installed (should pick newest)",
+            "4. Test on different operating systems (Windows, macOS, Linux)",
+            "5. Test error handling when Ghostscript is not installed",
+            "6. Verify PDF text extraction still works correctly",
+            "7. Test with Ghostscript installed via different methods (package manager, manual)"
+        ]
+    }
+} 

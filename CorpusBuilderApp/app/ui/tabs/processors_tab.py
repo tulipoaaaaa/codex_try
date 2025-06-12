@@ -20,7 +20,7 @@ import os
 import shutil
 import time
 
-from shared_tools.ui_wrappers.processors.batch_nonpdf_extractor_enhanced_wrapper import BatchNonPDFExtractorEnhancedWrapper
+from shared_tools.ui_wrappers.processors.batch_nonpdf_extractor_enhanced_wrapper import BatchNonPDFExtractorWrapper
 from shared_tools.ui_wrappers.processors.pdf_extractor_wrapper import PDFExtractorWrapper
 from shared_tools.ui_wrappers.processors.base_extractor_wrapper import BaseExtractorWrapper
 from shared_tools.ui_wrappers.processors.text_extractor_wrapper import TextExtractorWrapper
@@ -513,15 +513,26 @@ class ProcessorsTab(QWidget):
             # Initialize object-based wrappers
             for name, wrapper_class in object_wrappers:
                 try:
-                    if wrapper_class.__name__ in (
+                    # UI wrappers (the ones we fixed with QWidget inheritance) need parent=self
+                    ui_wrapper_classes = {
+                        "DomainClassifierWrapper",
+                        "FormulaExtractorWrapper", 
+                        "ChartImageExtractorWrapper",
                         "QualityControlWrapper",
-                        "MonitorProgressWrapper",
-                    ):
+                        "LanguageConfidenceDetectorWrapper",
+                        "MachineTranslationDetectorWrapper",
+                        "FinancialSymbolProcessorWrapper",
+                        "DeduplicatorWrapper",
+                        "MonitorProgressWrapper"
+                    }
+                    
+                    if wrapper_class.__name__ in ui_wrapper_classes:
+                        # UI wrappers need parent for Qt widget functionality
                         self.processor_wrappers[name] = wrapper_class(
-                            self.project_config,
-                            parent=self,
+                            self.project_config, parent=self
                         )
                     else:
+                        # Processing wrappers don't need parent
                         self.processor_wrappers[name] = wrapper_class(
                             self.project_config
                         )

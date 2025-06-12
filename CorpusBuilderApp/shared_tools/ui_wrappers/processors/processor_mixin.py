@@ -9,8 +9,10 @@ class ProcessorMixin:
     file_processed = pyqtSignal(str, bool)  # filepath, success
     
     def __init__(self, config, task_queue_manager=None):
+        print(f"[DEBUG] ProcessorMixin.__init__ called with config: {type(config)} = {config}, task_queue_manager: {task_queue_manager}")
         self._bw = BaseWrapper(config, task_queue_manager=task_queue_manager)
         ProcessorWrapperMixin.__init__(self)
+        print("[DEBUG] ProcessorMixin.__init__ completed")
 
     # Delegate frequently-used attributes
     @property

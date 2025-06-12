@@ -30,12 +30,12 @@ class FinancialSymbolProcessor:
         
         # Use project config if provided, otherwise use provided config or defaults
         if project_config:
-            if project_config.get('processors') is not None and 'specialized' in project_config['processors'] and 'symbols' in project_config['processors']['specialized']:
+            if project_config.get('processors') is not None and 'specialized' in project_config.get('processors', {}) and 'symbols' in project_config.get('processors.specialized', {}):
                 # New master config structure
-                self.config = project_config['processors']['specialized']['symbols']
+                self.config = project_config.get('processors.specialized.symbols')
             elif project_config.get('financial_symbol_processor') is not None:
                 # Legacy project config structure
-                self.config = project_config['financial_symbol_processor']
+                self.config = project_config.get('financial_symbol_processor')
             else:
                 self.config = config or self._get_default_config()
         else:

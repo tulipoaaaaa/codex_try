@@ -31,9 +31,9 @@ class QualityControl:
         
         # Use project config if provided, otherwise use provided config or defaults
         if project_config:
-            if hasattr(project_config, 'processors') and 'quality_control' in project_config.processors:
+            if hasattr(project_config, 'get') and project_config.get('processors.quality_control'):
                 # New master config structure
-                self.config = project_config.processors['quality_control']
+                self.config = project_config.get('processors.quality_control')
             else:
                 self.config = config or self._get_default_config()
         else:
