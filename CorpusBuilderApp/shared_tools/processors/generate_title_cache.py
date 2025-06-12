@@ -7,7 +7,7 @@ from typing import List, Set
 import logging
 logger = logging.getLogger(__name__)
 
-def generate_title_cache(corpus_dir: str, output_dir: str) -> None:
+def generate_title_cache(corpus_root: str, output_dir: str) -> None:
     """
     Generate a cache of document titles from the corpus metadata.
     This function scans the corpus directory for metadata files, normalizes titles,
@@ -18,7 +18,7 @@ def generate_title_cache(corpus_dir: str, output_dir: str) -> None:
     
     # Get all metadata files
     metadata_files = []
-    for root, _, files in os.walk(corpus_dir):
+    for root, _, files in os.walk(corpus_root):
         for file in files:
             if file.endswith('_metadata.csv'):
                 metadata_files.append(os.path.join(root, file))
@@ -53,7 +53,7 @@ def generate_title_cache(corpus_dir: str, output_dir: str) -> None:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate a cache of document titles from corpus metadata.")
-    parser.add_argument("corpus_dir", help="Directory containing the corpus metadata files")
+    parser.add_argument("corpus_root", help="Directory containing the corpus metadata files")
     parser.add_argument("output_dir", help="Directory to write the title cache file")
     args = parser.parse_args()
-    generate_title_cache(args.corpus_dir, args.output_dir) 
+    generate_title_cache(args.corpus_root, args.output_dir) 

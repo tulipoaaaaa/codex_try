@@ -19,7 +19,7 @@ import hashlib
 import base64
 from io import BytesIO
 import re
-from shared_tools.config.project_config import ProjectConfig
+from shared_tools.project_config import ProjectConfig
 logger = logging.getLogger(__name__)
 
 class ChartImageExtractor:

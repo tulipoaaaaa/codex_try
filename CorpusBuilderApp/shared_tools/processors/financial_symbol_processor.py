@@ -13,7 +13,7 @@ import logging
 from collections import defaultdict, Counter
 from .formula_extractor import FormulaExtractor
 from .chart_image_extractor import ChartImageExtractor
-from shared_tools.config.project_config import ProjectConfig
+from shared_tools.project_config import ProjectConfig
 logger = logging.getLogger(__name__)
 
 class FinancialSymbolProcessor:

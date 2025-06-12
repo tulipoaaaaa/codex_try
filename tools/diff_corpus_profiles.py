@@ -27,7 +27,7 @@ def _token_count(data: Dict[str, Any]) -> int:
     return 0
 
 
-def build_profile(corpus_dir: Path) -> Dict[str, Any]:
+def build_profile(corpus_root: Path) -> Dict[str, Any]:
     """Scan a corpus directory and return summary profile."""
     profile = {
         "domains": defaultdict(lambda: {"txt": 0, "json": 0}),
@@ -36,13 +36,13 @@ def build_profile(corpus_dir: Path) -> Dict[str, Any]:
         "hashes": set(),
     }
 
-    for txt_file in corpus_dir.rglob("*.txt"):
-        rel = txt_file.relative_to(corpus_dir)
+    for txt_file in corpus_root.rglob("*.txt"):
+        rel = txt_file.relative_to(corpus_root)
         domain = rel.parts[0] if len(rel.parts) > 1 else "root"
         profile["domains"][domain]["txt"] += 1
 
-    for json_file in corpus_dir.rglob("*.json"):
-        rel = json_file.relative_to(corpus_dir)
+    for json_file in corpus_root.rglob("*.json"):
+        rel = json_file.relative_to(corpus_root)
         domain = rel.parts[0] if len(rel.parts) > 1 else "root"
         profile["domains"][domain]["json"] += 1
         try:

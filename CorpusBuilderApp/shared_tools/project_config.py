@@ -212,18 +212,19 @@ class ProjectConfigSchema(BaseModel):
 class ProjectConfig:
     """Project configuration manager with .env support"""
     
-    def __init__(self, config_path: str, environment: Optional[str] = None):
+    def __init__(self, config_path: Optional[str] = None, environment: Optional[str] = None):
         """Initialize configuration with .env support"""
-        self.config_path = Path(config_path)
+        self.config_path = Path(config_path) if config_path else None
         self.environment = environment or os.getenv('ENVIRONMENT', 'test')
 
         self.logger = logging.getLogger(self.__class__.__name__)
         self._schema: Type[BaseModel] = ProjectConfigSchema
 
         # Load .env file if it exists
-        env_path = self.config_path.parent / '.env'
-        if env_path.exists():
-            load_dotenv(env_path)
+        if self.config_path:
+            env_path = self.config_path.parent / '.env'
+            if env_path.exists():
+                load_dotenv(env_path)
 
         # Load configuration
         self.config = self._load_yaml_and_env_merge()
@@ -236,7 +237,7 @@ class ProjectConfig:
         config: Dict[str, Any] = {}
         
         # Load from YAML if it exists
-        if self.config_path.exists():
+        if self.config_path and self.config_path.exists():
             with open(self.config_path, 'r') as f:
                 config = yaml.safe_load(f)
 
@@ -302,6 +303,9 @@ class ProjectConfig:
         # Deep merge configs, with env vars taking precedence
         self._deep_merge(config, env_config)
 
+        # Migrate legacy corpus_dir to corpus_root
+        self._migrate_corpus_dir_to_corpus_root(config)
+
         # Map legacy directories to environment-specific section
         env_name = config.get('environment', {}).get('active', self.environment)
         dirs = config.get('directories', {})
@@ -353,6 +357,24 @@ class ProjectConfig:
     def _load_config(self) -> Dict[str, Any]:
         return self._load_yaml_and_env_merge()
 
+    def _migrate_corpus_dir_to_corpus_root(self, config: Dict[str, Any]) -> None:
+        """Migrate legacy corpus_dir fields to corpus_root for backward compatibility."""
+        # Migrate in environments section
+        environments = config.get('environments', {})
+        for env_name, env_config in environments.items():
+            if isinstance(env_config, dict) and 'corpus_dir' in env_config:
+                if 'corpus_root' not in env_config:
+                    env_config['corpus_root'] = env_config['corpus_dir']
+                    self.logger.info(f"Migrated corpus_dir to corpus_root in environment '{env_name}'")
+                # Keep corpus_dir for now to avoid breaking things
+        
+        # Migrate in directories section
+        directories = config.get('directories', {})
+        if isinstance(directories, dict) and 'corpus_dir' in directories:
+            if 'corpus_root' not in directories:
+                directories['corpus_root'] = directories['corpus_dir']
+                self.logger.info("Migrated corpus_dir to corpus_root in directories section")
+
     def _deep_merge(self, target: Dict[str, Any], source: Dict[str, Any]) -> None:
         """Deep merge two dictionaries"""
         for key, value in source.items():
@@ -379,9 +401,12 @@ class ProjectConfig:
             node = node.setdefault(p, {})
         node[parts[-1]] = value
     
-    def save(self) -> None:
+    def save(self, path: Optional[str] = None) -> None:
         """Save configuration to YAML file"""
-        with open(self.config_path, 'w') as f:
+        save_path = Path(path) if path else self.config_path
+        if not save_path:
+            raise ValueError("No config path specified and no default path available")
+        with open(save_path, 'w') as f:
             yaml.dump(self.config, f, default_flow_style=False)
 
     def reload_from_file(self) -> None:

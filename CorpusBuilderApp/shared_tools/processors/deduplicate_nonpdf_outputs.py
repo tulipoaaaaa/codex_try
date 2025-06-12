@@ -110,8 +110,8 @@ def main():
 
 class DeduplicateNonPDFOutputs:
     """Class for deduplicating non-PDF extracted outputs and updating metadata programmatically."""
-    def __init__(self, corpus_dir, strategy='keep_first', minhash=False, similarity_threshold=0.8, report_path=None):
-        self.corpus_dir = corpus_dir
+    def __init__(self, corpus_root, strategy='keep_first', minhash=False, similarity_threshold=0.8, report_path=None):
+        self.corpus_root = corpus_root
         self.strategy = strategy
         self.minhash = minhash
         self.similarity_threshold = similarity_threshold
@@ -119,7 +119,7 @@ class DeduplicateNonPDFOutputs:
 
     def run(self):
         dedup = Deduplicator(
-            corpus_dir=self.corpus_dir,
+            corpus_dir=self.corpus_root,
             similarity_threshold=self.similarity_threshold,
             use_minhash=self.minhash
         )

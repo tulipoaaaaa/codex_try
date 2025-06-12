@@ -5,6 +5,9 @@ Purpose: Provides enhanced batch text extraction for PDFs.
 
 import os
 import sys
+import platform
+import glob
+import shutil
 import tempfile
 import uuid
 import threading
@@ -18,13 +21,124 @@ from typing import Optional, List, Dict, Any, Tuple, Union
 
 logger = logging.getLogger(__name__)
 
+def find_ghostscript_executable():
+    """Smart Ghostscript executable detection with version-agnostic search."""
+    # 1. Check GHOSTSCRIPT_PATH environment variable first
+    env_path = os.environ.get('GHOSTSCRIPT_PATH')
+    if env_path:
+        if os.path.isfile(env_path) and os.access(env_path, os.X_OK):
+            logger.info(f"Using Ghostscript from GHOSTSCRIPT_PATH: {env_path}")
+            return env_path
+        elif os.path.isdir(env_path):
+            # If directory provided, look for executable inside
+            system = platform.system().lower()
+            if system == 'windows':
+                for exe in ['gswin64c.exe', 'gswin32c.exe', 'gs.exe']:
+                    full_path = os.path.join(env_path, exe)
+                    if os.path.exists(full_path):
+                        logger.info(f"Found Ghostscript executable in GHOSTSCRIPT_PATH dir: {full_path}")
+                        return full_path
+            else:
+                gs_exe = os.path.join(env_path, 'gs')
+                if os.path.exists(gs_exe) and os.access(gs_exe, os.X_OK):
+                    logger.info(f"Found Ghostscript executable in GHOSTSCRIPT_PATH dir: {gs_exe}")
+                    return gs_exe
+        logger.warning(f"GHOSTSCRIPT_PATH set but invalid: {env_path}")
+    
+    # 2. OS-specific auto-detection with version-agnostic patterns
+    system = platform.system().lower()
+    
+    if system == 'windows':
+        # Search for any Ghostscript version using glob patterns
+        search_patterns = [
+            r"C:\Program Files\gs\gs*\bin\gswin64c.exe",
+            r"C:\Program Files\gs\gs*\bin\gswin32c.exe", 
+            r"C:\Program Files (x86)\gs\gs*\bin\gswin64c.exe",
+            r"C:\Program Files (x86)\gs\gs*\bin\gswin32c.exe",
+            r"C:\Program Files\gs\gs*\bin\gs.exe",
+            r"C:\Program Files (x86)\gs\gs*\bin\gs.exe"
+        ]
+        
+        found_executables = []
+        for pattern in search_patterns:
+            matches = glob.glob(pattern)
+            found_executables.extend(matches)
+        
+        if found_executables:
+            # Sort to get newest version (assumes version in path)
+            found_executables.sort(reverse=True)
+            selected = found_executables[0]
+            logger.info(f"Auto-detected Ghostscript (Windows): {selected}")
+            return selected
+    
+    elif system == 'darwin':  # macOS
+        # Common macOS paths with priority order
+        search_paths = [
+            '/opt/homebrew/bin/gs',      # Apple Silicon Homebrew
+            '/usr/local/bin/gs',         # Intel Homebrew
+            '/opt/local/bin/gs',         # MacPorts
+            '/usr/bin/gs'                # System
+        ]
+        
+        for path in search_paths:
+            if os.path.exists(path) and os.access(path, os.X_OK):
+                logger.info(f"Auto-detected Ghostscript (macOS): {path}")
+                return path
+    
+    else:  # Linux and other Unix-like systems
+        # Common Linux paths
+        search_paths = [
+            '/usr/bin/gs',               # System package
+            '/usr/local/bin/gs',         # Manual install
+            '/opt/ghostscript/bin/gs',   # Custom install
+            '/snap/bin/ghostscript.gs'   # Snap package
+        ]
+        
+        for path in search_paths:
+            if os.path.exists(path) and os.access(path, os.X_OK):
+                logger.info(f"Auto-detected Ghostscript (Linux): {path}")
+                return path
+    
+    # 3. Final fallback: search system PATH
+    gs_in_path = shutil.which('gs')
+    if gs_in_path:
+        logger.info(f"Found Ghostscript in system PATH: {gs_in_path}")
+        return gs_in_path
+    
+    # 4. Windows-specific PATH search for gswin executables
+    if system == 'windows':
+        for exe in ['gswin64c', 'gswin32c']:
+            gs_win_path = shutil.which(exe)
+            if gs_win_path:
+                logger.info(f"Found Ghostscript Windows executable in PATH: {gs_win_path}")
+                return gs_win_path
+    
+    # 5. Not found - provide helpful error
+    error_msg = f"Ghostscript not found on {system}. "
+    if system == 'windows':
+        error_msg += "Install from https://www.ghostscript.com/download/gsdnld.html or set GHOSTSCRIPT_PATH environment variable."
+    elif system == 'darwin':
+        error_msg += "Install with: brew install ghostscript"
+    else:
+        error_msg += "Install with your package manager (e.g., apt install ghostscript) or set GHOSTSCRIPT_PATH."
+    
+    raise RuntimeError(error_msg)
+
+def get_ghostscript_bin_dir():
+    """Get Ghostscript binary directory."""
+    gs_executable = find_ghostscript_executable()
+    return os.path.dirname(gs_executable)
+
+def get_ghostscript_executable():
+    """Get Ghostscript executable path (alias for find_ghostscript_executable)."""
+    return find_ghostscript_executable()
+
 # ===== CRITICAL: Set Ghostscript environment FIRST, before any imports =====
 def setup_ghostscript_environment():
     """Setup Ghostscript environment for parallel processing."""
-    gs_bin = r"C:\Program Files\gs\gs10.05.1\bin"
-    gs_executable = os.path.join(gs_bin, "gswin64c.exe")
-    if not os.path.exists(gs_executable):
-        raise RuntimeError(f"Ghostscript not found at {gs_executable}")
+    gs_bin = get_ghostscript_bin_dir()
+    gs_executable = get_ghostscript_executable()
+    # gs_executable is now guaranteed to exist from find_ghostscript_executable()
     os.environ["GHOSTSCRIPT_PATH"] = gs_executable
     current_path = os.environ.get("PATH", "")
     if gs_bin not in current_path:
@@ -74,8 +188,8 @@ def worker_initializer():
     import uuid
     import atexit
     import shutil
-    gs_bin = r"C:\Program Files\gs\gs10.05.1\bin"
-    gs_executable = os.path.join(gs_bin, "gswin64c.exe")
+    gs_bin = get_ghostscript_bin_dir()
+    gs_executable = get_ghostscript_executable()
     os.environ["GHOSTSCRIPT_PATH"] = gs_executable
     current_path = os.environ.get("PATH", "")
     if gs_bin not in current_path:
@@ -102,44 +216,17 @@ def worker_initializer():
 
     atexit.register(cleanup_temp)
 
-GS_PATH = r"C:\Program Files\gs\gs10.05.1\bin\gswin64c.exe"  # adjust if needed
-os.environ["GHOSTSCRIPT_PATH"] = GS_PATH
-os.environ["PATH"] = os.path.dirname(GS_PATH) + os.pathsep + os.environ["PATH"]
-import tempfile
-import uuid
-from concurrent.futures import ProcessPoolExecutor
-import camelot
-import sys
-import json
+# Additional imports for the enhanced functionality
 import re
-import shutil
-import argparse
-import logging
-import time
-from pathlib import Path
-from datetime import datetime, timezone
+import warnings
+import numpy as np  # type: ignore
 from collections import Counter
 import math
-from typing import Optional, List, Dict, Any, Tuple
-import threading
-from concurrent.futures import ThreadPoolExecutor, TimeoutError
-import warnings
-import hashlib
 from contextlib import contextmanager
 import concurrent.futures
-
-import PyPDF2
-import fitz  # PyMuPDF
-from pdfminer.high_level import extract_text as pdfminer_extract_text
+from langdetect import detect, LangDetectException  # type: ignore
 from pdfminer.high_level import extract_pages
 from pdfminer.layout import LTTextContainer, LTChar, LTFigure, LTImage  # type: ignore
-import camelot
-import pytesseract
-from PIL import Image
-import numpy as np
-from langdetect import detect, LangDetectException  # type: ignore
-import yaml
-from tqdm import tqdm
 
 from .formula_extractor import FormulaExtractor
 from .chart_image_extractor import ChartImageExtractor
@@ -154,6 +241,11 @@ from shared_tools.project_config import ProjectConfig
 
 _DEFAULT_CONFIG = Path(__file__).resolve().parents[2] / "configs" / "quick_test.yaml"
 _PROJECT = ProjectConfig(os.environ.get("PROJECT_CONFIG", str(_DEFAULT_CONFIG)))
+
+# Initialize Ghostscript path for camelot and other libraries
+GS_PATH = find_ghostscript_executable()  # Smart auto-detection with GHOSTSCRIPT_PATH fallback
+os.environ["GHOSTSCRIPT_PATH"] = GS_PATH
+os.environ["PATH"] = os.path.dirname(GS_PATH) + os.pathsep + os.environ["PATH"]
 
 # --- Config ---
 MIN_TOKEN_THRESHOLD = 50
