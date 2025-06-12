@@ -152,6 +152,40 @@ subplots_mod = types.ModuleType('plotly.subplots')
 setattr(subplots_mod, 'make_subplots', lambda *a, **k: None)
 sys.modules.setdefault('plotly.subplots', subplots_mod)
 
+# Basic network and data libs stubs
+requests_mod = types.ModuleType('requests')
+class _Session:
+    def __init__(self, *a, **k):
+        self.headers = {}
+    def get(self, *a, **k):
+        class Resp:
+            status_code = 200
+            text = ''
+        return Resp()
+    def post(self, *a, **k):
+        return self.get()
+requests_mod.Session = _Session
+sys.modules.setdefault('requests', requests_mod)
+sys.modules.setdefault('pandas', types.ModuleType('pandas'))
+sys.modules.setdefault('dotenv', types.ModuleType('dotenv'))
+selenium_mod = types.ModuleType('selenium')
+selenium_mod.webdriver = types.SimpleNamespace(__name__='selenium.webdriver')
+sys.modules.setdefault('selenium', selenium_mod)
+sys.modules.setdefault('selenium.webdriver', selenium_mod.webdriver)
+
+# Stub BeautifulSoup if bs4 not installed
+if 'bs4' not in sys.modules:
+    bs4 = types.ModuleType('bs4')
+    class _BS:
+        def __init__(self, *a, **k):
+            pass
+        def find_all(self, *a, **k):
+            return []
+        def find(self, *a, **k):
+            return None
+    bs4.BeautifulSoup = _BS
+    sys.modules['bs4'] = bs4
+
 from pathlib import Path
 
 @pytest.fixture
@@ -159,3 +193,37 @@ def tmp_config_path(tmp_path):
     cfg = tmp_path / 'config.yaml'
     cfg.write_text('environment:\n  active: test\n')
     return cfg
+
+
+class DummyProjectConfig:
+    def __init__(self, base: Path):
+        self.base = base
+        self.raw_data_dir = base / "raw"
+        self.processed_dir = base / "processed"
+        self.metadata_dir = base / "meta"
+        self.log_dir = base / "logs"
+        for d in [self.raw_data_dir, self.processed_dir, self.metadata_dir, self.log_dir]:
+            d.mkdir(parents=True, exist_ok=True)
+
+    def get_raw_dir(self) -> Path:
+        return self.raw_data_dir
+
+    def get_input_dir(self) -> Path:
+        return self.raw_data_dir
+
+    def get_processed_dir(self) -> Path:
+        return self.processed_dir
+
+    def get_metadata_dir(self) -> Path:
+        return self.metadata_dir
+
+    def get_logs_dir(self) -> Path:
+        return self.log_dir
+
+    def get_processor_config(self, name: str):
+        return {}
+
+
+@pytest.fixture
+def dummy_config(tmp_path):
+    return DummyProjectConfig(tmp_path)

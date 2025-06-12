@@ -7,6 +7,10 @@
 - Persistent settings and notifications
 - Professional documentation suite
 
+### Added 2025-06-12
+- Backend audit script `scripts/dev/system_backend_audit.py`
+- Test scaffolding under `tests/`
+
 ## v2.x.x
 - [Previous changes...]
 
