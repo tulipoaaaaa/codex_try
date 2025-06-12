@@ -17,7 +17,7 @@ class MonitoringTab(QWidget):
         layout.addWidget(header)
 
         # Progress widget provided by the shared wrapper
-        self.monitor_widget = MonitorProgressWrapper(self.project_config)
+        self.monitor_widget = MonitorProgressWrapper(self.project_config, task_queue_manager=None, parent=self)
         layout.addWidget(self.monitor_widget)
 
         # System metrics progress bars

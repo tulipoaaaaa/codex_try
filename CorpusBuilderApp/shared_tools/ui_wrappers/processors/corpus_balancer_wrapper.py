@@ -3,7 +3,6 @@ from shared_tools.processors.corpus_balancer import CorpusAnalyzer as CorpusBala
 from shared_tools.project_config import ProjectConfig
 from typing import Dict, Any, List
 from PySide6.QtWidgets import QWidget
-from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
 
 class CorpusBalancerWorker(QThread):
     """Worker thread for Corpus Balancing"""
@@ -67,50 +66,29 @@ class CorpusBalancerWorker(QThread):
         self._should_stop = True
 
 class CorpusBalancerWrapper(QWidget):
-    """UI wrapper for Corpus Balancer"""
-    
+    """UI wrapper for Corpus Balancer (migrated to QWidget-only, explicit delegation)"""
     domain_processed = pyqtSignal(str, int, int)  # domain, current, target
     balance_completed = pyqtSignal(dict)  # Balance results
-    file_processed = pyqtSignal(str, bool)  # filepath, success (from ProcessorWrapperMixin)
-    
-    def __init__(self, config, task_queue_manager=None, parent=None):
-        """
-        Parameters
-        ----------
-        config : ProjectConfig | str
-            Mandatory. Passed straight to BaseWrapper.
-        task_queue_manager : TaskQueueManager | None
-        parent : QWidget | None
-        """
-        
-        # Initialize base classes in correct order
-        QWidget.__init__(self, parent)  # Initialize QWidget first
-        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)  # Then initialize ProcessorMixin with config
-        
-        # Set up delegation for frequently used attributes
-        self.config = self._bw.config  # delegation
-        self.logger = self._bw.logger  # delegation
-        
-        # Delegate signals from BaseWrapper
-        self.completed = self._bw.completed
-        self.status_updated = self._bw.status_updated
-        self.progress_updated = self._bw.progress_updated
-        self.error_occurred = self._bw.error_occurred
-        
-        # Delegate other frequently used attributes
-        self._is_running = self._bw._is_running
-        self.worker = self._bw.worker
-        
-        # Delegate methods from BaseWrapper
-        self._on_progress = self._bw._on_progress
-        self._on_error = self._bw._on_error
-        
-        # Set up the file_processed signal that was placeholder in ProcessorMixin
-        self.file_processed = self.__class__.file_processed
-        
+    file_processed = pyqtSignal(str, bool)  # filepath, success
+    completed = pyqtSignal(dict)  # Emitted when balancing is completed
+    status_updated = pyqtSignal(str)  # Emitted for status updates
+    progress_updated = pyqtSignal(int, int, str)  # Emitted for progress updates
+    error_occurred = pyqtSignal(str)  # Emitted for errors
+
+    def __init__(self, project_config, parent=None):
+        QWidget.__init__(self, parent)
+        if project_config is None:
+            raise RuntimeError("CorpusBalancerWrapper requires a non-None ProjectConfig")
+        self.project_config = project_config
+        self.config = project_config.get('processors.corpus_balancer', {})
+        self.logger = None  # Set up logger if needed
+        self._is_running = False
+        self.worker = None
         self.balancer = None
         self.target_allocations: Dict[str, float] = {}
-        
+        # UI setup and connections would be here if present
+        # All signal-slot connections are made explicitly in methods
+
     def _create_target_object(self):
         """Create Corpus Balancer instance"""
         if not self.balancer:
@@ -252,10 +230,9 @@ class CorpusBalancerWrapper(QWidget):
         self.status_updated.emit("Updated collector configs based on imbalance analysis")
 
     def refresh_config(self):
-        """Reload parameters from ``self.config``."""
         cfg = {}
-        if hasattr(self.config, 'get_processor_config'):
-            cfg = self.config.get_processor_config('corpus_balancer') or {}
+        if hasattr(self.project_config, 'get'):
+            cfg = self.project_config.get('processors.corpus_balancer', {})
         for k, v in cfg.items():
             method = f'set_{k}'
             if hasattr(self, method):
@@ -263,16 +240,25 @@ class CorpusBalancerWrapper(QWidget):
                     getattr(self, method)(v)
                     continue
                 except Exception:
-                    self.logger.debug('Failed to apply %s via wrapper', k)
-            if hasattr(self.processor, method):
+                    if self.logger:
+                        self.logger.debug('Failed to apply %s via wrapper', k)
+            if hasattr(self.balancer, method):
                 try:
-                    getattr(self.processor, method)(v)
+                    getattr(self.balancer, method)(v)
                     continue
                 except Exception:
-                    self.logger.debug('Failed to apply %s via processor', k)
-            if hasattr(self.processor, k):
-                setattr(self.processor, k, v)
+                    if self.logger:
+                        self.logger.debug('Failed to apply %s via balancer', k)
+            if hasattr(self.balancer, k):
+                setattr(self.balancer, k, v)
             elif hasattr(self, k):
                 setattr(self, k, v)
-        if cfg and hasattr(self, 'configuration_changed'):
-            self.configuration_changed.emit(cfg)
+        # No configuration_changed signal in this wrapper, so skip emit
+
+    @property
+    def is_running(self):
+        return self._is_running
+
+    @is_running.setter
+    def is_running(self, value):
+        self._is_running = value

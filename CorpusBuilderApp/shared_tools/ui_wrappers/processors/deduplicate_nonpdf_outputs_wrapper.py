@@ -8,14 +8,14 @@ import hashlib
 import subprocess
 import sys
 from typing import Dict, List, Optional, Any, Set, Tuple
-from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Slot as pyqtSlot, QMutex
+from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Slot as pyqtSlot, QMutex, Signal, Qt
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
                            QProgressBar, QLabel, QTextEdit, QFileDialog, QCheckBox, 
                            QSpinBox, QGroupBox, QGridLayout, QComboBox, QListWidget,
                            QSplitter, QTabWidget, QTableWidget, QTableWidgetItem,
                            QHeaderView, QSlider)
 from shared_tools.processors.deduplicate_nonpdf_outputs import DeduplicateNonPDFOutputs
-from shared_tools.ui_wrappers.processors.processor_mixin import ProcessorMixin
+from shared_tools.project_config import ProjectConfig
 
 
 class DeduplicationWorker(QThread):
@@ -218,27 +218,27 @@ class DeduplicationWorker(QThread):
 
 
 class DeduplicateNonPDFOutputsWrapper(QWidget):
-    """UI Wrapper for Non-PDF Deduplication"""
-    
-    def __init__(self, config, task_queue_manager=None, parent=None):
-        """
-        Parameters
-        ----------
-        config : ProjectConfig | str
-            Mandatory. Passed straight to BaseWrapper.
-        task_queue_manager : TaskQueueManager | None
-        parent : QWidget | None
-        """
-        # Initialize base classes in correct order
-        QWidget.__init__(self, parent)  # Initialize QWidget first
-        ProcessorMixin.__init__(self, config, task_queue_manager=task_queue_manager)  # Then initialize ProcessorMixin
-        
-        # Set up delegation for frequently used attributes
-        self.config = self._bw.config  # delegation
-        self.logger = self._bw.logger  # delegation
-        
+    """UI Wrapper for Non-PDF Deduplication (migrated to QWidget-only, explicit delegation)"""
+    # Explicit signals (add any others as needed)
+    # No inheritance from BaseWrapper or mixins
+
+    def __init__(self, project_config, parent=None):
+        QWidget.__init__(self, parent)
+        if project_config is None:
+            raise RuntimeError("DeduplicateNonPDFOutputsWrapper requires a non-None ProjectConfig")
+        self.project_config = project_config
+        self.config = project_config.get('processors.deduplicate_nonpdf_outputs', {})
+        self.logger = None  # Set up logger if needed
+        self.processor = DeduplicateNonPDFOutputs(
+            corpus_root=self.config.get('corpus_root', ''),
+            strategy=self.config.get('strategy', 'keep_first'),
+            minhash=self.config.get('minhash', False),
+            similarity_threshold=self.config.get('similarity_threshold', 0.8),
+            report_path=self.config.get('report_path', None)
+        )
         self.worker = None
         self.duplicates_found = []
+        self._running = False
         self.setup_ui()
         self.setup_connections()
         
@@ -665,8 +665,8 @@ class DeduplicateNonPDFOutputsWrapper(QWidget):
     def refresh_config(self):
         """Reload parameters from ``self.config``."""
         cfg = {}
-        if hasattr(self.config, 'get_processor_config'):
-            cfg = self.config.get_processor_config('deduplicate_nonpdf_outputs') or {}
+        if hasattr(self.project_config, 'get'):
+            cfg = self.project_config.get('processors.deduplicate_nonpdf_outputs', {})
         for k, v in cfg.items():
             method = f'set_{k}'
             if hasattr(self, method):
@@ -674,16 +674,25 @@ class DeduplicateNonPDFOutputsWrapper(QWidget):
                     getattr(self, method)(v)
                     continue
                 except Exception:
-                    self.logger.debug('Failed to apply %s via wrapper', k)
+                    if self.logger:
+                        self.logger.debug('Failed to apply %s via wrapper', k)
             if hasattr(self.processor, method):
                 try:
                     getattr(self.processor, method)(v)
                     continue
                 except Exception:
-                    self.logger.debug('Failed to apply %s via processor', k)
+                    if self.logger:
+                        self.logger.debug('Failed to apply %s via processor', k)
             if hasattr(self.processor, k):
                 setattr(self.processor, k, v)
             elif hasattr(self, k):
                 setattr(self, k, v)
-        if cfg and hasattr(self, 'configuration_changed'):
-            self.configuration_changed.emit(cfg)
+        # No configuration_changed signal in this wrapper, so skip emit
+
+    @property
+    def _is_running(self):
+        return getattr(self, "_running", False)
+
+    @_is_running.setter
+    def _is_running(self, val):
+        self._running = bool(val)
