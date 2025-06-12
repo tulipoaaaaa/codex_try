@@ -13,7 +13,7 @@ import logging
 import pytesseract
 from PIL import Image
 from io import BytesIO
-from shared_tools.config.project_config import ProjectConfig
+from shared_tools.project_config import ProjectConfig
 logger = logging.getLogger(__name__)
 
 class FormulaExtractor:

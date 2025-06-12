@@ -18,15 +18,16 @@ from typing import Callable, Optional
 logger = logging.getLogger(__name__)
 
 class CorpusMonitor:
-    def __init__(self, corpus_dir, output_dir, interval=300):
-        """Initialize the corpus monitor.
+    def __init__(self, corpus_root, output_dir, interval=300):
+        """
+        Initialize the corpus monitor.
         
         Args:
-            corpus_dir: Directory containing the corpus
-            output_dir: Directory to save monitoring reports
-            interval: Monitoring interval in seconds (default: 5 minutes)
+            corpus_root: Directory containing the corpus
+            output_dir: Directory to write progress reports
+            interval: Time between checks in seconds
         """
-        self.corpus_dir = Path(corpus_dir)
+        self.corpus_root = Path(corpus_root)
         self.output_dir = Path(output_dir)
         self.interval = interval
         self.output_dir.mkdir(parents=True, exist_ok=True)
@@ -164,8 +165,8 @@ class CorpusMonitor:
         }
         dashboard = {}
         self.new_errors = []
-        domains = [d for d in os.listdir(self.corpus_dir)
-                  if os.path.isdir(os.path.join(self.corpus_dir, d))
+        domains = [d for d in os.listdir(self.corpus_root)
+                  if os.path.isdir(os.path.join(self.corpus_root, d))
                   and not d.endswith('_extracted')]
         # For analytics
         overall = {
@@ -177,8 +178,8 @@ class CorpusMonitor:
             'failed_downloads': 0  # Will be filled from redownload_queue
         }
         for domain in domains:
-            domain_dir = self.corpus_dir / domain
-            extracted_dir = self.corpus_dir / f"{domain}_extracted"
+            domain_dir = self.corpus_root / domain
+            extracted_dir = self.corpus_root / f"{domain}_extracted"
             pdf_files = list(domain_dir.glob("*.pdf"))
             domain_size = sum(os.path.getsize(f) for f in pdf_files) / (1024 * 1024)  # MB
             corrupted_pdfs = []
@@ -371,7 +372,7 @@ class CorpusMonitor:
     def run(self):
         """Run the monitoring loop."""
         logger.info(f"Starting corpus monitoring at {datetime.datetime.now()}")
-        logger.info(f"Monitoring directory: {self.corpus_dir}")
+        logger.info(f"Monitoring directory: {self.corpus_root}")
         logger.info(f"Interval: {self.interval} seconds")
         logger.info(f"Press Ctrl+C to stop...")
         start_time = time.time()
@@ -467,7 +468,7 @@ class MonitorProgress:
 def main():
     """Main function to parse arguments and start monitoring."""
     parser = argparse.ArgumentParser(description='Monitor corpus building progress')
-    parser.add_argument('--corpus-dir', default='/workspace/data/corpus_multi',
+    parser.add_argument('--corpus-root', default='/workspace/data/corpus_multi',
                        help='Directory containing the corpus')
     parser.add_argument('--output-dir', default='/workspace/data/monitoring',
                        help='Directory to save monitoring reports')
@@ -478,7 +479,7 @@ def main():
     
     args = parser.parse_args()
     
-    monitor = CorpusMonitor(args.corpus_dir, args.output_dir, args.interval)
+    monitor = CorpusMonitor(args.corpus_root, args.output_dir, args.interval)
     
     if args.report_only:
         monitor.collect_stats()

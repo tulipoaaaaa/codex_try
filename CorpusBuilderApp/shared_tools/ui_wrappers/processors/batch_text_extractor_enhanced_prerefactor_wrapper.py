@@ -301,9 +301,69 @@ class BatchTextExtractorEnhancedPrerefactorWrapper(QWidget):
         Returns:
             dict: Processing results
         """
-        # Update processor config with current UI values
-        self.processor.config.update(self.get_config())
-        return self.processor.process_directory(input_dir, output_dir)
+        try:
+            # Update processor config with current UI values
+            self.processor.config.update(self.get_config())
+            
+            # Create worker with current configuration
+            options = {
+                'encoding_detection': self.processor.config.get('encoding_detection', True),
+                'quality_threshold': self.processor.config.get('quality_threshold', 0.7),
+                'clean_whitespace': self.processor.config.get('clean_whitespace', True),
+                'normalize_unicode': self.processor.config.get('normalize_unicode', True),
+                'extract_structure': self.processor.config.get('extract_structure', False),
+                'language_detection': self.processor.config.get('language_detection', True),
+                'preserve_linebreaks': self.processor.config.get('preserve_linebreaks', False),
+                'max_file_size': self.processor.config.get('max_file_size', 50),
+                'batch_size': self.processor.config.get('batch_size', 20)
+            }
+            
+            # Create and run worker
+            worker = BatchTextExtractorWorker(input_dir, output_dir, options)
+            
+            # Create a queue to collect results
+            from queue import Queue
+            result_queue = Queue()
+            
+            # Connect signals
+            def on_batch_completed(stats):
+                result_queue.put({
+                    'success': True,
+                    'files_processed': stats['processed_files'],
+                    'successful': stats['successful_files'],
+                    'failed': stats['failed_files'],
+                    'total_characters': stats['total_characters'],
+                    'total_words': stats['total_words'],
+                    'processing_time': stats['processing_time']
+                })
+            
+            def on_error(error_type, error_msg):
+                result_queue.put({
+                    'success': False,
+                    'error': f"{error_type}: {error_msg}",
+                    'files_processed': 0,
+                    'successful': 0,
+                    'failed': 0
+                })
+            
+            worker.batch_completed.connect(on_batch_completed)
+            worker.error_occurred.connect(on_error)
+            
+            # Run the worker
+            worker.run()
+            
+            # Get results
+            return result_queue.get()
+            
+        except Exception as e:
+            self.logger.error(f"Error in process_directory: {str(e)}")
+            return {
+                'success': False,
+                'error': str(e),
+                'files_processed': 0,
+                'successful': 0,
+                'failed': 0
+            }
     
     def process_file(self, file_path: str, output_dir: str) -> Dict[str, Any]:
         """Process a single file

@@ -20,7 +20,7 @@ from datetime import datetime
 sys.path.append(str(Path(__file__).resolve().parent.parent.parent))
 
 from shared_tools.storage.corpus_manager import CorpusManager
-from shared_tools.config.project_config import ProjectConfig
+from shared_tools.project_config import ProjectConfig
 
 # Set up file-based logging
 logging.basicConfig(filename='deduplication.log', level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
@@ -33,7 +33,7 @@ class Deduplicator:
         """Initialize the deduplicator with project configuration."""
 
         self.project_config = project_config
-        self.corpus_dir = Path(project_config.get_input_dir())
+        self.corpus_root = Path(project_config.get_input_dir())
         self.similarity_threshold = similarity_threshold
         self.use_minhash = use_minhash
 
@@ -63,12 +63,12 @@ class Deduplicator:
     
     def scan_corpus(self, rebuild_index=False):
         """Scan corpus directory to build duplicate indexes"""
-        if not self.corpus_dir or not self.corpus_dir.exists():
+        if not self.corpus_root or not self.corpus_root.exists():
             self.logger.error("Invalid corpus directory")
             return False
             
         # Load existing index if it exists and rebuild_index is False
-        index_path = self.corpus_dir / "deduplication_index.json"
+        index_path = self.corpus_root / "deduplication_index.json"
         
         if index_path.exists() and not rebuild_index:
             try:
@@ -93,7 +93,7 @@ class Deduplicator:
         seen_hashes: set[str] = set()
         
         # Scan all files in the corpus directory
-        all_files = list(self.corpus_dir.glob("**/*"))
+        all_files = list(self.corpus_root.glob("**/*"))
         total_files = len(all_files)
         
         self.logger.info(f"Scanning {total_files} files for duplicates")
@@ -288,7 +288,7 @@ class Deduplicator:
                     files_to_remove.add(f)
                 
         # Move or delete duplicates
-        duplicates_dir = self.corpus_dir / 'duplicates'
+        duplicates_dir = self.corpus_root / 'duplicates'
         duplicates_dir.mkdir(exist_ok=True)
         for f in files_to_remove:
             src = Path(f)
@@ -430,7 +430,7 @@ class Deduplicator:
             from shared_tools.storage.corpus_manager import CorpusManager
             import hashlib
             
-            corpus_manager = CorpusManager(self.corpus_dir)
+            corpus_manager = CorpusManager(self.corpus_root)
             logger.debug(f"[DEBUG] CorpusManager loading from: {corpus_manager.metadata_file}")
             logger.debug(f"[DEBUG] Documents loaded: {len(corpus_manager.metadata.get('documents', {}))}")
             extractor = TextExtractor()
@@ -454,7 +454,7 @@ class Deduplicator:
                     # Fallback: try to reconstruct path
                     domain = doc_info.get("domain")
                     stem = Path(doc_info.get("filename", "")).stem
-                    fallback = self.corpus_dir / f"{domain}_extracted" / f"{stem}.txt"
+                    fallback = self.corpus_root / f"{domain}_extracted" / f"{stem}.txt"
                     if fallback.exists():
                         path = str(fallback)
                         doc_info["extracted_text_path"] = path
@@ -523,13 +523,13 @@ class Deduplicator:
     def _get_domain_token_counts(self):
         """Helper to count total tokens per domain in the corpus."""
         domain_token_counts = {}
-        for domain_dir in self.corpus_dir.glob("*"):
+        for domain_dir in self.corpus_root.glob("*"):
             if domain_dir.is_dir() and not domain_dir.name.endswith("_extracted"):
                 domain = domain_dir.name
                 token_count = 0
                 pdf_files = list(domain_dir.glob("*.pdf"))
                 for pdf_path in pdf_files:
-                    extracted_dir = self.corpus_dir / f"{domain}_extracted"
+                    extracted_dir = self.corpus_root / f"{domain}_extracted"
                     extracted_path = extracted_dir / f"{pdf_path.stem}.txt"
                     extracted_meta_path = extracted_path.with_suffix(".meta.json")
                     if extracted_meta_path.exists():
@@ -553,7 +553,7 @@ class Deduplicator:
         """Helper to get token count for a single file (by looking up extracted text/meta)."""
         file_path = Path(file_path)
         domain = file_path.parent.name
-        extracted_dir = self.corpus_dir / f"{domain}_extracted"
+        extracted_dir = self.corpus_root / f"{domain}_extracted"
         extracted_path = extracted_dir / f"{file_path.stem}.txt"
         extracted_meta_path = extracted_path.with_suffix(".meta.json")
         # 1. Try .meta.json file (top-level 'tokens')
@@ -653,7 +653,7 @@ def main():
         results = run_with_project_config(project, args.verbose)
     else:
         # Use default configuration
-        deduplicator = Deduplicator(corpus_dir=args.corpus_dir)
+        deduplicator = Deduplicator(corpus_root=args.corpus_root)
         deduplicator.scan_corpus()
         results = deduplicator.find_duplicates()
     
