@@ -34,6 +34,16 @@ def parse_args(argv: List[str] | None = None) -> argparse.Namespace:
         action="store_true",
         help="Preview modules without executing",
     )
+    parser.add_argument(
+        "--cleanup-empty",
+        action="store_true",
+        help="Recursively delete empty directories in raw and processed corpus roots after the run",
+    )
+    parser.add_argument(
+        "--validate-corpus",
+        action="store_true",
+        help="Run corpus directory structure validation and exit (unless other phases also selected)",
+    )
     return parser.parse_args(argv)
 
 
@@ -122,10 +132,31 @@ def main(argv: List[str] | None = None):
     run_collect = args.run_all or args.collect
     run_extract = args.run_all or args.extract
     run_balance = args.run_all or args.balance
+    run_validate = args.validate_corpus
     preview = args.preview_only
 
-    if not any([run_collect, run_extract, run_balance]):
-        raise RuntimeError("No phases selected to run")
+    # Decide whether to trigger automatic directory cleanup. If the user passed
+    # the flag explicitly we honour it. Otherwise we default to running cleanup
+    # only when --run-all is specified so that standalone preview calls remain
+    # fast and non-destructive.
+    run_cleanup = args.cleanup_empty or args.run_all
+
+    if not any([run_collect, run_extract, run_balance, run_validate]):
+        raise RuntimeError("No phases selected to run (use --collect / --extract / --balance / --run-all or --validate-corpus)")
+
+    # ------------------------------------------------------------------
+    # Optional pre-flight corpus structure validation (run first)
+    # ------------------------------------------------------------------
+    if run_validate:
+        try:
+            from tools.check_corpus_structure import check_corpus_structure
+
+            check_corpus_structure(config, validate_metadata=True, auto_fix=False, check_integrity=False)
+        except ModuleNotFoundError:
+            logging.warning("check_corpus_structure utility not available; skipping validation")
+        if run_validate and not any([run_collect, run_extract, run_balance]):
+            # User only wanted validation, so we're done.
+            return
 
     if run_collect:
         collectors = config.get("enabled_collectors") or enabled_modules(config, "collectors")
@@ -142,6 +173,26 @@ def main(argv: List[str] | None = None):
 
     if run_balance:
         run_balancer(config, preview)
+
+    # ------------------------------------------------------------------
+    # Final housekeeping – remove empty directories created during the run
+    # ------------------------------------------------------------------
+    if run_cleanup and not preview:
+        try:
+            from shared_tools.utils.fs_utils import remove_empty_dirs
+
+            targets = {
+                config.get_raw_dir(),
+                config.get_processed_dir(),
+            }
+
+            removed_total = 0
+            for path in targets:
+                removed_total += len(remove_empty_dirs(path))
+
+            logger.info("Cleanup completed – %d empty directories removed", removed_total)
+        except Exception as exc:  # pragma: no cover – defensive guard
+            logger.warning("Directory cleanup skipped due to unexpected error: %s", exc)
 
 
 if __name__ == "__main__":

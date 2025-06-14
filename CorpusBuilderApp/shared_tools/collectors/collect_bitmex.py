@@ -23,15 +23,14 @@ class UpdatedBitMEXCollector(BaseCollector):
         super().__init__(config, delay_range=delay_range)
         self.base_url = 'https://blog.bitmex.com'
         
-        # Set up BitMEX-specific directory based on environment
-        if 'test' in str(config):
-            self.bitmex_dir = Path('G:/ai_trading_dev/data/test_corpus/raw_data/Bitmex_research')
-        else:
-            self.bitmex_dir = Path('G:/ai_trading_dev/data/production/raw_data/bitmex_research')
-            
-        # Create BitMEX directory if it doesn't exist
+        # Use the raw_data_dir determined by BaseCollector (from the supplied config)
+        # This makes the collector test-friendly because the tests can pass in a
+        # lightweight DummyConfig with a temporary/raw output directory.
+        self.bitmex_dir = self.raw_data_dir
+
+        # Ensure the directory exists (e.g., when a brand-new temporary path is supplied)
         self.bitmex_dir.mkdir(parents=True, exist_ok=True)
-        
+
         self.logger.info(f"BitMEXCollector initialized with output directory: {self.bitmex_dir}")
         self.session.headers.update({
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
@@ -50,8 +49,16 @@ class UpdatedBitMEXCollector(BaseCollector):
         path.parent.mkdir(parents=True, exist_ok=True)
         return path
 
-    def _download_file(self, url, filename):
-        filepath = self.bitmex_dir / filename
+    def _download_file(self, url, filename, subfolder: str | None = None):
+        """Download a file into self.bitmex_dir or an optional subfolder."""
+        if subfolder is None:
+            # Skip categorisation only if caller did not specify; default to root dir
+            target_dir = self.bitmex_dir
+        else:
+            target_dir = self.bitmex_dir / subfolder
+            target_dir.mkdir(parents=True, exist_ok=True)
+
+        filepath = target_dir / filename
         try:
             self.logger.info(f"Downloading {url} to {filepath}")
             response = self.session.get(url, stream=True, timeout=30)
@@ -72,7 +79,16 @@ class UpdatedBitMEXCollector(BaseCollector):
         title = post.get('title', 'unknown')
         safe_title = re.sub(r'[^\w\s-]', '', title).strip().lower()
         safe_title = re.sub(r'[-\s]+', '-', safe_title)
-        html_path = self.bitmex_dir / f"{safe_title}.html"
+        # Route into category subfolder if available
+        category = post.get('category')
+        if category is None:
+            # Default to root directory if category unexpectedly missing
+            target_dir = self.bitmex_dir
+        else:
+            target_dir = self.bitmex_dir / category
+            target_dir.mkdir(parents=True, exist_ok=True)
+        target_dir.mkdir(parents=True, exist_ok=True)
+        html_path = target_dir / f"{safe_title}.html"
         html_content = f"""
         <!DOCTYPE html>
         <html>
@@ -111,87 +127,112 @@ class UpdatedBitMEXCollector(BaseCollector):
         except Exception as e:
             self.logger.error(f"Error saving metadata: {e}")
 
-    def collect(self, max_pages=1, keywords=None):
-        self.logger.info(f"Collecting BitMEX Research blog posts (max {max_pages} pages)")
+    def collect(self, max_pages=1, categories=None, keywords=None):
+        """Collect posts.
+
+        Args:
+            max_pages (int|None): pages per start URL to crawl (None = until 404).
+            categories (list[str]|None): list of category slugs (e.g. 'research') **or** full URLs.
+                When omitted the collector behaves like before, starting from the homepage.
+            keywords (list[str]|None): optional keyword filter inside articles.
+        """
+
+        cat_info = f"categories={categories}" if categories else "front-page only"
+        self.logger.info(
+            f"Collecting BitMEX blog posts ({cat_info}; max_pages={max_pages if max_pages else 'ALL'})"
+        )
+
         all_posts = []
+        seen_titles = set()  # normalize_title values to skip duplicates in same run
+
         try:
-            self.logger.info(f"Fetching page: {self.base_url}")
-            response = self.session.get(self.base_url, timeout=30)
-            if response.status_code != 200:
-                self.logger.error(f"Failed to fetch page: {response.status_code}")
-                return all_posts
-            
-            raw_html_path = self.bitmex_dir / "bitmex_research.html"
-            with open(raw_html_path, 'w', encoding='utf-8') as f:
-                f.write(response.text)
-            
-            soup = BeautifulSoup(response.text, 'html.parser')
-            post_containers = soup.find_all("div", class_=lambda c: c and ('post' in c.lower() or 'entry' in c.lower() or 'article' in c.lower()))
-            self.logger.info(f"Found {len(post_containers)} potential post containers")
-            for container in post_containers[:10]:
-                heading = container.find(['h1', 'h2', 'h3', 'h4'])
-                if not heading:
-                    continue
-                title = heading.text.strip()
-                link = None
-                if heading.find('a'):
-                    link = heading.find('a')['href']
-                    if link and not link.startswith(('http://', 'https://')):
-                        link = urljoin(self.base_url, link)
-                date = None
-                date_elem = container.find(class_=lambda c: c and ('date' in c.lower() or 'time' in c.lower()))
-                if date_elem:
-                    date = date_elem.text.strip()
-                content_preview = None
-                content_elem = container.find(['p', 'div'], class_=lambda c: c and ('content' in c.lower() or 'excerpt' in c.lower() or 'summary' in c.lower()))
-                if content_elem:
-                    content_preview = content_elem.text.strip()
-                post = {
-                    'title': title,
-                    'url': link,
-                    'date': date,
-                    'excerpt': content_preview,
-                    'container_classes': container.get('class', [])
-                }
-                all_posts.append(post)
-                self.logger.info(f"Found post: {title}")
-            
-            if not all_posts:
-                self.logger.info("No posts found with container approach, trying fallback method")
-                headings = soup.find_all(['h1', 'h2', 'h3'])
-                for heading in headings[:10]:
-                    parent_classes = ' '.join(parent.get('class', []) for parent in heading.parents if parent.get('class'))
-                    if any(x in parent_classes.lower() for x in ['nav', 'sidebar', 'menu', 'footer', 'header']):
-                        continue
-                    title = heading.text.strip()
-                    link = None
-                    if heading.find('a'):
-                        link = heading.find('a')['href']
+            # Determine starting URLs (homepage or category pages)
+            if categories:
+                start_urls = []
+                for cat in categories:
+                    if cat.startswith("http://") or cat.startswith("https://"):
+                        start_urls.append(cat.rstrip("/"))
+                    else:
+                        start_urls.append(f"{self.base_url}/category/{cat.strip('/')}/")
+            else:
+                start_urls = [self.base_url]
+
+            for base in start_urls:
+                page_num = 1
+                while True:
+                    page_url = (
+                        base if page_num == 1 else f"{base.rstrip('/')}/page/{page_num}/"
+                    )
+                    self.logger.info(f"Fetching page: {page_url}")
+                    response = self.session.get(page_url, timeout=30)
+                    if response.status_code != 200:
+                        # Non-200 typically means we ran past the archive depth – stop crawling
+                        self.logger.info(f"Stopping pagination at page {page_num}: HTTP {response.status_code}")
+                        break
+
+                    # persist raw html for debugging (one file per page)
+                    raw_html_path = self.bitmex_dir / f"bitmex_research_page_{page_num}.html"
+                    with open(raw_html_path, 'w', encoding='utf-8') as f:
+                        f.write(response.text)
+
+                    soup = BeautifulSoup(response.text, 'html.parser')
+
+                    # 1) Grab links in the archive tables (Complete Works / Full Catalogue)
+                    anchors = soup.select('table a[href]')
+
+                    # 2) Also grab the large card-style tiles near the top (entry-title)
+                    anchors += soup.select('h2.entry-title a[href]')
+
+                    self.logger.info(f"Found {len(anchors)} candidate article links on page {page_num}")
+
+                    for a_tag in anchors:
+                        title = a_tag.get_text(strip=True)
+                        norm_title = self._normalize_title(title)
+                        if norm_title in seen_titles:
+                            continue
+                        seen_titles.add(norm_title)
+
+                        link = a_tag['href']
                         if link and not link.startswith(('http://', 'https://')):
                             link = urljoin(self.base_url, link)
-                    elif heading.parent and heading.parent.name == 'a':
-                        link = heading.parent['href']
-                        if link and not link.startswith(('http://', 'https://')):
-                            link = urljoin(self.base_url, link)
-                    post = {
-                        'title': title,
-                        'url': link,
-                        'source': 'fallback_method'
-                    }
-                    all_posts.append(post)
-                    self.logger.info(f"Found post (fallback): {title}")
-            
-            # Deduplication: filter out posts whose normalized title is in the cache
+
+                        post = {
+                            'title': title,
+                            'url': link,
+                            'category': ('research' if 'research' in base else 'crypto_trader_digest')
+                        }
+                        all_posts.append(post)
+                        self.logger.debug(f"Queued article: {title}")
+
+                    if not anchors:
+                        # Nothing found on this page – stop crawling further pages for this category
+                        break
+
+                    # Move to next page or stop if max_pages reached
+                    if max_pages and page_num >= max_pages:
+                        self.logger.info(
+                            f"Reached max_pages limit ({max_pages}) for base {base}. Stopping crawl."
+                        )
+                        break
+                    page_num += 1
+
+            # Additional deduplication against external titles cache
             if self.titles_cache:
                 before_count = len(all_posts)
-                all_posts = [p for p in all_posts if self._normalize_title(p.get('title', '')) not in self.titles_cache]
+                all_posts = [
+                    p
+                    for p in all_posts
+                    if self._normalize_title(p.get("title", "")) not in self.titles_cache
+                ]
                 skipped = before_count - len(all_posts)
-                logger.info(f"Deduplication: Skipped {skipped} results already in the existing titles cache.")
-            
+                logger.info(
+                    f"Deduplication: Skipped {skipped} results already in the existing titles cache."
+                )
+
             self._save_metadata(all_posts)
             processed_posts = self._process_posts(all_posts, keywords=keywords)
             return processed_posts
-            
+
         except requests.exceptions.RequestException as e:
             self.logger.error(f"Error fetching BitMEX research page: {e}")
             return []
@@ -212,7 +253,13 @@ class UpdatedBitMEXCollector(BaseCollector):
                     self.logger.warning(f"Failed to fetch post: {response.status_code}")
                     continue
                 soup = BeautifulSoup(response.text, 'html.parser')
-                content_elem = soup.find(['div', 'article'], class_=lambda c: c and ('content' in c.lower() or 'entry' in c.lower() or 'article' in c.lower()))
+                # robust content selector
+                content_elem = (
+                    soup.select_one('article.post div.post-content') or
+                    soup.select_one('article.post') or
+                    soup.select_one('div.post-content') or
+                    soup.find('article')
+                )
                 if content_elem:
                     post['content_text'] = content_elem.get_text('\n', strip=True)
                     post['content_html'] = str(content_elem)
@@ -231,12 +278,19 @@ class UpdatedBitMEXCollector(BaseCollector):
                             full_url = urljoin(url, href)
                             pdf_links.append(full_url)
                     downloaded_pdfs = []
+                    category = post.get('category')
+                    if category is None:
+                        # Default to root directory if category unexpectedly missing
+                        target_dir = self.bitmex_dir
+                    else:
+                        target_dir = self.bitmex_dir / category
+                        target_dir.mkdir(parents=True, exist_ok=True)
                     for i, pdf_url in enumerate(pdf_links):
                         title = post.get('title', 'unknown')
                         safe_title = re.sub(r'[^\w\s-]', '', title).strip().lower()
                         safe_title = re.sub(r'[-\s]+', '-', safe_title)
                         filename = f"{safe_title}-{i+1}.pdf"
-                        filepath = self._download_file(pdf_url, filename)
+                        filepath = self._download_file(pdf_url, filename, subfolder=category)
                         if filepath:
                             downloaded_pdfs.append({
                                 'url': pdf_url,

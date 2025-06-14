@@ -1,11 +1,10 @@
-#This file is found in the local pc and is the final backdrop if the other config yamls dont load
+# Master configuration for CryptoFinanceCorpusBuilder
+# This file controls the entire pipeline from collection to processing
 
+# Environment selection
+environment: "production"  # or "test"
 
-environment:
-  active: test
-  python_path: ''
-  temp_dir: ''
-  venv_path: ''
+# Base configurations for different environments
 environments:
   production:
     corpus_root: "G:/data/production"
@@ -16,24 +15,6 @@ environments:
   test:
     corpus_root: "G:/data/test"
     raw_data_dir: "G:/data/test/raw"
-    cache_dir: "G:/data/cache/test"
-    log_dir: "G:/data/logs/test"
-
-    # Master configuration for CryptoFinanceCorpusBuilder
-# This file controls the entire pipeline from collection to processing
-
-# Environment selection
-environment: "production"  # or "test"
-
-# Base configurations for different environments
-environments:
-  production:
-    corpus_dir: "G:/data/production"
-    cache_dir: "G:/data/cache/production"
-    log_dir: "G:/data/logs/production"
-    
-  test:
-    corpus_dir: "G:/data/test"
     cache_dir: "G:/data/cache/test"
     log_dir: "G:/data/logs/test"
 
@@ -219,6 +200,10 @@ collectors:
       - "blockchain"
     min_stars: 100
     max_results: 50
+    # Optional free-text search queries (in addition to topics)
+    search_terms:
+      - "bitcoin"
+      - "high frequency trading"
     output_dir: "{corpus_dir}/raw_data/github"
     domains:
       - "crypto_derivatives"
@@ -234,6 +219,11 @@ collectors:
       min_repos: 20
       max_retries: 3
       timeout: 30
+
+  fred:
+    enabled: true
+    series_file: "CorpusBuilderApp/configs/fred_series.yaml"
+    max_results: null  # null = fetch full history
 
 # Extractor configurations
 extractors:

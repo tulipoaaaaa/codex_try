@@ -3,6 +3,7 @@ from pathlib import Path
 import os
 import shutil
 from CorpusBuilderApp.shared_tools.processors.batch_nonpdf_extractor_enhanced import BatchNonPDFExtractorEnhanced
+import logging
 
 @pytest.fixture
 def test_data_dir():
@@ -227,6 +228,11 @@ def test_process_directory(processor, test_data_dir, output_dir):
     for filename in test_files.keys():
         output_file = output_dir / f"{Path(filename).stem}.txt"
         assert output_file.exists()
+
+    # Keep generated files for inspection; only close log handlers.
+    logging.shutdown()
+    # If you want to clean up automatically, uncomment the next line.
+    # shutil.rmtree(out_dir, ignore_errors=True)
 
 def test_error_handling(processor, test_data_dir, output_dir):
     """Test error handling for invalid files"""

@@ -2,6 +2,7 @@ import pytest
 import shutil
 import os
 from pathlib import Path
+import logging
 
 def get_test_output_dir():
     return Path('G:/data/TEST_COLLECTORS/ARXIV')
@@ -13,9 +14,11 @@ def arxiv_output_dir():
         shutil.rmtree(outdir)
     outdir.mkdir(parents=True, exist_ok=True)
     yield outdir
-    # Clean up after test
-    if outdir.exists():
-        shutil.rmtree(outdir)
+    # Keep generated files for inspection; only close log handlers.
+    logging.shutdown()
+    # If you want to clean up automatically, uncomment the next two lines.
+    # if outdir.exists():
+    #     shutil.rmtree(outdir, ignore_errors=True)
 
 @pytest.fixture(scope='module')
 def arxiv_config(arxiv_output_dir):
@@ -41,8 +44,8 @@ def test_arxiv_collector_production(arxiv_config, arxiv_output_dir):
     except ImportError:
         pytest.skip('ArxivCollector not importable')
     collector = ArxivCollector(arxiv_config)
-    # Use a simple query and limit to 5 docs
-    collector.collect('quantitative finance', max_items=5)
+    # Collect a small sample using search terms and limit results
+    collector.collect(search_terms=['quantitative finance'], max_results=5)
     # Check for output files (should be in arxiv_output_dir or subfolders)
     files = list(arxiv_output_dir.rglob('*'))
     output_files = [f for f in files if f.is_file() and f.suffix in {'.pdf', '.json', '.xml'}]

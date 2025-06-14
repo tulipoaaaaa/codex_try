@@ -295,6 +295,10 @@ pdfminer_logger.setLevel(logging.ERROR)
 pypdf_logger = logging.getLogger('pypdf')
 pypdf_logger.setLevel(logging.ERROR)
 
+# --- OCR fallback parameters ---
+OCR_DPI = 300  # Rendering resolution for OCR fallback
+OCR_MAX_PAGES = None  # Set to an int to cap pages processed; None = all
+
 # --- Helpers ---
 def safe_filename(s, max_length=128):
     return re.sub(r'[^a-zA-Z0-9_\-\.]+', '_', s)[:max_length]
@@ -388,6 +392,26 @@ def extract_text_with_pdfminer(pdf_path: str) -> str:
         logger.warning(f"PDFMiner extraction failed: {str(e)}")
     return text
 
+# --- NEW: OCR fallback ---
+def extract_text_with_ocr(pdf_path: str, dpi: int = OCR_DPI, max_pages: Optional[int] = OCR_MAX_PAGES) -> str:
+    """Render pages to images and run pytesseract OCR."""
+    try:
+        import fitz  # local import to avoid unnecessary dependency if OCR disabled
+        text = ""
+        doc = fitz.open(pdf_path)
+        matrix = fitz.Matrix(dpi / 72.0, dpi / 72.0)
+        for page_index, page in enumerate(doc):
+            if max_pages is not None and page_index >= max_pages:
+                break
+            pix = page.get_pixmap(matrix=matrix)
+            img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+            page_text = pytesseract.image_to_string(img, config='--psm 6')
+            text += page_text + "\n"
+        return text
+    except Exception as exc:
+        logger.warning(f"OCR fallback failed for {pdf_path}: {exc}")
+        return ""
+
 def extract_text_from_pdf(pdf_path: str) -> str:
     logger.debug(f"[DEBUG] Entering extract_text_from_pdf for: {pdf_path}")
     methods = [
@@ -412,6 +436,20 @@ def extract_text_from_pdf(pdf_path: str) -> str:
             logger.debug(f"[DEBUG] Exception in {method.__name__}: {e}")
             logger.warning(f"Text extraction method failed: {str(e)}")
             continue
+
+    # If no method produced enough text, attempt OCR fallback unless disabled
+    try_ocr = best_score < MIN_TOKEN_THRESHOLD and os.environ.get("DISABLE_OCR_FALLBACK", "0") != "1"
+    if try_ocr:
+        logger.info(f"Attempting OCR fallback for {pdf_path} – current tokens: {best_score}")
+        ocr_text = extract_text_with_ocr(pdf_path)
+        ocr_score = len(ocr_text.split())
+        if ocr_score > best_score:
+            logger.info(f"OCR fallback succeeded, tokens: {ocr_score}")
+            best_text = ocr_text
+            best_score = ocr_score
+        else:
+            logger.info("OCR fallback did not improve extraction result")
+
     logger.debug(f"[DEBUG] extract_text_from_pdf returning {len(best_text) if best_text else 0} characters")
     return best_text
 
@@ -423,65 +461,93 @@ def extract_tables_from_pdf(pdf_path: str, timeout_seconds: int = 30, verbose: b
     max_retries = 2
     import fitz
     import camelot
+    doc = None
     try:
-        with fitz.open(pdf_path) as doc:
-            total_pages = len(doc)
-            if verbose:
-                logger.info(f"[{worker_id}] Processing {total_pages} pages from {os.path.basename(pdf_path)}")
-            for batch_start in range(0, total_pages, 3):
-                batch_end = min(batch_start + 3, total_pages)
-                page_range = f"{batch_start + 1}-{batch_end}"
-                for attempt in range(max_retries):
-                    try:
-                        if attempt > 0:
-                            time.sleep(0.5 * attempt)
+        doc = fitz.open(pdf_path)
+        total_pages = len(doc)
+        if verbose:
+            logger.info(f"[{worker_id}] Processing {total_pages} pages from {os.path.basename(pdf_path)}")
+        for batch_start in range(0, total_pages, 3):
+            batch_end = min(batch_start + 3, total_pages)
+            page_range = f"{batch_start + 1}-{batch_end}"
+            for attempt in range(max_retries):
+                try:
+                    if attempt > 0:
+                        time.sleep(0.5 * attempt)
+                        if verbose:
+                            logger.info(f"[{worker_id}] Retry {attempt} for pages {page_range}")
+                    batch_tables = camelot.read_pdf(
+                        pdf_path,
+                        pages=page_range,
+                        flavor='lattice',
+                        strip_text='\n',
+                        layout_kwargs={
+                            'detect_vertical': True,
+                            'line_margin': 0.5,
+                            'char_margin': 2.0
+                        }
+                    )
+                    for table in batch_tables:
+                        if table.accuracy > 0.5:
+                            tables.append({
+                                'table_id': f"table_{len(tables) + 1}",
+                                'page': table.page,
+                                'accuracy': float(table.accuracy),
+                                'whitespace': float(table.whitespace),
+                                'order': len(tables) + 1,
+                                'data': table.df.to_dict(orient='records'),
+                                'shape': table.df.shape,
+                                'extraction_method': 'camelot_lattice',
+                                'worker_id': worker_id,
+                                'temp_dir': worker_temp
+                            })
                             if verbose:
-                                logger.info(f"[{worker_id}] Retry {attempt} for pages {page_range}")
-                        batch_tables = camelot.read_pdf(
-                            pdf_path,
-                            pages=page_range,
-                            flavor='lattice',
-                            strip_text='\n',
-                            layout_kwargs={
-                                'detect_vertical': True,
-                                'line_margin': 0.5,
-                                'char_margin': 2.0
-                            }
-                        )
-                        for table in batch_tables:
-                            if table.accuracy > 0.5:
-                                tables.append({
-                                    'table_id': f"table_{len(tables) + 1}",
-                                    'page': table.page,
-                                    'accuracy': float(table.accuracy),
-                                    'whitespace': float(table.whitespace),
-                                    'order': len(tables) + 1,
-                                    'data': table.df.to_dict(orient='records'),
-                                    'shape': table.df.shape,
-                                    'extraction_method': 'camelot_lattice',
-                                    'worker_id': worker_id,
-                                    'temp_dir': worker_temp
-                                })
-                                if verbose:
-                                    logger.info(f"[{worker_id}] Page {table.page}: Table extracted with accuracy {table.accuracy:.2f}")
-                        break
-                    except Exception as e:
-                        error_msg = str(e).lower()
-                        if 'ghostscript' in error_msg or 'image conversion' in error_msg:
-                            if attempt < max_retries - 1:
-                                if verbose:
-                                    logger.info(f"[{worker_id}] Ghostscript error on pages {page_range}, attempt {attempt + 1}: {str(e)}")
-                                continue
-                            else:
-                                logger.info(f"[{worker_id}] Ghostscript error on pages {page_range} after {max_retries} attempts: {str(e)}")
+                                logger.info(f"[{worker_id}] Page {table.page}: Table extracted with accuracy {table.accuracy:.2f}")
+                    break
+                except Exception as e:
+                    error_msg = str(e).lower()
+                    if 'ghostscript' in error_msg or 'image conversion' in error_msg:
+                        if attempt < max_retries - 1:
+                            if verbose:
+                                logger.info(f"[{worker_id}] Ghostscript error on pages {page_range}, attempt {attempt + 1}: {str(e)}")
+                            continue
                         else:
-                            if verbose:
-                                logger.info(f"[{worker_id}] Table extraction error on pages {page_range}: {str(e)}")
-                            break
+                            logger.info(f"[{worker_id}] Ghostscript error on pages {page_range} after {max_retries} attempts: {str(e)}")
+                    else:
+                        if verbose:
+                            logger.info(f"[{worker_id}] Table extraction error on pages {page_range}: {str(e)}")
+                        break
     except Exception as e:
         logger.warning(f"[{worker_id}] Error processing PDF {os.path.basename(pdf_path)}: {str(e)}")
     if verbose:
         logger.info(f"[{worker_id}] Total tables extracted from {os.path.basename(pdf_path)}: {len(tables)}")
+
+    # If Camelot found nothing and image-table OCR is enabled, try fallback
+    if not tables and os.environ.get("DISABLE_IMAGE_TABLE_OCR", "0") != "1":
+        try:
+            from shared_tools.processors.image_table_extractor import extract_tables_from_pixmap
+            for page_num in range(total_pages):
+                page = doc.load_page(page_num)
+                pix = page.get_pixmap()
+                img_tables = extract_tables_from_pixmap(pix, page_num + 1)
+                tables.extend(img_tables)
+            if verbose and tables:
+                logger.info(
+                    f"[{worker_id}] Image-based OCR extracted {len(tables)} tables from {os.path.basename(pdf_path)}"
+                )
+        except Exception as ocr_exc:
+            logger.warning(
+                f"[{worker_id}] Image-table OCR failed for {os.path.basename(pdf_path)}: {ocr_exc}"
+            )
+
+    if verbose:
+        logger.info(f"[{worker_id}] Total tables extracted from {os.path.basename(pdf_path)}: {len(tables)}")
+
+    if doc is not None:
+        try:
+            doc.close()
+        except Exception:
+            pass
     return tables
 
 def extract_formulas_from_text(text: str) -> List[Dict]:
@@ -630,22 +696,48 @@ def convert_pdf_date(pdf_date_str):
     except (ValueError, IndexError):
         return str(pdf_date_str)
 
-def resolve_indirect_object(obj):
-    """Recursively resolve IndirectObject and preserve types."""
-    if hasattr(obj, 'get_object'):
-        try:
-            resolved = obj.get_object()
-            return resolve_indirect_object(resolved)
-        except Exception as exc:
-            logger.exception("Unhandled exception in resolve_indirect_object: %s", exc)
-            return str(obj)
-    elif isinstance(obj, dict):
-        return {k: resolve_indirect_object(v) for k, v in obj.items()}
-    elif isinstance(obj, (list, tuple)):
-        return [resolve_indirect_object(item) for item in obj]
-    elif isinstance(obj, (int, float, bool, str)):
-        return obj
-    else:
+def resolve_indirect_object(obj, _seen: Optional[set] = None, _depth: int = 0):
+    """Recursively resolve PyPDF2 IndirectObjects while guarding against cycles.
+
+    Args:
+        obj: Any PDF object (could be primitive, list, dict, or IndirectObject).
+        _seen: Internal set of ``id(obj)`` already visited to detect self-references.
+        _depth: Current recursion depth – hard-capped to avoid runaway loops.
+
+    Returns:
+        A JSON-serialisable structure with the same shape as the original object,
+        but with all ``IndirectObject`` instances replaced by their resolved value
+        (or a string fallback when resolution fails).
+    """
+    MAX_DEPTH = 20
+    if _seen is None:
+        _seen = set()
+
+    # Depth / cycle guards ---------------------------------------------------
+    obj_id = id(obj)
+    if _depth > MAX_DEPTH or obj_id in _seen:
+        return str(obj)
+    _seen.add(obj_id)
+
+    # Resolution logic -------------------------------------------------------
+    try:
+        if hasattr(obj, 'get_object'):
+            # PyPDF2 IndirectObject
+            try:
+                resolved = obj.get_object()
+                return resolve_indirect_object(resolved, _seen, _depth + 1)
+            except Exception:
+                return str(obj)
+        if isinstance(obj, dict):
+            return {k: resolve_indirect_object(v, _seen, _depth + 1) for k, v in obj.items()}
+        if isinstance(obj, (list, tuple)):
+            return [resolve_indirect_object(item, _seen, _depth + 1) for item in obj]
+        if isinstance(obj, (int, float, bool, str)):
+            return obj
+        # Fallback to string representation for any unhandled type
+        return str(obj)
+    except Exception as exc:
+        logger.debug("resolve_indirect_object failed at depth %s: %s", _depth, exc)
         return str(obj)
 
 def process_pdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Optional[ExtractionResult]:
@@ -698,7 +790,7 @@ def process_pdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Optio
         # Quality checks (existing + enhancements)
         quality_checks = {
             'language_confidence': detect_language_confidence(text, mixed_lang_ratio=args.mixed_lang_ratio),
-            'corruption': detect_corruption(text, file_type='.pdf', thresholds=args.corruption_thresholds),
+            'corruption': detect_corruption(text, config=args.corruption_thresholds),
             'machine_translation': detect_machine_translation(text, config_path=args.mt_config, file_type='.pdf', domain=domain),
             'academic_analysis': academic_analysis,
             'content_validation': content_validation,
@@ -731,22 +823,26 @@ def process_pdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Optio
                 if info:
                     # First resolve any IndirectObjects
                     resolved_info = resolve_indirect_object(info)
-                    
-                    # Handle each field with proper type conversion
-                    metadata.update({
-                        'title': resolved_info.get('/Title', ''),
-                        'author': resolved_info.get('/Author', ''),
-                        'subject': resolved_info.get('/Subject', ''),
-                        'creator': resolved_info.get('/Creator', ''),
-                        'producer': resolved_info.get('/Producer', ''),
-                        'creation_date': convert_pdf_date(resolved_info.get('/CreationDate')),
-                        'modification_date': convert_pdf_date(resolved_info.get('/ModDate'))
-                    })
-                    
-                    # Add any additional metadata fields
-                    for key, value in resolved_info.items():
-                        if key not in metadata and not key.startswith('/'):
-                            metadata[key] = value
+
+                    # Some PDFs return a plain string or other non-mapping; guard for that
+                    if isinstance(resolved_info, dict):
+                        # Handle each field with proper type conversion
+                        metadata.update({
+                            'title': resolved_info.get('/Title', ''),
+                            'author': resolved_info.get('/Author', ''),
+                            'subject': resolved_info.get('/Subject', ''),
+                            'creator': resolved_info.get('/Creator', ''),
+                            'producer': resolved_info.get('/Producer', ''),
+                            'creation_date': convert_pdf_date(resolved_info.get('/CreationDate')),
+                            'modification_date': convert_pdf_date(resolved_info.get('/ModDate'))
+                        })
+
+                        # Add any additional metadata fields
+                        for key, value in resolved_info.items():
+                            if key not in metadata and not key.startswith('/'):
+                                metadata[key] = value
+                    else:
+                        metadata['raw_pdf_metadata'] = str(resolved_info)
         except Exception as e:
             logger.warning(f"Metadata extraction failed: {str(e)}")
         metadata.update({
@@ -851,7 +947,94 @@ def run_with_paths(
         LOW_QUALITY_TOKEN_THRESHOLD = processor_config.get('low_quality_token_threshold', LOW_QUALITY_TOKEN_THRESHOLD)
         CHUNK_TOKEN_THRESHOLD = processor_config.get('chunk_token_threshold', CHUNK_TOKEN_THRESHOLD)
     
-    # Rest of the existing function...
+    # --- NEW IMPLEMENTATION START ---
+    logger = logging.getLogger(__name__)
+    input_dir = Path(input_dir)
+    output_dir = Path(output_dir)
+
+    if not input_dir.exists():
+        raise ValueError(f"Input directory does not exist: {input_dir}")
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Respect verbose flag
+    if verbose:
+        logger.setLevel(logging.DEBUG)
+
+    # Collect PDF files recursively
+    files_to_process: List[str] = []
+    for root, _dirs, files in os.walk(input_dir):
+        for fname in files:
+            if fname.lower().endswith('.pdf'):
+                files_to_process.append(os.path.join(root, fname))
+
+    if not files_to_process:
+        logger.error("No PDF files found in %s", input_dir)
+        return {
+            'success': False,
+            'files_processed': 0,
+            'successful': 0,
+            'failed': 0,
+            'low_quality': 0,
+            'error': f'No PDF files found in {input_dir}'
+        }
+
+    logger.info("Found %d PDF files to process", len(files_to_process))
+
+    failed_files: List[str] = []
+    successful_files: List[str] = []
+
+    # Determine worker count (leave 1 CPU free, cap at 8 to avoid oversubscription)
+    num_workers = min(max(1, multiprocessing.cpu_count() - 1), 8)
+
+    # Build immutable namespace for worker arguments (pickle-safe)
+    worker_args = types.SimpleNamespace(
+        output_dir=str(output_dir),
+        verbose=verbose,
+        auto_normalize=auto_normalize,
+        chunking_mode=chunking_mode,
+        chunk_overlap=chunk_overlap,
+        timeout=DEFAULT_TIMEOUT,
+        disable_tables=False,
+        mixed_lang_ratio=0.30,
+        corruption_thresholds=None,
+        mt_config=None
+    )
+
+    with ProcessPoolExecutor(max_workers=num_workers, initializer=worker_initializer) as executor:
+        futures = {executor.submit(process_pdf_file_enhanced, fp, worker_args): fp for fp in files_to_process}
+        from tqdm import tqdm  # Imported earlier, but safe to import again if not present
+        for future in tqdm(as_completed(futures), total=len(futures)):
+            file_path = futures[future]
+            try:
+                result = future.result()
+            except Exception as exc:
+                logger.warning("Error processing %s: %s", file_path, exc)
+                failed_files.append(file_path)
+                continue
+
+            if result:
+                successful_files.append(file_path)
+                # write_outputs already called inside process_pdf_file_enhanced
+            else:
+                failed_files.append(file_path)
+
+    # Optionally normalize metadata after all processing
+    if auto_normalize:
+        try:
+            normalize_metadata_in_directory(output_dir)
+        except Exception as exc:
+            logger.warning("Metadata normalization failed: %s", exc)
+
+    return {
+        'success': len(failed_files) == 0,
+        'files_processed': len(successful_files) + len(failed_files),
+        'successful': len(successful_files),
+        'failed': len(failed_files),
+        'low_quality': 0,
+        'errors': failed_files
+    }
+    # --- NEW IMPLEMENTATION END ---
 
 class BatchTextExtractorEnhancedPrerefactor:
     """Enhanced batch processor for PDF files with pre-refactoring features"""
@@ -991,6 +1174,16 @@ class BatchTextExtractorEnhancedPrerefactor:
                 'file_path': file_path,
                 'error': str(e)
             }
+
+    # --- BACKWARDS-COMPATIBILITY SHIMS ---
+    def configure(self, **kwargs):
+        """Update internal configuration in-place (legacy support)."""
+        self.config.update(kwargs)
+        return self.config
+
+    def extract_file(self, file_path: str, output_dir: str):
+        """Alias for process_file to maintain older API surface."""
+        return self.process_file(file_path, output_dir)
 
 def main():
     """Main entry point when script is run directly"""

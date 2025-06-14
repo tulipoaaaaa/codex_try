@@ -13,6 +13,7 @@ from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton,
                            QTabWidget, QListWidget, QSplitter, QFormLayout)
 from shared_tools.processors.batch_text_extractor_enhanced_prerefactor import BatchTextExtractorEnhancedPrerefactor
 from ...project_config import ProjectConfig
+from pathlib import Path
 
 
 class BatchTextExtractorWorker(QThread):
@@ -139,7 +140,7 @@ class BatchTextExtractorWorker(QThread):
         
     def _get_files_to_process(self) -> List[str]:
         """Get list of text files to process"""
-        supported_extensions = ['.txt', '.text', '.log', '.csv', '.tsv', '.json', '.xml', '.html', '.htm']
+        supported_extensions = ['.txt', '.text', '.log', '.csv', '.tsv', '.json', '.xml', '.html', '.htm', '.pdf']
         files = []
         
         if os.path.isfile(self.input_path):
@@ -296,6 +297,11 @@ class BatchTextExtractorEnhancedPrerefactorWrapper(QWidget):
         try:
             # Update processor config with current UI values
             self.processor.config.update(self.get_config())
+
+            # Fast-path: if the directory contains PDFs, delegate to multiprocessing extractor directly
+            pdf_found = any(Path(input_dir).rglob('*.pdf'))
+            if pdf_found:
+                return self.processor.process_directory(input_dir, output_dir)
             
             # Create worker with current configuration
             options = {

@@ -12,7 +12,18 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 import pandas as pd
 from bs4 import BeautifulSoup
 import markdown
-from langdetect import detect, LangDetectException
+# Optional: language detection can be disabled in minimal environments
+try:
+    from langdetect import detect, LangDetectException  # type: ignore
+except ImportError:  # pragma: no cover – allow running without langdetect
+    def detect(_text: str) -> str:  # type: ignore
+        """Fallback stub that always returns 'en'."""
+        return "en"
+
+    class LangDetectException(Exception):
+        """Stub exception matching langdetect's API."""
+
+        pass
 from nltk.stem import PorterStemmer
 from tqdm import tqdm
 import multiprocessing
@@ -95,6 +106,17 @@ DOMAIN_THRESHOLDS = {
     },
     # Add other domains as needed
 }
+
+# Ensure every domain listed in the project config has at least a default
+# threshold entry so later lookups never fail.
+_DEFAULT_THRESHOLDS = {
+    'min_tokens': 150,
+    'quality_threshold': 0.75,
+    'table_threshold': 0.6,
+    'formula_threshold': 0.7,
+}
+for _domain_name in _PROJECT.get('domains', {}).keys():
+    DOMAIN_THRESHOLDS.setdefault(_domain_name, _DEFAULT_THRESHOLDS.copy())
 
 logger.debug('DEBUG: sys.executable =', sys.executable)
 logger.debug('DEBUG: sys.path =', sys.path)
@@ -304,6 +326,14 @@ def process_nonpdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Op
             
             try:
                 tree = ast.parse(text)
+            except SyntaxError as exc:
+                logger.debug("AST parse failed (%s); continuing without structure analysis", exc)
+                tree = None
+            except Exception as e:
+                logger.warning(f"Error parsing code structure: {str(e)}")
+                tree = None
+
+            if tree is not None:
                 for node in ast.walk(tree):
                     if isinstance(node, ast.FunctionDef):
                         functions.append(node.name)
@@ -315,15 +345,8 @@ def process_nonpdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Op
                             docstrings.append(ast.get_docstring(node))
                     elif isinstance(node, ast.Expr) and isinstance(node.value, ast.Str):
                         docstrings.append(node.value.s)
-                    elif isinstance(node, ast.Comment):
-                        comments.append(node.value)
-            except Exception as e:
-                logger.warning(f"Error parsing code structure: {str(e)}")
-                # Initialize with empty values if parsing fails
-                docstrings = []
-                comments = []
-                functions = []
-                classes = []
+                    elif CommentNode and isinstance(node, CommentNode):
+                        comments.append(getattr(node, 'value', ''))
             
             # Code-specific quality metrics
             quality_metrics = {
@@ -395,7 +418,7 @@ def process_nonpdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Op
             }
         elif is_html_file:
             # Process HTML files with special attention to tables and images
-            formula_results = formula_extractor.extract_from_text(text)
+            formula_results = formula_extractor.extract(text)
             
             # Extract symbols from both text and tables
             symbol_results = symbol_processor.extract_symbols(text)
@@ -489,7 +512,7 @@ def process_nonpdf_file_enhanced(file_path: str, args: argparse.Namespace) -> Op
             }
         else:
             # Process non-code files as before
-            formula_results = formula_extractor.extract_from_text(text)
+            formula_results = formula_extractor.extract(text)
             symbol_results = symbol_processor.extract_symbols(text)
             
             # Filter out false positive symbols

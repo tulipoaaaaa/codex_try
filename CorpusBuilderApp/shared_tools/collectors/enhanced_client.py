@@ -27,7 +27,16 @@ class CookieAuthClient:
     """Client for Anna's Archive that uses cookie-based authentication"""
     
     def __init__(self, download_dir=None, account_cookie=None):
-        """Initialize the client with proper authentication"""
+        """Initialize the client with proper authentication.
+
+        A logger attribute is required throughout the class (e.g., in `_verify_authentication`).
+        In some execution paths it was accessed before assignment, raising
+        `AttributeError: 'CookieAuthClient' object has no attribute 'logger'`.
+        We initialise it first to guarantee availability.
+        """
+        # Ensure every instance has its own logger early to avoid AttributeError
+        self.logger = logging.getLogger(self.__class__.__name__)
+
         # Set up download directory
         if download_dir:
             self.download_dir = Path(download_dir)

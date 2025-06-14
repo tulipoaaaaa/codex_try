@@ -4,6 +4,7 @@ import os
 import shutil
 import json
 from datetime import datetime
+import logging
 
 @pytest.fixture
 def test_data_dir():
@@ -262,4 +263,9 @@ def test_collector_config_updates(corpus_balancer, test_data_dir):
     for domain in ["risk_management", "portfolio_construction"]:
         assert any(update["domain"] == domain for update in collector_updates)
         assert any(len(update["new_terms"]) > len(update["current_terms"]) 
-                  for update in collector_updates if update["domain"] == domain) 
+                  for update in collector_updates if update["domain"] == domain)
+
+    # Keep generated files for inspection; only close log handlers.
+    logging.shutdown()
+    # If you want to clean up automatically, uncomment the next line.
+    # shutil.rmtree(out_dir, ignore_errors=True) 

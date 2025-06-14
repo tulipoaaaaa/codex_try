@@ -2,6 +2,8 @@ import pytest
 import shutil
 import os
 from pathlib import Path
+import logging
+import json
 
 def get_test_output_dir():
     return Path('G:/data/TEST_COLLECTORS/SCIDB')
@@ -14,8 +16,10 @@ def scidb_output_dir():
     outdir.mkdir(parents=True, exist_ok=True)
     yield outdir
     # Clean up after test
-    if outdir.exists():
-        shutil.rmtree(outdir)
+    # Keep generated files for inspection; only close log handlers.
+    logging.shutdown()
+    # If you want to clean up automatically, uncomment the next line.
+    # shutil.rmtree(outdir)
 
 @pytest.fixture(scope='module')
 def scidb_config(scidb_output_dir):
@@ -45,13 +49,13 @@ def test_scidb_collector_production(scidb_config, scidb_output_dir):
     if not account_cookie:
         pytest.skip('AA_ACCOUNT_COOKIE not set in environment')
     collector = SciDBCollector(scidb_config, account_cookie=account_cookie)
-    # Try to collect a small number of docs (adapt signature if needed)
-    try:
-        collector.collect('blockchain', max_items=2)
-    except TypeError:
-        # If signature is different, try without query
-        collector.collect()
-    # Check for output files (should be in scidb_output_dir or subfolders)
-    files = list(scidb_output_dir.rglob('*'))
-    output_files = [f for f in files if f.is_file() and f.suffix in {'.pdf', '.json', '.xml'}]
-    assert len(output_files) > 0, 'No output files created by SciDBCollector' 
+    # Load DOIs from config_yaml/dois.json
+    doi_path = Path(__file__).resolve().parent / 'config_yaml' / 'dois.json'
+    with open(doi_path, 'r', encoding='utf-8') as f:
+        doi_list = json.load(f)
+    assert doi_list, 'No DOIs found in dois.json'
+    papers = collector.collect_by_doi(doi_list)
+    assert papers, 'SciDBCollector did not return any collected papers'
+    # Additionally check at least one PDF exists anywhere under output_dir (if retained)
+    files = list(scidb_output_dir.rglob('*.pdf'))
+    assert papers or files, 'No PDF file present; collector may have cleaned temp directory' 

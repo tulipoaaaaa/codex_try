@@ -13,6 +13,7 @@ from typing import Dict, Any, Optional
 from uuid import uuid4
 
 from pathlib import Path
+import sys, types
 
 
 class DummySignal:
@@ -259,6 +260,23 @@ class BaseWrapper(QObject):
     def refresh_config(self):
         """Default no-op implementation; can be overridden by subclasses."""
         pass
+
+    # ------------------------------------------------------------------
+    # Export stubbed module hierarchy into sys.modules so that any later
+    # `import PySide6` or `from PySide6.QtCore import ...` succeeds.
+    # ------------------------------------------------------------------
+    _pyside6_stub = types.ModuleType("PySide6")
+    _qtcore_stub = types.ModuleType("PySide6.QtCore")
+
+    _qtcore_stub.QObject = QObject
+    _qtcore_stub.Signal = pyqtSignal  # alias to factory for compatibility
+    _qtcore_stub.QThread = QThread
+    _qtcore_stub.QTimer = QTimer
+
+    _pyside6_stub.QtCore = _qtcore_stub
+
+    sys.modules.setdefault("PySide6", _pyside6_stub)
+    sys.modules.setdefault("PySide6.QtCore", _qtcore_stub)
 
 class CollectorWrapperMixin:
     """Mixin for collector-specific functionality"""

@@ -6,13 +6,17 @@ import shutil
 import yaml
 from pathlib import Path
 from tempfile import TemporaryDirectory
+import logging
 
 @pytest.fixture(scope='function')
 def temp_dir(tmp_path):
     out_dir = tmp_path / "collector_test_output"
     out_dir.mkdir(parents=True, exist_ok=True)
     yield out_dir
-    shutil.rmtree(out_dir, ignore_errors=True)
+    # Keep generated files for inspection; only close log handlers.
+    logging.shutdown()
+    # If you want to clean up automatically, uncomment the next line.
+    # shutil.rmtree(out_dir, ignore_errors=True)
 
 @pytest.fixture(scope='function')
 def dummy_config():

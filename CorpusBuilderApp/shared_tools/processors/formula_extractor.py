@@ -390,7 +390,9 @@ class FormulaExtractor:
                             
                             # If line contains mathematical content, extract formulas
                             if has_math_font and line_text.strip():
-                                line_formulas = self.extract(line_text)
+                                # extract() returns a dict with a 'formulas' list
+                                line_results = self.extract(line_text)
+                                line_formulas = line_results.get('formulas', [])
                                 
                                 for formula in line_formulas:
                                     formula['page'] = page_num + 1
@@ -441,6 +443,19 @@ class FormulaExtractor:
                 formula['metadata']['complexity_score'] = 0.0
         
         return formulas
+
+    # ------------------------------------------------------------------
+    # Back-compatibility helper
+    # ------------------------------------------------------------------
+    def extract_from_text(self, text: str):  # noqa: D401 – alias method
+        """Alias for :py:meth:`extract` kept for legacy callers.
+
+        The batch-nonPDF extractor and some older processors still call
+        ``extract_from_text``.  Rather than updating all call-sites at once we
+        keep this thin wrapper for one release cycle.  New code should import
+        and use :py:meth:`extract` directly.
+        """
+        return self.extract(text)
 
 def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
     """Run formula extraction with project configuration

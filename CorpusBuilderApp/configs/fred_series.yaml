@@ -1,0 +1,33 @@
+# Baseline explicit series to fetch every production run
+series_ids:
+  # --- Macro / Growth ---
+  - GDP          # Gross Domestic Product
+  - GDPC1        # Real GDP (Chained 2017 Dollars)
+  - UNRATE       # Civilian Unemployment Rate
+  # --- Inflation ---
+  - CPIAUCSL     # CPI All Urban Consumers: All Items
+  - CPILFESL     # CPI Less Food & Energy
+  # --- Rates ---
+  - FEDFUNDS     # Effective Federal Funds Rate
+  - DFF          # Federal Funds Target Range: Lower Limit
+  - DTB3         # 3-Month Treasury Bill Secondary Market Rate
+  - GS10         # 10-Year Treasury Constant Maturity Rate
+
+# ---------------------------------------------------------------------------
+# Discovery parameters (optional)
+# ---------------------------------------------------------------------------
+#   search_terms   : free-text queries passed to the FRED search API.
+#   categories     : FRED category IDs for bulk pulls.
+#   max_results    : per-search cap (None → API default / no cap)
+# ---------------------------------------------------------------------------
+
+search_terms:
+  - "bitcoin volatility"
+  - "cryptocurrency index"
+
+categories:
+  - "32455"      # Cryptocurrencies
+
+# Max series returned for each search_term / category (set to 5 in production;
+# override to 2 in test_config.yaml to keep CI quick)
+max_results: 5 

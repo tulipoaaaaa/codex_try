@@ -57,10 +57,12 @@ class CorruptionDetector:
         return {
             'enabled': True,
             'min_confidence': 0.8,
+            'corruption_threshold': 0.3,
             'min_text_length': 100,
             'checks': {
                 'encoding_errors': True,
                 'garbled_text': True,
+                'gibberish': True,
                 'incomplete_sentences': True,
                 'missing_content': True
             },
@@ -102,6 +104,7 @@ class CorruptionDetector:
         # Validate numeric fields
         numeric_fields = {
             'min_confidence': (0.0, 1.0),
+            'corruption_threshold': (0.0, 1.0),
             'min_text_length': (1, float('inf')),
             'min_sentence_length': (1, float('inf')),
             'max_sentence_length': (1, float('inf')),
@@ -127,16 +130,16 @@ class CorruptionDetector:
                 self.logger.warning(f"Invalid boolean value for config field: {field}")
                 self.config[field] = self._get_default_config()[field]
         
-        # Validate checks
-        if 'checks' in self.config:
-            if not isinstance(self.config['checks'], dict):
-                self.logger.warning("Invalid checks configuration")
-                self.config['checks'] = self._get_default_config()['checks']
-            else:
-                for check, value in self.config['checks'].items():
-                    if not isinstance(value, bool):
-                        self.logger.warning(f"Invalid boolean value for check: {check}")
-                        self.config['checks'][check] = self._get_default_config()['checks'][check]
+        # Validate checks and add missing ones
+        default_checks = self._get_default_config()['checks']
+        if 'checks' not in self.config or not isinstance(self.config['checks'], dict):
+            self.logger.warning("Invalid checks configuration; resetting to defaults")
+            self.config['checks'] = default_checks.copy()
+        else:
+            # Ensure every expected check key exists
+            for key, default_val in default_checks.items():
+                if key not in self.config['checks'] or not isinstance(self.config['checks'][key], bool):
+                    self.config['checks'][key] = default_val
         
         # Validate patterns
         pattern_fields = ['encoding_patterns', 'garbled_patterns']
@@ -216,14 +219,14 @@ class CorruptionDetector:
                 results['corruption_score'] = max(results['corruption_score'], encoding_score)
         
         # Check for gibberish
-        if self.config['checks']['gibberish']:
+        if self.config['checks'].get('gibberish', False):
             gibberish_score = self._check_gibberish(text)
             if gibberish_score > 0.3:
                 results['issues_found'].append('gibberish')
                 results['corruption_score'] = max(results['corruption_score'], gibberish_score)
         
         # Check for format errors
-        if self.config['checks']['format_errors']:
+        if self.config['checks'].get('format_errors', False):
             format_score = self._check_format_errors(text)
             if format_score > 0.3:
                 results['issues_found'].append('format_errors')

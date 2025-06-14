@@ -4,6 +4,7 @@ import os
 import shutil
 from CorpusBuilderApp.shared_tools.processors.batch_nonpdf_extractor_enhanced import BatchNonPDFExtractorEnhanced
 from CorpusBuilderApp.shared_tools.processors.batch_text_extractor_enhanced_prerefactor import BatchTextExtractorEnhancedPrerefactor
+import logging
 
 @pytest.fixture
 def test_data_dir():
@@ -110,6 +111,11 @@ def test_e2e_pipeline(pdf_processor, nonpdf_processor, test_data_dir, output_dir
         processed_content = output_file.read_text()
         assert content in processed_content
 
+    # Keep generated files for inspection; only close log handlers.
+    logging.shutdown()
+    # If you want to clean up automatically, uncomment the next line.
+    # shutil.rmtree(out_dir, ignore_errors=True)
+
 def test_e2e_pipeline_with_errors(pdf_processor, nonpdf_processor, test_data_dir, output_dir):
     """Test the end-to-end pipeline with error handling"""
     # Create test data with invalid files
@@ -167,4 +173,9 @@ def test_e2e_pipeline_with_errors(pdf_processor, nonpdf_processor, test_data_dir
     assert not (pdf_output_dir / "invalid.txt").exists()
     
     assert (nonpdf_output_dir / "valid.txt").exists()
-    assert not (nonpdf_output_dir / "invalid.txt").exists() 
+    assert not (nonpdf_output_dir / "invalid.txt").exists()
+
+    # Keep generated files for inspection; only close log handlers.
+    logging.shutdown()
+    # If you want to clean up automatically, uncomment the next line.
+    # shutil.rmtree(out_dir, ignore_errors=True) 

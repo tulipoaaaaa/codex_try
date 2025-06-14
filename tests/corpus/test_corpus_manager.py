@@ -4,6 +4,7 @@ import os
 import shutil
 import json
 from datetime import datetime
+import logging
 
 @pytest.fixture
 def test_data_dir():
@@ -233,4 +234,9 @@ def test_corpus_statistics(corpus_manager, test_data_dir):
     
     assert "domain_distribution" in stats
     for domain, count in domains.items():
-        assert stats["domain_distribution"][domain] == count 
+        assert stats["domain_distribution"][domain] == count
+
+    # Keep generated files for inspection; only close log handlers.
+    logging.shutdown()
+    # If you want to clean up automatically, uncomment the next line.
+    # shutil.rmtree(out_dir, ignore_errors=True) 

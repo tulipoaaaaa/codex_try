@@ -1,7 +1,0 @@
-2025-06-12 20:56:36,971 INFO: Deduplicator script starting...
-2025-06-12 20:56:37,489 INFO: Using Ghostscript from GHOSTSCRIPT_PATH: C:\Program Files\gs\gs10.05.1\bin\gswin64c.exe
-2025-06-12 20:56:37,489 INFO: Using Ghostscript from GHOSTSCRIPT_PATH: C:\Program Files\gs\gs10.05.1\bin\gswin64c.exe
-2025-06-12 20:56:37,489 INFO: Ghostscript setup: C:\Program Files\gs\gs10.05.1\bin\gswin64c.exe
-2025-06-12 20:56:37,931 INFO: Enhanced client not found, trying to locate CookieAuthClient
-2025-06-12 20:56:38,029 INFO: Found CookieAuthClient.py at: G:\codex\codex_try\CorpusBuilderApp\shared_tools\collectors\CookieAuthClient.py
-2025-06-12 20:56:38,034 INFO: Successfully imported ProjectConfig

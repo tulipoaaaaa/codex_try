@@ -3,6 +3,7 @@ from pathlib import Path
 import os
 import shutil
 from CorpusBuilderApp.shared_tools.processors.batch_text_extractor_enhanced_prerefactor import BatchTextExtractorEnhancedPrerefactor
+import logging
 
 @pytest.fixture
 def test_data_dir():
@@ -152,4 +153,9 @@ def test_error_handling(processor, test_data_dir, output_dir):
     
     # Verify that the processor handles the error gracefully
     assert result is False
-    assert not (output_dir / "invalid.txt").exists() 
+    assert not (output_dir / "invalid.txt").exists()
+
+    # Keep generated files for inspection; only close log handlers.
+    logging.shutdown()
+    # If you want to clean up automatically, uncomment the next line.
+    # shutil.rmtree(out_dir, ignore_errors=True) 

@@ -54,12 +54,39 @@ class BaseCollector:
         self.raw_data_dir = Path(self._get_path_attr(config, "raw_data_dir", "get_raw_dir"))
         self.delay_range = delay_range
 
+        # ------------------------------------------------------------------
+        # Back-compatibility shim: older collectors/processors sometimes read
+        # `config.raw_data_dir` directly. Real `ProjectConfig` instances only
+        # expose `get_raw_dir()`.  Add the attribute dynamically if absent so
+        # those call-sites keep working without further edits.
+        # ------------------------------------------------------------------
+        if not hasattr(config, "raw_data_dir"):
+            setattr(config, "raw_data_dir", self.raw_data_dir)
+
+        # ------------------------------------------------------------------
+        # Determine domain configurations gracefully across multiple config
+        # object shapes:
+        # 1. Modern callers (tests) often expose `domain_configs` directly.
+        # 2. Some legacy dummy configs expose `get_processor_config()`.
+        # 3. A real `ProjectConfig` stores the mapping under `domains:` in the
+        #    YAML and provides a generic `.get()` accessor.
+        # Fallback → {"other": {}} to guarantee the attribute exists.
+        # ------------------------------------------------------------------
+
         if hasattr(config, "domain_configs"):
             self.domain_configs = config.domain_configs
+        elif hasattr(config, "get_processor_config"):
+            try:
+                self.domain_configs = (
+                    config.get_processor_config("domain").get("domain_configs", {})
+                )
+            except Exception:
+                self.domain_configs = {}
+        elif hasattr(config, "get"):
+            # Works for ProjectConfig and any mapping-like config with a .get()
+            self.domain_configs = config.get("domains", {})  # type: ignore[arg-type]
         else:
-            self.domain_configs = (
-                config.get_processor_config("domain").get("domain_configs", {})
-            )
+            self.domain_configs = {"other": {}}
         
         # Configure logging
         self.logger = logging.getLogger(self.__class__.__name__)

@@ -2,6 +2,7 @@ import pytest
 import shutil
 import os
 from pathlib import Path
+import logging
 
 def get_test_output_dir():
     return Path('G:/data/TEST_COLLECTORS/GITHUB')
@@ -14,8 +15,10 @@ def github_output_dir():
     outdir.mkdir(parents=True, exist_ok=True)
     yield outdir
     # Clean up after test
-    if outdir.exists():
-        shutil.rmtree(outdir)
+    # Keep generated files for inspection; only close log handlers.
+    logging.shutdown()
+    # If you want to clean up automatically, uncomment the next line.
+    # shutil.rmtree(outdir)
 
 @pytest.fixture(scope='module')
 def github_config(github_output_dir):
@@ -42,8 +45,8 @@ def test_github_collector_production(github_config, github_output_dir):
     except ImportError:
         pytest.skip('GitHubCollector not importable')
     collector = GitHubCollector(github_config)
-    # Use a simple query and limit to 2 repos for speed
-    collector.collect('python', max_items=2)
+    # Use a simple query ('bitcoin') and limit to 2 repos for speed
+    collector.collect(search_terms=['bitcoin'], max_repos=2)
     # Check for output files or repo folders (should be in github_output_dir or subfolders)
     files = list(github_output_dir.rglob('*'))
     output_items = [f for f in files if f.is_file() or f.is_dir()]

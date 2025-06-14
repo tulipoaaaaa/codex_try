@@ -1,11 +1,5 @@
-#This file is found in the local pc and is the final backdrop if the other config yamls dont load
+environment: test
 
-
-environment:
-  active: test
-  python_path: ''
-  temp_dir: ''
-  venv_path: ''
 environments:
   production:
     corpus_root: "G:/data/production"
@@ -63,7 +57,7 @@ domains:
       - "funding rate"
       - "basis trading"
       - "crypto derivatives pricing"
-
+  
   decentralized_finance:
     allocation: 0.12
     min_documents: 70
@@ -87,7 +81,7 @@ domains:
       - "algorithmic crypto trading"
       - "low latency trading blockchain"
       - "market making algorithms crypto"
-
+  
   market_microstructure:
     allocation: 0.15
     min_documents: 60
@@ -111,7 +105,7 @@ domains:
       - "bitcoin asset allocation"
       - "digital asset correlation"
       - "crypto diversification"
-
+  
   regulation_compliance:
     allocation: 0.05
     min_documents: 30
@@ -123,7 +117,7 @@ domains:
       - "crypto compliance framework"
       - "digital asset taxation"
       - "crypto KYC AML"
-
+  
   risk_management:
     allocation: 0.15
     min_documents: 90
@@ -147,7 +141,7 @@ domains:
       - "cryptocurrency fundamental analysis"
       - "on-chain metrics valuation"
       - "crypto DCF"
-
+  
 # Collector configurations
 collectors:
   arxiv:
@@ -234,6 +228,13 @@ collectors:
       min_repos: 20
       max_retries: 3
       timeout: 30
+    search_terms:
+      - "bitcoin"
+
+  fred:
+    enabled: true
+    series_file: "CorpusBuilderApp/configs/fred_series.yaml"
+    max_results: 2  # keep tiny in test context
 
 # Extractor configurations
 extractors:

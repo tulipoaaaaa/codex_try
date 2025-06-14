@@ -1,0 +1,16 @@
+# Active environment -------------------------------------------------
+environment: local
+
+environments:
+  local:
+    corpus_root: "G:/codex/codex_try/corpus_1"
+    raw_data_dir:  "G:/codex/codex_try/corpus_1"
+    processed_dir: "G:/codex/codex_try/corpus_1/processed"
+    metadata_dir:  "G:/codex/codex_try/corpus_1/metadata"
+    logs_dir:      "G:/codex/codex_try/corpus_1/logs"
+
+processors:
+  quality_control:
+    enabled: true
+  corpus_balancer:
+    enabled: true

@@ -161,7 +161,8 @@ class SciDBCollector(BaseCollector):
                 # Download to temp location first
                 temp_dir = Path(self.output_dir) / 'temp'
                 temp_dir.mkdir(exist_ok=True)
-                client.download_dir = str(temp_dir)
+                # Ensure we always store a Path, not str, to avoid AttributeError
+                client.download_dir = temp_dir
                 
                 # Download the paper
                 downloaded_file = client.download_scidb_doi(doi)
