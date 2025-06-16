@@ -71,6 +71,7 @@ class TextExtractorWorker(QThread):
 
 class TextExtractorWrapper(QWidget):
     """UI wrapper for Non-PDF Text Extractor (migrated to QWidget-only, explicit delegation)"""
+    status_updated = pyqtSignal(str)
     file_processed = pyqtSignal(str, bool)  # filepath, success
     mime_type_detected = pyqtSignal(str, str)  # filepath, mime_type
 
@@ -163,3 +164,47 @@ class TextExtractorWrapper(QWidget):
             elif hasattr(self, k):
                 setattr(self, k, v)
         # No configuration_changed signal in this wrapper, so skip emit
+
+    # ------------------------------------------------------------------
+    # Dummy slots so connections from worker don't fail when running headless
+    # ------------------------------------------------------------------
+    def _on_progress(self, current: int, total: int, msg: str):
+        if self.logger:
+            self.logger.info("Text progress %d/%d: %s", current, total, msg)
+
+    def _on_error(self, msg: str):
+        if self.logger:
+            self.logger.error(msg)
+
+    def _on_finished(self, results: dict):
+        if self.logger:
+            self.logger.info("Text extraction finished – %d files", len(results))
+        self._is_running = False
+
+    # ------------------------------------------------------------------
+    # Convenience entry-point for CLI (mirrors PDF wrapper)
+    # ------------------------------------------------------------------
+    def start(self):
+        """Detect non-PDF files under raw_dir and process them."""
+        try:
+            raw_dir = self.project_config.get_raw_dir()
+        except Exception:
+            raw_dir = Path(self.project_config.get('environments.local.raw_data_dir', '.'))
+
+        if not raw_dir:
+            self.status_updated.emit("No raw directory configured – skipping text extraction")
+            return
+
+        from pathlib import Path
+        # Consider common text-like extensions excluding PDFs
+        patterns = ['*.txt', '*.md', '*.html', '*.htm']
+        files = []
+        for pat in patterns:
+            files.extend(Path(raw_dir).rglob(pat))
+        files = [str(p) for p in files if p.suffix.lower() != '.pdf']
+
+        if not files:
+            self.status_updated.emit("No non-PDF text files found – nothing to extract")
+            return
+
+        self.start_batch_processing(files)

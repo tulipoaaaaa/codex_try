@@ -17,24 +17,27 @@ from .mixins.formula_mixin import FormulaMixin
 class PDFExtractor(BaseExtractor, TableMixin, FormulaMixin):
     """PDF text extractor with table and formula detection."""
     
-    def __init__(self, 
-                 input_dir: str,
-                 output_dir: str,
+    def __init__(self,
+                 project_config: 'ProjectConfig',
                  num_workers: int = 4,
-                 quality_config: str = None,
-                 domain_config: str = None,
+                 quality_config: str | None = None,
+                 domain_config: str | None = None,
                  table_timeout: int = 30):
         """Initialize the PDF extractor.
-        
-        Args:
-            input_dir: Directory containing PDF files
-            output_dir: Directory to save extracted text and metadata
-            num_workers: Number of worker processes
-            quality_config: Path to quality control configuration
-            domain_config: Path to domain classification configuration
-            table_timeout: Timeout in seconds for table extraction
+
+        The original signature required explicit *input_dir* and *output_dir* paths but
+        the underlying ``BaseExtractor`` has since migrated to accept a full
+        ``ProjectConfig`` instance instead.  This adapter signature restores
+        compatibility with that newer API while remaining mostly backward-
+        compatible when instantiated through UI wrappers.
         """
-        BaseExtractor.__init__(self, input_dir, output_dir, num_workers, quality_config, domain_config)
+
+        # Call new BaseExtractor signature (expects ProjectConfig)
+        BaseExtractor.__init__(self, project_config, num_workers, quality_config, domain_config)
+
+        # Preserve legacy attributes expected elsewhere in the codebase
+        self.input_dir = project_config.get_raw_dir()
+        self.output_dir = project_config.get_processed_dir()
         TableMixin.__init__(self, table_timeout)
         FormulaMixin.__init__(self)
         

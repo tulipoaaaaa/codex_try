@@ -342,8 +342,8 @@ processors:
 
   corpus_balancer:
     enabled: true
-    input_dir: "{corpus_dir}/processed/quality_checked"
-    output_dir: "{corpus_dir}/processed/balanced"
+    corpus_dir: "{corpus_dir}/processed"
+    allow_downsampling: false
     target_ratios:
       crypto_derivatives: 0.2
       decentralized_finance: 0.12
@@ -473,6 +473,11 @@ processors:
       batch_size: 20
       timeout: 300
 
+  deduplicator:
+    enabled: true
+    min_hash_similarity: 0.70
+    move_instead_of_copy: true
+
 # Logging configuration
 logging:
   level: "INFO"
@@ -568,4 +573,14 @@ corpus_manager:
       search_terms: ["regulation", "compliance", "legal framework"]
     decentralized_finance:
       allocation: 0.05
-      search_terms: ["defi", "decentralized finance", "smart contracts"] 
+      search_terms: ["defi", "decentralized finance", "smart contracts"]
+
+post_extract_organise:
+  enabled: true
+
+auto_balance:
+  enabled: false
+  rest_enabled: true
+  auth_token: "PLEASE_CHANGE_ME"
+  dominance_ratio: 5.0
+  min_entropy: 2.0

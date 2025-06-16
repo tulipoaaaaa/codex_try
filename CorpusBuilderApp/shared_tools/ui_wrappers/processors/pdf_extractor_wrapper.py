@@ -66,6 +66,8 @@ class PDFExtractorWorker(QThread):
 
 class PDFExtractorWrapper(QWidget):
     """UI wrapper for PDF Extractor (migrated to QWidget-only, explicit delegation)"""
+    # Signals expected by other components / wrappers
+    status_updated = pyqtSignal(str)
     file_processed = pyqtSignal(str, bool)  # filepath, success
     total_pages_processed = pyqtSignal(int)  # Total pages processed
     ocr_used = pyqtSignal(str, bool)  # filepath, ocr_used
@@ -90,8 +92,7 @@ class PDFExtractorWrapper(QWidget):
         """Create PDF extractor instance"""
         if not self.extractor:
             self.extractor = PDFExtractor(
-                input_dir=str(self.config.get('raw_data_dir', '')),
-                output_dir=str(self.config.get('pdf_extracted_dir', '')),
+                project_config=self.project_config,
                 num_workers=self.worker_threads
             )
         return self.extractor
@@ -179,3 +180,55 @@ class PDFExtractorWrapper(QWidget):
             elif hasattr(self, k):
                 setattr(self, k, v)
         # No configuration_changed signal in this wrapper, so skip emit
+
+    # ------------------------------------------------------------------
+    # Dummy Qt-slot placeholders so signal connections don't fail in CLI
+    # context (no UI event loop needed).
+    # ------------------------------------------------------------------
+    def _on_progress(self, current: int, total: int, msg: str):
+        if self.logger:
+            self.logger.info("PDF progress %d/%d: %s", current, total, msg)
+
+    def _on_error(self, msg: str):
+        if self.logger:
+            self.logger.error(msg)
+
+    def _on_finished(self, results: dict):
+        if self.logger:
+            self.logger.info("PDF extraction finished – %d files", len(results))
+        # Optional auto-organise the freshly extracted outputs
+        try:
+            if self.project_config.get('post_extract_organise.enabled', False):
+                from shared_tools.processors.post_extract_organiser import organise_extracted
+                moved, domains = organise_extracted(self.project_config)
+                if self.logger:
+                    self.logger.info("Organised %d files into %d domains", moved, domains)
+        except Exception as exc:  # pragma: no cover – defensive guard
+            if self.logger:
+                self.logger.warning("Organiser failed: %s", exc)
+        finally:
+            self._is_running = False
+
+    # ------------------------------------------------------------------
+    # Convenience entry-point so CLI (run_processors) can simply call
+    # wrapper.start() without knowing UI-specific batch methods.
+    # ------------------------------------------------------------------
+    def start(self):
+        """Detect PDF files under project_config.get_raw_dir() and process them."""
+        raw_dir = None
+        try:
+            raw_dir = self.project_config.get_raw_dir()
+        except Exception:
+            # Fallback – look for raw_data_dir in config dict
+            raw_dir = Path(self.project_config.get('environments.local.raw_data_dir', '.'))
+        if not raw_dir:
+            self.status_updated.emit("No raw directory configured – skipping PDF extraction")
+            return
+
+        from pathlib import Path
+        pdf_files = [str(p) for pat in ['*.pdf', '*.PDF'] for p in Path(raw_dir).rglob(pat)]
+        if not pdf_files:
+            self.status_updated.emit("No PDF files found – nothing to extract")
+            return
+
+        self.start_batch_processing(pdf_files)

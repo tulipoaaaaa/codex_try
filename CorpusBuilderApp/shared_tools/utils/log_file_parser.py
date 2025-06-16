@@ -20,12 +20,17 @@ class LogFileParser:
         r"(\w+):([^:]+):(.*)",
     ]
 
-    def parse_file(self, file_path: str) -> List[Dict[str, str]]:
-        """Parse a log file and return list of log entries."""
+    def parse_file(self, file_path: str, max_lines: int = 1000) -> List[Dict[str, str]]:
+        """Parse a log file and return list of log entries. Only reads the first max_lines lines."""
         if not os.path.exists(file_path):
             return []
+        lines = []
         with open(file_path, "r", encoding="utf-8", errors="ignore") as fh:
-            lines = fh.readlines()
+            for i, line in enumerate(fh):
+                if i >= max_lines:
+                    lines.append("... (truncated)")
+                    break
+                lines.append(line)
         return self.parse_lines(lines)
 
     def parse_lines(self, lines: List[str]) -> List[Dict[str, str]]:

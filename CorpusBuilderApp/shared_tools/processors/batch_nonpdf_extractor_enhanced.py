@@ -70,6 +70,19 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# ------------------------------------------------------------------
+# Optional AST comment node – only present when using typed-AST,
+# redbaron, or other extended AST libraries.  We provide a fallback so
+# that the later check `CommentNode and isinstance(node, CommentNode)`
+# never raises ``NameError``.
+# ------------------------------------------------------------------
+try:
+    # typed_ast or redbaron provide dedicated Comment nodes
+    from typed_ast import ast3 as _ta  # type: ignore
+    CommentNode = getattr(_ta, "Comment", None)
+except Exception:  # pragma: no cover – library not installed
+    CommentNode = None  # fallback disables comment-specific branch
+
 # Constants
 MIN_TOKEN_THRESHOLD = 100
 LOW_QUALITY_TOKEN_THRESHOLD = 500

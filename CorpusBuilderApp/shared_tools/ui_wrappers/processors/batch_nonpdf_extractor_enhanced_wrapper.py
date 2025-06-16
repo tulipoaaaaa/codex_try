@@ -6,10 +6,36 @@ Provides comprehensive batch processing capabilities for non-PDF documents
 import os
 import time
 from typing import Dict, List, Optional, Any
-from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Slot as pyqtSlot, QMutex, QTimer
+# QtCore basic imports
+from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal
+# Optional Qt symbols that may be unavailable on minimal PySide builds
+try:
+    from PySide6.QtCore import QMutex, QTimer  # type: ignore
+except ImportError:  # pragma: no cover
+    class _QtStub:
+        def __init__(self, *_, **__):
+            pass
+        def lock(self):
+            pass
+        def unlock(self):
+            pass
+        def start(self, *_, **__):
+            pass
+        def stop(self):
+            pass
+    QMutex = QTimer = _QtStub  # type: ignore
 from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QProgressBar, QLabel, QTextEdit, QFileDialog, QCheckBox, QSpinBox, QGroupBox, QGridLayout
 from shared_tools.processors.batch_nonpdf_extractor_enhanced import BatchNonPDFExtractorEnhanced
 from shared_tools.project_config import ProjectConfig
+
+# Graceful fallback if QtCore.Slot not exposed
+try:
+    from PySide6.QtCore import Slot as pyqtSlot
+except ImportError:  # pragma: no cover
+    def pyqtSlot(*types, **kwargs):
+        def decorator(func):
+            return func
+        return decorator
 
 class BatchNonPDFExtractorWorker(QThread):
     """Worker thread for batch non-PDF extraction operations"""
@@ -136,12 +162,12 @@ class BatchNonPDFExtractorWrapper(QWidget):
         self.output_path_display = QLabel("No directory selected")
         self.output_browse_btn = QPushButton("Browse...")
         
-        io_layout.addWidget(self.input_label, 0, 0)
-        io_layout.addWidget(self.input_path_display, 0, 1)
-        io_layout.addWidget(self.input_browse_btn, 0, 2)
-        io_layout.addWidget(self.output_label, 1, 0)
-        io_layout.addWidget(self.output_path_display, 1, 1)
-        io_layout.addWidget(self.output_browse_btn, 1, 2)
+        io_layout.addWidget(self.input_label, 0, 0, 1, 1)
+        io_layout.addWidget(self.input_path_display, 0, 1, 1, 1)
+        io_layout.addWidget(self.input_browse_btn, 0, 2, 1, 1)
+        io_layout.addWidget(self.output_label, 1, 0, 1, 1)
+        io_layout.addWidget(self.output_path_display, 1, 1, 1, 1)
+        io_layout.addWidget(self.output_browse_btn, 1, 2, 1, 1)
         
         # Processing Options
         options_group = QGroupBox("Processing Options")
@@ -307,6 +333,17 @@ class BatchNonPDFExtractorWrapper(QWidget):
         summary += f"Total files: {total_files}\n"
         summary += f"Successful: {successful_files}\n"
         summary += f"Errors: {error_count}"
+        
+        # --------------------------------------------------------------
+        # Optional: automatically organise files into domain folders
+        # --------------------------------------------------------------
+        try:
+            if self.project_config.get('post_extract_organise.enabled', False):
+                from shared_tools.processors.post_extract_organiser import organise_extracted
+                moved, domains = organise_extracted(self.project_config)
+                self.status_display.append(f"\nOrganised {moved} files into {domains} domain folders.")
+        except Exception as exc:
+            self.status_display.append(f"\nOrganiser failed: {exc}")
         
         self.progress_label.setText("Extraction completed")
         self.status_display.append("\n" + "="*50)

@@ -31,7 +31,9 @@ from datetime import datetime
 
 class LogsTab(QWidget):
     def __init__(self, project_config, activity_log_service: ActivityLogService | None = None, parent=None):
+        print("LogsTab: __init__ start")
         super().__init__(parent)
+        print("LogsTab: after super().__init__")
         self.logger = logging.getLogger(self.__class__.__name__)
         self.project_config = project_config
         self.activity_log_service = activity_log_service
@@ -41,8 +43,10 @@ class LogsTab(QWidget):
         self.update_timer = None
         self.setup_ui()
         self.scan_log_directory()
+        print("LogsTab: end of __init__")
         
     def setup_ui(self):
+        print("LogsTab: setting up layout")
         main_layout = QVBoxLayout(self)
         main_layout.setContentsMargins(PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN, PAGE_MARGIN)
         main_layout.setSpacing(PAGE_MARGIN)
@@ -155,11 +159,14 @@ class LogsTab(QWidget):
         self.update_timer.start(5000)  # Refresh every 5 seconds
     
     def scan_log_directory(self):
-        """Scan for log files in the configured log directory"""
+        print("scan_log_directory: start")
         log_dir = self.project_config.get_logs_dir()
-
+        print(f"scan_log_directory: log_dir = {log_dir}")
         self.log_files = {}
         if os.path.isdir(log_dir):
+            print("scan_log_directory: log_dir is a directory")
+            files = os.listdir(log_dir)
+            print(f"scan_log_directory: files = {files}")
             for fname in sorted(os.listdir(log_dir)):
                 if fname.lower().endswith(".log"):
                     self.log_files[fname] = {"path": os.path.join(log_dir, fname), "type": "app"}
@@ -191,6 +198,8 @@ class LogsTab(QWidget):
         # Load the first log if available
         if self.log_selector.count() > 0:
             self.on_log_selected(0)
+        print("scan_log_directory: after processing files")
+        print("scan_log_directory: end")
     
     def on_log_selected(self, index):
         """Handle log file selection"""

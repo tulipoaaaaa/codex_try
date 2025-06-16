@@ -67,7 +67,8 @@ class CorpusAnalyzer:
             },
             'file_types': ['.txt', '.json'],
             'analysis_cache_ttl': 3600,  # 1 hour
-            'visualization_output_dir': 'analysis_reports'
+            'visualization_output_dir': 'analysis_reports',
+            'allow_downsampling': False,
         }
     
     def analyze_corpus_balance(self, force_refresh: bool = False) -> Dict[str, Any]:
@@ -123,14 +124,14 @@ class CorpusAnalyzer:
     def _load_corpus_metadata(self) -> pd.DataFrame:
         """Load metadata from all JSON files in corpus."""
         metadata_records = []
-        subdirs = ['_extracted', 'low_quality']
+        subdirs = ['_extracted', 'low_quality', 'quality_checked']
         if self.recursive:
             # Recursively find all _extracted and low_quality subfolders
             for root, dirs, files in os.walk(self.corpus_dir):
                 for subdir in subdirs:
                     subdir_path = Path(root) / subdir
                     if subdir_path.exists():
-                        json_files = list(subdir_path.glob('*.json'))
+                        json_files = list(subdir_path.glob('**/*.json'))
                         self.logger.info(f"[RECURSIVE] Found {len(json_files)} JSON files in {subdir_path}")
                         for json_file in json_files:
                             try:
@@ -167,7 +168,7 @@ class CorpusAnalyzer:
                 subdir_path = self.corpus_dir / subdir
                 if not subdir_path.exists():
                     continue
-                json_files = list(subdir_path.glob('*.json'))
+                json_files = list(subdir_path.glob('**/*.json'))
                 self.logger.info(f"Found {len(json_files)} JSON files in {subdir}")
                 for json_file in json_files:
                     try:
@@ -523,8 +524,11 @@ class CorpusRebalancer:
         total_docs = analysis_results['metadata']['total_documents']
         target_per_domain = total_docs // len(get_valid_domains())
         
+        allow_downsampling: bool = self.analyzer.config.get('allow_downsampling', False)
+
         for domain, count in domain_analysis['distribution'].items():
-            if count < target_per_domain * 0.5:  # Significantly underrepresented
+            # --- Upsample under-represented domains ----------------------------------
+            if count < target_per_domain * 0.5:
                 plan['actions'].append({
                     'type': 'upsample',
                     'domain': domain,
@@ -532,7 +536,9 @@ class CorpusRebalancer:
                     'target_count': target_per_domain,
                     'method': 'quality_weighted_duplication'
                 })
-            elif count > target_per_domain * 2:  # Significantly overrepresented
+
+            # --- Downsample only if explicitly permitted ----------------------------
+            elif allow_downsampling and count > target_per_domain * 2:
                 plan['actions'].append({
                     'type': 'downsample',
                     'domain': domain,
@@ -580,7 +586,7 @@ class CorpusRebalancer:
             Execution results
         """
         results = {
-            'plan_id': hashlib.md5(json.dumps(plan, sort_keys=True).encode()).hexdigest()[:8],
+            'plan_id': hashlib.md5(str(plan).encode()).hexdigest()[:8],
             'execution_date': datetime.now().isoformat(),
             'dry_run': dry_run,
             'actions_completed': [],
@@ -657,7 +663,7 @@ class CorpusBalancer:
         self.project_config = project_config
         balancer_cfg = project_config.get_processor_config('corpus_balancer')
         self.analyzer = CorpusAnalyzer(
-            corpus_dir=project_config.get_input_dir(),
+            corpus_dir=project_config.get_processed_dir(),
             project_config=balancer_cfg,
         )
         self.rebalancer = CorpusRebalancer(self.analyzer)
@@ -674,6 +680,18 @@ class CorpusBalancer:
             return analysis
 
         plan = self.rebalancer.create_rebalancing_plan(analysis, strategy)
+        # ------------------------------------------------------------------
+        # Helper: ensure plan hashing works even when numpy types sneak in.
+        # ------------------------------------------------------------------
+        def _json_default(o):
+            if isinstance(o, (np.integer,)):
+                return int(o)
+            if isinstance(o, (np.floating,)):
+                return float(o)
+            return str(o)
+
+        plan_hash = hashlib.md5(str(plan).encode()).hexdigest()[:8]
+
         results = self.rebalancer.execute_rebalancing_plan(plan, dry_run)
 
         if not dry_run:
@@ -691,6 +709,7 @@ class CorpusBalancer:
             'analysis': analysis,
             'plan': plan,
             'results': results,
+            'plan_id': plan_hash,
         }
 
 class CorpusVisualizer:
@@ -949,7 +968,7 @@ def run_with_project_config(project: 'ProjectConfig', verbose: bool = False):
         dict: Corpus balance analysis results
     """
     analyzer = CorpusAnalyzer(
-        corpus_dir=project.get_input_dir(),
+        corpus_dir=project.get_processed_dir(),
         project_config=project.get_processor_config('corpus_balancer')
     )
     

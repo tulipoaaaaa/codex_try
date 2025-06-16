@@ -1,0 +1,101 @@
+environment: production
+
+environments:
+  production:
+    corpus_root: "G:/CryptoCorpus"
+    raw_data_dir: "G:/CryptoCorpus/raw"
+    processed_dir: "G:/CryptoCorpus/processed"
+    metadata_dir: "G:/CryptoCorpus/metadata"
+    logs_dir: "G:/CryptoCorpus/logs"
+
+# ---------------------------------------------------------------------------
+# Collectors (ALL enabled – adjust limits for full-test scale)
+# ---------------------------------------------------------------------------
+collectors:
+  annas_archive:
+    enabled: true
+    account_cookie: "${AA_TOKEN}"      # <-- set in ENV, not committed
+    search_query: "cryptocurrency pdf"
+    max_attempts: 100
+
+  arxiv:
+    enabled: true
+    categories: ["q-fin", "cs.AI"]
+    max_results: 200
+
+  github:
+    enabled: true
+    topics: ["cryptocurrency", "trading", "blockchain"]
+    min_stars: 50
+    max_results: 100
+
+  fred:
+    enabled: true
+    series_file: "CorpusBuilderApp/configs/fred_series.yaml"
+
+  bitmex:
+    enabled: true
+    max_downloads: 100
+
+  isda:
+    enabled: true
+    max_downloads: 100
+
+  scidb:
+    enabled: true
+    max_results_per_term: 25
+
+  web:
+    enabled: true
+    search_terms:
+      - "bitcoin whitepaper pdf"
+      - "ethereum technical paper"
+    max_pages: 50
+
+enabled_collectors:
+  - annas_archive
+  - arxiv
+  - github
+  - fred
+  - bitmex
+  - isda
+  - scidb
+  - web
+
+# ---------------------------------------------------------------------------
+# Processors
+# ---------------------------------------------------------------------------
+processors:
+  pdf_batch:
+    enabled: true
+    threads: 6
+    features:
+      ocr: true           # full extraction in prod
+      tables: true
+      images: true
+  deduplicator:
+    enabled: true
+    move_instead_of_copy: true
+  corpus_balancer:
+    enabled: true
+    dry_run: false        # real rebalance
+    allow_downsampling: false
+    corpus_dir: "G:/CryptoCorpus/processed"
+
+enabled_processors:
+  - pdf_batch
+  - deduplicator
+  - corpus_balancer
+
+post_extract_organise:
+  enabled: true
+
+# ---------------------------------------------------------------------------
+# Auto-balance service
+# ---------------------------------------------------------------------------
+auto_balance:
+  enabled: true
+  min_entropy: 2.0
+  check_interval: 900
+  start_balancing: true
+  rest_enabled: false 

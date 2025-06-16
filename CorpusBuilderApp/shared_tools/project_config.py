@@ -250,10 +250,19 @@ class ProjectConfig:
                 'temp_dir': ''
             }
         
-        # Override with environment variables
+        # ------------------------------------------------------------------
+        # Merge overrides from real environment variables. We ONLY override
+        # the ``environment.active`` key when the user has explicitly set the
+        # ENVIRONMENT variable.  Using a default value here (e.g. "test")
+        # would clobber any value already specified in the YAML file, which
+        # is not what we want.
+        # ------------------------------------------------------------------
+        env_active = os.getenv('ENVIRONMENT')  # None if not set
+
         env_config = {
             'environment': {
-                'active': os.getenv('ENVIRONMENT', 'test'),
+                # Do NOT inject a default – only override when provided
+                **({'active': env_active} if env_active else {}),
                 'python_path': os.getenv('PYTHON_PATH', ''),
                 'venv_path': os.getenv('VENV_PATH', ''),
                 'temp_dir': os.getenv('TEMP_DIR', '')
@@ -522,3 +531,39 @@ class ProjectConfig:
                 "start_balancing": False,
             },
         }
+
+    # ------------------------------------------------------------------
+    # Compatibility properties (attribute-style access)
+    # ------------------------------------------------------------------
+    @property
+    def raw_data_dir(self) -> Path:  # noqa: N802 – keep camelCase for legacy
+        """Return raw data directory (alias for get_raw_dir())."""
+        return self.get_raw_dir()
+
+    @property
+    def processed_dir(self) -> Path:  # noqa: N802
+        """Return processed directory (alias for get_processed_dir())."""
+        return self.get_processed_dir()
+
+    @property
+    def metadata_dir(self) -> Path:  # noqa: N802
+        """Return metadata directory (alias for get_metadata_dir())."""
+        return self.get_metadata_dir()
+
+    @property
+    def logs_dir(self) -> Path:  # noqa: N802
+        """Return logs directory (alias for get_logs_dir())."""
+        return self.get_logs_dir()
+
+    # ------------------------------------------------------------------
+    # Convenience helpers for downstream processors
+    # ------------------------------------------------------------------
+    def get_processor_config(self, name: str) -> Dict[str, Any]:
+        """Return configuration block for a given processor.
+
+        Downstream modules (e.g., CorpusBalancer) expect a helper like this.
+        We provide a safe fallback that always returns a dict, so calling
+        code can assume mapping semantics.
+        """
+        cfg = self.get(f"processors.{name}") or self.get(name) or {}
+        return cfg if isinstance(cfg, dict) else {}

@@ -8,10 +8,22 @@ print("PYTHONPATH:", sys.path)
 import os
 if os.getenv("HEADLESS", "0") == "1":
     os.environ["QT_QPA_PLATFORM"] = "offscreen"
+
+# Debug PySide6 paths
+print("QT_PLUGIN_PATH:", os.getenv("QT_PLUGIN_PATH"))
+print("QT_QPA_PLATFORM:", os.getenv("QT_QPA_PLATFORM"))
+print("ENABLE_QT:", os.getenv("ENABLE_QT"))
+
 import logging
 from pathlib import Path
-from PySide6.QtWidgets import QApplication, QMessageBox
-from PySide6.QtCore import QTimer
+try:
+    from PySide6.QtWidgets import QApplication, QMessageBox
+    from PySide6.QtCore import QTimer
+    print("PySide6 imported successfully")
+except Exception as e:
+    print("Error importing PySide6:", e)
+    raise
+
 import traceback
 import json
 from dotenv import load_dotenv
@@ -73,35 +85,54 @@ class CryptoCorpusApp(QApplication):
     """Main application class"""
     
     def __init__(self, argv):
+        print("CryptoCorpusApp: __init__ start")
         super().__init__(argv)
+        print("CryptoCorpusApp: after super().__init__")
         self.setApplicationName("Crypto Corpus Builder")
         self.setApplicationVersion("3.0.0")
+        print("CryptoCorpusApp: after setApplicationName/Version")
         
         # Set up logging
         self.setup_logging()
+        print("CryptoCorpusApp: after setup_logging")
         
         # Load environment variables
         self.load_environment()
+        print("CryptoCorpusApp: after load_environment")
         
         # Initialize configuration
         self.init_config()
+        print("CryptoCorpusApp: after init_config")
         
         # Create main window with config
         self.logger.debug(f"Config object type: {type(self.config)}")
         self.logger.debug(f"Config has 'get' method: {hasattr(self.config, 'get')}")
+        print("CryptoCorpusApp: before main_window creation")
         self.main_window = CryptoCorpusMainWindow(self.config)
+        print("CryptoCorpusApp: after main_window creation")
         
         # === Apply qdarktheme for global dark theming ===
         qdarktheme.setup_theme("dark")
+        print("CryptoCorpusApp: after qdarktheme.setup_theme")
         # === End qdarktheme ===
         
         # APPLY THEME AFTER WINDOW CREATION (custom QSS)
         user_theme = load_user_theme()
         print(f"DEBUG: Applying theme after window creation: {user_theme}")
         ThemeManager.apply_theme(user_theme)
+        print("CryptoCorpusApp: after ThemeManager.apply_theme")
         
-        # Show the window
+        # Show the window and ensure it's visible
         self.main_window.show()
+        self.main_window.raise_()
+        self.main_window.activateWindow()
+        print("CryptoCorpusApp: after main_window.show/raise_/activateWindow")
+        
+        # Debug logging
+        self.logger.debug("Main window should be visible")
+        self.logger.debug("Main window geometry: %s", self.main_window.geometry())
+        self.logger.debug("Main window is visible: %s", self.main_window.isVisible())
+        self.logger.debug("Main window is active: %s", self.main_window.isActiveWindow())
     
     def setup_logging(self):
         """Set up application logging"""
@@ -223,13 +254,15 @@ def main():
         QApplication.setHighDpiScaleFactorRoundingPolicy(
             QApplication.HighDpiScaleFactorRoundingPolicy.PassThrough
         )
+    print("Before QApplication")
     app = CryptoCorpusApp(sys.argv)
+    print("After QApplication")
 
     # Load and apply theme AFTER window creation
     user_theme = load_user_theme()
     print(f"DEBUG: Applying theme after window creation: {user_theme}")
     ThemeManager.apply_theme(user_theme)
-    
+
     # Force theme re-application after a short delay
     QTimer.singleShot(100, lambda: ThemeManager.apply_theme(user_theme))
 
@@ -243,8 +276,10 @@ def main():
         app.main_window.settings_dialog.settings_updated.connect(on_settings_updated)
 
     sound_enabled = load_user_sound_setting()
-
-    return app.exec()
+    print("Before app.exec()")
+    result = app.exec()
+    print("After app.exec()")
+    return result
 
 if __name__ == "__main__":
     main()

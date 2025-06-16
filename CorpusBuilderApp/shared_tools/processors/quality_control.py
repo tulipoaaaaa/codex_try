@@ -29,6 +29,9 @@ class QualityControl:
         if isinstance(project_config, str):
             project_config = ProjectConfig(project_config)
         
+        # Keep reference for later helpers (GUI wrappers rely on this)
+        self.project_config = project_config
+        
         # Use project config if provided, otherwise use provided config or defaults
         if project_config:
             if hasattr(project_config, 'get') and project_config.get('processors.quality_control'):
@@ -155,6 +158,139 @@ class QualityControl:
                 score += metrics[metric].get('score', 0.0) * weight
         
         return score
+
+    # ------------------------------------------------------------------
+    # Pragmatic directory-level quality pass that relies **solely** on the
+    # metrics already written by the extractors. This avoids expensive re-runs
+    # of NLP heuristics while still filtering obviously bad documents.
+    # ------------------------------------------------------------------
+
+    def _passes_quality(self, meta: Dict[str, Any]) -> tuple[bool, float, str]:
+        """Return (flag, score, reason) based on extractor-supplied metadata."""
+
+        metrics: Dict[str, Any] = meta.get("quality_metrics", {})
+        score = meta.get("quality_score")
+
+        # If extractor saved an overall score we trust it.
+        if isinstance(score, (int, float)):
+            return (score >= self.config.get("min_quality_score", 0.4), score, "score")
+
+        # Otherwise compute a rough score from sub-metrics (may be empty)
+        if not metrics and score is None:
+            # No metrics at all -> accept (assume extractor didn't compute)
+            return (True, 1.0, "no_metrics")
+
+        score = self._calculate_quality_score(metrics)
+
+        # Fallback length heuristic – too short ⇒ reject
+        token_count = meta.get("token_count") or meta.get("num_tokens")
+        if token_count is None and "num_tokens" in metrics:
+            token_count = metrics.get("num_tokens")
+
+        if token_count is not None and token_count < self.config.get("min_token_count", 50):
+            return (False, score, "too_short")
+
+        return (score >= self.config.get("min_quality_score", 0.4), score, "computed")
+
+    # -------------------------------
+    # Public API used by wrappers / CLI
+    # -------------------------------
+
+    def process_directory(self, processed_dir: Path | str) -> Dict[str, Any]:
+        """Walk *processed_dir* and move files into QC buckets.
+
+        This relies on the metadata JSON files written by extractors. It **does
+        not** re-run NLP detectors – fast and deterministic.
+        """
+
+        processed_path = Path(processed_dir).expanduser().resolve()
+        if not processed_path.exists():
+            raise FileNotFoundError(processed_path)
+
+        # Exclude helper folders that are outputs themselves
+        EXCLUDED_FOLDERS = {"_extracted", "quality_checked", "low_quality"}
+
+        passed_count = failed_count = 0
+        moved_files: list[str] = []
+
+        for json_file in processed_path.rglob("*.json"):
+            # Skip excluded roots early for speed
+            if any(part in EXCLUDED_FOLDERS for part in json_file.parts):
+                continue
+
+            meta: Dict[str, Any] = {}
+            try:
+                meta = json.loads(json_file.read_text(encoding="utf-8", errors="ignore"))
+            except Exception as exc:  # pragma: no cover
+                self.logger.warning("QC – could not read metadata %s: %s", json_file, exc)
+                failed = True
+                score = 0.0
+                reason = "bad_metadata"
+            else:
+                passed, score, reason = self._passes_quality(meta)
+                failed = not passed
+
+            # Derive domain & paths
+            domain = (meta.get("domain") if isinstance(meta, dict) else None) or "unknown"
+            domain = domain.lower()
+
+            txt_file = json_file.with_suffix(".txt")
+
+            target_root = processed_path / ("quality_checked" if not failed else "low_quality") / domain
+            target_root.mkdir(parents=True, exist_ok=True)
+
+            for src in (json_file, txt_file):
+                try:
+                    if src.exists():
+                        dst = target_root / src.name
+                        dst.write_bytes(src.read_bytes())
+                        moved_files.append(str(dst))
+                except Exception as exc:  # pragma: no cover – disk issues
+                    self.logger.warning("QC – failed to copy %s: %s", src, exc)
+
+            if failed:
+                failed_count += 1
+            else:
+                passed_count += 1
+
+        # Summary
+        results = {
+            "processed_files": len(moved_files) // 2,  # count pairs
+            "passed_count": passed_count,
+            "failed_count": failed_count,
+        }
+
+        # Persist simple log
+        try:
+            logs_dir = processed_path.parent / "../logs"
+            logs_dir = logs_dir.resolve()
+            logs_dir.mkdir(parents=True, exist_ok=True)
+            with (logs_dir / "quality_control.log").open("a", encoding="utf-8") as fh:
+                fh.write(json.dumps(results) + "\n")
+        except Exception:
+            pass
+
+        return results
+
+    # ------------------------------------------------------------------
+    # Convenience entry point so UI wrappers (QualityControlWrapper.start)
+    # can simply call processor.start() without needing to know about paths.
+    # ------------------------------------------------------------------
+
+    def start(self):
+        """Run QC pass on the corpus defined by project configuration."""
+        processed_dir = None
+        try:
+            if hasattr(self, 'project_config') and self.project_config:
+                processed_dir = self.project_config.get_processed_dir()
+        except Exception:
+            pass
+
+        if processed_dir is None:
+            # Fallback – assume current working dir contains processed/
+            processed_dir = Path.cwd() / 'corpus_1' / 'processed'
+
+        return self.process_directory(processed_dir)
 
 def run_with_project_config(project: Union[str, ProjectConfig], verbose: bool = False):
     """Run quality control with project configuration

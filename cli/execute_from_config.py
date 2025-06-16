@@ -7,6 +7,10 @@ import argparse
 import json
 import logging
 from typing import List
+import yaml
+import os
+import numpy as np
+import datetime
 
 from shared_tools.project_config import ProjectConfig
 from shared_tools.ui_wrappers.wrapper_factory import (
@@ -16,6 +20,30 @@ from shared_tools.ui_wrappers.wrapper_factory import (
 from shared_tools.ui_wrappers.processors.corpus_balancer_wrapper import CorpusBalancerWrapper
 from shared_tools.logging_config import setup_logging
 
+# ---------------------------------------------------------------------------
+# Headless Qt bootstrap
+# ---------------------------------------------------------------------------
+import sys
+
+# When collectors/processors pull in UI wrappers they may instantiate QWidget
+# objects.  In a GUI session the QApplication already exists, but when running
+# from the CLI it does not, leading to the runtime error:
+#   "QWidget: Must construct a QApplication before a QWidget"
+# We start a minimal off-screen QApplication so Qt has a valid event loop while
+# keeping the CLI fully head-less.
+
+if "QT_QPA_PLATFORM" not in os.environ:
+    os.environ["QT_QPA_PLATFORM"] = "offscreen"
+
+try:
+    from PySide6.QtWidgets import QApplication  # type: ignore
+
+    if QApplication.instance() is None:
+        _qt_cli_app = QApplication(sys.argv[:1] or ["cb_cli"])
+except Exception:
+    # Qt not available or failed to initialize – wrappers that need QWidget
+    # will still raise, but we tried.  Safely continue so non-Qt parts work.
+    _qt_cli_app = None
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +76,23 @@ def parse_args(argv: List[str] | None = None) -> argparse.Namespace:
 
 
 def load_config(path: str) -> ProjectConfig:
-    return ProjectConfig.from_yaml(path)
+    # First, peek at the YAML to see what environment it specifies
+    with open(path, 'r') as f:
+        yaml_data = yaml.safe_load(f)
+    
+    # Use the environment specified in YAML, falling back to env-var or 'test'
+    yaml_env = yaml_data.get('environment')
+    if isinstance(yaml_env, str):
+        # Legacy format: environment: "local"
+        env_to_use = yaml_env
+    elif isinstance(yaml_env, dict):
+        # New format: environment: { active: "local" }
+        env_to_use = yaml_env.get('active', 'test')
+    else:
+        # No environment in YAML, use env-var or default
+        env_to_use = None
+    
+    return ProjectConfig(path, environment=env_to_use)
 
 
 def enabled_modules(config: ProjectConfig, section: str) -> List[str]:
@@ -66,6 +110,18 @@ def run_collectors(config: ProjectConfig, names: List[str], preview: bool = Fals
         logger.info("Running collector: %s", name)
         try:
             wrapper = create_collector_wrapper(name, config)
+            # ------------------------------------------------------------------
+            # Ensure YAML-specified parameters (e.g. AnnasArchive search_query)
+            # are applied when running head-less via CLI.  In the GUI this is
+            # done explicitly; replicate the behaviour here so that
+            # `execute_from_config --run-all` honours keys under
+            # `collectors.<name>` such as search_query, max_attempts, etc.
+            # ------------------------------------------------------------------
+            if hasattr(wrapper, "refresh_config"):
+                try:
+                    wrapper.refresh_config()
+                except Exception as exc:  # pragma: no cover – defensive
+                    logger.warning("%s.refresh_config() failed: %s", name, exc)
         except Exception as e:  # pragma: no cover - simple wrapper creation failure
             raise RuntimeError(f"Failed to create collector wrapper '{name}'") from e
         wrapper.start()
@@ -114,10 +170,23 @@ def run_balancer(config: ProjectConfig, preview: bool = False):
 
     if isinstance(stats, dict):
         try:
+            def _convert(obj):
+                if isinstance(obj, dict):
+                    return {str(k): _convert(v) for k, v in obj.items()}
+                if isinstance(obj, list):
+                    return [_convert(v) for v in obj]
+                if isinstance(obj, (np.integer,)):
+                    return int(obj)
+                if isinstance(obj, (np.floating,)):
+                    return float(obj)
+                if isinstance(obj, (datetime.date, datetime.datetime)):
+                    return obj.isoformat()
+                return obj
+
             json_path = logs_dir / "corpus_balance.json"
             with open(json_path, "w") as f:
-                json.dump(stats, f, indent=2)
-            print(json.dumps(stats, indent=2))
+                json.dump(_convert(stats), f, indent=2)
+            print(json.dumps(_convert(stats), indent=2))
         except Exception as e:  # pragma: no cover - disk write issues
             logger.error("Failed to save balance results: %s", e)
 
@@ -170,6 +239,18 @@ def main(argv: List[str] | None = None):
         )
         processors = [p for p in processors if p != "corpus_balancer"]
         run_processors(config, processors, preview)
+
+        # ------------------------------------------------------------------
+        # Optional post-extraction organisation – move _extracted into domains
+        # ------------------------------------------------------------------
+        organise_enabled = config.get('post_extract_organise.enabled', False)
+        if organise_enabled and not preview:
+            try:
+                from shared_tools.processors.post_extract_organiser import organise_extracted
+                files_moved, domains = organise_extracted(config)
+                logger.info("Post-extract organiser moved %d files into %d domains", files_moved, domains)
+            except Exception as exc:  # pragma: no cover – defensive
+                logger.error("Post-extract organiser failed: %s", exc)
 
     if run_balance:
         run_balancer(config, preview)

@@ -1,0 +1,64 @@
+# e2e_trial.yaml  – tiny end-to-end pipeline rehearsal
+# Creates its own corpus directory under G:/codex/codex_try/e2e_corpus
+# Run with:  python -m cli.execute_from_config --config CorpusBuilderApp/configs/e2e_trial.yaml --run-all
+
+environment: local
+
+environments:
+  local:
+    corpus_root:   "G:/codex/codex_try/e2e_corpus"
+    raw_data_dir:  "G:/codex/codex_try/e2e_corpus/raw"
+    processed_dir: "G:/codex/codex_try/e2e_corpus/processed"
+    metadata_dir:  "G:/codex/codex_try/e2e_corpus/metadata"
+    logs_dir:      "G:/codex/codex_try/e2e_corpus/logs"
+
+# ---------------------------------------------------------------------------
+# Collectors
+# ---------------------------------------------------------------------------
+collectors:
+  annas_archive:
+    enabled: true
+    account_cookie: "eyJhIjoiM3NEQ1F4aCIsImlhdCI6MTc0Njc5MDY5OH0.UA5UmScLA3rJ_xqDcOjxE1nOAx7WCF6bkvFU2fT2OyE"
+    search_query: "bitcoin pdf"   # broad query ⇒ a handful of Bitcoin-related books
+    max_attempts: 10              # cap download count so the test stays quick
+
+enabled_collectors:
+  - annas_archive
+
+# ---------------------------------------------------------------------------
+# Processors
+# ---------------------------------------------------------------------------
+processors:
+  pdf_batch:
+    enabled: true
+    threads: 2
+    features:                  # speed-up for test only
+      ocr: false               # skip OCR
+      tables: false            # skip Camelot table scan
+      images: false            # skip chart/image detection
+  deduplicator:
+    enabled: true
+    move_instead_of_copy: true
+  corpus_balancer:
+    enabled: true
+    dry_run: false          # real rebalance for the rehearsal
+    allow_downsampling: false
+    corpus_dir: "G:/codex/codex_try/e2e_corpus/processed"
+
+enabled_processors:
+  - pdf_batch
+  - deduplicator
+  - corpus_balancer
+
+post_extract_organise:
+  enabled: true
+
+# ---------------------------------------------------------------------------
+# Auto-balance daemon (single-shot in --run-all)
+# ---------------------------------------------------------------------------
+auto_balance:
+  enabled: true
+  min_entropy: 1.0
+  check_interval: 30
+  start_balancing: true
+  rest_enabled: false

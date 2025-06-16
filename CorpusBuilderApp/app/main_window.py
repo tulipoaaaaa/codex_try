@@ -57,7 +57,6 @@ class CryptoCorpusMainWindow(QMainWindow):
         )
         self.config = config
 
-        # Services and wrappers
         self.activity_log_service = ActivityLogService()
         self.task_history_service = TaskHistoryService()
         self.task_queue_manager = TaskQueueManager()
@@ -102,30 +101,33 @@ class CryptoCorpusMainWindow(QMainWindow):
         self.logger.info("Main window initialized")
     
     def init_ui(self):
-        """Initialize the user interface"""
         # Set window properties
         self.setWindowTitle("Crypto Corpus Builder v3")
         self.setMinimumSize(1200, 800)
         self.resize(1400, 900)
-        
+        # Force window to be visible
+        self.setVisible(True)
+        self.raise_()
+        self.activateWindow()
         # Create central widget and layout
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
-        
         layout = QVBoxLayout(central_widget)
         layout.setContentsMargins(0, 0, 0, 0)
-        
         # Create tab widget
         self.tab_widget = QTabWidget()
         self.tab_widget.setTabPosition(QTabWidget.TabPosition.North)
         self.tab_widget.setMovable(False)
         layout.addWidget(self.tab_widget)
-        
         # Initialize all tabs
         self.init_tabs()
+        # Debug logging
+        self.logger.debug("Window initialized and should be visible")
+        self.logger.debug("Window geometry: %s", self.geometry())
+        self.logger.debug("Window is visible: %s", self.isVisible())
+        self.logger.debug("Window is active: %s", self.isActiveWindow())
     
     def init_tabs(self):
-        """Initialize all application tabs"""
         try:
             self.logger.debug(
                 "About to initialize tabs with config type: %s", type(self.config)
@@ -215,7 +217,7 @@ class CryptoCorpusMainWindow(QMainWindow):
             self.logger.debug("Initializing MonitoringTab...")
             self.monitoring_tab = MonitoringTab(self.config, parent=self)
             self.logger.debug("MonitoringTab initialized successfully")
-            self.tab_widget.addTab(self.monitoring_tab, "Monitoring")
+            self.tab_widget.addTab(self.monitoring_tab, "🖥️ Monitoring")
             self.tab_registry.update({
                 'monitoring_tab': self.monitoring_tab,
             })
@@ -524,7 +526,6 @@ class CryptoCorpusMainWindow(QMainWindow):
     def show_full_activity_tab(self):
         """Show the full activity tab when View All is clicked"""
         try:
-            print("[DEBUG] show_full_activity_tab called")
             # Check if Full Activity tab already exists
             for i in range(self.tab_widget.count()):
                 if self.tab_widget.tabText(i) == "📊 Full Activity":

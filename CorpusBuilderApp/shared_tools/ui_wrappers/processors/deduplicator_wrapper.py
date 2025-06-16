@@ -101,6 +101,17 @@ class DeduplicatorWrapper(QWidget):
                 setattr(self, k, v)
 
     def setup_ui(self):
+        # Head-less CLI runs stubbed Qt classes that lack .addWidget().
+        # Skip UI building when no real QApplication is running so the wrapper
+        # can be used from the CLI without raising AttributeError, while the
+        # full GUI still gets the proper layout.
+        try:
+            from PySide6.QtWidgets import QApplication
+            if QApplication.instance() is None:
+                return  # no GUI – skip
+        except Exception:
+            return
+
         layout = QVBoxLayout(self)
         layout.addWidget(QLabel("Deduplicator UI"))
 

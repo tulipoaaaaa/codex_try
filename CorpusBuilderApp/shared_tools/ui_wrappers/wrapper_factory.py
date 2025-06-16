@@ -41,11 +41,19 @@ def create_processor_wrapper(processor_name: str, config: Union[str, ProjectConf
     from .processors.pdf_extractor_wrapper import PDFExtractorWrapper
     from .processors.text_extractor_wrapper import TextExtractorWrapper
     from .processors.corpus_balancer_wrapper import CorpusBalancerWrapper
+    from .processors.quality_control_wrapper import QualityControlWrapper
+    from .processors.batch_text_extractor_enhanced_prerefactor_wrapper import BatchTextExtractorEnhancedPrerefactorWrapper
+    from .processors.batch_nonpdf_extractor_enhanced_wrapper import BatchNonPDFExtractorWrapper
+    from .processors.deduplicator_wrapper import DeduplicatorWrapper
     
     wrapper_map = {
         "pdf": PDFExtractorWrapper,
         "text": TextExtractorWrapper,
-        "balancer": CorpusBalancerWrapper
+        "quality_control": QualityControlWrapper,
+        "balancer": CorpusBalancerWrapper,
+        "pdf_batch": BatchTextExtractorEnhancedPrerefactorWrapper,
+        "text_batch": BatchNonPDFExtractorWrapper,
+        "deduplicator": DeduplicatorWrapper,
     }
     
     if processor_name.lower() not in wrapper_map:

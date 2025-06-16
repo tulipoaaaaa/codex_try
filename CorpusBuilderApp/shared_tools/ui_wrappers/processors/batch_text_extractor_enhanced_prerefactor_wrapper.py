@@ -6,15 +6,64 @@ Provides comprehensive batch text extraction with advanced preprocessing
 import os
 import json
 from typing import Dict, List, Optional, Any, Tuple, Union
-from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal, Slot as pyqtSlot, QMutex, QTimer, Qt
+from PySide6.QtCore import QObject, QThread, Signal as pyqtSignal
 from PySide6.QtWidgets import (QWidget, QVBoxLayout, QHBoxLayout, QPushButton, 
                            QProgressBar, QLabel, QTextEdit, QFileDialog, QCheckBox, 
                            QSpinBox, QGroupBox, QGridLayout, QComboBox, QDoubleSpinBox,
                            QTabWidget, QListWidget, QSplitter, QFormLayout)
-from shared_tools.processors.batch_text_extractor_enhanced_prerefactor import BatchTextExtractorEnhancedPrerefactor
+from shared_tools.processors.batch_text_extractor_enhanced_prerefactor import BatchTextExtractorEnhancedPrerefactor  # type: ignore
 from ...project_config import ProjectConfig
 from pathlib import Path
 
+# Handle environments where 'Slot' symbol may not be exported at module level
+try:
+    from PySide6.QtCore import Slot as pyqtSlot
+except ImportError:  # pragma: no cover – fallback for some PySide builds
+    def pyqtSlot(*types, **kwargs):  # type: ignore
+        """No-op decorator replacement when QtCore.Slot is unavailable."""
+        def decorator(func):
+            return func
+        return decorator
+
+# Optional Qt symbols that may be unavailable in minimal/headless builds
+try:
+    from PySide6.QtCore import QMutex, QTimer  # type: ignore
+except ImportError:  # pragma: no cover – provide stubs for CLI mode
+    class _QtStub:  # pylint: disable=too-few-public-methods
+        def __init__(self, *_, **__):
+            pass
+
+        def lock(self):
+            pass
+
+        def unlock(self):
+            pass
+
+        def start(self, *_, **__):
+            pass
+
+        def stop(self):
+            pass
+
+    QMutex = QTimer = _QtStub  # type: ignore
+
+#
+# We already used ``_QtStub`` earlier for ``QMutex`` stubs.  Re-using the same
+# name confuses static analysers, so we create a distinct stub class for the Qt
+# enum namespace.
+#
+except ImportError:  # pragma: no cover
+    class _QtEnumStub:
+        Horizontal = 0
+        Vertical = 1
+        AlignLeft = AlignRight = AlignHCenter = AlignVCenter = 0
+    Qt = _QtEnumStub  # type: ignore
+
+# Detect whether we are running in a head-less environment where real Qt widget
+# classes are not available (i.e. they have been stubbed to plain ``object`` by
+# the fallback logic above). We test for a well-known method present on real
+# widgets – ``addItems`` on ``QComboBox`` – which is missing from the stub.
+_HEADLESS_CLI = not hasattr(QComboBox, "addItems")
 
 class BatchTextExtractorWorker(QThread):
     """Worker thread for batch text extraction operations"""
@@ -158,7 +207,19 @@ class BatchTextExtractorWorker(QThread):
 class BatchTextExtractorEnhancedPrerefactorWrapper(QWidget):
     """Wrapper for BatchTextExtractorEnhancedPrerefactor with UI controls (migrated to QWidget-only, explicit delegation)"""
     def __init__(self, project_config, parent=None):
-        QWidget.__init__(self, parent)
+        # ``QWidget`` may be an ``object`` stub when running without a GUI
+        # backend.  Calling its constructor with extra arguments would raise a
+        # ``TypeError``.  We therefore guard the initialisation so that it is
+        # only invoked with a parent when real Qt is available.
+        try:
+            QWidget.__init__(self, parent)
+        except TypeError:
+            # Stubbed ``object`` does not accept *parent* – fall back to default
+            try:
+                QWidget.__init__(self)
+            except Exception:
+                # Completely stubbed, nothing to do
+                pass
         if project_config is None:
             raise RuntimeError("BatchTextExtractorEnhancedPrerefactorWrapper requires a non-None ProjectConfig")
         self.project_config = project_config
@@ -168,7 +229,11 @@ class BatchTextExtractorEnhancedPrerefactorWrapper(QWidget):
         self._is_running = False
         self.worker_thread = None
         self._enabled = True
-        self._init_ui()
+        # In head-less CLI mode the Qt widgets are dummy ``object`` instances.
+        # Building the UI would therefore raise ``AttributeError`` (as seen in
+        # issue report). We skip UI initialisation entirely in that scenario.
+        if not _HEADLESS_CLI:
+            self._init_ui()
         # All signal-slot connections are made explicitly in setup_connections()
     
     def _init_ui(self):
@@ -321,7 +386,8 @@ class BatchTextExtractorEnhancedPrerefactorWrapper(QWidget):
             
             # Create a queue to collect results
             from queue import Queue
-            result_queue = Queue()
+            from typing import Dict as _Dict, Any as _Any
+            result_queue: "Queue[_Dict[str, _Any]]" = Queue()
             
             # Connect signals
             def on_batch_completed(stats):
@@ -412,3 +478,42 @@ class BatchTextExtractorEnhancedPrerefactorWrapper(QWidget):
             elif hasattr(self, k):
                 setattr(self, k, v)
         # No configuration_changed signal in this wrapper, so skip emit
+
+    # ------------------------------------------------------------------
+    # Convenience entry-point for CLI execution (mirrors PDF/Text wrappers)
+    # ------------------------------------------------------------------
+    def start(self):
+        """Process all PDF files found under ``project_config.get_raw_dir()``.
+
+        This method is called by the non-GUI CLI runner.  It MUST NOT rely on
+        any Qt widgets – it directly uses the underlying multiprocessing
+        processor to perform the extraction and therefore works fine even when
+        all Qt classes are stubbed out.
+        """
+        from pathlib import Path
+
+        # Resolve raw / processed directories as robustly as possible
+        try:
+            raw_dir = Path(self.project_config.get_raw_dir())
+        except Exception:
+            raw_dir = Path(self.project_config.get('environments.local.raw_data_dir', '.'))
+
+        try:
+            processed_dir = Path(self.project_config.get_processed_dir())
+        except Exception:
+            processed_dir = Path(self.project_config.get('environments.local.processed_dir', './processed'))
+
+        if not raw_dir.exists():
+            if self.logger:
+                self.logger.warning("Raw directory '%s' does not exist – skipping batch PDF extraction", raw_dir)
+            return
+
+        processed_dir.mkdir(parents=True, exist_ok=True)
+
+        # Delegate to the enhanced multiprocessing extractor directly
+        stats = self.processor.process_directory(str(raw_dir), str(processed_dir))
+
+        if self.logger:
+            self.logger.info("Batch PDF extraction completed: %s", stats)
+
+        return stats

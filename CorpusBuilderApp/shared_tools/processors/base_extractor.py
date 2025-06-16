@@ -49,8 +49,22 @@ class BaseExtractor(ABC):
             config = ProjectConfig(config, environment='test')
         
         self.config = config
-        self.input_dir = Path(config.raw_data_dir)
-        self.output_dir = Path(config.processed_dir)
+
+        def _resolve(path_attr: str, helper: str):
+            if hasattr(config, path_attr):
+                return Path(getattr(config, path_attr))
+            elif hasattr(config, helper):
+                return Path(getattr(config, helper)())
+            return None
+
+        self.input_dir = _resolve('raw_data_dir', 'get_raw_dir')
+        if not self.input_dir:
+            raise AttributeError('ProjectConfig missing raw_data_dir/get_raw_dir')
+
+        self.output_dir = _resolve('processed_dir', 'get_processed_dir')
+        if not self.output_dir:
+            raise AttributeError('ProjectConfig missing processed_dir/get_processed_dir')
+        
         self.num_workers = num_workers
         
         # Load and validate configurations
@@ -61,8 +75,8 @@ class BaseExtractor(ABC):
             self.quality_config = QualityConfig()
         
         # Initialize services
-        self.quality_service = QualityControl(quality_config=self.quality_config)
-        self.domain_classifier = DomainClassifier(domain_config=domain_config)
+        self.quality_service = QualityControl(project_config=config)
+        self.domain_classifier = DomainClassifier(project_config=config)
         
         # Create output directories
         self.extracted_dir = self.output_dir / "_extracted"
@@ -76,9 +90,11 @@ class BaseExtractor(ABC):
         
         # Add file handler if not already present
         if not self.logger.handlers:
-            log_dir = Path(config.log_dir)
-            log_dir.mkdir(parents=True, exist_ok=True)
-            log_file = log_dir / "extraction.log"
+            log_dir_path = _resolve('log_dir', 'get_logs_dir')
+            if not log_dir_path:
+                log_dir_path = Path.cwd() / 'logs'
+            log_dir_path.mkdir(parents=True, exist_ok=True)
+            log_file = log_dir_path / "extraction.log"
             fh = logging.FileHandler(log_file)
             fh.setLevel(logging.INFO)
             formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')

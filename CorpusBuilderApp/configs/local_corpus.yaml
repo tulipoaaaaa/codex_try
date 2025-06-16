@@ -1,16 +1,82 @@
-# Active environment -------------------------------------------------
 environment: local
 
 environments:
   local:
-    corpus_root: "G:/codex/codex_try/corpus_1"
-    raw_data_dir:  "G:/codex/codex_try/corpus_1"
+    corpus_root:   "G:/codex/codex_try/corpus_1"
+    raw_data_dir:  "G:/codex/codex_try/corpus_1/raw"
     processed_dir: "G:/codex/codex_try/corpus_1/processed"
     metadata_dir:  "G:/codex/codex_try/corpus_1/metadata"
     logs_dir:      "G:/codex/codex_try/corpus_1/logs"
 
+extractors:               # <- NEW (or put these under processors:)
+  pdf:
+    enabled: false         # run PDFExtractorWrapper
+  text:
+    enabled: false         # run TextExtractorWrapper
+  pdf_batch:
+    enabled: false
+  text_batch: 
+    enabled: true
+
+    #nonpdf:               # e.g. HTML/MD if you have that wrapper
+  #   enabled: true
+
 processors:
   quality_control:
     enabled: true
+    min_quality_score: 0.0      # treat missing scores as pass
+    min_token_count: 20         # allow short abstracts
+    checks:
+      corruption:
+        enabled: false          # skip until metrics filled
+      translation:
+        enabled: false          # skip MT detector for now
   corpus_balancer:
     enabled: true
+    dry_run: true 
+    corpus_dir: "G:/codex/codex_try/corpus_1/processed" 
+    allow_downsampling: false
+  deduplicator:
+    enabled: true
+    min_hash_similarity: 0.70     # lower threshold → finds looser matches
+    move_instead_of_copy: true   
+
+
+collectors:
+  isda:
+    enabled: true
+  annas_archive:
+    enabled: true
+  github:
+    enabled: true
+  quantopian:
+    enabled: true
+  arxiv:
+    enabled: true
+  fred:
+    enabled: true
+  bitmex:
+    enabled: true
+  scidb:
+    enabled: true
+  web:
+    enabled: true
+
+enabled_processors:
+  - quality_control
+  - deduplicator
+  - corpus_balancer
+
+# Optional organiser to move files into processed/<domain>/
+post_extract_organise:
+  enabled: true
+
+# Auto-balance daemon settings (testing)
+auto_balance:
+  enabled: true
+  min_entropy: 3.0        # force imbalance for test
+  dominance_ratio: 5.0
+  check_interval: 60      # 1 minute for quick testing
+  start_balancing: false  # flip via REST when ready
+  rest_enabled: true
+  auth_token: "PLEASE_CHANGE_ME"

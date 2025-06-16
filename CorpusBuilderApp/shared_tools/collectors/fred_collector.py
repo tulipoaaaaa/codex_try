@@ -310,40 +310,32 @@ class FREDCollector(BaseCollector):
             
             # Save observations as CSV
             observations = series_data.get('observations', [])
-            # ----------------------------------------------------------------
-            # CSV OUTPUT (optional)
-            # ----------------------------------------------------------------
-            # Many unit-test environments replace the real pandas with a lightweight
-            # stub where `pd.DataFrame` returns ``None`` or lacks ``to_csv``. In
-            # that scenario we simply skip generating the CSV (the JSON already
-            # preserves the full information).  Production runs with the real
-            # pandas will still create the CSV as before.
             try:
                 if observations and hasattr(pd, 'DataFrame'):
-                df = pd.DataFrame(observations)
+                    df = pd.DataFrame(observations)
                     if df is not None and hasattr(df, 'to_csv'):
-                csv_filename = f"{series_id}_{clean_title}.csv"
-                csv_path = self.fred_dir / csv_filename
-                df.to_csv(csv_path, index=False)
+                        csv_filename = f"{series_id}_{clean_title}.csv"
+                        csv_path = self.fred_dir / csv_filename
+                        df.to_csv(csv_path, index=False)
 
-                # Save .meta file for CSV
-                meta_csv_path = csv_path.with_suffix('.meta')
-                meta_csv = {
-                    'series_id': series_id,
-                    'title': title,
-                    'domain': domain,
-                    'filetype': 'csv',
-                    'datafile': str(csv_path)
-                }
-                with open(meta_csv_path, 'w') as f:
-                    json.dump(meta_csv, f, indent=2)
+                        # Save .meta file for CSV
+                        meta_csv_path = csv_path.with_suffix('.meta')
+                        meta_csv = {
+                            'series_id': series_id,
+                            'title': title,
+                            'domain': domain,
+                            'filetype': 'csv',
+                            'datafile': str(csv_path)
+                        }
+                        with open(meta_csv_path, 'w') as f:
+                            json.dump(meta_csv, f, indent=2)
 
-                saved_files.append({
-                    'series_id': series_id,
-                    'title': title,
-                    'filepath': str(csv_path),
-                    'domain': domain
-                })
+                        saved_files.append({
+                            'series_id': series_id,
+                            'title': title,
+                            'filepath': str(csv_path),
+                            'domain': domain
+                        })
             except Exception as exc:  # pragma: no cover
                 # Log and continue – CSV generation is optional for test runs.
                 self.logger.warning(f"Skipping CSV write for {series_id}: {exc}")
